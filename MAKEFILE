@@ -1,0 +1,2 @@
+windows:
+	nvcc -v -rdc=true src/tfg-pathtracer/main.cpp src/tfg-pathtracer/kernel.cu -I"src/SFML-2.5.1/include" -L"src/SFML-2.5.1/lib" -L"src/SFML-2.5.1/bin" -lsfml-graphics -lsfml-window -lsfml-system --output-file bin/tfg-pathtracer
