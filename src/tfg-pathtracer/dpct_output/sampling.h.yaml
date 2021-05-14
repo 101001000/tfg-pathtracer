@@ -1,0 +1,203 @@
+---
+MainSourceFile:  'c:\users\kike\desktop\uni\tfg\github\tfg-pathtracer - copia\src\tfg-pathtracer\dpct_output\sampling.h'
+Replacements:
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          0
+    Length:          0
+    ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          70
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          81
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          195
+    Length:          28
+    ReplacementText: 'sycl::sqrt(maxf(0.f, 1.0 - z * z))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          276
+    Length:          8
+    ReplacementText: 'sycl::cos(phi)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          305
+    Length:          8
+    ReplacementText: 'sycl::sin(phi)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          353
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          364
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          569
+    Length:          6
+    ReplacementText: 'sycl::cos(t)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          590
+    Length:          6
+    ReplacementText: 'sycl::sin(t)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          604
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          615
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          718
+    Length:          8
+    ReplacementText: 'sycl::sqrt(u1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          777
+    Length:          8
+    ReplacementText: 'sycl::cos(phi)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          804
+    Length:          8
+    ReplacementText: 'sycl::sin(phi)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          827
+    Length:          52
+    ReplacementText: 'sycl::sqrt(maxf(0.0, 1.0 - dir.x * dir.x - dir.y * dir.y))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          906
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          917
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          1083
+    Length:          45
+    ReplacementText: 'sycl::sqrt((1.0 - r2) / (1.0 + (a * a - 1.0) * r2))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          1158
+    Length:          33
+    ReplacementText: 'sycl::sqrt(1.0 - (cosTheta * cosTheta))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          1224
+    Length:          8
+    ReplacementText: 'sycl::sin(phi)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Sampling.h'
+    Offset:          1254
+    Length:          8
+    ReplacementText: 'sycl::cos(phi)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest: []
+...

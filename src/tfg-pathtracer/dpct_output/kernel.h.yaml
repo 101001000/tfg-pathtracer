@@ -1,0 +1,41 @@
+---
+MainSourceFile:  'c:\users\kike\desktop\uni\tfg\github\tfg-pathtracer - copia\src\tfg-pathtracer\dpct_output\kernel.h'
+Replacements:
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.h'
+    Offset:          0
+    Length:          27
+    ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.h'
+    Offset:          89
+    Length:          39
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.h'
+    Offset:          146
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.h'
+    Offset:          777
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest: []
+...

@@ -28,7 +28,7 @@ public:
 		while (std::getline(input, line)) {
 
 			if (line[0] == 'v' && line[1] == ' ') {
-				vertices.push_back(Vector3(line.substr(2)));
+				vertices.push_back(Vector3(line.substr(2)) * Vector3(1, 1, -1));
 			}
 
 			if (line[0] == 'v' && line[1] == 't') {
@@ -36,7 +36,7 @@ public:
 			}
 
 			if (line[0] == 'v' && line[1] == 'n') {
-				normals.push_back(Vector3(line.substr(2)));
+				normals.push_back(Vector3(line.substr(2)) * Vector3(1, 1, -1));
 			}
 
 			if (line[0] == 'f') {
@@ -91,11 +91,14 @@ public:
 						}
 					}
 
-					if (strlen(v[0]) > 0)
+					if (strlen(v[0]) > 0) 
 						tri.vertices[i] = vertices.at(std::stoi(&(v[0])[0]) - 1);
 
 					if (strlen(v[1]) > 0)
 						tri.uv[i] = textureCoord.at(std::stoi(&(v[1])[0]) - 1);
+
+					if (strlen(v[2]) > 0)
+						tri.normals[i] = normals.at(std::stoi(&(v[2])[0]) - 1);
 						
 				}
 

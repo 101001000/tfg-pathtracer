@@ -89,6 +89,13 @@ public:
 		return Vector3(x * s, y * s, z * s);
 	}
 
+	__host__ __device__ inline float operator[](const int n) {
+		if (n == 0) return x;
+		if (n == 1) return y;
+		if (n == 2) return z;
+		return x;
+	}
+
 	__host__ __device__ inline Vector3 operator/(const float s) {
 		return Vector3(x / s, y / s, z / s);
 	}
@@ -176,7 +183,7 @@ public:
 	__host__ __device__ inline static Vector3 lerp2D(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4, float amountX, float amountY);
 
 	__host__ __device__ inline void print() {
-		printf("x: %f, y: %f, z: %f.", x, y, z);
+		printf("x: %.3f, y: %.3f, z: %.3f.", x, y, z);
 	}
 
 };

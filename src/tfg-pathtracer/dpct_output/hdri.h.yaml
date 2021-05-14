@@ -1,0 +1,140 @@
+---
+MainSourceFile:  'c:\users\kike\desktop\uni\tfg\github\tfg-pathtracer - copia\src\tfg-pathtracer\dpct_output\hdri.h'
+Replacements:
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          34
+    Length:          0
+    ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          928
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          939
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          2006
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          2017
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          2564
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          2575
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          2919
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          2930
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          3288
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          3299
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          3476
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          3487
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          3720
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\HDRI.h'
+    Offset:          3731
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest: []
+...

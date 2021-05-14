@@ -1,0 +1,50 @@
+---
+MainSourceFile:  'c:\users\kike\desktop\uni\tfg\github\tfg-pathtracer - copia\src\tfg-pathtracer\dpct_output\camera.h'
+Replacements:
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Camera.h'
+    Offset:          38
+    Length:          0
+    ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Camera.h'
+    Offset:          354
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Camera.h'
+    Offset:          363
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Camera.h'
+    Offset:          546
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Camera.h'
+    Offset:          555
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest: []
+...

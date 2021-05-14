@@ -1,0 +1,374 @@
+---
+MainSourceFile:  'c:\users\kike\desktop\uni\tfg\github\tfg-pathtracer - copia\src\tfg-pathtracer\dpct_output\disney.h'
+Replacements:
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          40
+    Length:          0
+    ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          123
+    Length:          27
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          154
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          165
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          271
+    Length:          13
+    ReplacementText: 'sycl::fabs(normal.z)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          527
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          538
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          837
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          848
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          1174
+    Length:          34
+    ReplacementText: 'sycl::sqrt(maxf(1.0 - sinThetaTSq, 0.0))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          1509
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          1520
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          1790
+    Length:          7
+    ReplacementText: 'sycl::log(a2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          1885
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          1896
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          2200
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          2211
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          2597
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          2608
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          2828
+    Length:          19
+    ReplacementText: 'sycl::sqrt(a + b - a * b)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          2931
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          2942
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          3214
+    Length:          27
+    ReplacementText: 'sycl::sqrt(a * a + b * b + c * c)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          3325
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          3336
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          3521
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          3532
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          3783
+    Length:          23
+    ReplacementText: 'sycl::fabs(Vector3::dot(N, H))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          4193
+    Length:          37
+    ReplacementText: 'sycl::sqrt(1.0 - hitdata.anisotropic * 0.9)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          4678
+    Length:          23
+    ReplacementText: 'sycl::fabs(Vector3::dot(L, H))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          4725
+    Length:          23
+    ReplacementText: 'sycl::fabs(Vector3::dot(L, N))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          4861
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          4872
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          5600
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          5611
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          5862
+    Length:          36
+    ReplacementText: 'sycl::fabs(Vector3::dot(hitdata.normal, L))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          5919
+    Length:          36
+    ReplacementText: 'sycl::fabs(Vector3::dot(hitdata.normal, V))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          5976
+    Length:          36
+    ReplacementText: 'sycl::fabs(Vector3::dot(hitdata.normal, H))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          6033
+    Length:          23
+    ReplacementText: 'sycl::fabs(Vector3::dot(V, H))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          6077
+    Length:          23
+    ReplacementText: 'sycl::fabs(Vector3::dot(L, H))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Disney.h'
+    Offset:          7607
+    Length:          37
+    ReplacementText: 'sycl::sqrt(1.0 - hitdata.anisotropic * 0.9)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest: []
+...

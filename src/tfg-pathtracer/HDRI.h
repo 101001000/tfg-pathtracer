@@ -2,9 +2,8 @@
 #define HDRI_H
 
 #include "Texture.h"
+#include "Sampling.h"
 #include <vector>
-
-
 
 class HDRI {
 
@@ -15,19 +14,22 @@ public:
 	float* cdf;
 	float radianceSum = 0;
 
-
 	HDRI() {
 		texture = Texture();
 	}
 
 	HDRI(Vector3 color) {
-		texture.data = new float[3];
-		texture.width = 1;
-		texture.height = 1;
+		texture.data = new float[1024 * 1024 * 3];
+		texture.width = 1024;
+		texture.height = 1024;
 		texture.USE_IMAGE = false;
-		texture.data[0] = color.x;
-		texture.data[1] = color.y;
-		texture.data[2] = color.z;
+
+		for (int i = 0; i < texture.width * texture.height; i++) {
+			texture.data[3 * i + 0] = color.x;
+			texture.data[3 * i + 1] = color.y;
+			texture.data[3 * i + 2] = color.z;
+		}
+
 		cdf = new float[texture.width * texture.height + 1];
 
 		generateCDF();
@@ -44,10 +46,54 @@ public:
 		cdf = new float[texture.width * texture.height + 1];	
 
 		generateCDF();
-
 	}
 
-	inline void generateCDF() {
+	__device__ __host__ inline void generateCDF2(){
+
+		for (int y = 0; y < texture.height; y++) {
+			for (int x = 0; x < texture.width; x++) {
+
+				float r = 0;
+
+				float u, v;
+
+				Vector3 sample = uniformSampleSphere((float)x/(float)texture.width, (float)y/(float)texture.height);
+
+				Texture::sphericalMapping(Vector3(), sample, 1, u, v);
+
+				r += texture.getValueBilinear(u, v).x;
+				r += texture.getValueBilinear(u, v).y;
+				r += texture.getValueBilinear(u, v).z;
+
+				radianceSum += r;
+			}
+		}	
+
+		for (int y = 0; y < texture.height; y++) {
+			for (int x = 0; x < texture.width; x++) {
+
+				float r = 0;
+
+				float u, v;
+
+				Vector3 sample = uniformSampleSphere((float)x / (float)texture.width, (float)y / (float)texture.height);
+
+				Texture::sphericalMapping(Vector3(), sample, 1, u, v);
+
+				r += texture.getValueBilinear(u, v).x;
+				r += texture.getValueBilinear(u, v).y;
+				r += texture.getValueBilinear(u, v).z;
+
+				r /= radianceSum;
+
+				cdf[y*texture.width + x + 1] = r + cdf[y * texture.width + x];
+			}
+		}
+	}
+
+	__device__ __host__ inline void generateCDF() {
+
+		radianceSum = 0;
 
 		cdf[0] = 0;
 
@@ -70,51 +116,61 @@ public:
 			r += texture.data[3 * i + 1];
 			r += texture.data[3 * i + 2];
 
+			r /= radianceSum;
+
 			cdf[i + 1] = r + cdf[i];
 		}
 	}
 
-	__device__ int binarySearch(float* arr, int value, int length) {
+	__device__ __host__ int binarySearch(float* arr, float value, int length) {
 
 		int from = 0;
 		int to = length - 1;
 
-		int m = (to - from) / 2;
+		while (to - from > 0) {
 
-		while (to - from > 1) {
+			int m = from + (to - from) / 2;
 
-			m = from + (to - from) / 2;
-
-			if (value >= arr[m] && value <= arr[m + 1])
-				return m;
-
-			if (value < arr[m]) {
-				to = m;
-			}
-			else {
-				from = m + 1;
-			}
+			if (value == arr[m]) return m;
+			if (value < arr[m])	to = m - 1;
+			if (value > arr[m]) from = m + 1;
 		}
 
-		return m;
+		return to;
 	}
 
-
-
-	__device__ inline float pdf(int x, int y) {
+	__device__ __host__ inline float pdf(int x, int y) {
 
 		Vector3 dv = texture.getValue(x, y);
 
-		return ((dv.x + dv.y + dv.z) / radianceSum) * (texture.width * texture.height * (1.0 / (2.0 * PI)));
+		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI);
 	}
 
-	__device__ inline Vector3 sample(float r1, float r2) {
+	__device__ __host__ inline Vector3 sample(float r1) {
+		
+		int count = binarySearch(cdf, r1, texture.width * texture.height);
 
-		float v = 0;
+		int wu = count % texture.width;
+		int wv = count / texture.width;
 
-		int count = binarySearch(cdf, r1*radianceSum, texture.width * texture.height);
+		return Vector3(wu, wv, count);
+	}
 
-		return Vector3(count%texture.width, (int)(count/texture.height), 0);
+	__device__ __host__ inline Vector3 sample2(float r1) {
+
+		int count = binarySearch(cdf, r1, texture.width * texture.height);
+
+		int wu = count % texture.width;
+		int wv = count / texture.width;
+
+		float u, v;
+
+		Vector3 sample = uniformSampleSphere((float)wu / (float)texture.width, (float)wv / (float)texture.height);
+
+		Texture::sphericalMapping(Vector3(), sample, 1, u, v);
+
+
+		return Vector3(u * texture.width, v * texture.height , count);
 	}
 };
 

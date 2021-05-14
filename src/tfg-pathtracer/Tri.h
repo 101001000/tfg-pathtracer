@@ -10,6 +10,7 @@ public:
 
 	Vector3 vertices[3];
     Vector3 uv[3];
+    Vector3 normals[3];
 
     int objectID;
 
@@ -94,10 +95,12 @@ public:
 
         // Operar aquí con vectores es ineficiente, mejor serparar u y v
         Vector3 nuv = uv[0] + (uv[1] - uv[0]) * u + (uv[2] - uv[0]) * v;
-
+        
         hit.t = t;
         hit.position = ray.origin + ray.direction * hit.t;
-        hit.normal = N;
+
+        // Interpolación de la normal para smooth shading
+        hit.normal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
         hit.valid = true;
         hit.type = 1;
         hit.u = nuv.x;

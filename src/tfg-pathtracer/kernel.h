@@ -33,6 +33,9 @@ struct HitData {
     Vector3 bitangent;
 };
 
+void printPdfMaterial(Material material, int samples);
+void printBRDFMaterial(Material material, int samples);
+void printHDRISampling(HDRI hdri, int samples);
 
 void renderCuda(Scene* scene);
 

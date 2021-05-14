@@ -129,8 +129,8 @@ public:
         u = ((u + xOffset) * xTile);
         v = ((v + yOffset) * yTile);
 
-        u = circle(u);
-        v = circle(v);
+        u = limitUV(u);
+        v = limitUV(v);
 
         float x = u * width;
         float y = v * height;
@@ -155,8 +155,6 @@ public:
     // Calcula las coordenadas UV para un punto en una esfera con cierto radio
 
     __host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
-        
-        u = 1 - u;
 
         float phi = u * 2 * PI;
         float theta = v * PI;
@@ -169,7 +167,6 @@ public:
         float a = sqrt(1 - py * py);
 
         return Vector3(a*px, py, a*pz);     
-
     }
 
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
@@ -195,10 +192,6 @@ public:
 
         if (u < 0) u += 1;
         if (v < 0) v += 1;
-
-        // Textures need to be flipped (?)
-        u = 1 - u;
-
     }
 };
 

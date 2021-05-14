@@ -21,6 +21,7 @@
 #define MAXBOUNCES 5
 
 #define USEBVH true
+#define HDRIIS true
 
 struct dev_Scene {
 
@@ -44,14 +45,16 @@ struct dev_Scene {
 
 };
 
-//TODO HACER ESTO CON MEMORIA DINÁMICA
+//TODO HACER ESTO CON MEMORIA DINÁMICA PARA ELIMINAR EL MÁXIMO DE 1920*1080
 
 __device__ float dev_buffer[1920 * 1080 * 4]; 
+
+// How many samples per pixels has been calculated. 
 __device__ unsigned int dev_samples[1920 * 1080];
 __device__ dev_Scene* dev_scene_g;
 __device__ curandState* d_rand_state_g;
 
-cudaStream_t stream1, stream2;
+cudaStream_t kernelStream, bufferStream;
 
 __device__ void createHitData(Material* material, HitData& hitdata, float u, float v, Vector3 N) {
 
@@ -86,7 +89,6 @@ __device__ void createHitData(Material* material, HitData& hitdata, float u, flo
     else {
         hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueBilinear(u, v).x;
     }
-
 
     hitdata.clearcoatGloss = material->clearcoatGloss;
     hitdata.clearcoat = material->clearcoat;
@@ -154,6 +156,7 @@ __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
     }
 
     if (USEBVH) {
+
         scene->bvh->transverse(ray, nearestHit);
 
     } else {
@@ -198,90 +201,61 @@ __device__ Vector3 directLight(Ray ray, HitData hitdata, dev_Scene* scene, Vecto
 
 }
 
-__device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData hitdata, float r1, float r2) {
-           
-    Vector3 light;
+// Sampling HDRI
+// The main idea is to get a random point of the HDRI, weighted by their importance and then get the direction from the center to that point as if that pixel
+// would be in a sphere of infinite radius.
+__device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData hitdata, float r1, float r2, float r3, float& pdf) {
 
-    Vector3 textCoordinate = scene->hdri->sample(r1, r2);
+    if (!HDRIIS) {
 
-    float nu = circle(1 - (textCoordinate.x / (float)scene->hdri->texture.width) - scene->hdri->texture.xOffset);
-    float nv = (textCoordinate.y / (float)scene->hdri->texture.height) - scene->hdri->texture.yOffset;
+        Vector3 newDir = uniformSampleSphere(r1, r2).normalized();
 
-    Vector3 newDir = Texture::reverseSphericalMapping(nu, nv).normalized();
+        float u, v;
 
-    //if (Vector3::dot(hitdata.normal, newDir) < 0) return Vector3();
+        Texture::sphericalMapping(Vector3(), -1 * newDir, 1, u, v);
 
-    Ray shadowRay(point + newDir * 0.01, newDir);
+        Ray shadowRay(point + newDir * 0.001, newDir);
 
-    Hit shadowHit = throwRay(shadowRay, scene);
+        Hit shadowHit = throwRay(shadowRay, scene);
 
-    //if (shadowHit.valid) return Vector3();
+        if (shadowHit.valid) return Vector3();
 
-    Vector3 hdriValue = scene->hdri->texture.getValue(textCoordinate.x, textCoordinate.y);
+        Vector3 hdriValue = scene->hdri->texture.getValueBilinear(u, v);
 
-    float hdriPdf = scene->hdri->pdf(textCoordinate.x, textCoordinate.y);
+        Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
 
-    //printf("Valor %f, PDF, %f\n", hdriValue.length(), hdriPdf);
+        return brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / (1.0 / (2.0 * PI));
+    }
+    else {
 
-    Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
+        Vector3 textCoordinate = scene->hdri->sample(r1);
 
-    float pdfDisney = DisneyPdf(ray, hitdata, newDir);
+        //float nu = limitUV((float)textCoordinate.x / (float)scene->hdri->texture.width) + ((r2 - 0.5) / (float)scene->hdri->texture.width);
+        //float nv = limitUV((float)textCoordinate.y / (float)scene->hdri->texture.height) + ((r3 - 0.5) / (float)scene->hdri->texture.height);
 
-    float misWeight = powerHeuristic(hdriPdf, pdfDisney);
+        float nu = limitUV((float)textCoordinate.x / (float)scene->hdri->texture.width);
+        float nv = limitUV((float)textCoordinate.y / (float)scene->hdri->texture.height);
 
-    if (hdriPdf <= 0) return Vector3();
+        Vector3 newDir = -1 * Texture::reverseSphericalMapping(nu, nv).normalized();
 
-    light += misWeight * brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / hdriPdf;
+        Ray shadowRay(point +  newDir * 0.001, newDir);
 
-    return light;
+        Hit shadowHit = throwRay(shadowRay, scene);
 
-    
-    /*
+        if (shadowHit.valid) return Vector3();
 
-    Vector3 light;
+        float u, v;
 
-    Vector3 textCoordinate = scene->hdri->sample(r1, r2);
+        Texture::sphericalMapping(Vector3(), -1 * newDir, 1, u, v);
 
-    float nu = textCoordinate.x / (float)scene->hdri->texture.width;
-    float nv = textCoordinate.y / (float)scene->hdri->texture.height;
+        Vector3 hdriValue = scene->hdri->texture.getValueBilinear(u, v);
 
-    Vector3 newDir = Texture::reverseSphericalMapping(nu, nv).normalized();
+        Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
 
-    newDir = UniformSampleSphere(r1, r2);
+        pdf = scene->hdri->pdf(textCoordinate.x, textCoordinate.y);
 
-    if (Vector3::dot(hitdata.normal, newDir) < 0) newDir *= -1;
-
-    Ray shadowRay(point + newDir * 0.001, newDir);
-
-    Hit shadowHit = throwRay(shadowRay, scene);
-
-    //if (shadowHit.valid) return Vector3();
-
-    Vector3 hdriValue = scene->hdri->texture.getValue(textCoordinate.x, textCoordinate.y);
-
-    float u, v;
-
-    Texture::sphericalMapping(Vector3(), -1*newDir, 1, u, v);
-
-    hdriValue = scene->hdri->texture.getValueBilinear(circle(1-u), v);
-
-    float hdriPdf = scene->hdri->pdf(textCoordinate.x, textCoordinate.y);
-
-    //hdriPdf = abs(Vector3::dot(newDir, hitdata.normal)) / (PI);
-
-    Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
-
-    float pdfDisney = DisneyPdf(ray, hitdata, newDir);
-
-    float misWeight = 1;// powerHeuristic(hdriPdf, pdfDisney);
-
-    //hdriPdf = (scene->hdri->texture.width * scene->hdri->texture.height);
-
-    //printf("Valor %f, PDF, %f\n", hdriValue.length(), hdriPdf);
-
-    light += misWeight * brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / (1.0);
-
-    return light;*/
+        return brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / pdf;
+    }
 }
 
 __global__ void neeRenderKernel(){
@@ -293,114 +267,130 @@ __global__ void neeRenderKernel(){
 
     if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
 
+    // The index for the pixel. Maybe I could look for another indexing function which preserves better the spaciality
     int idx = (scene->camera->xRes * y + x);
 
     curandState local_rand_state = d_rand_state_g[idx];
 
-    for (int s = 0; s < 1; s++) {
+    // Relative coordinates for the point where the first ray will be launched
+    float dx = scene->camera->position.x + ((float)x) / ((float)scene->camera->xRes) * scene->camera->sensorWidth * 0.001;
+    float dy = scene->camera->position.y + ((float)y) / ((float)scene->camera->yRes) * scene->camera->sensorHeight * 0.001;
 
-        float dx = scene->camera->position.x + ((float)x) / ((float)scene->camera->xRes) * scene->camera->sensorWidth * 0.001;
-        float dy = scene->camera->position.y + ((float)y) / ((float)scene->camera->yRes) * scene->camera->sensorHeight * 0.001;
-        
-        float odx = (-scene->camera->sensorWidth / 2) * 0.001 + dx;
-        float ody = (-scene->camera->sensorHeight / 2) * 0.001 + dy;
+    // Absolute coordinates for the point where the first ray will be launched
+    float odx = (-scene->camera->sensorWidth / 2) * 0.001 + dx;
+    float ody = (-scene->camera->sensorHeight / 2) * 0.001 + dy;
 
-        float rx = (1 / (float)scene->camera->xRes) * (curand_uniform(&local_rand_state) - 0.5) * scene->camera->sensorWidth * 0.001;
-        float ry = (1 / (float)scene->camera->yRes) * (curand_uniform(&local_rand_state) - 0.5) * scene->camera->sensorHeight * 0.001;
+    // Random part of the sampling offset so we get antialasing
+    float rx = (1.0 / (float)scene->camera->xRes) * (curand_uniform(&local_rand_state) - 0.5) * scene->camera->sensorWidth * 0.001;
+    float ry = (1.0 / (float)scene->camera->yRes) * (curand_uniform(&local_rand_state) - 0.5) * scene->camera->sensorHeight * 0.001;
 
-        Ray ray = Ray(scene->camera->position, Vector3(odx + rx, ody + ry, scene->camera->position.z + scene->camera->focalLength * 0.001) - scene->camera->position);
+    // The initial ray is created from the camera position to the point calculated before. No rotation is taken into account.
+    Ray ray = Ray(scene->camera->position, Vector3(odx + rx, ody + ry, scene->camera->position.z + scene->camera->focalLength * 0.001) - scene->camera->position);
 
-        Vector3 light = Vector3(0,0,0);
-        Vector3 reduction = Vector3(1, 1, 1);
+    float diameter = 0.001 * ((scene->camera->focalLength) / scene->camera->aperture);
 
-        float oldPdf = 1;
+    float l = (scene->camera->focusDistance + scene->camera->focalLength * 0.001);
 
-        for (int i = 0; i < MAXBOUNCES; i++) {
+    Vector3 focusPoint = ray.origin + ray.direction * (l/(ray.direction.z));
 
-            int materialID = 0;
-            HitData hitdata;
+    float ix;
+    float iy;
 
-            Hit nearestHit = throwRay(ray, scene);
-            Vector3 cN = nearestHit.normal;
+    uniformCircleSampling(curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), ix, iy);
 
-            // FIX BACKFACE NORMALS
-            if (Vector3::dot(cN, ray.direction) > 0) cN *= -1;
+    Vector3 or = scene->camera->position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
 
-            // SAMPLE ENVIRONMENT
-            
-            if (!nearestHit.valid) {
+    ray = Ray(or, focusPoint - or);
 
-                float misWeight = 1;
 
-                float u, v;
+    // Accumulated radiance
+    Vector3 light = Vector3(0, 0, 0);
 
-                Texture::sphericalMapping(Vector3(), -1 * ray.direction, 1, u, v);
+    // How much light is lost in the path
+    Vector3 reduction = Vector3(1, 1, 1);
 
-                Vector3 hdriValue = scene->hdri->texture.getValueBilinear(circle(1 - u), v);
+    // A ray can bounce a max of MAXBOUNCES. This could be changed with russian roulette path termination method, and that would make
+    // the renderer unbiased
+    for (int i = 0; i < MAXBOUNCES; i++) {
 
-                if (i > 0) {
-                   
-                    float hdriPdf = scene->hdri->pdf(u * scene->hdri->texture.width, v * scene->hdri->texture.height);
+        int materialID = 0;
 
-                    misWeight = powerHeuristic(oldPdf, hdriPdf);
-                }               
+        HitData hitdata;
 
-                light += misWeight * hdriValue * reduction;
+        Hit nearestHit = throwRay(ray, scene);
+        Vector3 cN = nearestHit.normal;
 
-                break;
-            }            
+        // FIX BACKFACE NORMALS
+        if (Vector3::dot(cN, ray.direction) > 0) cN *= -1;
 
-            if (nearestHit.type == 0) materialID = scene->spheres[nearestHit.objectID].materialID;
-            if (nearestHit.type == 1) materialID = scene->meshObjects[nearestHit.objectID].materialID;
 
-            Material* material = &scene->materials[materialID];
-
-            createHitData(material, hitdata, nearestHit.u, nearestHit.v, cN);
-
-            float r1 = curand_uniform(&local_rand_state);
-            float r2 = curand_uniform(&local_rand_state);
-            float r3 = curand_uniform(&local_rand_state);
-            float r4 = curand_uniform(&local_rand_state);
-            float r5 = curand_uniform(&local_rand_state);
-
-            Vector3 newDir;
-
-            light += hdriLight(ray, scene, nearestHit.position, hitdata, r4, r5);
-
-            newDir = DisneySample(ray, hitdata, r1, r2, r3);
-
-            Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
-
-            float pdfDisney = DisneyPdf(ray, hitdata, newDir);
-
-            oldPdf = pdfDisney;
-
-            reduction *= (brdfDisney * abs(Vector3::dot(newDir, cN))) / pdfDisney;
-
-            ray = Ray(nearestHit.position + newDir * 0.001, newDir);          
-        } 
-
-        light = clamp(light, 0, 3);
-
-        unsigned int sa = dev_samples[idx];
-
-        if (sa > 0) {
-            dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
-            dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
-            dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+        if (!nearestHit.valid) {
+            float u, v;
+            Texture::sphericalMapping(Vector3(), -1 * ray.direction, 1, u, v);
+            light += scene->hdri->texture.getValueBilinear(u, v) * reduction;
+            break;
         }
 
-        dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
-        dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
-        dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
+        if (nearestHit.type == 0) materialID = scene->spheres[nearestHit.objectID].materialID;
+        if (nearestHit.type == 1) materialID = scene->meshObjects[nearestHit.objectID].materialID;
 
-        dev_samples[idx]++;
-    } 
+        Material* material = &scene->materials[materialID];
+
+        createHitData(material, hitdata, nearestHit.u, nearestHit.v, cN);
+
+        float r1 = curand_uniform(&local_rand_state);
+        float r2 = curand_uniform(&local_rand_state);
+        float r3 = curand_uniform(&local_rand_state);
+        float r4 = curand_uniform(&local_rand_state);
+        float r5 = curand_uniform(&local_rand_state);
+        float r6 = curand_uniform(&local_rand_state);
+        float r7 = curand_uniform(&local_rand_state);
+
+
+        Vector3 brdfDir = DisneySample(ray, hitdata, r3, r4, r5);;
+        Vector3 brdfDisney = DisneyEval(ray, hitdata, brdfDir);
+
+        float brdfPdf = DisneyPdf(ray, hitdata, brdfDir);
+
+        float hdriPdf;
+
+        Vector3 directLight = hdriLight(ray, scene, nearestHit.position, hitdata, r1, r6, r7, hdriPdf);
+
+        float w1 = hdriPdf / (hdriPdf + brdfPdf);
+        float w2 = brdfPdf / (hdriPdf + brdfPdf);
+
+        //w1 = 1;
+
+        light += w1 * reduction * directLight;
+         
+        if (brdfPdf <= 0) break;
+
+        reduction *= (brdfDisney * abs(Vector3::dot(brdfDir, cN))) / brdfPdf;
+
+        ray = Ray(nearestHit.position + brdfDir * 0.001, brdfDir);
+    }
+
+    light = clamp(light, 0, 3);
+
+    unsigned int sa = dev_samples[idx];
+
+    if (sa > 0) {
+        dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
+        dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
+        dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+    }
+
+    dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
+    dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
+    dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
+
+    dev_samples[idx]++;
 
     d_rand_state_g[idx] = local_rand_state;
-
 }
 
+
+// TODO: BUSCAR FORMA DE SIMPLIFICAR EL SETUP
 void pointLightsSetup(Scene* scene, dev_Scene* dev_scene) {
 
     unsigned int pointLightCount = scene->pointLightCount();
@@ -444,7 +434,6 @@ void spheresSetup(Scene* scene, dev_Scene* dev_scene) {
 
     cudaMemcpy(&(dev_scene->spheres), &(dev_spheres), sizeof(Sphere*), cudaMemcpyHostToDevice);
 }
-
 void texturesSetup(Scene* scene, dev_Scene* dev_scene) {
 
     unsigned int textureCount = scene->textureCount();
@@ -490,7 +479,6 @@ void hdriSetup(Scene* scene, dev_Scene* dev_scene) {
     cudaMemcpy(dev_data, hdri->texture.data, sizeof(float) * hdri->texture.height * hdri->texture.width * 3, cudaMemcpyHostToDevice);
     cudaMemcpy(dev_cdf, hdri->cdf, sizeof(float) * hdri->texture.height * hdri->texture.width, cudaMemcpyHostToDevice);
 
-
     cudaMemcpy(&(dev_hdri->texture.data), &(dev_data), sizeof(float*), cudaMemcpyHostToDevice);
     cudaMemcpy(&(dev_hdri->cdf), &(dev_cdf), sizeof(float*), cudaMemcpyHostToDevice);
     cudaMemcpy(&(dev_scene->hdri), &(dev_hdri), sizeof(float*), cudaMemcpyHostToDevice);
@@ -500,7 +488,7 @@ cudaError_t renderSetup(Scene* scene) {
 
     printf("Initializing rendering... \n");
 
-    cudaStreamCreate(&stream1);
+    cudaStreamCreate(&kernelStream);
 
     unsigned int meshObjectCount = scene->meshObjectCount();
     unsigned int triCount = scene->triCount();
@@ -589,9 +577,9 @@ cudaError_t renderSetup(Scene* scene) {
     dim3 threads(tx, ty);
 
     // Launch a kernel on the GPU with one thread for each element.
-    setupKernel << <blocks, threads, 0, stream1 >> >();
+    setupKernel << <blocks, threads, 0, kernelStream >> >();
 
-    cudaStatus = cudaStreamSynchronize(stream1);
+    cudaStatus = cudaStreamSynchronize(kernelStream);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
         goto Error;
@@ -601,6 +589,8 @@ Error:
 
     return cudaStatus;
 }
+
+//TODO quitar variables globales pasando por parámetro el puntero.
 
 void renderCuda(Scene* scene) {
 
@@ -612,9 +602,9 @@ void renderCuda(Scene* scene) {
 
     while (1) {
 
-        neeRenderKernel << <blocks, threads, 0, stream1 >> > ();
+        neeRenderKernel << <blocks, threads, 0, kernelStream >> > ();
 
-        cudaError_t cudaStatus = cudaStreamSynchronize(stream1);
+        cudaError_t cudaStatus = cudaStreamSynchronize(kernelStream);
         if (cudaStatus != cudaSuccess) {
             fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
         }
@@ -624,11 +614,11 @@ void renderCuda(Scene* scene) {
 
 cudaError_t getBuffer(float* buffer, int size) {
 
-    cudaStreamCreate(&stream2);
+    cudaStreamCreate(&bufferStream);
 
     std::cout << "getting Buffer" << std::endl;
 
-    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buffer, dev_buffer, size * sizeof(float), 0, cudaMemcpyDeviceToHost, stream2);
+    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buffer, dev_buffer, size * sizeof(float), 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
     }
@@ -640,11 +630,11 @@ int getSamples() {
 
     int buff[5];
 
-    cudaStreamCreate(&stream2);
+    cudaStreamCreate(&bufferStream);
 
     std::cout << "getting Buffer" << std::endl;
 
-    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buff, dev_samples, sizeof(int), 0, cudaMemcpyDeviceToHost, stream2);
+    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buff, dev_samples, sizeof(int), 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
     }
@@ -652,3 +642,106 @@ int getSamples() {
     return buff[0];
 }
 
+__host__ void printHDRISampling(HDRI hdri, int samples) {
+
+    for (int i = 0; i < samples; i++) {
+        
+        float r = ((float)i) / ((float)samples);
+
+        Vector3 sample = hdri.sample(r);
+
+        printf("%d, %d,", (int)sample.x, (int)sample.y);
+    }
+
+    float sum = 0;
+
+    for (int i = 0; i < 1024; i++) {
+        for (int j = 0; j < 2048; j++) {
+            sum += hdri.pdf(j, i);
+        }
+    }
+
+    printf("PDF TOTAL %f", sum);
+}
+
+__host__ void printBRDFMaterial(Material material, int samples) {
+
+    HitData hitdata;
+
+    hitdata.albedo = material.albedo;
+    hitdata.emission = material.emission;
+    hitdata.roughness = material.roughness;
+    hitdata.metallic = material.metallic;
+    hitdata.clearcoatGloss = material.clearcoatGloss;
+    hitdata.clearcoat = material.clearcoat;
+    hitdata.anisotropic = material.anisotropic;
+    hitdata.eta = material.eta;
+    hitdata.transmission = material.transmission;
+    hitdata.specular = material.specular;
+    hitdata.specularTint = material.specularTint;
+    hitdata.sheenTint = material.sheenTint;
+    hitdata.subsurface = material.subsurface;
+    hitdata.sheen = material.sheen;
+
+    hitdata.normal = Vector3(0, 1, 0);
+    
+    createBasis(hitdata.normal, hitdata.tangent, hitdata.bitangent);
+
+    Vector3 inLight = Vector3(1, -1, 0).normalized();
+
+    for (int i = 0; i < sqrt(samples); i++) {
+        
+        for (int j = 0; j < sqrt(samples); j++) {
+
+            float cosPhi = 2.0f * ((float)i / (float)sqrt(samples)) - 1.0f;
+            float sinPhi = std::sqrt(1.0f - cosPhi * cosPhi);
+            float theta = 2 * PI * ((float)j / (float)sqrt(samples));
+
+            float x = sinPhi * std::sinf(theta);
+            float y = cosPhi;
+            float z = sinPhi * std::cosf(theta);
+
+            Vector3 rndVector = Vector3(x, y, z).normalized();
+
+            Ray r = Ray(Vector3(0), inLight);
+
+            float brdf = DisneyEval(r, hitdata, rndVector).length();
+
+            printf("%f,%f,%f,%f;", rndVector.x, rndVector.y, rndVector.z, brdf);
+        }
+    }
+}
+
+/*
+__host__ void printPdfMaterial(Material material) {
+
+    int samples = 1000;
+
+    HitData hitdata;
+
+    hitdata.albedo = material.albedo;
+    hitdata.roughness = material.roughness;
+    hitdata.metallic = material.metallic;
+    hitdata.clearcoatGloss = material.clearcoatGloss;
+    hitdata.clearcoat = material.clearcoat;
+    hitdata.anisotropic = material.anisotropic;
+    hitdata.eta = material.eta;
+    hitdata.transmission = material.transmission;
+    hitdata.specular = material.specular;
+    hitdata.specularTint = material.specularTint;
+    hitdata.sheenTint = material.sheenTint;
+    hitdata.subsurface = material.subsurface;
+    hitdata.sheen = material.sheen;
+
+    Vector3 inLight = Vector3(1, -1, 0).normalized();
+
+    for (int i = 0; i < samples; i++) {
+
+        Vector3 rndVector = Vector3(rand(), rand(), rand()).normalized();
+
+        float pdf = DisneyPdf(Ray(Vector3(), inLight), hitdata, rndVector);
+
+        printf("%f, %f, %f, %f\n", rndVector.x, rndVector.y, rndVector.z, pdf);
+    }
+}
+*/

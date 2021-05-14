@@ -5,14 +5,15 @@ BMP de 32 bits
 
 Investigar por qué se flipea el HDRI y por qué las texturas necesitan un mapping con 1 - u
 
+LOS PDF TIENEN COMO mÁXIMO 1
+
+Sampleo HDRI de manera esférica
 
 Polygon trianglulation
 
-Qué hago con el stack size en el node transversal por dieu
-
+BVH sin profundidad fija (?)
 
 Construcción de BVH con códigos de morton
-
 
 Hitdata no tiene point?
 
@@ -20,7 +21,5 @@ Comprobar colisiones en directlight
 
 Añadir luces.
 
-	NEE
 
-		Multiple importance sampling
 

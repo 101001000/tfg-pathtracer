@@ -28,7 +28,6 @@ public:
 
 public:
 
-
 	Scene() {
 
 	}
@@ -142,12 +141,15 @@ public:
 	}
 
 	BVH* buildBVH() {
+
 		BVH* bvh = new BVH();
+
 		int* triIndices = new int[triCount()];
 
 		bvh->triIndices = triIndices;
 
-		bvh->build(0, &tris, &tris);
+		bvh->build(&tris);
+
 		return bvh;
 	}
 

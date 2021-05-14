@@ -11,6 +11,8 @@ public:
 	float focalLength; //mm
 	float sensorWidth; //mm
 	float sensorHeight; //mm
+	float aperture; // fStops
+	float focusDistance = 1000000; //inf m
 
 public:
 
@@ -22,6 +24,7 @@ public:
 		focalLength = 35;
 		sensorWidth = 35;
 		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
+		aperture = 2.8;
 	}
 
 	__host__ __device__ Camera(unsigned int _xRes, unsigned int _yRes) {
@@ -30,6 +33,7 @@ public:
 		focalLength = 35;
 		sensorWidth = 35;
 		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
+		aperture = 2.8;
 	}
 
 

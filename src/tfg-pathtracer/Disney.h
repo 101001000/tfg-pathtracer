@@ -9,44 +9,24 @@
 
 #include "cuda_runtime.h"
 
+// Adaptación del shader de disney de knightcrawler25, derivar en un futuro para aplicar optimizaciones.
+// https://github.com/knightcrawler25/GLSL-PathTracer/blob/master/src/shaders/common/disney.glsl
 
-__device__ void createBasis(Vector3 normal, Vector3 &tangent, Vector3 &bitangent) {
+// Limitado solo a BRDF sin BSDF
 
-
+__device__ __host__ void createBasis(Vector3 normal, Vector3 &tangent, Vector3 &bitangent) {
     Vector3 UpVector = abs(normal.z) < 0.999 ? Vector3(0, 0, 1) : Vector3(1, 0, 0);
     tangent = (Vector3::cross(UpVector, normal)).normalized();
     bitangent = Vector3::cross(normal, tangent);
 }
 
-//----------------------------------------------------------------------
-__device__ Vector3 ImportanceSampleGGX(float rgh, float r1, float r2)
-//----------------------------------------------------------------------
-{
-    float a = maxf(0.001, rgh);
-
-    float phi = r1 * PI * 2;
-
-    float cosTheta = sqrt((1.0 - r2) / (1.0 + (a * a - 1.0) * r2));
-    float sinTheta = clamp(sqrt(1.0 - (cosTheta * cosTheta)), 0.0, 1.0);
-    float sinPhi = sin(phi);
-    float cosPhi = cos(phi);
-
-    return Vector3(sinTheta * cosPhi, sinTheta * sinPhi, cosTheta);
-}
-
-//-----------------------------------------------------------------------
-__device__ float SchlickFresnel(float u)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float SchlickFresnel(float u) {
     float m = clamp(1.0 - u, 0.0, 1.0);
     float m2 = m * m;
-    return m2 * m2 * m; // pow(m,5)
+    return m2 * m2 * m;
 }
 
-//-----------------------------------------------------------------------
-__device__ float DielectricFresnel(float cos_theta_i, float eta)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float DielectricFresnel(float cos_theta_i, float eta) {
     float sinThetaTSq = eta * eta * (1.0f - cos_theta_i * cos_theta_i);
 
     // Total internal reflection
@@ -61,10 +41,7 @@ __device__ float DielectricFresnel(float cos_theta_i, float eta)
     return 0.5f * (rs * rs + rp * rp);
 }
 
-//-----------------------------------------------------------------------
-__device__ float GTR1(float NDotH, float a)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float GTR1(float NDotH, float a) {
     if (a >= 1.0)
         return (1.0 / PI);
     float a2 = a * a;
@@ -72,82 +49,39 @@ __device__ float GTR1(float NDotH, float a)
     return (a2 - 1.0) / (PI * log(a2) * t);
 }
 
-//-----------------------------------------------------------------------
-__device__ float GTR2(float NDotH, float a)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float GTR2(float NDotH, float a) {
     float a2 = a * a;
     float t = 1.0 + (a2 - 1.0) * NDotH * NDotH;
     return a2 / (PI * t * t);
 }
 
-//-----------------------------------------------------------------------
-__device__ float GTR2_aniso(float NDotH, float HDotX, float HDotY, float ax, float ay)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float GTR2_aniso(float NDotH, float HDotX, float HDotY, float ax, float ay) {
     float a = HDotX / ax;
     float b = HDotY / ay;
     float c = a * a + b * b + NDotH * NDotH;
     return 1.0 / (PI * ax * ay * c * c);
 }
 
-//-----------------------------------------------------------------------
-__device__ float SmithG_GGX(float NDotV, float alphaG)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float SmithG_GGX(float NDotV, float alphaG) {
     float a = alphaG * alphaG;
     float b = NDotV * NDotV;
     return 1.0 / (NDotV + sqrt(a + b - a * b));
 }
 
-//-----------------------------------------------------------------------
-__device__ float SmithG_GGX_aniso(float NDotV, float VDotX, float VDotY, float ax, float ay)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float SmithG_GGX_aniso(float NDotV, float VDotX, float VDotY, float ax, float ay) {
     float a = VDotX * ax;
     float b = VDotY * ay;
     float c = NDotV;
     return 1.0 / (NDotV + sqrt(a * a + b * b + c * c));
 }
 
-//-----------------------------------------------------------------------
-__device__ Vector3 CosineSampleHemisphere(float u1, float u2)
-//-----------------------------------------------------------------------
-{
-    Vector3 dir;
-    float r = sqrt(u1);
-    float phi = 2.0 * PI * u2;
-    dir.x = r * cos(phi);
-    dir.y = r * sin(phi);
-    dir.z = sqrt(maxf(0.0, 1.0 - dir.x * dir.x - dir.y * dir.y));
-
-    return dir;
-}
-
-//-----------------------------------------------------------------------
-__device__ Vector3 UniformSampleSphere(float u1, float u2)
-//-----------------------------------------------------------------------
-{
-    float z = 1.0 - 2.0 * u1;
-    float r = sqrt(maxf(0.f, 1.0 - z * z));
-    float phi = 2.0 * PI * u2;
-    float x = r * cos(phi);
-    float y = r * sin(phi);
-
-    return Vector3(x, y, z);
-}
-
-
-//-----------------------------------------------------------------------
-__device__ float powerHeuristic(float a, float b)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ float powerHeuristic(float a, float b) {
     float t = a * a;
     return t / (b * b + t);
 }
 
 
-__device__ float DisneyPdf(Ray ray, HitData& hitdata, Vector3 L) {
+__device__ __host__ float DisneyPdf(Ray ray, HitData& hitdata, Vector3 L) {
 
     Vector3 N = hitdata.normal;
     Vector3 V = -1 * ray.direction;
@@ -185,7 +119,7 @@ __device__ float DisneyPdf(Ray ray, HitData& hitdata, Vector3 L) {
 }
 
 
-__device__ Vector3 DisneySample(Ray ray, HitData& hitdata, float r1, float r2, float r3) {
+__device__ __host__ Vector3 DisneySample(Ray ray, HitData& hitdata, float r1, float r2, float r3) {
 
     Vector3 N = hitdata.normal;
     Vector3 V = -1 * ray.direction;
@@ -207,14 +141,9 @@ __device__ Vector3 DisneySample(Ray ray, HitData& hitdata, float r1, float r2, f
         dir = reflect(-1 * V, H);
     }
     return dir;
-
 }
 
-
-//-----------------------------------------------------------------------
-__device__ Vector3 DisneyEval(Ray ray, HitData& hitdata, Vector3 L)
-//-----------------------------------------------------------------------
-{
+__device__ __host__ Vector3 DisneyEval(Ray ray, HitData& hitdata, Vector3 L) {
     Vector3 V = -1 * ray.direction;
     Vector3 H;
 
