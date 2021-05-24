@@ -51,10 +51,16 @@ __device__ float dev_buffer[1920 * 1080 * 4];
 
 // How many samples per pixels has been calculated. 
 __device__ unsigned int dev_samples[1920 * 1080];
+__device__ unsigned int dev_pathcount[1920 * 1080];
 __device__ dev_Scene* dev_scene_g;
 __device__ curandState* d_rand_state_g;
 
 cudaStream_t kernelStream, bufferStream;
+
+long textureMemory = 0;
+long geometryMemory = 0;
+
+
 
 __device__ void createHitData(Material* material, HitData& hitdata, float u, float v, Vector3 N) {
 
@@ -116,6 +122,7 @@ __global__ void setupKernel() {
     if ((x >= dev_scene_g->camera->xRes) || (y >= dev_scene_g->camera->yRes)) return;
 
     dev_samples[idx] = 0;
+    dev_pathcount[idx] = 0;
 
     dev_buffer[4 * idx + 0] = 0;
     dev_buffer[4 * idx + 1] = 0;
@@ -139,8 +146,7 @@ __global__ void setupKernel() {
 __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
 
     Hit nearestHit = Hit();
-
-    
+        
     for (int j = 0; j < scene->sphereCount; j++) {
 
         Hit hit = Hit();
@@ -270,6 +276,11 @@ __global__ void neeRenderKernel(){
     // The index for the pixel. Maybe I could look for another indexing function which preserves better the spaciality
     int idx = (scene->camera->xRes * y + x);
 
+    float ix;
+    float iy;
+
+    unsigned int sa = dev_samples[idx];
+
     curandState local_rand_state = d_rand_state_g[idx];
 
     // Relative coordinates for the point where the first ray will be launched
@@ -293,15 +304,11 @@ __global__ void neeRenderKernel(){
 
     Vector3 focusPoint = ray.origin + ray.direction * (l/(ray.direction.z));
 
-    float ix;
-    float iy;
-
     uniformCircleSampling(curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), ix, iy);
 
     Vector3 or = scene->camera->position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
 
     ray = Ray(or, focusPoint - or);
-
 
     // Accumulated radiance
     Vector3 light = Vector3(0, 0, 0);
@@ -311,7 +318,10 @@ __global__ void neeRenderKernel(){
 
     // A ray can bounce a max of MAXBOUNCES. This could be changed with russian roulette path termination method, and that would make
     // the renderer unbiased
-    for (int i = 0; i < MAXBOUNCES; i++) {
+
+    int i = 0;
+
+    for (i = 0; i < MAXBOUNCES; i++) {
 
         int materialID = 0;
 
@@ -322,7 +332,6 @@ __global__ void neeRenderKernel(){
 
         // FIX BACKFACE NORMALS
         if (Vector3::dot(cN, ray.direction) > 0) cN *= -1;
-
 
         if (!nearestHit.valid) {
             float u, v;
@@ -359,8 +368,6 @@ __global__ void neeRenderKernel(){
         float w1 = hdriPdf / (hdriPdf + brdfPdf);
         float w2 = brdfPdf / (hdriPdf + brdfPdf);
 
-        //w1 = 1;
-
         light += w1 * reduction * directLight;
          
         if (brdfPdf <= 0) break;
@@ -370,9 +377,10 @@ __global__ void neeRenderKernel(){
         ray = Ray(nearestHit.position + brdfDir * 0.001, brdfDir);
     }
 
+    dev_pathcount[idx] += i;
+
     light = clamp(light, 0, 3);
 
-    unsigned int sa = dev_samples[idx];
 
     if (sa > 0) {
         dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
@@ -445,6 +453,7 @@ void texturesSetup(Scene* scene, dev_Scene* dev_scene) {
     cudaMemcpy(&dev_scene->textureCount, &textureCount, sizeof(unsigned int), cudaMemcpyHostToDevice);
 
     cudaMalloc((void**)&dev_textures, sizeof(Texture) * textureCount);
+    textureMemory += sizeof(Texture) * textureCount;
 
     cudaMemcpy(dev_textures, textures, sizeof(Texture) * textureCount, cudaMemcpyHostToDevice);
 
@@ -453,6 +462,7 @@ void texturesSetup(Scene* scene, dev_Scene* dev_scene) {
         float* textureData;
 
         cudaMalloc((void**)&textureData, sizeof(float) * textures[i].width * textures[i].height * 3);
+        textureMemory += sizeof(float) * textures[i].width * textures[i].height * 3;
 
         cudaMemcpy(textureData, textures[i].data, sizeof(float) * textures[i].width * textures[i].height * 3, cudaMemcpyHostToDevice);
         cudaMemcpy(&(dev_textures[i].data), &textureData, sizeof(float*), cudaMemcpyHostToDevice);
@@ -474,6 +484,8 @@ void hdriSetup(Scene* scene, dev_Scene* dev_scene) {
     cudaMalloc((void**)&dev_hdri, sizeof(HDRI));
     cudaMalloc((void**)&dev_data, sizeof(float) * hdri->texture.height * hdri->texture.width * 3);
     cudaMalloc((void**)&dev_cdf, sizeof(float) * hdri->texture.height * hdri->texture.width);
+
+    textureMemory += sizeof(HDRI) + sizeof(float) * hdri->texture.height * hdri->texture.width * 4;
 
     cudaMemcpy(dev_hdri, hdri, sizeof(HDRI), cudaMemcpyHostToDevice);
     cudaMemcpy(dev_data, hdri->texture.data, sizeof(float) * hdri->texture.height * hdri->texture.width * 3, cudaMemcpyHostToDevice);
@@ -515,12 +527,10 @@ cudaError_t renderSetup(Scene* scene) {
     curandState* d_rand_state;
     cudaMalloc((void**)&d_rand_state, camera->xRes * camera->yRes * sizeof(curandState));
 
-
     cudaMemcpy(&dev_scene->meshObjectCount, &meshObjectCount, sizeof(unsigned int), cudaMemcpyHostToDevice);
     cudaMemcpy(&dev_scene->triCount, &triCount, sizeof(unsigned int), cudaMemcpyHostToDevice);
 
-
-    std::cout << "Copying..." << std::endl;
+    printf("Copying data to device\n");
 
     // Choose which GPU to run on, change this on a multi-GPU system.
     cudaStatus = cudaSetDevice(0);
@@ -532,15 +542,13 @@ cudaError_t renderSetup(Scene* scene) {
     cudaStatus = cudaMalloc((void**)&dev_bvh, sizeof(BVH));
     cudaStatus = cudaMalloc((void**)&dev_triIndices, sizeof(int) * triCount);
 
-    printf("Memory allocated... \n");
+    geometryMemory += sizeof(MeshObject) * meshObjectCount + sizeof(Tri) * triCount + sizeof(BVH) + sizeof(int) * triCount;
 
     cudaStatus = cudaMemcpy(dev_meshObjects, meshObjects, sizeof(MeshObject) * meshObjectCount, cudaMemcpyHostToDevice);
     cudaStatus = cudaMemcpy(dev_camera, camera, sizeof(Camera), cudaMemcpyHostToDevice);
     cudaStatus = cudaMemcpy(dev_tris, tris, sizeof(Tri) * triCount, cudaMemcpyHostToDevice);
     cudaStatus = cudaMemcpy(dev_bvh, bvh, sizeof(BVH), cudaMemcpyHostToDevice);
     cudaStatus = cudaMemcpy(dev_triIndices, bvh->triIndices, sizeof(int) * triCount, cudaMemcpyHostToDevice);
-
-    printf("Memory copied... \n");
 
     for (int i = 0; i < meshObjectCount; i++) {
         cudaMemcpy(&(dev_meshObjects[i].tris), &dev_tris, sizeof(Tri*), cudaMemcpyHostToDevice);
@@ -559,7 +567,7 @@ cudaError_t renderSetup(Scene* scene) {
     cudaStatus = cudaMemcpyToSymbol(dev_scene_g, &dev_scene, sizeof(dev_Scene*));
     cudaStatus = cudaMemcpyToSymbol(d_rand_state_g, &d_rand_state, sizeof(curandState*));
 
-    printf("pointers binded... \n");
+    printf("%dMB of geometry data copied\n", (geometryMemory / (1024 * 1024)));
 
     pointLightsSetup(scene, dev_scene);
     materialsSetup(scene, dev_scene);
@@ -567,8 +575,7 @@ cudaError_t renderSetup(Scene* scene) {
     texturesSetup(scene, dev_scene);
     hdriSetup(scene, dev_scene);
 
-    std::cout << "Copied" << std::endl;
-    std::cout << "Running..." << std::endl;
+    printf("%dMB of texture data copied\n", (textureMemory / (1024 * 1024)));
 
     int tx = THREADSIZE;
     int ty = THREADSIZE;
@@ -612,13 +619,16 @@ void renderCuda(Scene* scene) {
 
 }
 
-cudaError_t getBuffer(float* buffer, int size) {
+cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
 
     cudaStreamCreate(&bufferStream);
 
-    std::cout << "getting Buffer" << std::endl;
+    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_buffer, size * sizeof(float) * 4, 0, cudaMemcpyDeviceToHost, bufferStream);
+    if (cudaStatus != cudaSuccess) {
+        fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
+    }
 
-    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buffer, dev_buffer, size * sizeof(float), 0, cudaMemcpyDeviceToHost, bufferStream);
+    cudaStatus = cudaMemcpyFromSymbolAsync(pathcountBuffer, dev_pathcount, size * sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
     }
@@ -632,9 +642,7 @@ int getSamples() {
 
     cudaStreamCreate(&bufferStream);
 
-    std::cout << "getting Buffer" << std::endl;
-
-    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buff, dev_samples, sizeof(int), 0, cudaMemcpyDeviceToHost, bufferStream);
+    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buff, dev_samples, sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
     }

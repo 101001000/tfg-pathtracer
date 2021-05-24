@@ -399,7 +399,6 @@ void applysRGB(float* pixels, int width, int height) {
 		pixels[i] = pow(pixels[i], 1.0 / 2.2);
 }
 
-
 float gaussianDist(float x, float sigma) {
 	return 0.39894 * exp(-0.5 * x * x / (sigma * sigma)) / sigma;
 }
@@ -638,6 +637,16 @@ void HDRtoLDR(float* pixelsIn, sf::Uint8* pixelsOut, int width, int height) {
 		pixelsOut[i] = (sf::Uint8)(pixelsIn[i] * 255);
 }
 
+int sumPathcount(int* pathcountBuffer, int size) {
+
+	int sum = 0;
+
+	for (int i = 0; i < size; i++)
+		sum += pathcountBuffer[i];
+
+	return sum;
+}
+
 int main() {
 
 	Scene* scene = new Scene();
@@ -646,10 +655,17 @@ int main() {
 	int width = scene->camera.xRes;
 	int height = scene->camera.yRes;
 
+
+	int updateInterval = 500;
+	long timePassed = 0;
+
 	float exposure = 1;
 
 	float* pixelBuffer = new float[width * height * 4];
+	int* pathcountBuffer = new int[width * height];
 	sf::Uint8* pixelBuffer_8 = new sf::Uint8[width * height * 4];
+
+	size_t free, total;
 
 	memset(pixelBuffer, width * height * 4, 0);
 
@@ -683,7 +699,9 @@ int main() {
 
 	while (window.isOpen()) {
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+		std::this_thread::sleep_for(std::chrono::milliseconds(updateInterval));
+
+		timePassed += updateInterval;
 
 		sf::Event event;
 
@@ -692,7 +710,12 @@ int main() {
 				window.close();
 		}
 
-		getBuffer(pixelBuffer, width * height * 4);
+		getBuffer(pixelBuffer, pathcountBuffer, width * height);
+
+		cudaMemGetInfo(&free, &total);
+
+		printf("\rkPaths/s: %f, %fGB of a total of %fGB used", ((float)sumPathcount(pathcountBuffer, width*height) / (float)timePassed), (float)(total - free) / (1024*1024*1024), (float)total / (1024 * 1024 * 1024));
+
 
 		flipY(pixelBuffer, width, height);
 		//flipX(pixelBuffer, width, height);
@@ -721,7 +744,4 @@ int main() {
 	window.close();
 
 	delete(scene);
-
-
-
 }

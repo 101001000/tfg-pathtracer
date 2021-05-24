@@ -6,7 +6,7 @@
 
 #pragma once
 
-cudaError_t getBuffer(float* bufffer, int size);
+cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size);
 
 struct HitData {
 

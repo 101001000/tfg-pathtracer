@@ -221,7 +221,7 @@ public:
 				totalTris = node.tris->size();
 
 			if (node.node.depth == 7)
-				printf("Allocated tris: %d / %d, %d%% \n", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
+				printf("\033[A\rAllocated tris: %d / %d, %d%%\n", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
 
 			// Nodo hoja
 			if (node.node.depth == DEPTH) {

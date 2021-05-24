@@ -142,6 +142,8 @@ public:
 
 	BVH* buildBVH() {
 
+		printf("Building BVH\n\n");
+
 		BVH* bvh = new BVH();
 
 		int* triIndices = new int[triCount()];
