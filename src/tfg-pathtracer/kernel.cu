@@ -22,6 +22,7 @@
 
 #define USEBVH true
 #define HDRIIS true
+#define BOKEH true
 
 struct dev_Scene {
 
@@ -124,6 +125,7 @@ __global__ void setupKernel() {
     dev_samples[idx] = 0;
     dev_pathcount[idx] = 0;
 
+    // Esto se puede hacer con un cudaMemset
     dev_buffer[4 * idx + 0] = 0;
     dev_buffer[4 * idx + 1] = 0;
     dev_buffer[4 * idx + 2] = 0;
@@ -264,6 +266,42 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
     }
 }
 
+__device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float r2, float r3, float r4, float r5) {
+
+    // Relative coordinates for the point where the first ray will be launched
+    float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth * 0.001;
+    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight * 0.001;
+
+    // Absolute coordinates for the point where the first ray will be launched
+    float odx = (-camera.sensorWidth / 2) * 0.001 + dx;
+    float ody = (-camera.sensorHeight / 2) * 0.001 + dy;
+
+    // Random part of the sampling offset so we get antialasing
+    float rx = (1.0 / (float)camera.xRes) * r1 - 0.5 * camera.sensorWidth * 0.001;
+    float ry = (1.0 / (float)camera.yRes) * r2 - 0.5 * camera.sensorHeight * 0.001;
+
+    // The initial ray is created from the camera position to the point calculated before. No rotation is taken into account.
+    ray = Ray(camera.position, Vector3(odx + rx, ody + ry, camera.position.z + camera.focalLength * 0.001) - camera.position);
+
+#ifdef BOKEH
+
+    float diameter = 0.001 * ((camera.focalLength) / camera.aperture);
+
+    float l = (camera.focusDistance + camera.focalLength * 0.001);
+
+    float ix, iy;
+
+    Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
+
+    uniformCircleSampling(r1, r2, r3, ix, iy);
+
+    Vector3 or = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
+
+    ray = Ray(or , focusPoint - or );
+
+#endif 
+}
+
 __global__ void neeRenderKernel(){
 
     dev_Scene* scene = dev_scene_g;
@@ -276,45 +314,19 @@ __global__ void neeRenderKernel(){
     // The index for the pixel. Maybe I could look for another indexing function which preserves better the spaciality
     int idx = (scene->camera->xRes * y + x);
 
-    float ix;
-    float iy;
-
     unsigned int sa = dev_samples[idx];
 
     curandState local_rand_state = d_rand_state_g[idx];
 
-    // Relative coordinates for the point where the first ray will be launched
-    float dx = scene->camera->position.x + ((float)x) / ((float)scene->camera->xRes) * scene->camera->sensorWidth * 0.001;
-    float dy = scene->camera->position.y + ((float)y) / ((float)scene->camera->yRes) * scene->camera->sensorHeight * 0.001;
+    Ray ray;
 
-    // Absolute coordinates for the point where the first ray will be launched
-    float odx = (-scene->camera->sensorWidth / 2) * 0.001 + dx;
-    float ody = (-scene->camera->sensorHeight / 2) * 0.001 + dy;
-
-    // Random part of the sampling offset so we get antialasing
-    float rx = (1.0 / (float)scene->camera->xRes) * (curand_uniform(&local_rand_state) - 0.5) * scene->camera->sensorWidth * 0.001;
-    float ry = (1.0 / (float)scene->camera->yRes) * (curand_uniform(&local_rand_state) - 0.5) * scene->camera->sensorHeight * 0.001;
-
-    // The initial ray is created from the camera position to the point calculated before. No rotation is taken into account.
-    Ray ray = Ray(scene->camera->position, Vector3(odx + rx, ody + ry, scene->camera->position.z + scene->camera->focalLength * 0.001) - scene->camera->position);
-
-    float diameter = 0.001 * ((scene->camera->focalLength) / scene->camera->aperture);
-
-    float l = (scene->camera->focusDistance + scene->camera->focalLength * 0.001);
-
-    Vector3 focusPoint = ray.origin + ray.direction * (l/(ray.direction.z));
-
-    uniformCircleSampling(curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), ix, iy);
-
-    Vector3 or = scene->camera->position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
-
-    ray = Ray(or, focusPoint - or);
+    calculateCameraRay(x, y, *scene->camera, ray, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
 
     // Accumulated radiance
-    Vector3 light = Vector3(0, 0, 0);
+    Vector3 light = Vector3::Zero();
 
     // How much light is lost in the path
-    Vector3 reduction = Vector3(1, 1, 1);
+    Vector3 reduction = Vector3::One();
 
     // A ray can bounce a max of MAXBOUNCES. This could be changed with russian roulette path termination method, and that would make
     // the renderer unbiased

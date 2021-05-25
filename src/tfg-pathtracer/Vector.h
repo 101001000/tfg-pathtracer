@@ -59,8 +59,6 @@ public:
 		x = std::stof(sx);
 		y = std::stof(sy);
 		z = std::stof(sz);
-
-
 	}
 
 	__host__ __device__ inline Vector3() {
@@ -80,6 +78,16 @@ public:
 		y = _x;
 		z = _x;
 	}
+
+	__host__ __device__ inline static Vector3 Zero() {	return Vector3(0); }
+	__host__ __device__ inline static Vector3 One() { return Vector3(1); }
+	__host__ __device__ inline static Vector3 Up() { return Vector3(0, 1, 0); }
+	__host__ __device__ inline static Vector3 Down() { return Vector3(0, -1, 0); }
+	__host__ __device__ inline static Vector3 Left() { return Vector3(-1, 0, 0); }
+	__host__ __device__ inline static Vector3 Right() { return Vector3(1, 0, 0); }
+	__host__ __device__ inline static Vector3 Forward() { return Vector3(0, 0, 1); }
+	__host__ __device__ inline static Vector3 Back() { return Vector3(0, 0, -1); }
+
 
 	__host__ __device__ inline float length() const {
 		return sqrt(x * x + y * y + z * z);
@@ -151,22 +159,17 @@ public:
 		return Vector3((v1.y * v2.z - v1.z * v2.y), - (v1.x * v2.z - v1.z * v2.x), (v1.x * v2.y - v1.y * v2.x));
 	}
 
-
-
 	__host__ __device__ inline void normalize() {
 
 		float l = length();
 
 		if (l == 0) return;
 
-		x /= l;
-		y /= l;
-		z /= l;
+		x /= l;	y /= l;	z /= l;
 	}
 
 	__host__ __device__ inline Vector3 normalized() {
 		if (length() == 0) return Vector3(x, y, z);
-
 		return Vector3(x, y, z) / length();
 	}
 
@@ -177,7 +180,6 @@ public:
 	__host__ __device__ inline Vector3 operator/(const Vector3& v1) {
 		return Vector3(x / v1.x, y / v1.y, z / v1.z);
 	}
-
 
 	__host__ __device__ inline static Vector3 lerp(const Vector3& v1, const Vector3& v2, float amount);
 	__host__ __device__ inline static Vector3 lerp2D(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4, float amountX, float amountY);
@@ -222,7 +224,6 @@ __host__ __device__ inline bool operator==(const Vector3& v1, const Vector3& v2)
 
 	return abs(v1.x - v2.x) < EPSILON && abs(v1.y - v2.y) < EPSILON && abs(v1.z - v2.z) < EPSILON;
 }
-
 
 __host__ __device__ inline Vector3 Vector3::lerp(const Vector3& v1, const Vector3& v2, float amount) {
 	return v1 * amount + (1 - amount) * v2;

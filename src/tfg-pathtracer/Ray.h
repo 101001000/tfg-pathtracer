@@ -16,6 +16,11 @@ public:
 		direction.normalize();
 	}
 
+	__host__ __device__ inline Ray() {
+		origin = Vector3();
+		direction = Vector3(0,0,1);
+	}
+
 };
 
 

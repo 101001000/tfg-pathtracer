@@ -2,10 +2,11 @@ TODO:
 
 BMP de 32 bits
 
+Más formatos de texturas
 
-Investigar por qué se flipea el HDRI y por qué las texturas necesitan un mapping con 1 - u
+Mover los random a dentro de las funciones, ver como pasar cuda_rand_state como atributo
 
-LOS PDF TIENEN COMO mÁXIMO 1
+LOS PDF TIENEN COMO mÁXIMO 1 (?)
 
 Sampleo HDRI de manera esférica
 
@@ -13,13 +14,9 @@ Polygon trianglulation
 
 BVH sin profundidad fija (?)
 
-Construcción de BVH con códigos de morton
-
 Hitdata no tiene point?
 
-Comprobar colisiones en directlight
-
-Añadir luces.
+Añadir luces de área.
 
 
 
