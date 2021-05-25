@@ -22,7 +22,7 @@
 
 #define USEBVH true
 #define HDRIIS true
-#define BOKEH true
+#define BOKEH
 
 struct dev_Scene {
 
@@ -273,15 +273,15 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
     float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight * 0.001;
 
     // Absolute coordinates for the point where the first ray will be launched
-    float odx = (-camera.sensorWidth / 2) * 0.001 + dx;
-    float ody = (-camera.sensorHeight / 2) * 0.001 + dy;
+    float odx = (-camera.sensorWidth / 2.0) * 0.001 + dx;
+    float ody = (-camera.sensorHeight / 2.0) * 0.001 + dy;
 
     // Random part of the sampling offset so we get antialasing
-    float rx = (1.0 / (float)camera.xRes) * r1 - 0.5 * camera.sensorWidth * 0.001;
-    float ry = (1.0 / (float)camera.yRes) * r2 - 0.5 * camera.sensorHeight * 0.001;
+    float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth * 0.001;
+    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight * 0.001;
 
     // The initial ray is created from the camera position to the point calculated before. No rotation is taken into account.
-    ray = Ray(camera.position, Vector3(odx + rx, ody + ry, camera.position.z + camera.focalLength * 0.001) - camera.position);
+    ray = Ray(camera.position, Vector3(odx, ody, camera.position.z + camera.focalLength * 0.001) - camera.position);
 
 #ifdef BOKEH
 
@@ -293,11 +293,11 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
     Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
 
-    uniformCircleSampling(r1, r2, r3, ix, iy);
+    uniformCircleSampling(r3, r4, r5, ix, iy);
 
     Vector3 or = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
 
-    ray = Ray(or , focusPoint - or );
+    ray = Ray(or , focusPoint - or);
 
 #endif 
 }
