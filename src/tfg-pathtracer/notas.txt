@@ -18,5 +18,6 @@ Hitdata no tiene point?
 
 Añadir luces de área.
 
+eliminar esferas
 
-
+Colisiones para las luces puntuales

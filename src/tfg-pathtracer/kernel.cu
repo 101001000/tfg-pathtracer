@@ -61,8 +61,6 @@ cudaStream_t kernelStream, bufferStream;
 long textureMemory = 0;
 long geometryMemory = 0;
 
-
-
 __device__ void createHitData(Material* material, HitData& hitdata, float u, float v, Vector3 N) {
 
     Vector3 tangent, bitangent;
@@ -148,44 +146,23 @@ __global__ void setupKernel() {
 __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
 
     Hit nearestHit = Hit();
-        
-    for (int j = 0; j < scene->sphereCount; j++) {
+
+#ifdef USEBVH:
+    scene->bvh->transverse(ray, nearestHit);
+#else:
+    for (int j = 0; j < scene->meshObjectCount; j++) {
 
         Hit hit = Hit();
 
-        if (scene->spheres[j].hit(ray, hit)) {
-
-            if (!nearestHit.valid) nearestHit = hit;
-
-            if ((hit.position - ray.origin).length() < (nearestHit.position - ray.origin).length()) {
+        if (scene->meshObjects[j].hit(ray, hit)) {
+            if (!nearestHit.valid)
                 nearestHit = hit;
-            }
+
+            if ((hit.position - ray.origin).length() < (nearestHit.position - ray.origin).length())
+                nearestHit = hit;
         }
-    }
-
-    if (USEBVH) {
-
-        scene->bvh->transverse(ray, nearestHit);
-
-    } else {
-
-        for (int j = 0; j < scene->meshObjectCount; j++) {
-
-            Hit hit = Hit();
-
-            if (scene->meshObjects[j].hit(ray, hit)) {
-
-                if (!nearestHit.valid) {
-                    nearestHit = hit;
-                }
-
-                if ((hit.position - ray.origin).length() < (nearestHit.position - ray.origin).length()) {
-                    nearestHit = hit;
-                }
-            }
-        }
-    }
-    
+}
+#endif    
     return nearestHit;
 }
 
@@ -285,11 +262,11 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
 #ifdef BOKEH
 
+    float ix, iy;
+
     float diameter = 0.001 * ((camera.focalLength) / camera.aperture);
 
     float l = (camera.focusDistance + camera.focalLength * 0.001);
-
-    float ix, iy;
 
     Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
 
@@ -300,6 +277,32 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
     ray = Ray(or , focusPoint - or);
 
 #endif 
+}
+
+__device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearestHit, Vector3& newDir, float r1, float r2, float r3, Vector3& hitLight, Vector3& reduction) {
+
+    Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
+
+    float brdfPdf = DisneyPdf(ray, hitdata, newDir);
+
+    float hdriPdf;
+
+    Vector3 directLight = hdriLight(ray, &scene, nearestHit.position, hitdata, r1, r2, r3, hdriPdf);
+
+    float w1 = hdriPdf / (hdriPdf + brdfPdf);
+    float w2 = brdfPdf / (hdriPdf + brdfPdf);
+
+    if (brdfPdf <= 0) return;
+
+    hitLight = w1 * reduction * directLight;
+    reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf; 
+
+}
+
+__device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bouncedDir, float r1, float r2, float r3) {
+
+    bouncedDir = DisneySample(incomingRay, hitdata, r1, r2, r3);
+
 }
 
 __global__ void neeRenderKernel(){
@@ -335,15 +338,16 @@ __global__ void neeRenderKernel(){
 
     for (i = 0; i < MAXBOUNCES; i++) {
 
+        Vector3 hitLight;
+        HitData hitdata;
+        Vector3 bouncedDir;
+
         int materialID = 0;
 
-        HitData hitdata;
-
         Hit nearestHit = throwRay(ray, scene);
-        Vector3 cN = nearestHit.normal;
 
         // FIX BACKFACE NORMALS
-        if (Vector3::dot(cN, ray.direction) > 0) cN *= -1;
+        if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
 
         if (!nearestHit.valid) {
             float u, v;
@@ -352,47 +356,24 @@ __global__ void neeRenderKernel(){
             break;
         }
 
-        if (nearestHit.type == 0) materialID = scene->spheres[nearestHit.objectID].materialID;
-        if (nearestHit.type == 1) materialID = scene->meshObjects[nearestHit.objectID].materialID;
+        materialID = scene->meshObjects[nearestHit.objectID].materialID;
 
         Material* material = &scene->materials[materialID];
 
-        createHitData(material, hitdata, nearestHit.u, nearestHit.v, cN);
+        createHitData(material, hitdata, nearestHit.u, nearestHit.v, nearestHit.normal);
 
-        float r1 = curand_uniform(&local_rand_state);
-        float r2 = curand_uniform(&local_rand_state);
-        float r3 = curand_uniform(&local_rand_state);
-        float r4 = curand_uniform(&local_rand_state);
-        float r5 = curand_uniform(&local_rand_state);
-        float r6 = curand_uniform(&local_rand_state);
-        float r7 = curand_uniform(&local_rand_state);
+        calculateBounce(ray, hitdata, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
 
+        shade(*scene, ray, hitdata, nearestHit, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), hitLight, reduction);
 
-        Vector3 brdfDir = DisneySample(ray, hitdata, r3, r4, r5);;
-        Vector3 brdfDisney = DisneyEval(ray, hitdata, brdfDir);
+        light += hitLight;
 
-        float brdfPdf = DisneyPdf(ray, hitdata, brdfDir);
-
-        float hdriPdf;
-
-        Vector3 directLight = hdriLight(ray, scene, nearestHit.position, hitdata, r1, r6, r7, hdriPdf);
-
-        float w1 = hdriPdf / (hdriPdf + brdfPdf);
-        float w2 = brdfPdf / (hdriPdf + brdfPdf);
-
-        light += w1 * reduction * directLight;
-         
-        if (brdfPdf <= 0) break;
-
-        reduction *= (brdfDisney * abs(Vector3::dot(brdfDir, cN))) / brdfPdf;
-
-        ray = Ray(nearestHit.position + brdfDir * 0.001, brdfDir);
+        ray = Ray(nearestHit.position + bouncedDir * 0.001, bouncedDir);
     }
 
     dev_pathcount[idx] += i;
 
     light = clamp(light, 0, 3);
-
 
     if (sa > 0) {
         dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
