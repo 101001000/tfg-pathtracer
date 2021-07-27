@@ -6,7 +6,8 @@
 	Info:		Load HDR image and convert to a set of float32 RGB triplet.
 ************************************************************************************/
 
-
+#include <CL/sycl.hpp>
+#include <dpct/dpct.hpp>
 #include <math.h>
 #include <memory.h>
 #include <stdio.h>
@@ -104,8 +105,8 @@ bool inline loadFile(const char* fileName, HDRLoaderResult& res)
 float inline convertComponent(int expo, int val)
 {
 	float v = val / 256.0f;
-	float d = (float)pow(2, expo);
-	return v * d;
+        float d = (float)sycl::pown((float)(2), expo);
+        return v * d;
 }
 
 void inline workOnRGBE(RGBE* scan, int len, float* cols)

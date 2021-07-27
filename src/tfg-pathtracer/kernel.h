@@ -2,7 +2,6 @@
 #include "Camera.h"
 #include "Scene.h"
 #include "cuda_runtime.h"
-#include "test.h"
 
 #pragma once
 

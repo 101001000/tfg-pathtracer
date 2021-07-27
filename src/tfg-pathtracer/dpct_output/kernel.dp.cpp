@@ -17,6 +17,7 @@
 #include "BVH.h"
 #include "HDRI.h"
 #include "Math.h"
+#include <cmath>
 
 #define THREADSIZE 8
 #define MAXBOUNCES 5
@@ -117,12 +118,14 @@ void generateHitData(Material* material, HitData& hitdata, float u, float v, Vec
     hitdata.bitangent = bitangent;
 }
 
-void setupKernel(float *dev_buffer, unsigned int *dev_samples,
-                 unsigned int *dev_pathcount, dev_Scene **dev_scene_g,
-                 curandState **d_rand_state_g) {
+void setupKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
+                 unsigned int *dev_samples, unsigned int *dev_pathcount,
+                 dev_Scene **dev_scene_g, curandState **d_rand_state_g) {
 
-    int x = threadIdx.x() + blockIdx.x() * blockDim[2];
-    int y = threadIdx.y() + blockIdx.y() * blockDim[1];
+    int x = item_ct1.get_local_id(2) +
+            item_ct1.get_group(2) * item_ct1.get_local_range().get(2);
+    int y = item_ct1.get_local_id(1) +
+            item_ct1.get_group(1) * item_ct1.get_local_range().get(1);
 
     int idx = (dev_scene_g->camera->xRes * y + x);
 
@@ -284,9 +287,9 @@ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float 
 
     uniformCircleSampling(r3, r4, r5, ix, iy);
 
-    Vector3 or = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
+    Vector3 orig = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
 
-    ray = Ray(or , focusPoint - or);
+    ray = Ray(orig , focusPoint - orig);
 
 #endif 
 }
@@ -318,15 +321,17 @@ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bouncedDir, fl
 
 }
 
-void neeRenderKernel(float *dev_buffer, unsigned int *dev_samples,
-                     unsigned int *dev_pathcount, dev_Scene **dev_scene_g,
-                     curandState **d_rand_state_g){
+void neeRenderKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
+                     unsigned int *dev_samples, unsigned int *dev_pathcount,
+                     dev_Scene **dev_scene_g, curandState **d_rand_state_g){
 
     oneapi::mkl::rng::device::uniform<float> distr_ct1;
     dev_Scene *scene = (*dev_scene_g);
 
-    int x = threadIdx.x() + blockIdx.x() * blockDim[2];
-    int y = threadIdx.y() + blockIdx.y() * blockDim[1];
+    int x = item_ct1.get_local_id(2) +
+            item_ct1.get_group(2) * item_ct1.get_local_range().get(2);
+    int y = item_ct1.get_local_id(1) +
+            item_ct1.get_group(1) * item_ct1.get_local_range().get(1);
 
     if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
 
@@ -627,12 +632,12 @@ int renderSetup(Scene *scene) try {
     int cudaStatus;
 
     /*
-    DPCT1032:3: A different random number generator is used. You may need to
+    DPCT1032:4: A different random number generator is used. You may need to
     adjust the code.
     */
     oneapi::mkl::rng::device::philox4x32x10<1> *d_rand_state;
     /*
-    DPCT1032:4: A different random number generator is used. You may need to
+    DPCT1032:5: A different random number generator is used. You may need to
     adjust the code.
     */
     d_rand_state =
@@ -651,20 +656,20 @@ int renderSetup(Scene *scene) try {
 
     // Choose which GPU to run on, change this on a multi-GPU system.
     /*
-    DPCT1003:5: Migrated API does not return error code. (*, 0) is inserted. You
+    DPCT1003:6: Migrated API does not return error code. (*, 0) is inserted. You
     may need to rewrite this code.
     */
     cudaStatus = (dpct::dev_mgr::instance().select_device(0), 0);
 
     /*
-    DPCT1003:6: Migrated API does not return error code. (*, 0) is inserted. You
+    DPCT1003:7: Migrated API does not return error code. (*, 0) is inserted. You
     may need to rewrite this code.
     */
     cudaStatus =
         (dev_camera = sycl::malloc_device<Camera>(1, dpct::get_default_queue()),
          0);
     /*
-    DPCT1003:7: Migrated API does not return error code. (*, 0) is inserted. You
+    DPCT1003:8: Migrated API does not return error code. (*, 0) is inserted. You
     may need to rewrite this code.
     */
     cudaStatus = (dev_meshObjects = sycl::malloc_device<MeshObject>(
@@ -672,20 +677,20 @@ int renderSetup(Scene *scene) try {
                   0);
 
     /*
-    DPCT1003:8: Migrated API does not return error code. (*, 0) is inserted. You
+    DPCT1003:9: Migrated API does not return error code. (*, 0) is inserted. You
     may need to rewrite this code.
     */
     cudaStatus = (dev_tris = sycl::malloc_device<Tri>(
                       triCount, dpct::get_default_queue()),
                   0);
     /*
-    DPCT1003:9: Migrated API does not return error code. (*, 0) is inserted. You
-    may need to rewrite this code.
+    DPCT1003:10: Migrated API does not return error code. (*, 0) is inserted.
+    You may need to rewrite this code.
     */
     cudaStatus =
         (dev_bvh = sycl::malloc_device<BVH>(1, dpct::get_default_queue()), 0);
     /*
-    DPCT1003:10: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:11: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dev_triIndices = sycl::malloc_device<int>(
@@ -695,7 +700,7 @@ int renderSetup(Scene *scene) try {
     geometryMemory += sizeof(MeshObject) * meshObjectCount + sizeof(Tri) * triCount + sizeof(BVH) + sizeof(int) * triCount;
 
     /*
-    DPCT1003:11: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:12: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dpct::get_default_queue()
@@ -704,7 +709,7 @@ int renderSetup(Scene *scene) try {
                       .wait(),
                   0);
     /*
-    DPCT1003:12: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:13: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dpct::get_default_queue()
@@ -712,7 +717,7 @@ int renderSetup(Scene *scene) try {
                       .wait(),
                   0);
     /*
-    DPCT1003:13: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:14: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dpct::get_default_queue()
@@ -720,13 +725,13 @@ int renderSetup(Scene *scene) try {
                       .wait(),
                   0);
     /*
-    DPCT1003:14: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:15: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus =
         (dpct::get_default_queue().memcpy(dev_bvh, bvh, sizeof(BVH)).wait(), 0);
     /*
-    DPCT1003:15: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:16: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus =
@@ -744,7 +749,7 @@ int renderSetup(Scene *scene) try {
     //Pointer binding for dev_scene
 
     /*
-    DPCT1003:16: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:17: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dpct::get_default_queue()
@@ -753,7 +758,7 @@ int renderSetup(Scene *scene) try {
                       .wait(),
                   0);
     /*
-    DPCT1003:17: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:18: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus =
@@ -762,7 +767,7 @@ int renderSetup(Scene *scene) try {
              .wait(),
          0);
     /*
-    DPCT1003:18: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:19: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dpct::get_default_queue()
@@ -770,7 +775,7 @@ int renderSetup(Scene *scene) try {
                       .wait(),
                   0);
     /*
-    DPCT1003:19: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:20: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dpct::get_default_queue()
@@ -779,7 +784,7 @@ int renderSetup(Scene *scene) try {
                   0);
 
     /*
-    DPCT1003:20: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:21: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (dpct::get_default_queue()
@@ -787,7 +792,7 @@ int renderSetup(Scene *scene) try {
                       .wait(),
                   0);
     /*
-    DPCT1003:21: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:22: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus =
@@ -797,7 +802,7 @@ int renderSetup(Scene *scene) try {
          0);
 
     /*
-    DPCT1003:22: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:23: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus =
@@ -806,11 +811,11 @@ int renderSetup(Scene *scene) try {
              .wait(),
          0);
     /*
-    DPCT1003:23: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:24: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     /*
-    DPCT1032:24: A different random number generator is used. You may need to
+    DPCT1032:25: A different random number generator is used. You may need to
     adjust the code.
     */
     cudaStatus =
@@ -837,10 +842,35 @@ int renderSetup(Scene *scene) try {
     sycl::range<3> threads(1, ty, tx);
 
     // Launch a kernel on the GPU with one thread for each element.
-    setupKernel << <blocks, threads, 0, kernelStream >> >();
+    /*
+    DPCT1049:3: The workgroup size passed to the SYCL kernel may exceed the
+    limit. To get the device limit, query info::device::max_work_group_size.
+    Adjust the workgroup size if needed.
+    */
+    kernelStream->submit([&](sycl::handler &cgh) {
+        dev_buffer.init(*kernelStream);
+        dev_samples.init(*kernelStream);
+        dev_pathcount.init(*kernelStream);
+        dev_scene_g.init(*kernelStream);
+        d_rand_state_g.init(*kernelStream);
+
+        auto dev_buffer_ptr_ct1 = dev_buffer.get_ptr();
+        auto dev_samples_ptr_ct1 = dev_samples.get_ptr();
+        auto dev_pathcount_ptr_ct1 = dev_pathcount.get_ptr();
+        auto dev_scene_g_ptr_ct1 = dev_scene_g.get_ptr();
+        auto d_rand_state_g_ptr_ct1 = d_rand_state_g.get_ptr();
+
+        cgh.parallel_for(sycl::nd_range<3>(blocks * threads, threads),
+                         [=](sycl::nd_item<3> item_ct1) {
+                             setupKernel(
+                                 item_ct1, dev_buffer_ptr_ct1,
+                                 dev_samples_ptr_ct1, dev_pathcount_ptr_ct1,
+                                 dev_scene_g_ptr_ct1, d_rand_state_g_ptr_ct1);
+                         });
+    });
 
     /*
-    DPCT1003:25: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:26: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (kernelStream->wait(), 0);
@@ -868,10 +898,36 @@ void renderCuda(Scene *scene, int sampleTarget) try {
 
     for (int i = 0; i < sampleTarget; i++) {
 
-        neeRenderKernel << <blocks, threads, 0, kernelStream >> > ();
+        /*
+        DPCT1049:27: The workgroup size passed to the SYCL kernel may exceed the
+        limit. To get the device limit, query info::device::max_work_group_size.
+        Adjust the workgroup size if needed.
+        */
+        kernelStream->submit([&](sycl::handler &cgh) {
+            dev_buffer.init(*kernelStream);
+            dev_samples.init(*kernelStream);
+            dev_pathcount.init(*kernelStream);
+            dev_scene_g.init(*kernelStream);
+            d_rand_state_g.init(*kernelStream);
+
+            auto dev_buffer_ptr_ct1 = dev_buffer.get_ptr();
+            auto dev_samples_ptr_ct1 = dev_samples.get_ptr();
+            auto dev_pathcount_ptr_ct1 = dev_pathcount.get_ptr();
+            auto dev_scene_g_ptr_ct1 = dev_scene_g.get_ptr();
+            auto d_rand_state_g_ptr_ct1 = d_rand_state_g.get_ptr();
+
+            cgh.parallel_for(sycl::nd_range<3>(blocks * threads, threads),
+                             [=](sycl::nd_item<3> item_ct1) {
+                                 neeRenderKernel(item_ct1, dev_buffer_ptr_ct1,
+                                                 dev_samples_ptr_ct1,
+                                                 dev_pathcount_ptr_ct1,
+                                                 dev_scene_g_ptr_ct1,
+                                                 d_rand_state_g_ptr_ct1);
+                             });
+        });
 
         /*
-        DPCT1003:26: Migrated API does not return error code. (*, 0) is
+        DPCT1003:28: Migrated API does not return error code. (*, 0) is
         inserted. You may need to rewrite this code.
         */
         int cudaStatus = (kernelStream->wait(), 0);
@@ -888,7 +944,7 @@ int getBuffer(float *pixelBuffer, int *pathcountBuffer, int size) try {
     bufferStream = dpct::get_current_device().create_queue();
 
     /*
-    DPCT1003:27: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:29: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     int cudaStatus =
@@ -897,7 +953,7 @@ int getBuffer(float *pixelBuffer, int *pathcountBuffer, int size) try {
          0);
 
     /*
-    DPCT1003:28: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:30: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     cudaStatus = (bufferStream->memcpy(pathcountBuffer,
@@ -920,7 +976,7 @@ int getSamples() try {
     bufferStream = dpct::get_current_device().create_queue();
 
     /*
-    DPCT1003:29: Migrated API does not return error code. (*, 0) is inserted.
+    DPCT1003:31: Migrated API does not return error code. (*, 0) is inserted.
     You may need to rewrite this code.
     */
     int cudaStatus =

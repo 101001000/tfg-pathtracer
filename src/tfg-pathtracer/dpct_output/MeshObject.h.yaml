@@ -1,8 +1,8 @@
 ---
-MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/dpct_output/kernel.h'
+MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/dpct_output/MeshObject.h'
 Replacements:
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          0
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/MeshObject.h'
+    Offset:          43
     Length:          0
     ReplacementText: "#include <CL/sycl.hpp>\n#include <dpct/dpct.hpp>\n"
     ConstantFlag:    ''
@@ -10,28 +10,37 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          59
-    Length:          26
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/MeshObject.h'
+    Offset:          478
+    Length:          9
     ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          100
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/MeshObject.h'
+    Offset:          487
     Length:          11
-    ReplacementText: int
+    ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          742
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/MeshObject.h'
+    Offset:          1012
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/MeshObject.h'
+    Offset:          1021
     Length:          11
-    ReplacementText: int
+    ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''

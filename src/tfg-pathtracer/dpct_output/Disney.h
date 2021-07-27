@@ -6,24 +6,26 @@
 #include "Math.h"
 #include "Ray.h"
 #include "Material.h"
-hader de disney de knightcrawler25, derivar en un futuro para aplicar optimizaciones.
+
+// Adaptación del shader de disney de knightcrawler25, derivar en un futuro para aplicar optimizaciones.
 // https://github.com/knightcrawler25/GLSL-PathTracer/blob/master/src/shaders/common/disney.glsl
 
 // Limitado solo a BRDF sin BSDF
 
-vor3 normal, Vector3 &tangent, Vector3 &bitangent) {
-    Vector3 UpVector = sycl::fabs(normal.z) < 0.999sycl::fabs(normal.z) 0, 1) : Vector3(1, 0, 0);
+void createBasis(Vector3 normal, Vector3 &tangent, Vector3 &bitangent) {
+    Vector3 UpVector =
+        sycl::fabs(normal.z) < 0.999 ? Vector3(0, 0, 1) : Vector3(1, 0, 0);
     tangent = (Vector3::cross(UpVector, normal)).normalized();
     bitangent = Vector3::cross(normal, tangent);
 }
 
-ffloat u) {
+float SchlickFresnel(float u) {
     float m = clamp(1.0 - u, 0.0, 1.0);
     float m2 = m * m;
     return m2 * m2 * m;
 }
 
-fel(float cos_theta_i, float eta) {
+float DielectricFresnel(float cos_theta_i, float eta) {
     float sinThetaTSq = eta * eta * (1.0f - cos_theta_i * cos_theta_i);
 
     // Total internal reflection
@@ -38,7 +40,7 @@ fel(float cos_theta_i, float eta) {
     return 0.5f * (rs * rs + rp * rp);
 }
 
-fH, float a) {
+float GTR1(float NDotH, float a) {
     if (a >= 1.0)
         return (1.0 / PI);
     float a2 = a * a;
@@ -46,39 +48,39 @@ fH, float a) {
     return (a2 - 1.0) / (PI * sycl::log(a2) * t);
 }
 
-fH, float a) {
+float GTR2(float NDotH, float a) {
     float a2 = a * a;
     float t = 1.0 + (a2 - 1.0) * NDotH * NDotH;
     return a2 / (PI * t * t);
 }
 
-ft NDotH, float HDotX, float HDotY, float ax, float ay) {
+float GTR2_aniso(float NDotH, float HDotX, float HDotY, float ax, float ay) {
     float a = HDotX / ax;
     float b = HDotY / ay;
     float c = a * a + b * b + NDotH * NDotH;
     return 1.0 / (PI * ax * ay * c * c);
 }
 
-ft NDotV, float alphaG) {
+float SmithG_GGX(float NDotV, float alphaG) {
     float a = alphaG * alphaG;
     float b = NDotV * NDotV;
     return 1.0 / (NDotV + sycl::sqrt(a + b - a * b));
 }
 
-fo(float NDotV, float VDotX, float VDotY, float ax, float ay) {
+float SmithG_GGX_aniso(float NDotV, float VDotX, float VDotY, float ax, float ay) {
     float a = VDotX * ax;
     float b = VDotY * ay;
     float c = NDotV;
     return 1.0 / (NDotV + sycl::sqrt(a * a + b * b + c * c));
 }
 
-ffloat a, float b) {
+float powerHeuristic(float a, float b) {
     float t = a * a;
     return t / (b * b + t);
 }
 
 
-fay, HitData& hitdata, Vector3 L) {
+float DisneyPdf(Ray ray, HitData& hitdata, Vector3 L) {
 
     Vector3 N = hitdata.normal;
     Vector3 V = -1 * ray.direction;
@@ -99,7 +101,7 @@ fay, HitData& hitdata, Vector3 L) {
     float diffuseRatio = 0.5 * (1.0 - hitdata.metallic);
     float specularRatio = 1.0 - diffuseRatio;
 
-    float aspect = sqrt(1.0 - hitdata.anisotropic * 0.9);
+    float aspect = sycl::sqrt(1.0 - hitdata.anisotropic * 0.9);
     float ax = maxf(0.001, hitdata.roughness / aspect);
     float ay = maxf(0.001, hitdata.roughness * aspect);
 
@@ -117,7 +119,7 @@ fay, HitData& hitdata, Vector3 L) {
 }
 
 
-VRay ray, HitData& hitdata, float r1, float r2, float r3) {
+Vector3 DisneySample(Ray ray, HitData& hitdata, float r1, float r2, float r3) {
 
     Vector3 N = hitdata.normal;
     Vector3 V = -1 * ray.direction;
@@ -141,7 +143,7 @@ VRay ray, HitData& hitdata, float r1, float r2, float r3) {
     return dir;
 }
 
-Vy ray, HitData& hitdata, Vector3 L) {
+Vector3 DisneyEval(Ray ray, HitData& hitdata, Vector3 L) {
     Vector3 V = -1 * ray.direction;
     Vector3 H;
 
@@ -182,7 +184,7 @@ Vy ray, HitData& hitdata, Vector3 L) {
 
         // TODO: Add anisotropic rotation
         // specular
-        float aspect = sqrt(1.0 - hitdata.anisotropic * 0.9);
+        float aspect = sycl::sqrt(1.0 - hitdata.anisotropic * 0.9);
         float ax = maxf(0.001, hitdata.roughness / aspect);
         float ay = maxf(0.001, hitdata.roughness * aspect);
         float Ds = GTR2_aniso(NDotH, Vector3::dot(H, hitdata.tangent), Vector3::dot(H, hitdata.bitangent), ax, ay);

@@ -271,9 +271,9 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
     uniformCircleSampling(r3, r4, r5, ix, iy);
 
-    Vector3 or = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
+    Vector3 orig = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
 
-    ray = Ray(or , focusPoint - or);
+    ray = Ray(orig , focusPoint - orig);
 
 #endif 
 }
@@ -581,7 +581,7 @@ cudaError_t renderSetup(Scene* scene) {
     dim3 threads(tx, ty);
 
     // Launch a kernel on the GPU with one thread for each element.
-    setupKernel << <blocks, threads, 0, kernelStream >> >();
+    setupKernel <<<blocks, threads, 0, kernelStream >>>();
 
     cudaStatus = cudaStreamSynchronize(kernelStream);
     if (cudaStatus != cudaSuccess) {
@@ -606,7 +606,7 @@ void renderCuda(Scene* scene, int sampleTarget) {
 
     for (int i = 0; i < sampleTarget; i++) {
 
-        neeRenderKernel << <blocks, threads, 0, kernelStream >> > ();
+        neeRenderKernel <<<blocks, threads, 0, kernelStream >>> ();
 
         cudaError_t cudaStatus = cudaStreamSynchronize(kernelStream);
         if (cudaStatus != cudaSuccess) {

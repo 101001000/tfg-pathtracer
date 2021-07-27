@@ -113,8 +113,10 @@ public:
 
 		float EPSILON = 0.0001;
 
-		return abs(x - v.x) < EPSILON && abs(y - v.y) < EPSILON && abs(z - v.z) < EPSILON;
-	}
+                return sycl::fabs(x - v.x) < EPSILON &&
+                       sycl::fabs(y - v.y) < EPSILON &&
+                       sycl::fabs(z - v.z) < EPSILON;
+        }
 
 	inline bool operator!=(const Vector3& v) {
 		return !(*this == v);
@@ -227,7 +229,9 @@ inline bool operator==(const Vector3& v1, const Vector3& v2) {
 
 	float EPSILON = 0.0001;
 
-	return abs(v1.x - v2.x) < EPSILON && abs(v1.y - v2.y) < EPSILON && abs(v1.z - v2.z) < EPSILON;
+        return sycl::fabs(v1.x - v2.x) < EPSILON &&
+               sycl::fabs(v1.y - v2.y) < EPSILON &&
+               sycl::fabs(v1.z - v2.z) < EPSILON;
 }
 
 inline Vector3 Vector3::lerp(const Vector3& v1, const Vector3& v2, float amount) {

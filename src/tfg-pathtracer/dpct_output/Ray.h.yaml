@@ -1,8 +1,8 @@
 ---
-MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/dpct_output/kernel.h'
+MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/dpct_output/Ray.h'
 Replacements:
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          0
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Ray.h'
+    Offset:          29
     Length:          0
     ReplacementText: "#include <CL/sycl.hpp>\n#include <dpct/dpct.hpp>\n"
     ConstantFlag:    ''
@@ -10,28 +10,37 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          59
-    Length:          26
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Ray.h'
+    Offset:          118
+    Length:          9
     ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          100
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Ray.h'
+    Offset:          127
     Length:          11
-    ReplacementText: int
+    ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          742
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Ray.h'
+    Offset:          264
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Ray.h'
+    Offset:          273
     Length:          11
-    ReplacementText: int
+    ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''

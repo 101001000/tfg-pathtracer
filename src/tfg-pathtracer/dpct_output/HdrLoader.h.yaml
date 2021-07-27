@@ -1,8 +1,8 @@
 ---
-MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/dpct_output/kernel.h'
+MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/dpct_output/HdrLoader.h'
 Replacements:
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          0
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/HdrLoader.h'
+    Offset:          315
     Length:          0
     ReplacementText: "#include <CL/sycl.hpp>\n#include <dpct/dpct.hpp>\n"
     ConstantFlag:    ''
@@ -10,28 +10,10 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          59
-    Length:          26
-    ReplacementText: ''
-    ConstantFlag:    ''
-    ConstantOffset:  0
-    InitStr:         ''
-    NewHostVarName:  ''
-    BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          100
-    Length:          11
-    ReplacementText: int
-    ConstantFlag:    ''
-    ConstantOffset:  0
-    InitStr:         ''
-    NewHostVarName:  ''
-    BlockLevelFormatFlag: false
-  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.h'
-    Offset:          742
-    Length:          11
-    ReplacementText: int
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/HdrLoader.h'
+    Offset:          2040
+    Length:          12
+    ReplacementText: 'sycl::pown((float)(2), expo)'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''

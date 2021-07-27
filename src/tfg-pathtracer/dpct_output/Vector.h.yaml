@@ -1,0 +1,893 @@
+---
+MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/dpct_output/Vector.h'
+Replacements:
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          35
+    Length:          0
+    ReplacementText: "#include <CL/sycl.hpp>\n#include <dpct/dpct.hpp>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          70
+    Length:          26
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          149
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          956
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          965
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1027
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1036
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1129
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1138
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1211
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1220
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1284
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1293
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1356
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1365
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1433
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1442
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1513
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1522
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1593
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1602
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1673
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1682
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1755
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1764
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1837
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1846
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1896
+    Length:          27
+    ReplacementText: 'sycl::sqrt(x * x + y * y + z * z)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1930
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          1939
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2036
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2045
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2184
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2193
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2290
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2299
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2390
+    Length:          12
+    ReplacementText: 'sycl::fabs(x - v.x)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2416
+    Length:          12
+    ReplacementText: 'sycl::fabs(y - v.y)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2442
+    Length:          12
+    ReplacementText: 'sycl::fabs(z - v.z)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2471
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2480
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2563
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2572
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2687
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2696
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2811
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2820
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2935
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          2944
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3044
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3053
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3130
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3139
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3269
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3278
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3469
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3478
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3593
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3602
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3732
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3741
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3851
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3860
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3970
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          3979
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4071
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4080
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4229
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4238
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4271
+    Length:          0
+    ReplacementText: "\t\t/*\n\t\tDPCT1040:0: Use sycl::stream instead of printf, if your code is used on the device.\n\t\t*/\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4328
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4337
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4472
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4481
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4616
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4625
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4747
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4756
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4878
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          4887
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5004
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5013
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5135
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5144
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5254
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5263
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5372
+    Length:          16
+    ReplacementText: 'sycl::fabs(v1.x - v2.x)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5402
+    Length:          16
+    ReplacementText: 'sycl::fabs(v1.y - v2.y)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5432
+    Length:          16
+    ReplacementText: 'sycl::fabs(v1.z - v2.z)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5463
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5472
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5610
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/Vector.h'
+    Offset:          5619
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest: []
+DpctVersion:     2021.3.0
+MainHelperFileName: dpct
+USMLevel:        restricted
+FeatureMap:
+  device.hpp:
+    dev_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    device_ext:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    get_current_device:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    get_default_queue:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+  memory.hpp:
+    dpct_memcpy:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_3d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    global_memory_alias:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+...
