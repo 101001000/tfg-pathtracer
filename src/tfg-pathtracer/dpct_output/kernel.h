@@ -1,12 +1,13 @@
 #include <CL/sycl.hpp>
 #include <dpct/dpct.hpp>
-#include "Sphere.h"
+#include <CL/sycl.hpp>
+#include <dpct/dpct.hpp>
+
 #include "Camera.h"
 #include "Scene.h"
+#include "test.h" intonce
 
-#pragma once
-
-int getBuffer(float *bufffer, int size);
+int geintat* pixelBuffer, int* pathcountBuffer, int size);
 
 struct HitData {
 
@@ -37,9 +38,9 @@ void printPdfMaterial(Material material, int samples);
 void printBRDFMaterial(Material material, int samples);
 void printHDRISampling(HDRI hdri, int samples);
 
-void renderCuda(Scene* scene);
+void renderCuda(Scene *scene, intintet);
 
-int renderSetup(Scene *scene);
+int reintcene* scene);
 
 int getSamples();
 

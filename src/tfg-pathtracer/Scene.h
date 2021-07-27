@@ -142,7 +142,9 @@ public:
 
 	BVH* buildBVH() {
 
-		printf("Building BVH\n\n");
+		printf("\nBuilding BVH with DEPTH=%d and SAHBINS=%d \n", DEPTH, SAHBINS);
+
+		auto t1 = std::chrono::high_resolution_clock::now();
 
 		BVH* bvh = new BVH();
 
@@ -151,6 +153,12 @@ public:
 		bvh->triIndices = triIndices;
 
 		bvh->build(&tris);
+
+		auto t2 = std::chrono::high_resolution_clock::now();
+
+		auto ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - t1);
+
+		printf("\nBVH built in %dms\n\n", ms_int);
 
 		return bvh;
 	}

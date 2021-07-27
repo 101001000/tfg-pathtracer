@@ -14,7 +14,7 @@ static float map(float a, float b, float c, float d, float e) {
 }
 
 static float clamp(float a, float b, float c) {
-    a < b ? b : a > c ? c : a;
+    return a < b ? b : a > c ? c : a;
 }
 
 static Vector3 clamp(Vector3 v, float b, float c) {

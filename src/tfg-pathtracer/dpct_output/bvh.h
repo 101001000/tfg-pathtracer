@@ -11,8 +11,8 @@
 #include <algorithm>
 #include <chrono>  
 
-#define DEPTH 16
-#define SAHBINS 24
+#define DEPTH 20
+#define SAHBINS 12
 
 struct BVHTri {
 
@@ -63,7 +63,7 @@ public:
 
 	Tri* tris;
 
-	Node nodes[2 << (DEPTH + 2)];
+	Node nodes[2 << DEPTH];
 
 	int triIdx = 0;
 	int* triIndices;
@@ -105,6 +105,23 @@ public:
 
 		return true;
 
+	}
+
+	void transverseAux(Ray ray, Hit& nearestHit, Node& node) {
+		
+		if (node.depth == DEPTH) {
+			intersectNode(ray, node, nearestHit);
+			return;
+		}
+
+		Node lChild = leftChild(node.idx, node.depth);
+		Node rChild = rightChild(node.idx, node.depth);
+
+		if (intersect(ray, lChild.b1, lChild.b2))
+			transverseAux(ray, nearestHit, lChild);
+		
+		if (intersect(ray, rChild.b1, rChild.b2))
+			transverseAux(ray, nearestHit, rChild);		
 	}
 
 	void transverse(Ray ray, Hit& nearestHit) {
@@ -176,14 +193,28 @@ public:
 
 	void build(std::vector<Tri>* _fullTris) {
 
-		std::vector<BVHTri>* tris = new std::vector<BVHTri>();
+		std::vector<BVHTri>* _tris = new std::vector<BVHTri>();
 
 		for (int i = 0; i < _fullTris->size(); i++) {
 			BVHTri bvhTri(_fullTris->at(i), i);
-			tris->push_back(bvhTri);
+			_tris->push_back(bvhTri);
 		}			
 
-		buildIt(tris);
+		//buildIt(tris);
+
+		buildAux(0, _tris);
+
+		std::vector<Tri>* sortedTris = new std::vector<Tri>();
+
+		for (int i = 0; i < _tris->size(); i++) {
+			sortedTris->push_back(_fullTris->at(triIndices[i]));
+		}
+
+		for (int i = 0; i < _tris->size(); i++) {
+			Tri t = sortedTris->at(i);
+			//_fullTris->data()[i] = t;
+		}
+
 	}
 	
 	void buildIt(std::vector<BVHTri>* _tris) {
@@ -223,7 +254,7 @@ public:
 				totalTris = node.tris->size();
 
 			if (node.node.depth == 7)
-				printf("Allocated tris: %d / %d, %d%% \n", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
+				printf("\rAllocated tris: %d / %d, %d%%", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
 
 			// Nodo hoja
 			if (node.node.depth == DEPTH) {
@@ -269,7 +300,7 @@ public:
 			totalTris = _tris->size();
 
 		if(depth == 7)
-			printf("Allocated tris: %d / %d, %d%% \n", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
+			printf("\rAllocated tris: %d / %d, %d%%", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
 
 		Vector3 b1;
 		Vector3 b2;
@@ -296,7 +327,7 @@ public:
 			std::vector<BVHTri>* trisLeft = new std::vector<BVHTri>();
 			std::vector<BVHTri>* trisRight = new std::vector<BVHTri>();
 
-			divideNaive(_tris, trisLeft, trisRight);
+			divideSAH(_tris, trisLeft, trisRight);
 
 			buildAux(depth + 1, trisLeft);
 			buildAux(depth + 1, trisRight);

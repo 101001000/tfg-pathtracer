@@ -1,8 +1,8 @@
-#include "cuda_runtime.h"
 #include "Sphere.h"
 #include "Camera.h"
 #include "Scene.h"
-#include "device_launch_parameters.h"
+#include "cuda_runtime.h"
+#include "test.h"
 
 #pragma once
 
@@ -37,7 +37,7 @@ void printPdfMaterial(Material material, int samples);
 void printBRDFMaterial(Material material, int samples);
 void printHDRISampling(HDRI hdri, int samples);
 
-void renderCuda(Scene* scene);
+void renderCuda(Scene* scene, int sampleTarget);
 
 cudaError_t renderSetup(Scene* scene);
 

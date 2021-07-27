@@ -655,9 +655,9 @@ int main() {
 	int width = scene->camera.xRes;
 	int height = scene->camera.yRes;
 
+	int sampleTarget = 512;
 
 	int updateInterval = 500;
-	long timePassed = 0;
 
 	float exposure = 1;
 
@@ -695,13 +695,13 @@ int main() {
 	text.setCharacterSize(24);
 	text.setFillColor(sf::Color::Red);
 
-	std::thread t1(renderCuda, scene);
+	std::thread t1(renderCuda, scene, sampleTarget);
+
+	auto timestart = std::chrono::high_resolution_clock::now();
 
 	while (window.isOpen()) {
 
 		std::this_thread::sleep_for(std::chrono::milliseconds(updateInterval));
-
-		timePassed += updateInterval;
 
 		sf::Event event;
 
@@ -714,8 +714,13 @@ int main() {
 
 		cudaMemGetInfo(&free, &total);
 
-		printf("\rkPaths/s: %f, %fGB of a total of %fGB used", ((float)sumPathcount(pathcountBuffer, width*height) / (float)timePassed), (float)(total - free) / (1024*1024*1024), (float)total / (1024 * 1024 * 1024));
+		int samples = getSamples();;
 
+		auto t2 = std::chrono::high_resolution_clock::now();
+
+		auto ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - timestart);
+
+		printf("\rkPaths/s: %f, %fGB of a total of %fGB used, %d/%d samples", ((float)sumPathcount(pathcountBuffer, width*height) / (float)ms_int.count()), (float)(total - free) / (1024*1024*1024), (float)total / (1024 * 1024 * 1024), samples, sampleTarget);
 
 		flipY(pixelBuffer, width, height);
 		//flipX(pixelBuffer, width, height);
@@ -729,7 +734,7 @@ int main() {
 		applysRGB(pixelBuffer, width, height);
 		HDRtoLDR(pixelBuffer, pixelBuffer_8, width, height);
 
-		text.setString(std::to_string(getSamples()));
+		text.setString(std::to_string(samples));
 		texture.update(pixelBuffer_8);
 		window.clear();
 		window.draw(sprite);

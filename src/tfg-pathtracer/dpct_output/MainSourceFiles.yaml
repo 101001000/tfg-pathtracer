@@ -1,7 +1,7 @@
 ---
 MainSourceFile:  MainSrcFiles_placehold
 Replacements:
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
     Offset:          0
     Length:          0
     ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
@@ -10,7 +10,295 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          19
+    Length:          18
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          58
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          132
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          133
+    Length:          1
+    ReplacementText: '[2]'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          146
+    Length:          1
+    ReplacementText: 'x()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          160
+    Length:          1
+    ReplacementText: 'x()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          353
+    Length:          0
+    ReplacementText: "\r\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\r\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          719
+    Length:          10
+    ReplacementText: 'd_a = sycl::malloc_device<int>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          730
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          744
+    Length:          15
+    ReplacementText: N
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          759
+    Length:          0
+    ReplacementText: ', q_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          764
+    Length:          10
+    ReplacementText: 'd_b = sycl::malloc_device<int>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          775
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          789
+    Length:          15
+    ReplacementText: N
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          804
+    Length:          0
+    ReplacementText: ', q_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          809
+    Length:          10
+    ReplacementText: 'd_c = sycl::malloc_device<int>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          820
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          834
+    Length:          15
+    ReplacementText: N
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          849
+    Length:          0
+    ReplacementText: ', q_ct1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          897
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          933
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          958
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          962
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          998
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          1023
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          1182
+    Length:          10
+    ReplacementText: q_ct1.memcpy
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          1218
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          1243
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          1362
+    Length:          13
+    ReplacementText: 'sycl::free(d_a, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          1379
+    Length:          13
+    ReplacementText: 'sycl::free(d_b, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Offset:          1396
+    Length:          13
+    ReplacementText: 'sycl::free(d_c, q_ct1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          0
+    Length:          0
+    ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
     Offset:          19
     Length:          0
     ReplacementText: "\r\n#include <oneapi/mkl.hpp>\r\n#include <oneapi/mkl/rng/device.hpp>\r\n"
@@ -19,7 +307,7 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
     Offset:          21
     Length:          28
     ReplacementText: ''
@@ -28,26 +316,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          71
-    Length:          27
-    ReplacementText: ''
-    ConstantFlag:    ''
-    ConstantOffset:  0
-    InitStr:         ''
-    NewHostVarName:  ''
-    BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          98
-    Length:          39
-    ReplacementText: ''
-    ConstantFlag:    ''
-    ConstantOffset:  0
-    InitStr:         ''
-    NewHostVarName:  ''
-    BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          966
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          914
     Length:          45
     ReplacementText: 'dpct::global_memory<float, 1> dev_buffer(1920 * 1080 * 4);'
     ConstantFlag:    ''
@@ -55,35 +325,44 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          1070
-    Length:          49
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1018
+    Length:          50
     ReplacementText: 'dpct::global_memory<unsigned int, 1> dev_samples(1920 * 1080);'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          1121
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1070
+    Length:          51
+    ReplacementText: 'dpct::global_memory<unsigned int, 1> dev_pathcount(1920 * 1080);'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1123
     Length:          34
-    ReplacementText: 'dpct::global_memory<dev_Scene, 1> dev_scene_g;'
+    ReplacementText: 'dpct::global_memory<dev_Scene *, 0> dev_scene_g;'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          1157
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1159
     Length:          39
-    ReplacementText: "/*\r\nDPCT1032:1: Different generator is used, you may need to adjust the code.\r\n*/\r\ndpct::global_memory<curandState, 1> d_rand_state_g;"
+    ReplacementText: "/*\r\nDPCT1032:1: A different random number generator is used. You may need to adjust the code.\r\n*/\r\ndpct::global_memory<curandState *, 0> d_rand_state_g;"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          1200
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1202
     Length:          12
     ReplacementText: 'sycl::queue'
     ConstantFlag:    ''
@@ -91,8 +370,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          1213
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1215
     Length:          0
     ReplacementText: '*'
     ConstantFlag:    ''
@@ -100,8 +379,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          1244
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1299
     Length:          11
     ReplacementText: ''
     ConstantFlag:    ''
@@ -109,17 +388,17 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          1339
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          1396
     Length:          0
-    ReplacementText: ",\r\n                   dev_Scene *dev_scene_g"
+    ReplacementText: ",\r\n                     dev_Scene **dev_scene_g"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          2881
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          2938
     Length:          11
     ReplacementText: ''
     ConstantFlag:    ''
@@ -127,71 +406,89 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          2909
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          2966
     Length:          0
-    ReplacementText: "sycl::nd_item<3> item_ct1, float *dev_buffer,\r\n                 unsigned int *dev_samples, dev_Scene *dev_scene_g,\r\n                 curandState *d_rand_state_g"
+    ReplacementText: "float *dev_buffer, unsigned int *dev_samples,\r\n                 unsigned int *dev_pathcount, dev_Scene **dev_scene_g,\r\n                 curandState **d_rand_state_g"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          2928
-    Length:          11
-    ReplacementText: 'item_ct1.get_local_id(2)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          2995
+    Length:          1
+    ReplacementText: 'x()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          2942
-    Length:          10
-    ReplacementText: 'item_ct1.get_group(2)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3008
+    Length:          1
+    ReplacementText: 'x()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          2955
-    Length:          10
-    ReplacementText: 'item_ct1.get_local_range().get(2)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3020
+    Length:          1
+    ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          2980
-    Length:          11
-    ReplacementText: 'item_ct1.get_local_id(1)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3021
+    Length:          1
+    ReplacementText: '[2]'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          2994
-    Length:          10
-    ReplacementText: 'item_ct1.get_group(1)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3047
+    Length:          1
+    ReplacementText: 'y()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          3007
-    Length:          10
-    ReplacementText: 'item_ct1.get_local_range().get(1)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3060
+    Length:          1
+    ReplacementText: 'y()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          3422
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3072
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3073
+    Length:          1
+    ReplacementText: '[1]'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3554
     Length:          44
     ReplacementText: 'd_rand_state_g[idx] = oneapi::mkl::rng::device::philox4x32x10<1>(idx, {0, 0 * 8})'
     ConstantFlag:    ''
@@ -199,8 +496,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          3740
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          3872
     Length:          11
     ReplacementText: ''
     ConstantFlag:    ''
@@ -208,8 +505,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          4817
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          4551
     Length:          11
     ReplacementText: ''
     ConstantFlag:    ''
@@ -217,8 +514,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          5589
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          5323
     Length:          11
     ReplacementText: ''
     ConstantFlag:    ''
@@ -226,8 +523,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          6243
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          5977
     Length:          41
     ReplacementText: 'sycl::fabs(Vector3::dot(newDir, hitdata.normal))'
     ConstantFlag:    ''
@@ -235,8 +532,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7179
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          7196
     Length:          41
     ReplacementText: 'sycl::fabs(Vector3::dot(newDir, hitdata.normal))'
     ConstantFlag:    ''
@@ -244,8 +541,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7253
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          7270
     Length:          11
     ReplacementText: ''
     ConstantFlag:    ''
@@ -253,17 +550,53 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7285
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          8819
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9445
+    Length:          41
+    ReplacementText: 'sycl::fabs(Vector3::dot(newDir, hitdata.normal))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9508
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9705
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9737
     Length:          0
-    ReplacementText: "sycl::nd_item<3> item_ct1, float *dev_buffer,\r\n                     unsigned int *dev_samples, dev_Scene *dev_scene_g,\r\n                     curandState *d_rand_state_g"
+    ReplacementText: "float *dev_buffer, unsigned int *dev_samples,\r\n                     unsigned int *dev_pathcount, dev_Scene **dev_scene_g,\r\n                     curandState **d_rand_state_g"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7295
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9747
     Length:          0
     ReplacementText: "oneapi::mkl::rng::device::uniform<float> distr_ct1;\r\n    "
     ConstantFlag:    ''
@@ -271,8 +604,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7314
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9766
     Length:          0
     ReplacementText: '(*'
     ConstantFlag:    ''
@@ -280,8 +613,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7325
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9777
     Length:          0
     ReplacementText: ')'
     ConstantFlag:    ''
@@ -289,71 +622,89 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7342
-    Length:          11
-    ReplacementText: 'item_ct1.get_local_id(2)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9804
+    Length:          1
+    ReplacementText: 'x()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7356
-    Length:          10
-    ReplacementText: 'item_ct1.get_group(2)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9817
+    Length:          1
+    ReplacementText: 'x()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7369
-    Length:          10
-    ReplacementText: 'item_ct1.get_local_range().get(2)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9829
+    Length:          1
+    ReplacementText: ''
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7394
-    Length:          11
-    ReplacementText: 'item_ct1.get_local_id(1)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9830
+    Length:          1
+    ReplacementText: '[2]'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7408
-    Length:          10
-    ReplacementText: 'item_ct1.get_group(1)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9856
+    Length:          1
+    ReplacementText: 'y()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7421
-    Length:          10
-    ReplacementText: 'item_ct1.get_local_range().get(1)'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9869
+    Length:          1
+    ReplacementText: 'y()'
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7681
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9881
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          9882
+    Length:          1
+    ReplacementText: '[1]'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10062
     Length:          0
-    ReplacementText: "    /*\r\n    DPCT1032:2: Different generator is used, you may need to adjust the code.\r\n    */\r\n"
+    ReplacementText: "    /*\r\n    DPCT1032:2: A different random number generator is used. You may need to adjust the code.\r\n    */\r\n"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7685
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10066
     Length:          11
     ReplacementText: 'oneapi::mkl::rng::device::philox4x32x10<1>'
     ConstantFlag:    ''
@@ -361,8 +712,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7716
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10097
     Length:          0
     ReplacementText: '(*'
     ConstantFlag:    ''
@@ -370,8 +721,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          7730
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10111
     Length:          0
     ReplacementText: ')'
     ConstantFlag:    ''
@@ -379,8 +730,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          8402
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10368
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
     ConstantFlag:    ''
@@ -388,8 +739,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          8535
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10403
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
     ConstantFlag:    ''
@@ -397,8 +748,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          9225
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10438
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
     ConstantFlag:    ''
@@ -406,8 +757,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          9260
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10473
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
     ConstantFlag:    ''
@@ -415,8 +766,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          9295
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10508
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
     ConstantFlag:    ''
@@ -424,8 +775,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          9849
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          10937
     Length:          0
     ReplacementText: "oneapi::mkl::rng::device::uniform<float> distr_ct2;\r\n        "
     ConstantFlag:    ''
@@ -433,8 +784,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          10705
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          11786
     Length:          0
     ReplacementText: ', dev_scene_g'
     ConstantFlag:    ''
@@ -442,8 +793,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          10730
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          11842
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
     ConstantFlag:    ''
@@ -451,8 +802,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          10785
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          11877
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
     ConstantFlag:    ''
@@ -460,8 +811,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          10840
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          11912
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
     ConstantFlag:    ''
@@ -469,8 +820,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          10895
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          12011
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
     ConstantFlag:    ''
@@ -478,8 +829,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          10950
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          12046
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
     ConstantFlag:    ''
@@ -487,8 +838,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          11005
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          12081
     Length:          33
     ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
     ConstantFlag:    ''
@@ -496,26 +847,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          11060
-    Length:          33
-    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
-    ConstantFlag:    ''
-    ConstantOffset:  0
-    InitStr:         ''
-    NewHostVarName:  ''
-    BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          11664
-    Length:          30
-    ReplacementText: 'sycl::fabs(Vector3::dot(brdfDir, cN))'
-    ConstantFlag:    ''
-    ConstantOffset:  0
-    InitStr:         ''
-    NewHostVarName:  ''
-    BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12310
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          12766
     Length:          0
     ReplacementText: '(*'
     ConstantFlag:    ''
@@ -523,8 +856,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12324
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          12780
     Length:          0
     ReplacementText: ')'
     ConstantFlag:    ''
@@ -532,8 +865,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12464
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          12920
     Length:          0
     ReplacementText: "\r\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\r\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
     ConstantFlag:    ''
@@ -541,8 +874,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12572
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13028
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -550,8 +883,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12650
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13106
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -559,8 +892,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12675
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13131
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -568,8 +901,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12684
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13140
     Length:          10
     ReplacementText: 'dev_pointLights = sycl::malloc_device<PointLight>'
     ConstantFlag:    ''
@@ -577,8 +910,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12695
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13151
     Length:          26
     ReplacementText: ''
     ConstantFlag:    ''
@@ -586,8 +919,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12721
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13177
     Length:          36
     ReplacementText: pointLightCount
     ConstantFlag:    ''
@@ -595,8 +928,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12757
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13213
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -604,8 +937,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12765
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13221
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -613,8 +946,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12854
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13310
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -622,8 +955,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12879
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13335
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -631,8 +964,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12888
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13344
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -640,8 +973,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12965
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13421
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -649,8 +982,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          12990
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13446
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -658,8 +991,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13053
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13509
     Length:          0
     ReplacementText: "\r\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\r\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
     ConstantFlag:    ''
@@ -667,8 +1000,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13153
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13609
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -676,8 +1009,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13227
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13683
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -685,8 +1018,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13252
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13708
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -694,8 +1027,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13261
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13717
     Length:          10
     ReplacementText: 'dev_materials = sycl::malloc_device<Material>'
     ConstantFlag:    ''
@@ -703,8 +1036,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13272
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13728
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -712,8 +1045,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13296
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13752
     Length:          32
     ReplacementText: materialCount
     ConstantFlag:    ''
@@ -721,8 +1054,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13328
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13784
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -730,8 +1063,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13338
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13794
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -739,8 +1072,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13419
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13875
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -748,8 +1081,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13444
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13900
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -757,8 +1090,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13453
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13909
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -766,8 +1099,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13524
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          13980
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -775,8 +1108,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13549
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14005
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -784,8 +1117,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13610
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14066
     Length:          0
     ReplacementText: "\r\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\r\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
     ConstantFlag:    ''
@@ -793,8 +1126,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13748
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14204
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -802,8 +1135,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13818
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14274
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -811,8 +1144,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13843
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14299
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -820,8 +1153,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13852
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14308
     Length:          10
     ReplacementText: 'dev_spheres = sycl::malloc_device<Sphere>'
     ConstantFlag:    ''
@@ -829,8 +1162,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13863
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14319
     Length:          22
     ReplacementText: ''
     ConstantFlag:    ''
@@ -838,8 +1171,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13885
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14341
     Length:          28
     ReplacementText: sphereCount
     ConstantFlag:    ''
@@ -847,8 +1180,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13913
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14369
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -856,8 +1189,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13923
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14379
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -865,8 +1198,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          13984
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14440
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -874,8 +1207,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14009
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14465
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -883,8 +1216,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14018
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14474
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -892,8 +1225,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14083
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14539
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -901,8 +1234,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14108
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14564
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -910,8 +1243,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14170
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14626
     Length:          0
     ReplacementText: "\r\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\r\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
     ConstantFlag:    ''
@@ -919,8 +1252,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14315
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14771
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -928,8 +1261,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14387
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14843
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -937,8 +1270,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14412
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14868
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -946,8 +1279,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14421
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14877
     Length:          10
     ReplacementText: 'dev_textures = sycl::malloc_device<Texture>'
     ConstantFlag:    ''
@@ -955,8 +1288,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14432
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14888
     Length:          23
     ReplacementText: ''
     ConstantFlag:    ''
@@ -964,8 +1297,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14455
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14911
     Length:          30
     ReplacementText: textureCount
     ConstantFlag:    ''
@@ -973,8 +1306,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14485
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          14941
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -982,8 +1315,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14495
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15005
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -991,8 +1324,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14560
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15070
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1000,8 +1333,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14585
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15095
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1009,8 +1342,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14677
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15187
     Length:          10
     ReplacementText: 'textureData = (float *)sycl::malloc_device'
     ConstantFlag:    ''
@@ -1018,8 +1351,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14688
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15198
     Length:          22
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1027,8 +1360,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14768
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15278
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1036,8 +1369,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14782
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15378
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1045,8 +1378,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14882
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15478
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1054,8 +1387,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14907
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15503
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1063,8 +1396,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14918
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15514
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1072,8 +1405,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          14982
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15578
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1081,8 +1414,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15007
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15603
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1090,8 +1423,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15120
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15716
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1099,8 +1432,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15188
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15784
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1108,8 +1441,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15213
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15809
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1117,8 +1450,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15271
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15867
     Length:          0
     ReplacementText: "\r\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\r\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
     ConstantFlag:    ''
@@ -1126,8 +1459,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15382
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15978
     Length:          10
     ReplacementText: 'dev_hdri = sycl::malloc_device<HDRI>'
     ConstantFlag:    ''
@@ -1135,8 +1468,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15393
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          15989
     Length:          19
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1144,8 +1477,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15412
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16008
     Length:          12
     ReplacementText: '1'
     ConstantFlag:    ''
@@ -1153,8 +1486,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15424
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16020
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1162,8 +1495,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15432
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16028
     Length:          10
     ReplacementText: 'dev_data = (float *)sycl::malloc_device'
     ConstantFlag:    ''
@@ -1171,8 +1504,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15443
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16039
     Length:          19
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1180,8 +1513,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15524
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16120
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1189,8 +1522,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15532
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16128
     Length:          10
     ReplacementText: 'dev_cdf = (float *)sycl::malloc_device'
     ConstantFlag:    ''
@@ -1198,8 +1531,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15543
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16139
     Length:          18
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1207,8 +1540,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15619
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16215
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1216,8 +1549,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15629
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16328
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1225,8 +1558,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15668
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16367
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1234,8 +1567,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15693
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16392
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1243,8 +1576,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15700
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16399
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1252,8 +1585,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15803
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16502
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1261,8 +1594,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15828
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16527
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1270,8 +1603,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15835
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16534
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1279,8 +1612,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15924
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16623
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1288,8 +1621,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15949
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16648
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1297,8 +1630,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          15958
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16657
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1306,8 +1639,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16023
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16722
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1315,8 +1648,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16048
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16747
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1324,8 +1657,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16055
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16754
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1333,8 +1666,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16110
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16809
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1342,8 +1675,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16135
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16834
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1351,8 +1684,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16142
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16841
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1360,8 +1693,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16200
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16899
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1369,8 +1702,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16225
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16924
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1378,8 +1711,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16233
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16932
     Length:          11
     ReplacementText: int
     ConstantFlag:    ''
@@ -1387,8 +1720,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16271
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16970
     Length:          0
     ReplacementText: ' try '
     ConstantFlag:    ''
@@ -1396,8 +1729,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16272
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          16971
     Length:          0
     ReplacementText: "\r\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\r\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
     ConstantFlag:    ''
@@ -1405,8 +1738,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16327
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17026
     Length:          31
     ReplacementText: 'kernelStream = dpct::get_current_device().create_queue()'
     ConstantFlag:    ''
@@ -1414,8 +1747,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16839
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17538
     Length:          10
     ReplacementText: 'dev_scene = sycl::malloc_device<dev_Scene>'
     ConstantFlag:    ''
@@ -1423,8 +1756,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16850
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17549
     Length:          20
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1432,8 +1765,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16870
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17569
     Length:          17
     ReplacementText: '1'
     ConstantFlag:    ''
@@ -1441,8 +1774,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16887
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17586
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1450,8 +1783,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16897
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17596
     Length:          11
     ReplacementText: int
     ConstantFlag:    ''
@@ -1459,17 +1792,17 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16924
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17623
     Length:          0
-    ReplacementText: "    /*\r\n    DPCT1032:3: Different generator is used, you may need to adjust the code.\r\n    */\r\n"
+    ReplacementText: "    /*\r\n    DPCT1032:3: A different random number generator is used. You may need to adjust the code.\r\n    */\r\n"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16928
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17627
     Length:          11
     ReplacementText: 'oneapi::mkl::rng::device::philox4x32x10<1>'
     ConstantFlag:    ''
@@ -1477,17 +1810,17 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16956
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17655
     Length:          0
-    ReplacementText: "    /*\r\n    DPCT1032:4: Different generator is used, you may need to adjust the code.\r\n    */\r\n"
+    ReplacementText: "    /*\r\n    DPCT1032:4: A different random number generator is used. You may need to adjust the code.\r\n    */\r\n"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16960
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17659
     Length:          10
     ReplacementText: 'd_rand_state = sycl::malloc_device<oneapi::mkl::rng::device::philox4x32x10<1>>'
     ConstantFlag:    ''
@@ -1495,8 +1828,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16971
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17670
     Length:          23
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1504,8 +1837,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          16994
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17693
     Length:          49
     ReplacementText: 'camera->xRes * camera->yRes'
     ConstantFlag:    ''
@@ -1513,8 +1846,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17043
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17742
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1522,8 +1855,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17055
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17752
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1531,8 +1864,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17133
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17830
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1540,8 +1873,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17158
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17855
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1549,8 +1882,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17165
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17862
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1558,8 +1891,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17229
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17926
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1567,8 +1900,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17254
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          17951
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -1576,8 +1909,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17379
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18070
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:5: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1585,8 +1918,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17396
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18087
     Length:          13
     ReplacementText: '(dpct::dev_mgr::instance().select_device'
     ConstantFlag:    ''
@@ -1594,8 +1927,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17412
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18103
     Length:          0
     ReplacementText: ', 0)'
     ConstantFlag:    ''
@@ -1603,8 +1936,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17417
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18108
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:6: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1612,8 +1945,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17434
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18125
     Length:          10
     ReplacementText: '(dev_camera = sycl::malloc_device<Camera>'
     ConstantFlag:    ''
@@ -1621,8 +1954,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17445
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18136
     Length:          21
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1630,8 +1963,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17466
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18157
     Length:          14
     ReplacementText: '1'
     ConstantFlag:    ''
@@ -1639,8 +1972,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17480
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18171
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1648,8 +1981,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17481
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18172
     Length:          0
     ReplacementText: ', 0)'
     ConstantFlag:    ''
@@ -1657,8 +1990,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17484
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18175
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:7: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1666,8 +1999,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17501
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18192
     Length:          10
     ReplacementText: '(dev_meshObjects = sycl::malloc_device<MeshObject>'
     ConstantFlag:    ''
@@ -1675,8 +2008,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17512
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18203
     Length:          26
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1684,8 +2017,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17538
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18229
     Length:          36
     ReplacementText: meshObjectCount
     ConstantFlag:    ''
@@ -1693,8 +2026,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17574
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18265
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1702,8 +2035,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17575
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18266
     Length:          0
     ReplacementText: ', 0)'
     ConstantFlag:    ''
@@ -1711,8 +2044,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17580
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18271
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:8: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1720,8 +2053,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17597
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18288
     Length:          10
     ReplacementText: '(dev_tris = sycl::malloc_device<Tri>'
     ConstantFlag:    ''
@@ -1729,8 +2062,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17608
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18299
     Length:          19
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1738,8 +2071,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17627
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18318
     Length:          22
     ReplacementText: triCount
     ConstantFlag:    ''
@@ -1747,8 +2080,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17649
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18340
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1756,8 +2089,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17650
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18341
     Length:          0
     ReplacementText: ', 0)'
     ConstantFlag:    ''
@@ -1765,8 +2098,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17653
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18344
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:9: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1774,8 +2107,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17670
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18361
     Length:          10
     ReplacementText: '(dev_bvh = sycl::malloc_device<BVH>'
     ConstantFlag:    ''
@@ -1783,8 +2116,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17681
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18372
     Length:          18
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1792,8 +2125,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17699
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18390
     Length:          11
     ReplacementText: '1'
     ConstantFlag:    ''
@@ -1801,8 +2134,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17710
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18401
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1810,8 +2143,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17711
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18402
     Length:          0
     ReplacementText: ', 0)'
     ConstantFlag:    ''
@@ -1819,8 +2152,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17714
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18405
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:10: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1828,8 +2161,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17731
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18422
     Length:          10
     ReplacementText: '(dev_triIndices = sycl::malloc_device<int>'
     ConstantFlag:    ''
@@ -1837,8 +2170,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17742
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18433
     Length:          25
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1846,8 +2179,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17767
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18458
     Length:          22
     ReplacementText: triCount
     ConstantFlag:    ''
@@ -1855,8 +2188,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17789
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18480
     Length:          0
     ReplacementText: ', dpct::get_default_queue()'
     ConstantFlag:    ''
@@ -1864,8 +2197,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17790
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18481
     Length:          0
     ReplacementText: ', 0)'
     ConstantFlag:    ''
@@ -1873,8 +2206,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17836
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18613
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:11: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1882,8 +2215,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17853
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18630
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1891,8 +2224,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17930
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18707
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1900,8 +2233,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17955
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18732
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -1909,8 +2242,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17958
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18735
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:12: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1918,8 +2251,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          17975
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18752
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1927,8 +2260,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18020
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18797
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1936,8 +2269,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18045
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18822
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -1945,8 +2278,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18048
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18825
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:13: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1954,8 +2287,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18065
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18842
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1963,8 +2296,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18114
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18891
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -1972,8 +2305,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18139
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18916
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -1981,8 +2314,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18142
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18919
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:14: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -1990,8 +2323,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18159
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18936
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -1999,8 +2332,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18195
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18972
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2008,8 +2341,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18220
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          18997
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2017,8 +2350,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18223
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19000
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:15: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2026,8 +2359,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18240
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19017
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2035,8 +2368,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18306
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19083
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2044,8 +2377,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18331
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19108
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2053,8 +2386,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18431
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19170
     Length:          10
     ReplacementText: 'dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2062,8 +2395,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18493
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19232
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2071,8 +2404,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18518
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19257
     Length:          0
     ReplacementText: '.wait()'
     ConstantFlag:    ''
@@ -2080,8 +2413,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18569
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19308
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:16: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2089,8 +2422,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18586
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19325
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2098,8 +2431,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18663
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19402
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2107,8 +2440,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18688
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19427
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2116,8 +2449,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18691
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19430
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:17: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2125,8 +2458,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18708
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19447
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2134,8 +2467,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18771
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19510
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2143,8 +2476,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18796
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19535
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2152,8 +2485,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18799
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19538
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:18: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2161,8 +2494,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18816
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19555
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2170,8 +2503,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18872
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19611
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2179,8 +2512,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18897
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19636
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2188,8 +2521,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18900
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19639
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:19: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2197,8 +2530,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18917
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19656
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2206,8 +2539,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18971
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19710
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2215,8 +2548,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          18996
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19735
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2224,8 +2557,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19001
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19740
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:20: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2233,8 +2566,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19018
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19757
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2242,8 +2575,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19072
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19811
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2251,8 +2584,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19097
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19836
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2260,8 +2593,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19100
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19839
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:21: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2269,8 +2602,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19117
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19856
     Length:          10
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2278,8 +2611,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19183
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19922
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2287,8 +2620,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19208
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19947
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2296,8 +2629,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19217
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19956
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:22: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2305,8 +2638,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19234
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19973
     Length:          18
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2314,8 +2647,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19253
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          19992
     Length:          11
     ReplacementText: 'dev_scene_g.get_ptr()'
     ConstantFlag:    ''
@@ -2323,8 +2656,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19297
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20036
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2332,17 +2665,17 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19300
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20039
     Length:          0
-    ReplacementText: "    /*\r\n    DPCT1003:23: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n    /*\r\n    DPCT1032:24: Different generator is used, you may need to adjust the code.\r\n    */\r\n"
+    ReplacementText: "    /*\r\n    DPCT1003:23: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n    /*\r\n    DPCT1032:24: A different random number generator is used. You may need to adjust the code.\r\n    */\r\n"
     ConstantFlag:    ''
     ConstantOffset:  0
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19317
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20056
     Length:          18
     ReplacementText: '(dpct::get_default_queue().memcpy'
     ConstantFlag:    ''
@@ -2350,8 +2683,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19336
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20075
     Length:          14
     ReplacementText: 'd_rand_state_g.get_ptr()'
     ConstantFlag:    ''
@@ -2359,8 +2692,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19374
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20113
     Length:          11
     ReplacementText: 'oneapi::mkl::rng::device::philox4x32x10<1>'
     ConstantFlag:    ''
@@ -2368,8 +2701,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19388
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20127
     Length:          0
     ReplacementText: '.wait(), 0)'
     ConstantFlag:    ''
@@ -2377,8 +2710,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19770
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20545
     Length:          4
     ReplacementText: 'sycl::range<3>'
     ConstantFlag:    ''
@@ -2386,8 +2719,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19782
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20557
     Length:          44
     ReplacementText: '1, camera->yRes / ty + 1, camera->xRes / tx + 1'
     ConstantFlag:    ''
@@ -2395,8 +2728,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19834
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20609
     Length:          4
     ReplacementText: 'sycl::range<3>'
     ConstantFlag:    ''
@@ -2404,8 +2737,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19847
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20622
     Length:          6
     ReplacementText: 1, ty, tx
     ConstantFlag:    ''
@@ -2413,8 +2746,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          19992
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20767
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:25: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2422,8 +2755,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20009
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20784
     Length:          35
     ReplacementText: '(kernelStream->wait(), 0)'
     ConstantFlag:    ''
@@ -2431,8 +2764,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20051
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          20826
     Length:          175
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2440,8 +2773,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20265
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21040
     Length:          0
     ReplacementText: "\r\ncatch (sycl::exception const &exc) {\r\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\r\n  std::exit(1);\r\n}"
     ConstantFlag:    ''
@@ -2449,8 +2782,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20299
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21162
     Length:          0
     ReplacementText: ' try '
     ConstantFlag:    ''
@@ -2458,8 +2791,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20362
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21225
     Length:          4
     ReplacementText: 'sycl::range<3>'
     ConstantFlag:    ''
@@ -2467,8 +2800,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20374
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21237
     Length:          56
     ReplacementText: '1, scene->camera.yRes / ty + 1, scene->camera.xRes / tx + 1'
     ConstantFlag:    ''
@@ -2476,8 +2809,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20438
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21301
     Length:          4
     ReplacementText: 'sycl::range<3>'
     ConstantFlag:    ''
@@ -2485,8 +2818,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20451
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21314
     Length:          6
     ReplacementText: 1, ty, tx
     ConstantFlag:    ''
@@ -2494,8 +2827,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20555
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21447
     Length:          0
     ReplacementText: "        /*\r\n        DPCT1003:26: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n        */\r\n"
     ConstantFlag:    ''
@@ -2503,8 +2836,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20563
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21455
     Length:          11
     ReplacementText: int
     ConstantFlag:    ''
@@ -2512,8 +2845,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20588
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21480
     Length:          35
     ReplacementText: '(kernelStream->wait(), 0)'
     ConstantFlag:    ''
@@ -2521,8 +2854,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20634
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21526
     Length:          162
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2530,8 +2863,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20808
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21702
     Length:          0
     ReplacementText: "\r\ncatch (sycl::exception const &exc) {\r\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\r\n  std::exit(1);\r\n}"
     ConstantFlag:    ''
@@ -2539,8 +2872,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20812
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21706
     Length:          11
     ReplacementText: int
     ConstantFlag:    ''
@@ -2548,8 +2881,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20859
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21780
     Length:          0
     ReplacementText: ' try '
     ConstantFlag:    ''
@@ -2557,8 +2890,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20868
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21789
     Length:          31
     ReplacementText: 'bufferStream = dpct::get_current_device().create_queue()'
     ConstantFlag:    ''
@@ -2566,8 +2899,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20955
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21825
     Length:          0
     ReplacementText: "    /*\r\n    DPCT1003:27: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
     ConstantFlag:    ''
@@ -2575,8 +2908,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20959
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21829
     Length:          11
     ReplacementText: int
     ConstantFlag:    ''
@@ -2584,8 +2917,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          20984
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21854
     Length:          25
     ReplacementText: '(bufferStream->memcpy'
     ConstantFlag:    ''
@@ -2593,8 +2926,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21018
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21893
     Length:          10
     ReplacementText: 'dev_buffer.get_ptr(*bufferStream)'
     ConstantFlag:    ''
@@ -2602,8 +2935,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21050
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21929
     Length:          3
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2611,8 +2944,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21053
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21932
     Length:          24
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2620,8 +2953,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21077
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21956
     Length:          14
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2629,8 +2962,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21092
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21971
     Length:          0
     ReplacementText: ', 0)'
     ConstantFlag:    ''
@@ -2638,8 +2971,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21099
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          21978
     Length:          136
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2647,8 +2980,80 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21264
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22118
+    Length:          0
+    ReplacementText: "    /*\r\n    DPCT1003:28: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22135
+    Length:          25
+    ReplacementText: '(bufferStream->memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22178
+    Length:          13
+    ReplacementText: 'dev_pathcount.get_ptr(*bufferStream)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22220
+    Length:          3
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22223
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22247
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22262
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22269
+    Length:          136
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22434
     Length:          0
     ReplacementText: "\r\ncatch (sycl::exception const &exc) {\r\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\r\n  std::exit(1);\r\n}"
     ConstantFlag:    ''
@@ -2656,8 +3061,35 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21400
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22455
+    Length:          0
+    ReplacementText: ' try '
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22484
+    Length:          31
+    ReplacementText: 'bufferStream = dpct::get_current_device().create_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22520
+    Length:          0
+    ReplacementText: "    /*\r\n    DPCT1003:29: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\r\n    */\r\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22524
     Length:          11
     ReplacementText: int
     ConstantFlag:    ''
@@ -2665,8 +3097,62 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21525
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22549
+    Length:          25
+    ReplacementText: '(bufferStream->memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22581
+    Length:          11
+    ReplacementText: 'dev_samples.get_ptr(*bufferStream)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22614
+    Length:          3
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22617
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22641
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22656
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22663
     Length:          136
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2674,8 +3160,17 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          21691
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22825
+    Length:          0
+    ReplacementText: "\r\ncatch (sycl::exception const &exc) {\r\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\r\n  std::exit(1);\r\n}"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          22829
     Length:          9
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2683,8 +3178,8 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Offset:          22163
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Offset:          23301
     Length:          9
     ReplacementText: ''
     ConstantFlag:    ''
@@ -2693,6 +3188,184 @@ Replacements:
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
 MainSourceFilesDigest:
-  - MainSourceFile:  'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\kernel.cu'
-    Digest:          b217f911a12455da4cd61c9e9d88e49f
+  - MainSourceFile:  'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+    Digest:          14a9c04ce6bcbbc0d7016d0be8979fa8
+  - MainSourceFile:  'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+    Digest:          ccfe722b671c833f9d2fa0676708b115
+DpctVersion:     2021.3.0
+MainHelperFileName: dpct
+USMLevel:        restricted
+FeatureMap:
+  device.hpp:
+    dev_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    device_ext:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    device_info:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    exception_handler:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    get_current_device:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    get_default_queue:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    get_tid:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+  dpct.hpp:
+    dpct_align_and_inline:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\test.h'
+      FeatureName:     ''
+    non_local_include_dependency:
+      IsCalled:        true
+      CallerSrcFiles:
+        - ''
+      FeatureName:     ''
+  memory.hpp:
+    device_memory:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_accessor:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_free:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_malloc_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d_3d_pitch_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d_pitch_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    dpct_memcpy_3d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    dpct_memcpy_3d_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    dpct_memcpy_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    get_buffer_T:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    get_buffer_byte_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    global_memory_alias:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    mem_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    memory_region:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    memory_traits:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    pitched_data:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    typedef_buffer_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
+    typedef_byte_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\vector_add.cu'
+      FeatureName:     ''
 ...

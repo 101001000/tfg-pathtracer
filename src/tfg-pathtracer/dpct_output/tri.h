@@ -52,46 +52,20 @@ public:
 
         inv_det = 1.0 / det;
 
-        if (0) {
-            if (det < EPSILON)
-                return false;
+        if (det > -EPSILON && det < EPSILON) return false;
 
-            Vector3 tvec = ray.origin - vertices[0];
+        Vector3 tvec = ray.origin - vertices[0];
 
-            u = Vector3::dot(tvec, pvec);
+        u = Vector3::dot(tvec, pvec) * inv_det;
+        if (u < 0.0 || u > 1.0)
+            return false;
 
-            if (u < 0.0 || u > det)
-                return false;
+        Vector3 qvec = Vector3::cross(tvec, edge1);
+        v = Vector3::dot(ray.direction, qvec) * inv_det;
+        if (v < 0.0 || (u + v) > 1.0)
+            return false;
 
-            Vector3 qvec = Vector3::cross(tvec, edge1);
-
-            v = Vector3::dot(ray.direction, qvec);
-
-            if (v < 0.0 || u + v > det)
-                return false;
-
-            t = Vector3::dot(edge2, qvec);
-
-            t *= inv_det;
-            u *= inv_det;
-            v *= inv_det;
-        }
-        else {
-            if (det > -EPSILON && det < EPSILON) return false;
-
-            Vector3 tvec = ray.origin - vertices[0];
-
-            u = Vector3::dot(tvec, pvec) * inv_det;
-            if (u < 0.0 || u > 1.0)
-                return false;
-
-            Vector3 qvec = Vector3::cross(tvec, edge1);
-            v = Vector3::dot(ray.direction, qvec) * inv_det;
-            if (v < 0.0 || (u + v) > 1.0)
-                return false;
-
-            t = Vector3::dot(edge2, qvec) * inv_det;
-        }
+        t = Vector3::dot(edge2, qvec) * inv_det;
 
         if (t < 0) return false;
 

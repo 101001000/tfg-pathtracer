@@ -50,7 +50,7 @@ public:
 		generateCDF();
 	}
 
-	inline void generateCDF2() {
+	inline void generateCDF2(){
 
 		for (int y = 0; y < texture.height; y++) {
 			for (int x = 0; x < texture.width; x++) {
@@ -59,7 +59,7 @@ public:
 
 				float u, v;
 
-				Vector3 sample = UniformSampleSphere((float)x/(float)texture.width, (float)y/(float)texture.height);
+				Vector3 sample = uniformSampleSphere((float)x/(float)texture.width, (float)y/(float)texture.height);
 
 				Texture::sphericalMapping(Vector3(), sample, 1, u, v);
 
@@ -78,7 +78,7 @@ public:
 
 				float u, v;
 
-				Vector3 sample = UniformSampleSphere((float)x / (float)texture.width, (float)y / (float)texture.height);
+				Vector3 sample = uniformSampleSphere((float)x / (float)texture.width, (float)y / (float)texture.height);
 
 				Texture::sphericalMapping(Vector3(), sample, 1, u, v);
 
@@ -129,42 +129,23 @@ public:
 		int from = 0;
 		int to = length - 1;
 
-		int m = (to - from) / 2;
+		while (to - from > 0) {
 
-		while (to - from > 1) {
+			int m = from + (to - from) / 2;
 
-			m = from + (to - from) / 2;
-
-			if (to - from <= 0) return m;
-
-			if (value < arr[m]) {
-				to = m;
-			}
-			else {
-				from = m;
-			}
+			if (value == arr[m]) return m;
+			if (value < arr[m])	to = m - 1;
+			if (value > arr[m]) from = m + 1;
 		}
 
-		return m;
+		return to;
 	}
 
 	inline float pdf(int x, int y) {
 
 		Vector3 dv = texture.getValue(x, y);
 
-		//float theta = (float)y * PI / (float)texture.height;
-		//float a = sin(theta);
-
-		//return (dv.x + dv.y + dv.z) * (1.0 / (2.0 * PI)) / radianceSum ;
-
-		return (((dv.x + dv.y + dv.z)/ radianceSum) * (texture.width * texture.height * (1.0 / (2.0 * PI))));
-	}
-
-	inline float brdf(int x, int y) {
-
-		Vector3 dv = texture.getValue(x, y);
-
-		return ((dv.x + dv.y + dv.z) / radianceSum * texture.width * texture.height) ;
+		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI);
 	}
 
 	inline Vector3 sample(float r1) {
@@ -186,7 +167,7 @@ public:
 
 		float u, v;
 
-		Vector3 sample = UniformSampleSphere((float)wu / (float)texture.width, (float)wv / (float)texture.height);
+		Vector3 sample = uniformSampleSphere((float)wu / (float)texture.width, (float)wv / (float)texture.height);
 
 		Texture::sphericalMapping(Vector3(), sample, 1, u, v);
 

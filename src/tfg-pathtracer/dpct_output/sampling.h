@@ -43,8 +43,8 @@ inline Vector3 ImportanceSampleGGX(float rgh, float r1, float r2) {
 
     float phi = r1 * PI * 2;
 
-    float cosTheta = sycl::sqrt((1.0 - r2) / (1.0 + (a * a - 1.0) * r2));
-    float sinTheta = clamp(sycl::sqrt(1.0 - (cosTheta * cosTheta)), 0.0, 1.0);
+    float cosTheta = sqrt((1.0 - r2) / (1.0 + (a * a - 1.0) * r2));
+    float sinTheta = clamp(sqrt(1.0 - (cosTheta * cosTheta)), 0.0, 1.0);
     float sinPhi = sycl::sin(phi);
     float cosPhi = sycl::cos(phi);
 

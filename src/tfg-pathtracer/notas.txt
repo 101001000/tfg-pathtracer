@@ -21,3 +21,7 @@ Añadir luces de área.
 eliminar esferas
 
 Colisiones para las luces puntuales
+
+Convertir disney en un namespace
+
+Epsilon arreglar

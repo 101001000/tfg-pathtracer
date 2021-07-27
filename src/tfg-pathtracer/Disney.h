@@ -5,9 +5,8 @@
 #include "Math.h"
 #include "Ray.h"
 #include "Material.h"
-#include "kernel.h"
-
 #include "cuda_runtime.h"
+
 
 // Adaptación del shader de disney de knightcrawler25, derivar en un futuro para aplicar optimizaciones.
 // https://github.com/knightcrawler25/GLSL-PathTracer/blob/master/src/shaders/common/disney.glsl

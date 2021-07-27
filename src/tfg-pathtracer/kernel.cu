@@ -2,8 +2,6 @@
 #include <curand_kernel.h>
 #include <stdio.h>
 
-#include "cuda_runtime.h"
-#include "device_launch_parameters.h"
 
 #include "kernel.h"
 #include "Sphere.h"
@@ -17,7 +15,7 @@
 #include "HDRI.h"
 #include "Math.h"
 
-#define THREADSIZE 16
+#define THREADSIZE 8
 #define MAXBOUNCES 5
 
 #define USEBVH true
@@ -51,7 +49,7 @@ struct dev_Scene {
 __device__ float dev_buffer[1920 * 1080 * 4]; 
 
 // How many samples per pixels has been calculated. 
-__device__ unsigned int dev_samples[1920 * 1080];
+__device__  unsigned int dev_samples[1920 * 1080];
 __device__ unsigned int dev_pathcount[1920 * 1080];
 __device__ dev_Scene* dev_scene_g;
 __device__ curandState* d_rand_state_g;
@@ -61,7 +59,7 @@ cudaStream_t kernelStream, bufferStream;
 long textureMemory = 0;
 long geometryMemory = 0;
 
-__device__ void createHitData(Material* material, HitData& hitdata, float u, float v, Vector3 N) {
+__device__ void generateHitData(Material* material, HitData& hitdata, float u, float v, Vector3 N) {
 
     Vector3 tangent, bitangent;
 
@@ -149,6 +147,7 @@ __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
 
 #ifdef USEBVH:
     scene->bvh->transverse(ray, nearestHit);
+    //scene->bvh->transverseAux(ray, nearestHit, scene->bvh->nodes[0]);
 #else:
     for (int j = 0; j < scene->meshObjectCount; j++) {
 
@@ -314,12 +313,15 @@ __global__ void neeRenderKernel(){
 
     if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
 
-    // The index for the pixel. Maybe I could look for another indexing function which preserves better the spaciality
+    //int idx1 = (scene->camera->xRes * y + x);
     int idx = (scene->camera->xRes * y + x);
 
-    unsigned int sa = dev_samples[idx];
-
     curandState local_rand_state = d_rand_state_g[idx];
+
+    //x = curand_uniform(&local_rand_state) * scene->camera->xRes;
+    //y = curand_uniform(&local_rand_state) * scene->camera->yRes;
+
+    unsigned int sa = dev_samples[idx];
 
     Ray ray;
 
@@ -349,6 +351,8 @@ __global__ void neeRenderKernel(){
         // FIX BACKFACE NORMALS
         if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
 
+        //nearestHit.normal *= -(Vector3::dot(nearestHit.normal, ray.direction) > 0);
+
         if (!nearestHit.valid) {
             float u, v;
             Texture::sphericalMapping(Vector3(), -1 * ray.direction, 1, u, v);
@@ -360,7 +364,7 @@ __global__ void neeRenderKernel(){
 
         Material* material = &scene->materials[materialID];
 
-        createHitData(material, hitdata, nearestHit.u, nearestHit.v, nearestHit.normal);
+        generateHitData(material, hitdata, nearestHit.u, nearestHit.v, nearestHit.normal);
 
         calculateBounce(ray, hitdata, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
 
@@ -592,7 +596,7 @@ Error:
 
 //TODO quitar variables globales pasando por parámetro el puntero.
 
-void renderCuda(Scene* scene) {
+void renderCuda(Scene* scene, int sampleTarget) {
 
     int tx = THREADSIZE;
     int ty = THREADSIZE;
@@ -600,7 +604,7 @@ void renderCuda(Scene* scene) {
     dim3 blocks(scene->camera.xRes / tx + 1, scene->camera.yRes / ty + 1);
     dim3 threads(tx, ty);
 
-    while (1) {
+    for (int i = 0; i < sampleTarget; i++) {
 
         neeRenderKernel << <blocks, threads, 0, kernelStream >> > ();
 
@@ -608,6 +612,7 @@ void renderCuda(Scene* scene) {
         if (cudaStatus != cudaSuccess) {
             fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
         }
+
     }
 
 }

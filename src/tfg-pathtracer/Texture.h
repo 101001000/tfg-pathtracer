@@ -16,7 +16,6 @@ class Texture {
 public:
 
 	float* data;
-
     bool USE_IMAGE;
 
     Vector3 color;
@@ -61,8 +60,6 @@ public:
         // read the rest of the data at once
         fread(tmpData, sizeof(unsigned char), size, f);
         fclose(f);
-
-        
 
         for (i = 0; i < size; i += 3) {
             // flip the order of every 3 bytes
@@ -171,14 +168,6 @@ public:
 
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
 
-        // p: a given point on the sphere of radius one, centered at the origin.
-        // u: returned value [0,1] of angle around the Y axis from X=-1.
-        // v: returned value [0,1] of angle from Y=-1 to Y=+1.
-        //     <1 0 0> yields <0.50 0.50>       <-1  0  0> yields <0.00 0.50>
-        //     <0 1 0> yields <0.50 1.00>       < 0 -1  0> yields <0.50 0.00>
-        //     <0 0 1> yields <0.25 0.50>       < 0  0 -1> yields <0.75 0.50>
-
-        //Vector3 p = _p -Vector3(1,0,0);
         Vector3 p = (point - origin) / radius;
 
         float theta = acos(-p.y);
@@ -187,11 +176,18 @@ public:
         u = phi / (2 * PI);
         v = theta / PI;
 
+        u += -(u > 1) + -(u < 0);
+        v += -(v > 1) + -(v < 0);
+
+        /*
+
         if (u > 1) u -= 1;
         if (v > 1) v -= 1;
 
         if (u < 0) u += 1;
         if (v < 0) v += 1;
+
+        */
     }
 };
 

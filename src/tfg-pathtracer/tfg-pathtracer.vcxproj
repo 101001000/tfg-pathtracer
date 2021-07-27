@@ -29,6 +29,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Sphere.h" />
+    <ClInclude Include="vector_add.cu" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tri.h" />
     <ClInclude Include="Vector.h" />

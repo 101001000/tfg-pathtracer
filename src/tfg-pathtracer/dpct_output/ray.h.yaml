@@ -1,7 +1,7 @@
 ---
-MainSourceFile:  'c:\users\kike\desktop\uni\tfg\github\tfg-pathtracer - copia\src\tfg-pathtracer\dpct_output\ray.h'
+MainSourceFile:  'c:\users\kike\desktop\uni\tfg\github\tfg-pathtracer\src\tfg-pathtracer\dpct_output\ray.h'
 Replacements:
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Ray.h'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Ray.h'
     Offset:          32
     Length:          0
     ReplacementText: "#include <CL/sycl.hpp>\r\n#include <dpct/dpct.hpp>\r\n"
@@ -10,7 +10,7 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Ray.h'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Ray.h'
     Offset:          130
     Length:          9
     ReplacementText: ''
@@ -19,7 +19,7 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
-  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer - copia\src\tfg-pathtracer\Ray.h'
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Ray.h'
     Offset:          139
     Length:          11
     ReplacementText: ''
@@ -28,5 +28,180 @@ Replacements:
     InitStr:         ''
     NewHostVarName:  ''
     BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Ray.h'
+    Offset:          282
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Ray.h'
+    Offset:          291
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
 MainSourceFilesDigest: []
+DpctVersion:     2021.3.0
+MainHelperFileName: dpct
+USMLevel:        restricted
+FeatureMap:
+  device.hpp:
+    dev_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    device_ext:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    device_info:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    exception_handler:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    get_current_device:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    get_default_queue:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    get_tid:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+  dpct.hpp:
+    dpct_align_and_inline:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\test.h'
+      FeatureName:     ''
+    non_local_include_dependency:
+      IsCalled:        true
+      CallerSrcFiles:
+        - ''
+      FeatureName:     ''
+  memory.hpp:
+    device_memory:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_accessor:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_free:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_malloc_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d_3d_pitch_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d_pitch_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_3d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_3d_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    get_buffer_T:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    get_buffer_byte_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    global_memory_alias:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    mem_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    memory_region:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    memory_traits:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    pitched_data:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    typedef_buffer_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
+    typedef_byte_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - 'C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu'
+      FeatureName:     ''
 ...

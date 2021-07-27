@@ -60,8 +60,6 @@ public:
 		x = std::stof(sx);
 		y = std::stof(sy);
 		z = std::stof(sz);
-
-
 	}
 
 	inline Vector3() {
@@ -81,6 +79,16 @@ public:
 		y = _x;
 		z = _x;
 	}
+
+	inline static Vector3 Zero() {	return Vector3(0); }
+	inline static Vector3 One() { return Vector3(1); }
+	inline static Vector3 Up() { return Vector3(0, 1, 0); }
+	inline static Vector3 Down() { return Vector3(0, -1, 0); }
+	inline static Vector3 Left() { return Vector3(-1, 0, 0); }
+	inline static Vector3 Right() { return Vector3(1, 0, 0); }
+	inline static Vector3 Forward() { return Vector3(0, 0, 1); }
+	inline static Vector3 Back() { return Vector3(0, 0, -1); }
+
 
 	inline float length() const {
                 return sycl::sqrt(x * x + y * y + z * z);
@@ -105,10 +113,8 @@ public:
 
 		float EPSILON = 0.0001;
 
-                return sycl::fabs(x - v.x) < EPSILON &&
-                       sycl::fabs(y - v.y) < EPSILON &&
-                       sycl::fabs(z - v.z) < EPSILON;
-        }
+		return abs(x - v.x) < EPSILON && abs(y - v.y) < EPSILON && abs(z - v.z) < EPSILON;
+	}
 
 	inline bool operator!=(const Vector3& v) {
 		return !(*this == v);
@@ -154,22 +160,17 @@ public:
 		return Vector3((v1.y * v2.z - v1.z * v2.y), - (v1.x * v2.z - v1.z * v2.x), (v1.x * v2.y - v1.y * v2.x));
 	}
 
-
-
 	inline void normalize() {
 
 		float l = length();
 
 		if (l == 0) return;
 
-		x /= l;
-		y /= l;
-		z /= l;
+		x /= l;	y /= l;	z /= l;
 	}
 
 	inline Vector3 normalized() {
 		if (length() == 0) return Vector3(x, y, z);
-
 		return Vector3(x, y, z) / length();
 	}
 
@@ -180,7 +181,6 @@ public:
 	inline Vector3 operator/(const Vector3& v1) {
 		return Vector3(x / v1.x, y / v1.y, z / v1.z);
 	}
-
 
 	inline static Vector3 lerp(const Vector3& v1, const Vector3& v2, float amount);
 	inline static Vector3 lerp2D(const Vector3& v1, const Vector3& v2, const Vector3& v3, const Vector3& v4, float amountX, float amountY);
@@ -227,11 +227,8 @@ inline bool operator==(const Vector3& v1, const Vector3& v2) {
 
 	float EPSILON = 0.0001;
 
-        return sycl::fabs(v1.x - v2.x) < EPSILON &&
-               sycl::fabs(v1.y - v2.y) < EPSILON &&
-               sycl::fabs(v1.z - v2.z) < EPSILON;
+	return abs(v1.x - v2.x) < EPSILON && abs(v1.y - v2.y) < EPSILON && abs(v1.z - v2.z) < EPSILON;
 }
-
 
 inline Vector3 Vector3::lerp(const Vector3& v1, const Vector3& v2, float amount) {
 	return v1 * amount + (1 - amount) * v2;
