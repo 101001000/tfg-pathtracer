@@ -1,3 +1,71 @@
-\chapter{Capítulo 2}
-\noindent
-\lipsum[1-20]
+\chapter{Fundamentos del algoritmo de Path Tracing}
+	
+
+En este capítulo se procede a dar un esquema básico de los fundamentos de este algoritmo. El objetivo será así describir un motor de renderizado previo a cualquier optimización, que cuenta con las funcionalidades básicas para producir una imagen de una escena tridimensional simple. 
+Aproximando la ecuación de renderizado:
+
+	\section{Aproximación de la ecuación de renderizado}
+\[
+{\displaystyle L_{\text{o}}(\mathbf {x} ,\omega _{\text{o}} ,t)=L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}},t)\ +\int _{\Omega }f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}},t)L_{\text{i}}(\mathbf {x} ,\omega _{\text{i}},t)(\omega _{\text{i}}\cdot \mathbf {n} )\operatorname {d} \omega _{\text{i}}}
+\]
+
+
+La ecuación de renderizado aparece por primera vez en 1986 junto al algoritmo de Path Tracing, siendo este una propuesta para resolverla haciendo uso del método de Monte Carlo. Este algoritmo debido a la naturaleza del método de Monte Carlo, ofrecerá una solución aproximada, más precisa cuanto mayor sea el tiempo de ejecución del algoritmo. 
+
+Esta ecuación define la energía lumínica saliente desde un punto x del espacio hacia una dirección w0 y es el pilar de la visualización fotorrealista, puesto que garantiza resultados teóricamente muy similares al comportamiento físico real de los fotones y cámaras digitales. Se compone de cuatro partes:
+
+El primer término indica la luz que dicho punto x emite, así pues se podrán modelar materiales emisivos.
+
+El segundo término calcula toda la luz entrante y reflejada por dicho punto x, es por ello que integra todos los ángulos del hemisferio superior. Este segundo término se compone de tres coeficientes:
+
+El primer coeficiente es la función BRDF, la cual es dependiente del material e indica cuánta energía se refleja en dicho punto para ciertas direcciones de entrada y salida.
+
+El segundo coeficiente hace referencia a toda la energía lumínica entrante de todas las direcciones posibles.
+
+El tercer coeficiente es el producto de la ley de Lambert un escalar que atenúa los ángulos menos pronunciados con la normal del material.
+
+
+	\section{Esquema simplificado del trazado de rayos}
+	
+Habiendo definido la ecuación de renderizado, el siguiente paso es explicar el algoritmo de Path Tracing en su forma más elemental, ya que posteriormente se irá mejorando paso por paso este algoritmo básico.
+
+En su esencia, este algoritmo consiste en trazar rayos o "caminos" desde una cámara virtual a una escena tridimensional, simulando así un modelo simplificado de fotones y sus interacciones con la escena, las cuales conllevarán una pérdida de energía de estos.
+
+
+También se utiliza el término Ray Tracing, puesto que este término ha terminado usándose para distintos tipos de simulación de rayos de luz, aunque originalmente Ray Tracing se utilizaba para referirse al algoritmo original propuesto en , el cual difiere el algoritmo analizado en este trabajo. 
+
+
+El primer paso es preparar la escena a renderizar \code{Scene}. Una escena básica se compone de una cámara, geometrías y materiales.
+
+Las cámaras \code{Camera} consisten en una simulación aproximada de una cámara física real, así pues sus atributos serán: tamaño del sensor (en milímetros) \code{sensorWidth} y \code{sensorHeight}, distancia focal (en milímetros) \code{focalLength} y resolución (en píxeles) \code{xRes} e \code{yRes}. 
+
+Las geometrías \code{MeshObject} por otra parte consisten en un conjunto de triángulos \code{Tri}, los cuales a su vez consisten en 3 puntos tridimensionales \code{Vector3 vertices[3]}.
+
+Los materiales \code{Material} definen la manera en la que los fotones interactúan con ellos. En su forma más primitiva consisten en un color base, el cual absorberá ciertas longitudes de onda en mayor o menor medida. Para simplificar las computaciones, no es necesario calcular estas interacciones con todo el espectro electromagnético visible, basta con usar los tres colores primarios aditivos: rojo, verde y azul.
+
+
+Así pues, habiendo definido estos elementos en la escena, se procederá a transferirlos a la GPU, donde se realizará el resto de computaciones más demandantes. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+

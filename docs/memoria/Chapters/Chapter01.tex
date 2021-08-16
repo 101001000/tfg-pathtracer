@@ -1,24 +1,16 @@
-\parindent=0em
-\chapter{Capítulo 1}
-\pagenumbering{arabic}
-\noindent
-\texttt{Lorem ipsum dolor sit amet, consectetuer ad}\\
+\chapter{Introducción}
+	
+El renderizado 3d es una técnica por la cual se representan los datos de geometrías tridimensionales en una pantalla en dos dimensiones. Existen distintas técnicas de renderizado tridimensional, siendo el trazado de rayos la más utilizada en la industria cinematográfica gracias a su excepcional fotorrealismo del cual carecen otras técnicas. Tan codiciada es esta técnica, que actualmente industrias realionadas con la visualización 3d como por ejemplo la industria de los videojuegos trata de replicarla y adaptarla en sus proyectos más modernos, con el fin de obtener mejor fidelidad visual.
+El creciente interés ante el trazado de rayos ha provocado que compañías dedicadas al hardware gráfico dediquen parte de su desarrollo a la implementación del trazado de rayos en sus últimos modelos. Véase por ejemplo las últimas dos series de tarjetas gráficas de NVIDIA, siendo RTX (el nombre de las dos últimas series) acrónimo de "Ray Tracing Texel eXtreme". 
 
-\lipsum[1-20]
-
+No obstante la implementación de estos sistemas de renderizado pecan de una gran demanda computacional, es por ello que gran parte de los motores de renderizado orientados a la industria cinematográfica han sido adaptados para poder funcionar en aceleradores gráficos. Con la creciente capacidad computacional y las características fotorrealistas mencionadas anteriormente, los motores de renderizado de trazado de rayos han adquirido una especial importancia en el ámbito de la computación gráfica.
 
 
 
+\section{Objetivos}
 
+Este trabajo cubre las bases teóricas además de explicar la implementación en CUDA de un motor de renderizado fotorrealista con características a la orden del día de otros motores comerciales. Así pues este trabajo también hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
 
+La implementación cuenta con características cercanas al estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney; permite el uso de mapas de textura y además funciona en GPU.
 
-
-
-
-
-
-
-
-
-
-
+Un aspecto importante en cuanto a la implementación es que se hace uso del menor número de librerías posibles, con el fin de indagar a fondo en la arquitectura de un motor de renderizado de Path Tracing de manera íntegra. Así pues se desmitifica el trabajo que normalmente se delega a las librerías gráficas, y se expondrá de manera clara el funcionamiento de cada pieza de un motor de renderizado de Path Tracing en GPU.

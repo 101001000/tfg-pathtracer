@@ -1,45 +1,36 @@
-\documentclass{TeFlon}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%
-%        TeFloN X
-%        -PASCAL-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+\documentclass[11pt]{report}
+ 
+\usepackage[spanish]{babel} %Español 
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{ {Images/} }
+ 
+\def\code#1{\texttt{#1}}
+	 
+\setcounter{tocdepth}{5} %shows all levels incl. paragraph
 \begin{document}
-\incorporarDatos{no}{UCM}{nombre de facultad}{titulo del grado}{\textit{Dirigido por}\\ Tutor\vspace{2mm}}{2019--2020}{Madrid}{Autor}{Título en inglés}
+ 
+\input{Chapters/Portada.tex}
+ 
+\tableofcontents
 
+%\section{Dummy section}
+%\subsection{Dummy subsection}
+%\subsubsection{Dummy subsubsection}
+%\paragraph{Dummy paragraph}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 1 - TFG
-\tituloTFG
-\input{Data/titleEs.tex}
-%\input{Data/dedic.tex}
-%\input{Data/greet.tex}
-\input{Data/abstract.tex}
-\indiceTFG
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 2
-% - Resumenes
-% \input{Chapters/Resumenen.tex}
-% - Capítulos
-\parte{A}{}
-\pagenumbering{arabic}
 \input{Chapters/Chapter01.tex}
-\parte{B}{}
 \input{Chapters/Chapter02.tex}
-%\input{Chapters/Chapter07.tex}
-%\input{Chapters/Chapter07en.tex}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 3 - Index y bibliografía
-\indiceFiguras
-\indiceTablas
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 4 - BIB y licencia
-\biblioTFG{9}
-\printglossaries
-\parte{C}{Anexos}
-%\input{ChapterEs/Chapter08ES.tex}
-%\input{ChapterEs/ChapterB.tex}
-\licenciaTFG{\hill{Frase}{Autor}
-Autor TFG}{FECHA}{CC-ZERO}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{Chapters/Chapter03.tex}
+\input{Chapters/Chapter04.tex}
+\input{Chapters/Chapter05.tex}
+\input{Chapters/Chapter06.tex}
+
+
+\chapter{Anexo}
+	
+\input{bib.tex}
+	
+
+ 
 \end{document}
