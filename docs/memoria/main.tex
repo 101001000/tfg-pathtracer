@@ -1,0 +1,45 @@
+\documentclass{TeFlon}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%        TeFloN X
+%        -PASCAL-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+\incorporarDatos{no}{UCM}{nombre de facultad}{titulo del grado}{\textit{Dirigido por}\\ Tutor\vspace{2mm}}{2019--2020}{Madrid}{Autor}{Título en inglés}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 1 - TFG
+\tituloTFG
+\input{Data/titleEs.tex}
+%\input{Data/dedic.tex}
+%\input{Data/greet.tex}
+\input{Data/abstract.tex}
+\indiceTFG
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 2
+% - Resumenes
+% \input{Chapters/Resumenen.tex}
+% - Capítulos
+\parte{A}{}
+\pagenumbering{arabic}
+\input{Chapters/Chapter01.tex}
+\parte{B}{}
+\input{Chapters/Chapter02.tex}
+%\input{Chapters/Chapter07.tex}
+%\input{Chapters/Chapter07en.tex}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 3 - Index y bibliografía
+\indiceFiguras
+\indiceTablas
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Parte 4 - BIB y licencia
+\biblioTFG{9}
+\printglossaries
+\parte{C}{Anexos}
+%\input{ChapterEs/Chapter08ES.tex}
+%\input{ChapterEs/ChapterB.tex}
+\licenciaTFG{\hill{Frase}{Autor}
+Autor TFG}{FECHA}{CC-ZERO}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}
