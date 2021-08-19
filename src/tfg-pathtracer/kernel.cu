@@ -257,21 +257,26 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
     float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight * 0.001;
 
     // The initial ray is created from the camera position to the point calculated before. No rotation is taken into account.
-    ray = Ray(camera.position, Vector3(odx, ody, camera.position.z + camera.focalLength * 0.001) - camera.position);
+    ray = Ray(camera.position, Vector3(odx + rx, ody + ry, camera.position.z + camera.focalLength * 0.001) - camera.position);
 
 #ifdef BOKEH
 
-    float ix, iy;
+    float rIPx, rIPy;
 
+    // The diameter of the camera iris
     float diameter = 0.001 * ((camera.focalLength) / camera.aperture);
 
+    // Total length 
     float l = (camera.focusDistance + camera.focalLength * 0.001);
 
     Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
 
-    uniformCircleSampling(r3, r4, r5, ix, iy);
+    uniformCircleSampling(r3, r4, r5, rIPx, rIPy);
 
-    Vector3 orig = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
+    rIPx *= diameter * 0.5;
+    rIPy *= diameter * 0.5;
+
+    Vector3 orig = camera.position + Vector3(rIPx, rIPy, 0);
 
     ray = Ray(orig , focusPoint - orig);
 

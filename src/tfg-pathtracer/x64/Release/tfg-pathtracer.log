@@ -1,94 +1,142 @@
-﻿  main.cpp
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Vector.h(113,1): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Vector.h(223,24): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Camera.h(25,1): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Camera.h(34,1): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(54,27): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(67,30): warning C4244: '=': conversión de 'float' a 'unsigned char'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(71,43): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(40,19): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(110,1): warning C4244: '*=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(111,1): warning C4244: '*=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(143,36): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(143,31): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(144,36): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(144,31): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(145,36): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(145,31): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(146,36): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(146,31): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Tri.h(32,1): warning C4305: 'argumento': truncamiento de 'double' a 'const float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Tri.h(38,1): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Tri.h(50,23): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\MeshObject.h(22,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\MeshObject.h(35,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(252,1): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(261,1): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(266,1): warning C4267: '+=': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(296,1): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(308,1): warning C4267: 'argumento': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(315,1): warning C4267: '+=': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(396,1): warning C4305: 'inicializando': truncamiento de '__int64' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(424,15): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(469,12): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HdrLoader.h(42,9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HdrLoader.h(75,7): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(12,13): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(13,34): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(14,15): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(35,15): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(38,48): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(44,30): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(48,20): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(49,32): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(29,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(55,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(56,22): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(73,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(74,22): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(101,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(112,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(148,80): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(159,26): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(159,22): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(159,18): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(175,57): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(35,1): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(39,1): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(43,1): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(47,1): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(51,1): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(55,1): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(114,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(160,10): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 1 tiene el tipo '_To'
+﻿  Compiling CUDA source file kernel.cu...
+  
+  C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\bin\nvcc.exe" -gencode=arch=compute_52,code=\"sm_52,compute_52\" --use-local-env -ccbin "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools\MSVC\14.28.29333\bin\HostX86\x64" -x cu -rdc=true  -I"C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\\..\SFML-2.5.1\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include" -I"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\include" --source-in-ptx  -lineinfo  --keep-dir x64\Release -maxrregcount=0  --machine 64 --compile -cudart static -dc   -use_fast_math -DWIN32 -DWIN64 -DNDEBUG -D_CONSOLE -D_MBCS -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc142.pdb /FS   /MD " -o x64\Release\kernel.cu.obj "C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\kernel.cu" 
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(148): warning C4067: sÝmbolos (token) inesperados despuÚs de la directiva del preprocesador; se esperaba una nueva lÝnea
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HdrLoader.h(54): warning : variable "cmd" was set but never used
+  
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(91): warning : variable "bsdfPdf" was declared but never referenced
+  
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(527): warning : variable "dev_pixelBuffer" was declared but never referenced
+  
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(148): warning C4067: sÝmbolos (token) inesperados despuÚs de la directiva del preprocesador; se esperaba una nueva lÝnea
+  kernel.cu
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Vector.h(113): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Vector.h(223): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(54): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(67): warning C4244: '=': conversión de 'float' a 'unsigned char'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(71): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(110): warning C4244: '*=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(111): warning C4244: '*=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(143): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(143): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(144): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(144): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(145): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(145): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(146): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Texture.h(146): warning C4244: 'argumento': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Camera.h(25): warning C4305: '=': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Camera.h(34): warning C4305: '=': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Tri.h(32): warning C4305: 'argumento': truncamiento de 'double' a 'const float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Tri.h(38): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Tri.h(50): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\MeshObject.h(22): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\MeshObject.h(35): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(252): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(261): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(266): warning C4267: '+=': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(296): warning C4267: '=': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(308): warning C4267: 'argumento': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(315): warning C4267: '+=': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(396): warning C4305: 'inicializando': truncamiento de '__int64' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(424): warning C4244: '=': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\BVH.h(469): warning C4244: 'inicializando': conversión de 'float' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(12): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(13): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(14): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(35): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(38): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(44): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(48): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Sampling.h(49): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(29): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(55): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(56): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(73): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(74): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(101): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(112): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(148): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(159): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(159): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(159): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.h(175): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(35): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(39): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(43): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(47): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(51): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(55): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(114): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.h(160): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 1 tiene el tipo '_To'
           with
           [
-              _To=std::chrono::milliseconds
+              _To=std::chrono::duration<__int64,std::ratio<1,1000>>
           ]
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.h(59,1): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.h(84,1): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.h(112,1): warning C4267: '=': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(26,54): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(28,35): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(29,29): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(65,55): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(67,39): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(73,58): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(75,39): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(79,39): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(81,55): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(116,26): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(194,51): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(250,54): warning C4305: 'argumento': truncamiento de 'double' a 'const float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(268,57): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(272,45): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(276,46): warning C4305: 'argumento': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(278,39): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(303,35): warning C4305: '=': truncamiento de 'double' a 'float'
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(443,38): warning C4390: ';': se encontró una instrucción controlada vacía; ¿es esa la intención?
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(24): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(36): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(46): warning C4305: 'return': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(48): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(49): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(54): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(62): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(68): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(75): warning C4244: 'return': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(99): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(100): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(102): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(103): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(105): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(106): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(107): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(112): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(113): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(114): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(129): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(165): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(168): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(175): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(183): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(187): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(188): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(189): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(200): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(201): warning C4305: 'argumento': truncamiento de 'double' a 'float'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(204): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(204): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(206): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(208): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(208): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.h(208): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(467): warning C4018: '<': no coinciden signed/unsigned
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(560): warning C4018: '<': no coinciden signed/unsigned
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(527): warning C4101: 'dev_pixelBuffer': variable local sin referencia
+  
+  C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\bin\nvcc.exe" -dlink -o x64\Release\tfg-pathtracer.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc142.pdb   /MD " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\bin/crt" -L"C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\\..\SFML-2.5.1\lib" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\lib\x64" cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" "sfml-audio.lib" "sfml-network.lib" cudart.lib cudadevrt.lib  -gencode=arch=compute_52,code=sm_52  --machine 64 x64\Release\kernel.cu.obj 
+  cudart_static.lib
+  kernel32.lib
+  user32.lib
+  gdi32.lib
+  winspool.lib
+  comdlg32.lib
+  advapi32.lib
+  shell32.lib
+  ole32.lib
+  oleaut32.lib
+  uuid.lib
+  odbc32.lib
+  odbccp32.lib
+  sfml-graphics.lib
+  sfml-window.lib
+  sfml-system.lib
+  sfml-audio.lib
+  sfml-network.lib
+  cudart.lib
+  cudadevrt.lib
+  kernel.cu.obj
      Creando biblioteca C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.lib y objeto C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.exp
   Generando código
-  2 of 585 functions ( 0.3%) were compiled, the rest were copied from previous compilation.
+  0 of 585 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada

@@ -2,19 +2,29 @@
 	
 	\section{Desenfoque: Modelo de lente fina}
 	
-	Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre. Esta propiedad es indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ``Bokeh`` y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
+	Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ``Bokeh`` y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
 
 	Para solventar el problema del enfoque perfecto se va a hacer uso de un modelo de cámara denominado modelo de lente fina. Este modelo es una simplificación de lo que sería una simulación física de unas lentes reales. Al simplificar los cálculos, se pierden artefactos y desperfectos deseados como la aberración cromática o la distorsión de lentes, pero a cambio se obtiene la simplicidad de implementación.
 
-	Para activar este efecto, es necesario compilar con la constante BOKEH definida. Esto desbloqueará la parte de código que hace el cálculo del desenfoque. 
+	Para activar este efecto, es necesario compilar con la constante \code{BOKEH} definida. Esto desbloqueará la parte de código que hace el cálculo del desenfoque. 
 	
-	Este nuevo método añade a la clase Camera dos nuevas variables, por un lado focusDistance y por otro lado aperture. La primera define la distancia a la que se encuentra el plano de enfoque, y la segunda, la apertura en f-stops del iris de la cámara. 
+	Este nuevo método añade a la clase \code{Camera} dos nuevas variables, por un lado \code{focusDistance} y por otro lado \code{aperture}. La primera define la distancia a la que se encuentra el plano de enfoque, y la segunda, la apertura en f-stops del iris de la cámara. 
 
 	El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara es el siguiente:
 
-	1: Se calcula un rayo desde la cámara hasta un punto aleatorio del sensor como se hacía anteriormente
-	2: Se calcula la intersección de dicho rayo con el plano de enfoque focusPoint.
-	3: En vez de emitir un rayo desde el punto de la cámara, se elige un punto aleatorio en un círculo del tamaño definido por la apertura.
+	1: Se calcula el rayo original del método anterior, desde la cámara hasta el sensor.
+	
+	2: Se calcula la intersección de dicho rayo con el plano de enfoque, situado a la distancia \code{focusDistance}. La intersección se denomina \code{focusPoint}.
+	
+	3: En vez de emitir e rayo desde el punto de la cámara, se elige un punto aleatorio en el iris \code{iRP} y se emite un rayo desde ahí hasta el punto de enfoque \code{focusPoint}. Este nuevo rayo será un rayo bajo el modelo de cámara de lente fina. Los elementos situados a la distancia de enfoque \code{focusDistance} serán más nítidos que aquellos que no lo estén.
+
+	\begin{figure}
+		\centering
+		\includegraphics[width=0.5\textwidth]{blurring}
+		\caption{}
+		\label{fig:label}
+	\end{figure}
+
 
 	
 	\section{Iluminación}
