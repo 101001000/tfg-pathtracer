@@ -16,8 +16,6 @@ public:
 
 public:
 
-	//TODO: poner sensorWidth de manera elegante
-
 	__host__ __device__ Camera() {
 		xRes = 1280;
 		yRes = 720;
@@ -35,8 +33,6 @@ public:
 		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
 		aperture = 2.8;
 	}
-
-
 
 
 };

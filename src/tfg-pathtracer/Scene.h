@@ -9,7 +9,6 @@
 #include "BVH.h"
 #include "PointLight.h"
 #include "HdrLoader.h"
-#include <vector>
 #include "HDRI.h"
 
 class Scene {

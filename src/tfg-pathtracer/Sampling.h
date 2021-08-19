@@ -1,3 +1,7 @@
+#ifndef SAMPLING_H
+#define SAMPLING_H
+
+
 #include "Vector.h"
 #include "Math.h"
 
@@ -48,3 +52,5 @@ __device__ __host__ inline Vector3 ImportanceSampleGGX(float rgh, float r1, floa
 
     return Vector3(sinTheta * cosPhi, sinTheta * sinPhi, cosTheta);
 }
+
+#endif

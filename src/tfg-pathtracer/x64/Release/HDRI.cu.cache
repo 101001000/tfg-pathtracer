@@ -1,4 +1,4 @@
-Identity=kernel.cu
+Identity=HDRI.cu
 AdditionalCompilerOptions=
 AdditionalCompilerOptions=
 AdditionalDependencies=
@@ -8,7 +8,7 @@ AdditionalOptions=-dc
 AdditionalOptions=-dc
 CodeGeneration=compute_52,sm_52
 CodeGeneration=compute_52,sm_52
-CompileOut=x64\Release\kernel.cu.obj
+CompileOut=x64\Release\HDRI.cu.obj
 CudaRuntime=Static
 CudaToolkitCustomDir=
 DebugInformationFormat=None

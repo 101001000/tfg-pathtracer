@@ -1,28 +1,26 @@
 \chapter{Fundamentos del algoritmo de Path Tracing}
 	
 
-En este capítulo se procede a dar un esquema básico de los fundamentos de este algoritmo. El objetivo será así describir un motor de renderizado previo a cualquier optimización, que cuenta con las funcionalidades básicas para producir una imagen de una escena tridimensional simple. 
-Aproximando la ecuación de renderizado:
+En este capítulo se procede a dar un esquema básico de los fundamentos de este algoritmo. El objetivo será así describir un motor de renderizado previo a cualquier optimización, que cuenta con las funcionalidades básicas para producir una imagen de una escena tridimensional simple.
 
 	\section{Aproximación de la ecuación de renderizado}
 \[
-{\displaystyle L_{\text{o}}(\mathbf {x} ,\omega _{\text{o}} ,t)=L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}},t)\ +\int _{\Omega }f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}},t)L_{\text{i}}(\mathbf {x} ,\omega _{\text{i}},t)(\omega _{\text{i}}\cdot \mathbf {n} )\operatorname {d} \omega _{\text{i}}}
+{\displaystyle L_{\text{o}}(\mathbf {x} ,\omega _{\text{o}})=L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}})\ +\int _{\Omega }f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})L_{\text{i}}(\mathbf {x} ,\omega _{\text{i}})(\omega _{\text{i}}\cdot \mathbf {n} )\operatorname {d} \omega _{\text{i}}}
 \]
 
+La ecuación de renderizado \cite{therenderingequation} aparece por primera vez en 1986 junto al algoritmo de Path Tracing, siendo este algoritmo una propuesta para resolverla. Es el pilar de la visualización 3d fotorrealista ya que simula de una manera suficientemente precisa la interacción de la luz.
 
-La ecuación de renderizado aparece por primera vez en 1986 junto al algoritmo de Path Tracing, siendo este una propuesta para resolverla haciendo uso del método de Monte Carlo. Este algoritmo debido a la naturaleza del método de Monte Carlo, ofrecerá una solución aproximada, más precisa cuanto mayor sea el tiempo de ejecución del algoritmo. 
+La interpretación de esta ecuación es la siguiente: Para un punto $\mathbf {x}$ del espacio y un ángulo $\omega _{\text{o}}$ desde el cual se observa a dicho punto, cuál es la cantidad de energía lumínica que el observador recibe $L_{\text{o}}$.
 
-Esta ecuación define la energía lumínica saliente desde un punto x del espacio hacia una dirección w0 y es el pilar de la visualización fotorrealista, puesto que garantiza resultados teóricamente muy similares al comportamiento físico real de los fotones y cámaras digitales. Se compone de cuatro partes:
+El primer término $L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}})$ indica la luz que dicho punto $\mathbf {x}$ emite, así pues se podrán modelar materiales que emitan luz propia y no dependan de energía externa.
 
-El primer término indica la luz que dicho punto x emite, así pues se podrán modelar materiales emisivos.
+El segundo término calcula toda la luz entrante y reflejada a través del ángulo $\omega _{\text{o}}$ por dicho punto $\mathbf {x}$, es por ello que integra todos los ángulos del hemisferio superior. Este segundo término se compone de tres coeficientes:
 
-El segundo término calcula toda la luz entrante y reflejada por dicho punto x, es por ello que integra todos los ángulos del hemisferio superior. Este segundo término se compone de tres coeficientes:
+El primer coeficiente $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$ es la función BRDF, la cual es dependiente del material e indica cuánta energía se refleja en dicho punto para las direcciones de entrada $\omega _{\text{i}}$ y salida $\omega _{\text{o}}$.
 
-El primer coeficiente es la función BRDF, la cual es dependiente del material e indica cuánta energía se refleja en dicho punto para ciertas direcciones de entrada y salida.
+El segundo coeficiente $L_{\text{i}}(\mathbf {x} ,\omega _{\text{i}})$ hace referencia a toda la energía lumínica entrante de todas las direcciones posibles.
 
-El segundo coeficiente hace referencia a toda la energía lumínica entrante de todas las direcciones posibles.
-
-El tercer coeficiente es el producto de la ley de Lambert un escalar que atenúa los ángulos menos pronunciados con la normal del material.
+El tercer coeficiente $(\omega _{\text{i}}\cdot \mathbf {n})$ es el producto de la ley del coseno de Lambert \cite{photometria}, un escalar que atenúa los ángulos menos pronunciados con la normal de la superficie.
 
 
 	\section{Esquema simplificado del trazado de rayos}

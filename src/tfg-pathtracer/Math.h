@@ -28,6 +28,7 @@ __host__ __device__ static float limitUV(float u) {
 
 __host__ __device__ static float lerp(float a, float b, float c) {
 #ifdef FAST_LERP
+    // Este método no se comporta bien en algunos casos de infinitos y nans
     return a + c * (b - a);
 #else
     return b * c + a * (1 - c);

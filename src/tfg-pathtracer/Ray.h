@@ -10,6 +10,7 @@ public:
 	Vector3 direction;
 
 public:
+
 	__host__ __device__ inline Ray(Vector3 _origin, Vector3 _direction) {
 		origin = _origin;
 		direction = _direction;

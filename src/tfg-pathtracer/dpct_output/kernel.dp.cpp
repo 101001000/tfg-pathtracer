@@ -1,6 +1,7 @@
 #include <CL/sycl.hpp>
 #include <dpct/dpct.hpp>
 #include <iostream>
+#include <oneapi/dpl/random>
 #include <oneapi/mkl.hpp>
 #include <oneapi/mkl/rng/device.hpp>
 
@@ -20,11 +21,11 @@
 #include <cmath>
 
 #define THREADSIZE 8
-#define MAXBOUNCES 5
+#define MAXBOUNCES 1
 
 #define USEBVH true
 #define HDRIIS true
-#define BOKEH
+// #define BOKEH
 
 struct dev_Scene {
 
@@ -55,20 +56,23 @@ dpct::global_memory<float, 1> dev_buffer(1920 * 1080 * 4);
 // How many samples per pixels has been calculated.
 dpct::global_memory<unsigned int, 1> dev_samples(1920 * 1080);
 dpct::global_memory<unsigned int, 1> dev_pathcount(1920 * 1080);
-dpct::global_memory<dev_Scene *, 0> dev_scene_g;
+dpct::global_memory<dev_Scene*, 0> dev_scene_g;
 /*
 DPCT1032:1: A different random number generator is used. You may need to adjust
 the code.
 */
-dpct::global_memory<curandState *, 0> d_rand_state_g;
 
-sycl::queue *kernelStream, bufferStream;
+dpct::global_memory<oneapi::mkl::rng::device::philox4x32x10<1>, 0> d_rand_state_g;
+
+sycl::queue *kernelStream, *bufferStream;
 
 long textureMemory = 0;
 long geometryMemory = 0;
 
 void generateHitData(Material* material, HitData& hitdata, float u, float v, Vector3 N,
-                     dev_Scene **dev_scene_g) {
+                     dev_Scene **_dev_scene_g) {
+
+    dev_Scene* dev_scene_g = *_dev_scene_g;
 
     Vector3 tangent, bitangent;
 
@@ -120,7 +124,10 @@ void generateHitData(Material* material, HitData& hitdata, float u, float v, Vec
 
 void setupKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
                  unsigned int *dev_samples, unsigned int *dev_pathcount,
-                 dev_Scene **dev_scene_g, curandState **d_rand_state_g) {
+                 dev_Scene **_dev_scene_g, oneapi::mkl::rng::device::philox4x32x10<1>* d_rand_state_g, sycl::stream out) {
+
+    dev_Scene* dev_scene_g = *_dev_scene_g;
+ 
 
     int x = item_ct1.get_local_id(2) +
             item_ct1.get_group(2) * item_ct1.get_local_range().get(2);
@@ -140,10 +147,6 @@ void setupKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
     dev_buffer[4 * idx + 2] = 0;
     dev_buffer[4 * idx + 3] = 1;
 
-    //Inicialización rápida de curand, se pierden propiedades matemáticas o algo así
-    d_rand_state_g[idx] =
-        oneapi::mkl::rng::device::philox4x32x10<1>(idx, {0, 0 * 8});
-
     if (x == 0 && y == 0) {
 
         int triSum = 0;
@@ -153,9 +156,11 @@ void setupKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
             triSum += dev_scene_g->meshObjects[i].triCount;
         }
     }
-}
+ }
 
-Hit throwRay(Ray ray, dev_Scene* scene) {
+Hit throwRay(Ray ray, dev_Scene** _scene) {
+
+    dev_Scene* scene = *_scene;
 
     Hit nearestHit = Hit();
 
@@ -180,7 +185,9 @@ Hit throwRay(Ray ray, dev_Scene* scene) {
 }
 
 //TODO limpiar los argumentos de esta función
-Vector3 directLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1, Vector3& newDir) {
+Vector3 directLight(Ray ray, HitData hitdata, dev_Scene** _scene, Vector3 point, float& pdf, float r1, Vector3& newDir) {
+
+    dev_Scene* scene = *_scene;
 
     //TODO falta por dios comprobar colisiones
 
@@ -202,7 +209,10 @@ Vector3 directLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, f
 // Sampling HDRI
 // The main idea is to get a random point of the HDRI, weighted by their importance and then get the direction from the center to that point as if that pixel
 // would be in a sphere of infinite radius.
-Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData hitdata, float r1, float r2, float r3, float& pdf) {
+Vector3 hdriLight(Ray ray, dev_Scene** _scene, Vector3 point, HitData hitdata, float r1, float r2, float r3, float& pdf) {
+
+    dev_Scene* scene = *_scene;
+
 
     if (!HDRIIS) {
 
@@ -214,7 +224,7 @@ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData hitdata, flo
 
         Ray shadowRay(point + newDir * 0.001, newDir);
 
-        Hit shadowHit = throwRay(shadowRay, scene);
+        Hit shadowHit = throwRay(shadowRay, _scene);
 
         if (shadowHit.valid) return Vector3();
 
@@ -239,7 +249,7 @@ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData hitdata, flo
 
         Ray shadowRay(point +  newDir * 0.001, newDir);
 
-        Hit shadowHit = throwRay(shadowRay, scene);
+        Hit shadowHit = throwRay(shadowRay, _scene);
 
         if (shadowHit.valid) return Vector3();
 
@@ -258,8 +268,8 @@ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData hitdata, flo
     }
 }
 
-void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float r2, float r3, float r4, float r5) {
-
+void calculateCameraRay(int x, int y, Camera camera, Ray &ray, float r1, float r2, float r3, float r4, float r5) {
+    
     // Relative coordinates for the point where the first ray will be launched
     float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth * 0.001;
     float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight * 0.001;
@@ -288,13 +298,15 @@ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float 
     uniformCircleSampling(r3, r4, r5, ix, iy);
 
     Vector3 orig = camera.position + diameter * Vector3(ix * 0.5, iy * 0.5, 0);
-
+     
     ray = Ray(orig , focusPoint - orig);
 
 #endif 
 }
 
-void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearestHit, Vector3& newDir, float r1, float r2, float r3, Vector3& hitLight, Vector3& reduction) {
+void shade(dev_Scene** _scene, Ray& ray, HitData& hitdata, Hit& nearestHit, Vector3& newDir, float r1, float r2, float r3, Vector3& hitLight, Vector3& reduction) {
+
+    dev_Scene scene = **_scene;
 
     Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
 
@@ -302,7 +314,7 @@ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearestHit, Vector
 
     float hdriPdf;
 
-    Vector3 directLight = hdriLight(ray, &scene, nearestHit.position, hitdata, r1, r2, r3, hdriPdf);
+    Vector3 directLight = hdriLight(ray, _scene, nearestHit.position, hitdata, r1, r2, r3, hdriPdf);
 
     float w1 = hdriPdf / (hdriPdf + brdfPdf);
     float w2 = brdfPdf / (hdriPdf + brdfPdf);
@@ -323,42 +335,31 @@ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bouncedDir, fl
 
 void neeRenderKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
                      unsigned int *dev_samples, unsigned int *dev_pathcount,
-                     dev_Scene **dev_scene_g, curandState **d_rand_state_g){
+                     dev_Scene **_dev_scene_g, oneapi::mkl::rng::device::philox4x32x10<1> *d_rand_state_g, sycl::stream out){
 
-    oneapi::mkl::rng::device::uniform<float> distr_ct1;
-    dev_Scene *scene = (*dev_scene_g);
+    dev_Scene* scene = *_dev_scene_g;
 
     int x = item_ct1.get_local_id(2) +
-            item_ct1.get_group(2) * item_ct1.get_local_range().get(2);
+        item_ct1.get_group(2) * item_ct1.get_local_range().get(2);
     int y = item_ct1.get_local_id(1) +
-            item_ct1.get_group(1) * item_ct1.get_local_range().get(1);
+        item_ct1.get_group(1) * item_ct1.get_local_range().get(1);
+     
+    int idx = (scene->camera->xRes * y + x);
 
     if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
 
-    //int idx1 = (scene->camera->xRes * y + x);
-    int idx = (scene->camera->xRes * y + x);
+    // Create minstd_rand engine
+    oneapi::dpl::minstd_rand engine(idx, idx);
 
-    /*
-    DPCT1032:2: A different random number generator is used. You may need to
-    adjust the code.
-    */
-    oneapi::mkl::rng::device::philox4x32x10<1> local_rand_state =
-        (*d_rand_state_g)[idx];
-
-    //x = curand_uniform(&local_rand_state) * scene->camera->xRes;
-    //y = curand_uniform(&local_rand_state) * scene->camera->yRes;
+    // Create float uniform_real_distribution distribution
+    oneapi::dpl::uniform_real_distribution<float> distr;
 
     unsigned int sa = dev_samples[idx];
 
     Ray ray;
 
-    calculateCameraRay(
-        x, y, *scene->camera, ray,
-        oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state),
-        oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state),
-        oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state),
-        oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state),
-        oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state));
+    calculateCameraRay(x, y, *scene->camera, ray, distr(engine), distr(engine), distr(engine), distr(engine), distr(engine));
+
 
     // Accumulated radiance
     Vector3 light = Vector3::Zero();
@@ -366,6 +367,7 @@ void neeRenderKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
     // How much light is lost in the path
     Vector3 reduction = Vector3::One();
 
+    Hit nearestHit = throwRay(ray, _dev_scene_g);
     // A ray can bounce a max of MAXBOUNCES. This could be changed with russian roulette path termination method, and that would make
     // the renderer unbiased
 
@@ -373,14 +375,13 @@ void neeRenderKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
 
     for (i = 0; i < MAXBOUNCES; i++) {
 
-        oneapi::mkl::rng::device::uniform<float> distr_ct2;
         Vector3 hitLight;
         HitData hitdata;
         Vector3 bouncedDir;
 
         int materialID = 0;
 
-        Hit nearestHit = throwRay(ray, scene);
+        Hit nearestHit = throwRay(ray, _dev_scene_g);
 
         // FIX BACKFACE NORMALS
         if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
@@ -399,18 +400,18 @@ void neeRenderKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
         Material* material = &scene->materials[materialID];
 
         generateHitData(material, hitdata, nearestHit.u, nearestHit.v,
-                        nearestHit.normal, dev_scene_g);
+                        nearestHit.normal, _dev_scene_g);
 
         calculateBounce(
             ray, hitdata, bouncedDir,
-            oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state),
-            oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state),
-            oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state));
+            distr(engine),
+            distr(engine),
+            distr(engine));
 
-        shade(*scene, ray, hitdata, nearestHit, bouncedDir,
-              oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state),
-              oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state),
-              oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state),
+        shade(_dev_scene_g, ray, hitdata, nearestHit, bouncedDir,
+            distr(engine),
+            distr(engine),
+            distr(engine),
               hitLight, reduction);
 
         light += hitLight;
@@ -421,20 +422,22 @@ void neeRenderKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
     dev_pathcount[idx] += i;
 
     light = clamp(light, 0, 3);
+    
+    if (dev_pathcount[idx] < 5) {
+        if (sa > 0) {
+            dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
+            dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
+            dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+        }
 
-    if (sa > 0) {
-        dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
-        dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
-        dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+        dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
+        dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
+        dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
     }
 
-    dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
-    dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
-    dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
+  
 
     dev_samples[idx]++;
-
-    (*d_rand_state_g)[idx] = local_rand_state;
 }
 
 
@@ -860,12 +863,14 @@ int renderSetup(Scene *scene) try {
         auto dev_scene_g_ptr_ct1 = dev_scene_g.get_ptr();
         auto d_rand_state_g_ptr_ct1 = d_rand_state_g.get_ptr();
 
+        sycl::stream outt(1024, 256, cgh);
+
         cgh.parallel_for(sycl::nd_range<3>(blocks * threads, threads),
                          [=](sycl::nd_item<3> item_ct1) {
                              setupKernel(
                                  item_ct1, dev_buffer_ptr_ct1,
                                  dev_samples_ptr_ct1, dev_pathcount_ptr_ct1,
-                                 dev_scene_g_ptr_ct1, d_rand_state_g_ptr_ct1);
+                                 dev_scene_g_ptr_ct1, d_rand_state_g_ptr_ct1, outt);
                          });
     });
 
@@ -898,6 +903,8 @@ void renderCuda(Scene *scene, int sampleTarget) try {
 
     for (int i = 0; i < sampleTarget; i++) {
 
+        printf("Sample %d\n ", i);
+
         /*
         DPCT1049:27: The workgroup size passed to the SYCL kernel may exceed the
         limit. To get the device limit, query info::device::max_work_group_size.
@@ -916,13 +923,16 @@ void renderCuda(Scene *scene, int sampleTarget) try {
             auto dev_scene_g_ptr_ct1 = dev_scene_g.get_ptr();
             auto d_rand_state_g_ptr_ct1 = d_rand_state_g.get_ptr();
 
+            sycl::stream out(256, 1024, cgh);
+
             cgh.parallel_for(sycl::nd_range<3>(blocks * threads, threads),
                              [=](sycl::nd_item<3> item_ct1) {
                                  neeRenderKernel(item_ct1, dev_buffer_ptr_ct1,
                                                  dev_samples_ptr_ct1,
                                                  dev_pathcount_ptr_ct1,
                                                  dev_scene_g_ptr_ct1,
-                                                 d_rand_state_g_ptr_ct1);
+                                                 d_rand_state_g_ptr_ct1,
+                                                 out);
                              });
         });
 
@@ -969,9 +979,9 @@ catch (sycl::exception const &exc) {
   std::exit(1);
 }
 
-int getSamples() try {
+unsigned int getSamples() try {
 
-    int buff[5];
+    unsigned int buff;
 
     bufferStream = dpct::get_current_device().create_queue();
 
@@ -980,11 +990,11 @@ int getSamples() try {
     You may need to rewrite this code.
     */
     int cudaStatus =
-        (bufferStream->memcpy(buff, dev_samples.get_ptr(*bufferStream),
+        (bufferStream->memcpy(&buff, dev_samples.get_ptr(*bufferStream),
                               sizeof(unsigned int)),
          0);
 
-    return buff[0];
+    return buff;
 }
 catch (sycl::exception const &exc) {
   std::cerr << exc.what() << "Exception caught at file:" << __FILE__

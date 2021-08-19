@@ -41,5 +41,5 @@ void renderCuda(Scene* scene, int sampleTarget);
 
 int renderSetup(Scene *scene);
 
-int getSamples();
+unsigned int getSamples();
 

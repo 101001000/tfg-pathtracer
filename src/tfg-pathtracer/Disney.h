@@ -6,6 +6,7 @@
 #include "Ray.h"
 #include "Material.h"
 #include "cuda_runtime.h"
+#include "Sampling.h"
 
 
 // Adaptación del shader de disney de knightcrawler25, derivar en un futuro para aplicar optimizaciones.

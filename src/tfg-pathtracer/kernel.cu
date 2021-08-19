@@ -1,7 +1,7 @@
 #include <iostream>
 #include <curand_kernel.h>
+#include <cuda_runtime.h>
 #include <stdio.h>
-
 
 #include "kernel.h"
 #include "Sphere.h"
@@ -379,17 +379,22 @@ __global__ void neeRenderKernel(){
 
     light = clamp(light, 0, 3);
 
-    if (sa > 0) {
-        dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
-        dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
-        dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+    if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
+
+        if (sa > 0) {
+            dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
+            dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
+            dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+        }
+
+        dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
+        dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
+        dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
+
+        dev_samples[idx]++;
     }
 
-    dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
-    dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
-    dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
-
-    dev_samples[idx]++;
+    
 
     d_rand_state_g[idx] = local_rand_state;
 }

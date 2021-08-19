@@ -1,9 +1,8 @@
 #ifndef VECTOR_H
 #define VECTOR_H
 
-#include <cmath>
-#include <string>
 #include "cuda_runtime.h"
+#include <string>
 
 class Vector3 {
 
@@ -11,6 +10,7 @@ public:
 	float x, y, z;
 
 public:
+
 
 	__host__ inline Vector3(std::string str) {
 	

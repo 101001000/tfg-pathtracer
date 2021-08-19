@@ -5,7 +5,8 @@
 
 	Info:		Load HDR image and convert to a set of float32 RGB triplet.
 ************************************************************************************/
-
+#ifndef HDRLOADER_H
+#define HDRLOADER_H
 
 #include <math.h>
 #include <memory.h>
@@ -30,6 +31,7 @@ public:
 	// each pixel takes 3 float32, each component can be of any value...
 	float* cols;
 };
+
 
 bool inline loadFile(const char* fileName, HDRLoaderResult& res)
 {
@@ -194,11 +196,11 @@ bool inline oldDecrunch(RGBE* scanline, int len, FILE* file)
 	}
 	return true;
 }
-static inline float* loadHDR(const char* path, int& width, int& height){
+static inline float* loadHDR(const char* path, int& width, int& height) {
 
 	HDRLoaderResult res;
 
-	loadFile(path, res);   
+	loadFile(path, res);
 
 	width = res.width;
 	height = res.height;
@@ -209,3 +211,5 @@ static inline float* loadHDR(const char* path, int& width, int& height){
 
 	return res.cols;
 }
+
+#endif

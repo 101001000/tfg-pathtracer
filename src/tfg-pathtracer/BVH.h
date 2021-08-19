@@ -289,9 +289,7 @@ public:
 			nodes[node.node.idx] = node.node;
 		}
 	}
-
-
-	
+		
 	void buildAux(int depth, std::vector<BVHTri>* _tris) {
 
 		if (depth == 0)

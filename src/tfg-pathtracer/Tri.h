@@ -35,7 +35,6 @@ public:
 
     __host__ __device__ inline bool hit(Ray& ray, Hit& hit, Vector3 position) {
 
-
         float EPSILON = 0.00001;
 
         Vector3 edge1 = vertices[1] - vertices[0];

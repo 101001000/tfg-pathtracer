@@ -9,8 +9,14 @@
 #include <thread>         
 #include <chrono>     
 #include "Texture.h"
+#include "PostProcessing.h"
 #include "ObjLoader.h"
 #include "BVH.h"
+
+
+#define UPDATE_INTERVAL 500
+
+std::thread t;
 
 Scene cocheRefachero() {
 
@@ -281,17 +287,13 @@ Scene coche() {
 
 	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Demo\\landscape.hdr");
 
-	//scene.hdri.texture.xOffset = 0.73;
-
-	printHDRISampling(scene.hdri, 10000);
-
 	return scene;
 
 }
 
 Scene testScene() {
 
-		
+
 
 	Scene scene;
 
@@ -322,7 +324,7 @@ Scene testScene() {
 	scene.materials.at(0).metallic = 1;
 	scene.materials.at(0).clearcoat = 0;
 	scene.materials.at(0).clearcoatGloss = 0;
-	scene.materials.at(0).albedo = Vector3(1,1,1);
+	scene.materials.at(0).albedo = Vector3(1, 1, 1);
 
 	scene.hdri.texture.color = Vector3(0.5);
 
@@ -343,365 +345,111 @@ Scene testScene() {
 	return scene;
 }
 
-void applyExposure(float* pixels, int width, int height, float exposure) {
-	for (int i = 0; i < width * height * 4; i++)
-		pixels[i] *= exposure;
-}
+struct RenderParameters {
 
-void flipY(float* pixels, int width, int height) {
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height/2; y++) {
-			float temp[4];
-			memcpy(temp, (void*) &pixels[(x + y * width) * 4], sizeof(float) * 4);
-			memcpy((void*) &pixels[(x + y * width) * 4], (void*) &pixels[(x + (height-y-1) * width) * 4], sizeof(float) * 4);
-			memcpy((void*)&pixels[(x + (height - y-1) * width) * 4], (void*)temp, sizeof(float) * 4);
-		}
-	}	
-}
+	unsigned int width, height;
+	unsigned int sampleTarget;
 
-void flipX(float* pixels, int width, int height) {
-	for (int x = 0; x < width/2; x++) {
-		for (int y = 0; y < height; y++) {
-			float temp[4];
-			memcpy(temp, (void*)&pixels[(x + y * width) * 4], sizeof(float) * 4);
-			memcpy((void*)&pixels[(x + y * width) * 4], (void*)&pixels[((width - x-1) + y * width) * 4], sizeof(float) * 4);
-			memcpy((void*)&pixels[((width - x - 1) + y * width) * 4], (void*)temp, sizeof(float) * 4);
-		}
-	}
-}
+	float exposure;
 
-void clampPixels(float* pixels, int width, int height) {
-	for (int i = 0; i < width * height * 4; i++)
-		pixels[i] = clamp(pixels[i], 0, 1);
-}
+	RenderParameters(unsigned int width, unsigned int height, unsigned int sampleTarget, float exposure) : width(width), height(height) , sampleTarget(sampleTarget) , exposure(exposure) {};
+	RenderParameters() : width(1280), height(720), sampleTarget(100), exposure(1) {};
+};
 
-void reinhardTonemap(float* pixels, int width, int height) {
+struct RenderData {
 
-	for (int i = 0; i < width * height * 4; i++)
-		pixels[i] = pixels[i] / (1.0f + pixels[i]);
-}
+	RenderParameters pars;
 
-void acesTonemap(float* pixels, int width, int height) {
+	float* rawPixelBuffer;
+	unsigned char* beautyBuffer;
 
-	float a = 2.51f;
-	float b = 0.03f;
-	float c = 2.43f;
-	float d = 0.59f;
-	float e = 0.14f;
+	size_t freeMemory = 0;
+	size_t totalMemory = 0;
 
-	for (int i = 0; i < width * height * 4; i++)
-		pixels[i] = clamp((pixels[i] * 0.6 * (a * pixels[i] * 0.6 + b)) / (pixels[i] * 0.6 * (c * pixels[i] * 0.6 + d) + e), 0.0f, 1.0f);
+	int pathCount = 0;
+	int samples = 0;
 
-}
+	std::chrono::steady_clock::time_point startTime;
 
-void applysRGB(float* pixels, int width, int height) {
-	for (int i = 0; i < width * height * 4; i++)
-		pixels[i] = pow(pixels[i], 1.0 / 2.2);
-}
+	RenderData() {};
+};
 
-float gaussianDist(float x, float sigma) {
-	return 0.39894 * exp(-0.5 * x * x / (sigma * sigma)) / sigma;
-}
+int startRender(RenderData& data, Scene &scene) {
 
-void getThreshold(float* pixels, int width, int height, float threshold, float* result) {
+	RenderParameters pars = data.pars;
 
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
+	data.rawPixelBuffer = new float[pars.width * pars.height * 4];
+	data.beautyBuffer = new unsigned char[pars.width * pars.height * 4];
+	data.startTime = std::chrono::high_resolution_clock::now();
 
-			float v = 0;
+	memset(data.rawPixelBuffer, 0, pars.width * pars.height * 4 * sizeof(float));
+	memset(data.beautyBuffer, 0, pars.width * pars.height * 4 * sizeof(unsigned char));
 
-			v += pixels[(x + y * width) * 4 + 0] / 3.0;
-			v += pixels[(x + y * width) * 4 + 1] / 3.0;
-			v += pixels[(x + y * width) * 4 + 2] / 3.0;
-
-			if (v < threshold) {
-				result[(x + y * width) * 4 + 0] = 0;
-				result[(x + y * width) * 4 + 1] = 0;
-				result[(x + y * width) * 4 + 2] = 0;
-				result[(x + y * width) * 4 + 2] = 0;
-			}
-			else {
-				result[(x + y * width) * 4 + 0] = pixels[(x + y * width) * 4 + 0];
-				result[(x + y * width) * 4 + 1] = pixels[(x + y * width) * 4 + 1];
-				result[(x + y * width) * 4 + 2] = pixels[(x + y * width) * 4 + 2];
-				result[(x + y * width) * 4 + 3] = pixels[(x + y * width) * 4 + 3];
-			}
-		}
+	cudaError_t cudaStatus = renderSetup(&scene);
+	if (cudaStatus != cudaSuccess) {
+		fprintf(stderr, "renderCuda failed!");
+		return -1;
 	}
 
+	t = std::thread(renderCuda, &scene, pars.sampleTarget);
+
+	return 1;
 }
 
-void gaussianBlur(float* pixels, int width, int height, int kernelSize, float* result) {
+int getRenderData(RenderData& data) {
 
-	float* resultTemp = new float[4 * width * height];
+	int width = data.pars.width;
+	int height = data.pars.height;
 
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
+	int* pathCountBuffer = new int[width * height];
 
-			float sum[4] = { 0, 0, 0, 0 };
+	getBuffer(data.rawPixelBuffer, pathCountBuffer, width * height);
+	cudaMemGetInfo(&data.freeMemory, &data.totalMemory);
+	flipY(data.rawPixelBuffer,width, height);
+	applyExposure(data.rawPixelBuffer, width, height, data.pars.exposure);
+	clampPixels(data.rawPixelBuffer, width, height);
+	applysRGB(data.rawPixelBuffer, width, height);
+	HDRtoLDR(data.rawPixelBuffer, data.beautyBuffer, width, height);
 
-			for (int xk = 0; xk < kernelSize; xk++) {
-				for (int yk = 0; yk < kernelSize; yk++) {
+	data.samples = getSamples();
+	data.pathCount = 0;
 
-					float t1 = 1.0 / ((2.0 * PI) * ((float)kernelSize * (float)kernelSize));
-					float tx = xk - (int)(kernelSize / 2.0);
-					float ty = yk - (int)(kernelSize / 2.0);
-					float t2 = -((tx * tx) + (ty * ty)) / (2.0 * (float)kernelSize * (float)kernelSize);
+	for (int i = 0; i < width * height; i++)
+		data.pathCount += pathCountBuffer[i];
 
-					float w = t1 * exp(t2);
-					
-					int xx = clamp(x + tx, 0, width - 1);
-					int yy = clamp(y + ty, 0, height - 1);
-
-					sum[0] += w * pixels[(xx + yy * width) * 4 + 0];
-					sum[1] += w * pixels[(xx + yy * width) * 4 + 1];
-					sum[2] += w * pixels[(xx + yy * width) * 4 + 2];
-				}
-			}
-
-			resultTemp[(x + y * width) * 4 + 0] = sum[0];
-			resultTemp[(x + y * width) * 4 + 1] = sum[1];
-			resultTemp[(x + y * width) * 4 + 2] = sum[2];
-			resultTemp[(x + y * width) * 4 + 3] = 1;
-		}
-	}
-
-	for (int i = 0; i < width * height * 4; i++)
-		result[i] = resultTemp[i];
-
-	delete(resultTemp);
-}
-
-void basicBlur(float* pixels, int width, int height, float threshold, float power, float radius) {
-
-	int blurSize = radius/2;
-	float sd = radius;
-	float kernelSize = (blurSize * 2 + 1);
-
-	float* blurMatrix = new float[4 * width * height];
-	float* thresholdMatrix = new float[4 * width * height];
-	float* kernel = new float[kernelSize * kernelSize];
-
-
-	for (int x = 0; x < kernelSize; x++) {
-		for (int y = 0; y < kernelSize; y++) {
-
-			float t1 = 1.0 / ((2.0 * PI) * (sd * sd));
-			float tx = x - (int)(kernelSize / 2.0);
-			float ty = y - (int)(kernelSize / 2.0);
-			float t2 = -((tx * tx) + (ty * ty)) / (2.0 * sd * sd);
-
-			kernel[(int)(x + y * kernelSize)] = t1 * exp(t2);
-		}
-	}
-
-	for (int x = 0; x < width; x++) {
-		for (int y = 0; y < height; y++) {
-
-			float v = 0;
-
-			v += pixels[(x + y * width) * 4 + 0] / 3.0;
-			v += pixels[(x + y * width) * 4 + 1] / 3.0;
-			v += pixels[(x + y * width) * 4 + 2] / 3.0;
-
-			if (v < threshold) {
-				thresholdMatrix[(x + y * width) * 4 + 0] = 0;
-				thresholdMatrix[(x + y * width) * 4 + 1] = 0;
-				thresholdMatrix[(x + y * width) * 4 + 2] = 0;
-				thresholdMatrix[(x + y * width) * 4 + 2] = 0;
-			}
-			else {
-				thresholdMatrix[(x + y * width) * 4 + 0] = pixels[(x + y * width) * 4 + 0];
-				thresholdMatrix[(x + y * width) * 4 + 1] = pixels[(x + y * width) * 4 + 1];
-				thresholdMatrix[(x + y * width) * 4 + 2] = pixels[(x + y * width) * 4 + 2];
-				thresholdMatrix[(x + y * width) * 4 + 3] = pixels[(x + y * width) * 4 + 3];
-			}
-		}
-	}
-	
-
-	for (int x = blurSize; x < width - blurSize; x++) {
-		for (int y = blurSize; y < height - blurSize; y++) {
-
-			float v[4] = {0,0,0,0};
-
-			int ii = 0;
-
-			for (int i = x - blurSize; i <= x + blurSize; i++) {
-
-				int jj = 0;
-
-				for (int j = y - blurSize; j <= y + blurSize; j++) {
-					v[0] += thresholdMatrix[(i + j * width) * 4 + 0] * kernel[(int)(ii + jj * kernelSize)];
-					v[1] += thresholdMatrix[(i + j * width) * 4 + 1] * kernel[(int)(ii + jj * kernelSize)];
-					v[2] += thresholdMatrix[(i + j * width) * 4 + 2] * kernel[(int)(ii + jj * kernelSize)];
-					v[3] += thresholdMatrix[(i + j * width) * 4 + 3] * kernel[(int)(ii + jj * kernelSize)];
-					jj++;
-				}
-				ii++;
-			}
-			
-			blurMatrix[(x + y * width) * 4 + 0] = v[0];
-			blurMatrix[(x + y * width) * 4 + 1] = v[1];
-			blurMatrix[(x + y * width) * 4 + 2] = v[2];
-			blurMatrix[(x + y * width) * 4 + 3] = v[3];
-		}
-	}
-
-	for (int i = 0; i < width * height * 4; i++)
-		pixels[i] += blurMatrix[i] * power;
-
-}
-
-void downscale(float* pixels, int width, int height, int nWidth, int nHeight, float* result) {
-
-	float rx = width / nWidth;
-	float ry = height / nHeight;
-
-	for (int x = 0; x < nWidth; x++) {
-		for (int y = 0; y < nHeight; y++) {
-			result[4 * (y * nWidth + x) + 0] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 0];
-			result[4 * (y * nWidth + x) + 1] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 1];
-			result[4 * (y * nWidth + x) + 2] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 2];
-			result[4 * (y * nWidth + x) + 3] = 1;
-		}
-	}
-}
-
-void upscale(float* pixels, int width, int height, int nWidth, int nHeight, float* result) {
-
-	float rx = width / nWidth;
-	float ry = height / nHeight;
-
-	for (int x = 0; x < nWidth; x++) {
-		for (int y = 0; y < nHeight; y++) {
-			result[4 * (y * nWidth + x) + 0] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 0];
-			result[4 * (y * nWidth + x) + 1] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 1];
-			result[4 * (y * nWidth + x) + 2] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 2];
-			result[4 * (y * nWidth + x) + 3] = 1;
-		}
-	}
-}
-
-void beautyBloom(float* pixels, int width, int height, float threshold, float power, float radius) {
-
-	int nw = 640;
-	int nh = 360;
-
-	float* pixelsDown = new float[nw * nh * 4];
-
-	downscale(pixels, width, height, nw, nh, pixelsDown);
-	upscale(pixelsDown, nw, nh, width, height, pixels);
-
-	/*
-
-	float bloomFactors[] = { 1.0, 0.8, 0.6, 0.4, 0.2 };
-
-	int kernelSizes[] = { 3, 5, 7, 9, 11 };
-
-	int nW = width;
-	int nH = height;
-
-	for (int i = 0; i < 5; i++) {
-
-		float* pixelsDown = new float[nW*nH*4];
-		float* pixelsUp = new float[width * height * 4];
-		float* thresholdMatrix = new float[nW * nH * 4];
-		float* blurMatrix = new float[nW * nH * 4];
-
-		downscale(pixels, width, height, nW, nH, pixelsDown);
-		getThreshold(pixelsDown, nW, nH, threshold, thresholdMatrix);
-		gaussianBlur(thresholdMatrix, nW, nH, kernelSizes[i], blurMatrix);
-		upscale(pixels, nW, nH, width, height, pixelsUp);
-
-		for (int j = 0; j < width * height; j++) {
-
-			float w = power * lerp(bloomFactors[i], 1.2 - bloomFactors[i], radius);
-
-			pixels[j * 4 + 0] += w * pixelsUp[j * 4 + 0];
-			pixels[j * 4 + 1] += w * pixelsUp[j * 4 + 1];
-			pixels[j * 4 + 2] += w * pixelsUp[j * 4 + 2];
-			pixels[j * 4 + 3] += w * pixelsUp[j * 4 + 3];
-		}
-
-		delete(pixelsDown);
-		delete(pixelsUp);
-		delete(thresholdMatrix);
-		delete(blurMatrix);
-	}
-	*/
-}
-
-void HDRtoLDR(float* pixelsIn, sf::Uint8* pixelsOut, int width, int height) {
-	for (int i = 0; i < width * height * 4; i++)
-		pixelsOut[i] = (sf::Uint8)(pixelsIn[i] * 255);
-}
-
-int sumPathcount(int* pathcountBuffer, int size) {
-
-	int sum = 0;
-
-	for (int i = 0; i < size; i++)
-		sum += pathcountBuffer[i];
-
-	return sum;
+	return 1;
 }
 
 int main() {
 
-	Scene* scene = new Scene();
-	*scene = cocheRefachero();
+	Scene scene = cocheRefachero();
 
-	int width = scene->camera.xRes;
-	int height = scene->camera.yRes;
+	RenderData data;
 
-	int sampleTarget = 512;
+	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 1000, 1.0);
 
-	int updateInterval = 500;
-
-	float exposure = 1;
-
-	float* pixelBuffer = new float[width * height * 4];
-	int* pathcountBuffer = new int[width * height];
-	sf::Uint8* pixelBuffer_8 = new sf::Uint8[width * height * 4];
-
-	size_t free, total;
-
-	memset(pixelBuffer, width * height * 4, 0);
-
-	sf::RenderWindow window(sf::VideoMode(width, height, 32), "Render Window");
-
-	cudaError_t cudaStatus = renderSetup(scene);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "renderCuda failed!");
-		return 1;
-	}
+	sf::RenderWindow window(sf::VideoMode(data.pars.width, data.pars.height, 32), "Render Window");
 
 	sf::Image image;
-	image.create(width, height);
-
 	sf::Texture texture;
-	texture.loadFromImage(image);
-
 	sf::Sprite sprite;
-	sprite.setTexture(texture);
-
 	sf::Font font;
-	if (!font.loadFromFile("arial.ttf"));
-
 	sf::Text text;
 
+	image.create(data.pars.width, data.pars.height);
+	texture.loadFromImage(image);
+	sprite.setTexture(texture);
+
+	if (!font.loadFromFile("arial.ttf"));
 	text.setFont(font);
 	text.setCharacterSize(24);
 	text.setFillColor(sf::Color::Red);
 
-	std::thread t1(renderCuda, scene, sampleTarget);
-
-	auto timestart = std::chrono::high_resolution_clock::now();
+	startRender(data, scene);
 
 	while (window.isOpen()) {
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(updateInterval));
+		std::this_thread::sleep_for(std::chrono::milliseconds(UPDATE_INTERVAL));
 
 		sf::Event event;
 
@@ -710,43 +458,25 @@ int main() {
 				window.close();
 		}
 
-		getBuffer(pixelBuffer, pathcountBuffer, width * height);
-
-		cudaMemGetInfo(&free, &total);
-
-		int samples = getSamples();;
+		getRenderData(data);
 
 		auto t2 = std::chrono::high_resolution_clock::now();
 
-		auto ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - timestart);
+		auto ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - data.startTime);
 
-		printf("\rkPaths/s: %f, %fGB of a total of %fGB used, %d/%d samples", ((float)sumPathcount(pathcountBuffer, width*height) / (float)ms_int.count()), (float)(total - free) / (1024*1024*1024), (float)total / (1024 * 1024 * 1024), samples, sampleTarget);
+		printf("\rkPaths/s: %f, %fGB of a total of %fGB used, %d/%d samples", ((float)data.pathCount / (float)ms_int.count()), (float)(data.totalMemory - data.freeMemory) / (1024*1024*1024), (float)data.totalMemory / (1024 * 1024 * 1024), data.samples, data.pars.sampleTarget);
 
-		flipY(pixelBuffer, width, height);
-		//flipX(pixelBuffer, width, height);
-		applyExposure(pixelBuffer, width, height, exposure);
-		//basicBlur(pixelBuffer, width, height, 0.5, 1, 10);
-		//getThreshold(pixelBuffer, width, height, 0.7, pixelBuffer);
-		//gaussianBlur(pixelBuffer, width, height, 13, pixelBuffer);
-		//beautyBloom(pixelBuffer, width, height, 0.3, 1.6, 1);
-		//reinhardTonemap(pixelBuffer, width, height);
-		clampPixels(pixelBuffer, width, height);
-		applysRGB(pixelBuffer, width, height);
-		HDRtoLDR(pixelBuffer, pixelBuffer_8, width, height);
-
-		text.setString(std::to_string(samples));
-		texture.update(pixelBuffer_8);
+		text.setString(std::to_string(data.samples));
+		texture.update(data.beautyBuffer);
 		window.clear();
 		window.draw(sprite);
 		window.draw(text);
 		window.display();
 	}
 
-	t1.join();
+	t.join();
 
 	cudaDeviceReset();
 
 	window.close();
-
-	delete(scene);
 }

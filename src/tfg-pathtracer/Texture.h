@@ -2,7 +2,6 @@
 #define TEXTURE_H
 
 #include "Math.h"
-#include <math.h>
 
 class Texture {
 
@@ -33,7 +32,7 @@ public:
 
 public:
 
-	__host__ __device__ Texture(const char* filepath) {
+	__host__ Texture(const char* filepath) {
 
         USE_IMAGE = true;
 

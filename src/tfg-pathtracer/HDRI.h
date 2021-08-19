@@ -1,24 +1,26 @@
 #ifndef HDRI_H
 #define HDRI_H
 
+
 #include "Texture.h"
 #include "Sampling.h"
-#include <vector>
+#include "HdrLoader.h"
+
 
 class HDRI {
 
 public:
 
 	Texture texture;
-
 	float* cdf;
 	float radianceSum = 0;
 
-	HDRI() {
+	__host__ __device__ HDRI::HDRI() {
 		texture = Texture();
 	}
 
-	HDRI(Vector3 color) {
+	__host__ __device__ HDRI::HDRI(Vector3 color) {
+
 		texture.data = new float[1024 * 1024 * 3];
 		texture.width = 1024;
 		texture.height = 1024;
@@ -35,29 +37,28 @@ public:
 		generateCDF();
 	}
 
-	HDRI(const char* filepath) {
-	
+	HDRI::HDRI(const char* filepath) {
+
 		int width, height;
 
 		texture.data = loadHDR(filepath, width, height);
 		texture.width = width;
 		texture.height = height;
 		texture.USE_IMAGE = true;
-		cdf = new float[texture.width * texture.height + 1];	
+		cdf = new float[texture.width * texture.height + 1];
 
 		generateCDF();
 	}
 
-	__device__ __host__ inline void generateCDF2(){
+	__host__ __device__ inline void HDRI::generateCDF2() {
 
 		for (int y = 0; y < texture.height; y++) {
 			for (int x = 0; x < texture.width; x++) {
 
 				float r = 0;
-
 				float u, v;
 
-				Vector3 sample = uniformSampleSphere((float)x/(float)texture.width, (float)y/(float)texture.height);
+				Vector3 sample = uniformSampleSphere((float)x / (float)texture.width, (float)y / (float)texture.height);
 
 				Texture::sphericalMapping(Vector3(), sample, 1, u, v);
 
@@ -67,7 +68,7 @@ public:
 
 				radianceSum += r;
 			}
-		}	
+		}
 
 		for (int y = 0; y < texture.height; y++) {
 			for (int x = 0; x < texture.width; x++) {
@@ -86,12 +87,12 @@ public:
 
 				r /= radianceSum;
 
-				cdf[y*texture.width + x + 1] = r + cdf[y * texture.width + x];
+				cdf[y * texture.width + x + 1] = r + cdf[y * texture.width + x];
 			}
 		}
 	}
 
-	__device__ __host__ inline void generateCDF() {
+	__host__ __device__ inline void HDRI::generateCDF() {
 
 		radianceSum = 0;
 
@@ -112,8 +113,8 @@ public:
 
 			float r = 0;
 
-			r += texture.data[3 * i + 0];
-			r += texture.data[3 * i + 1];
+
+
 			r += texture.data[3 * i + 2];
 
 			r /= radianceSum;
@@ -122,7 +123,7 @@ public:
 		}
 	}
 
-	__device__ __host__ int binarySearch(float* arr, float value, int length) {
+	__host__ __device__ int HDRI::binarySearch(float* arr, float value, int length) {
 
 		int from = 0;
 		int to = length - 1;
@@ -139,15 +140,17 @@ public:
 		return to;
 	}
 
-	__device__ __host__ inline float pdf(int x, int y) {
+
+	__host__ __device__ float HDRI::pdf(int x, int y) {
 
 		Vector3 dv = texture.getValue(x, y);
 
 		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI);
+
 	}
 
-	__device__ __host__ inline Vector3 sample(float r1) {
-		
+	__host__ __device__ Vector3 HDRI::sample(float r1) {
+
 		int count = binarySearch(cdf, r1, texture.width * texture.height);
 
 		int wu = count % texture.width;
@@ -156,7 +159,7 @@ public:
 		return Vector3(wu, wv, count);
 	}
 
-	__device__ __host__ inline Vector3 sample2(float r1) {
+	__host__ __device__ inline Vector3 HDRI::sample2(float r1) {
 
 		int count = binarySearch(cdf, r1, texture.width * texture.height);
 
@@ -169,9 +172,9 @@ public:
 
 		Texture::sphericalMapping(Vector3(), sample, 1, u, v);
 
-
-		return Vector3(u * texture.width, v * texture.height , count);
+		return Vector3(u * texture.width, v * texture.height, count);
 	}
+
 };
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef HIT_H
 #define HIT_H
 
-
 class Hit {
 
 public:
@@ -11,7 +10,6 @@ public:
 	unsigned int objectID;
 	unsigned int type;
 	float u, v;
-
 };
 
 #endif

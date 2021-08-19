@@ -23,13 +23,13 @@
     <ClInclude Include="MeshObject.h" />
     <ClInclude Include="ObjLoader.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Ray.h" />
     <ClInclude Include="RenderableObject.h" />
     <ClInclude Include="Sampling.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneObject.h" />
     <ClInclude Include="Sphere.h" />
-    <ClInclude Include="vector_add.cu" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Tri.h" />
     <ClInclude Include="Vector.h" />
@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="PostProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CudaCompile Include="kernel.cu" />
@@ -125,7 +126,12 @@
       <InterleaveSourceInPTX>true</InterleaveSourceInPTX>
       <GenerateLineInfo>true</GenerateLineInfo>
       <FastMath>true</FastMath>
+      <GenerateRelocatableDeviceCode>true</GenerateRelocatableDeviceCode>
+      <AdditionalOptions>-dc %(AdditionalOptions)</AdditionalOptions>
     </CudaCompile>
+    <CudaLink>
+      <PerformDeviceLink>true</PerformDeviceLink>
+    </CudaLink>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
