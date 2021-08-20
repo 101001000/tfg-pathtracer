@@ -20,7 +20,7 @@
 
 #define USEBVH true
 #define HDRIIS true
-#define BOKEH
+#define BOKEH true
 
 struct dev_Scene {
 
@@ -214,11 +214,10 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         Vector3 textCoordinate = scene->hdri->sample(r1);
 
-        //float nu = limitUV((float)textCoordinate.x / (float)scene->hdri->texture.width) + ((r2 - 0.5) / (float)scene->hdri->texture.width);
-        //float nv = limitUV((float)textCoordinate.y / (float)scene->hdri->texture.height) + ((r3 - 0.5) / (float)scene->hdri->texture.height);
+        float nu = (float)textCoordinate.x / (float)scene->hdri->texture.width;
+        float nv = (float)textCoordinate.y / (float)scene->hdri->texture.height;
 
-        float nu = limitUV((float)textCoordinate.x / (float)scene->hdri->texture.width);
-        float nv = limitUV((float)textCoordinate.y / (float)scene->hdri->texture.height);
+        limitUV(nu, nv);
 
         Vector3 newDir = -1 * Texture::reverseSphericalMapping(nu, nv).normalized();
 
@@ -245,32 +244,41 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float r2, float r3, float r4, float r5) {
 
     // Relative coordinates for the point where the first ray will be launched
-    float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth * 0.001;
-    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight * 0.001;
+    float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth;
+    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight;
 
     // Absolute coordinates for the point where the first ray will be launched
-    float odx = (-camera.sensorWidth / 2.0) * 0.001 + dx;
-    float ody = (-camera.sensorHeight / 2.0) * 0.001 + dy;
+    float odx = (-camera.sensorWidth / 2.0) + dx;
+    float ody = (-camera.sensorHeight / 2.0) + dy;
 
     // Random part of the sampling offset so we get antialasing
-    float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth * 0.001;
-    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight * 0.001;
+    float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth;
+    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight;
 
-    // The initial ray is created from the camera position to the point calculated before. No rotation is taken into account.
-    ray = Ray(camera.position, Vector3(odx + rx, ody + ry, camera.position.z + camera.focalLength * 0.001) - camera.position);
+    // Sensor point, the point where intersects the ray with the sensor
+    float SPx = odx + rx;
+    float SPy = ody + ry;
+    float SPz = camera.position.z + camera.focalLength;
 
-#ifdef BOKEH
+    // The initial ray is created from the camera position to the sensor point. No rotation is taken into account.
+    ray = Ray(camera.position, Vector3(SPx, SPy, SPz) - camera.position);
+
+#if BOKEH
 
     float rIPx, rIPy;
 
     // The diameter of the camera iris
-    float diameter = 0.001 * ((camera.focalLength) / camera.aperture);
+    float diameter = camera.focalLength / camera.aperture;
 
-    // Total length 
-    float l = (camera.focusDistance + camera.focalLength * 0.001);
+    // Total length from the camera to the focus plane
+    float l = camera.focusDistance + camera.focalLength;
 
-    Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
+    // The point from the initial ray which is actually in focus
+    //Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
+    // Mala aproximación, encontrar soluición
+    Vector3 focusPoint = ray.origin + ray.direction * l;
 
+    // Sampling for the iris of the camera
     uniformCircleSampling(r3, r4, r5, rIPx, rIPy);
 
     rIPx *= diameter * 0.5;
@@ -278,6 +286,7 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
     Vector3 orig = camera.position + Vector3(rIPx, rIPy, 0);
 
+    //Blurred ray
     ray = Ray(orig , focusPoint - orig);
 
 #endif 

@@ -20,10 +20,9 @@ __host__ __device__ static Vector3 clamp(Vector3 v, float b, float c) {
     return Vector3(clamp(v.x, b, c), clamp(v.y, b, c), clamp(v.z, b, c));
 }
 
-__host__ __device__ static float limitUV(float u) {
-    u -= (int) u;
-    if (u < 0) u = 1 + u;
-    return u;
+__host__ __device__ static float limitUV(float &u, float& v) {
+    u += -(u > 1) + -(u < 0);
+    v += -(v > 1) + -(v < 0);
 }
 
 __host__ __device__ static float lerp(float a, float b, float c) {

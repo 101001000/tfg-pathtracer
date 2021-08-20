@@ -3,8 +3,6 @@
 
 #include "SceneObject.h"
 
-
-
 class PointLight : public SceneObject{
 public:
 	Vector3 radiance;

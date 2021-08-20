@@ -8,19 +8,19 @@ class Camera : public SceneObject {
 public:
 	unsigned int xRes, yRes;
 
-	float focalLength; //mm
-	float sensorWidth; //mm
-	float sensorHeight; //mm
-	float aperture; // fStops
-	float focusDistance = 1000000; //inf m
+	float focalLength;
+	float sensorWidth;
+	float sensorHeight;
+	float aperture;
+	float focusDistance = 1000000;
 
 public:
 
 	__host__ __device__ Camera() {
 		xRes = 1280;
 		yRes = 720;
-		focalLength = 35;
-		sensorWidth = 35;
+		focalLength = 35 * 0.001;
+		sensorWidth = 35 * 0.001;
 		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
 		aperture = 2.8;
 	}
@@ -28,8 +28,8 @@ public:
 	__host__ __device__ Camera(unsigned int _xRes, unsigned int _yRes) {
 		xRes = _xRes;
 		yRes = _yRes;
-		focalLength = 35;
-		sensorWidth = 35;
+		focalLength = 35 * 0.001;
+		sensorWidth = 35 * 0.001;
 		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
 		aperture = 2.8;
 	}

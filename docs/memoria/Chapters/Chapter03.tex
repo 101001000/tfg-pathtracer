@@ -18,32 +18,63 @@
 	
 	3: En vez de emitir e rayo desde el punto de la cámara, se elige un punto aleatorio en el iris \code{iRP} y se emite un rayo desde ahí hasta el punto de enfoque \code{focusPoint}. Este nuevo rayo será un rayo bajo el modelo de cámara de lente fina. Los elementos situados a la distancia de enfoque \code{focusDistance} serán más nítidos que aquellos que no lo estén.
 
+\begin{lstlisting}
+	
+	#if BOKEH
+	
+    float rIPx, rIPy;
+
+    // The diameter of the camera iris
+    float diameter = camera.focalLength / camera.aperture;
+
+    // Total length from the camera to the focus plane
+    float l = camera.focusDistance + camera.focalLength;
+
+    // The point from the initial ray which is actually in focus
+    Vector3 focusPoint = ray.origin + ray.direction * l;
+
+    // Sampling for the iris of the camera
+    uniformCircleSampling(r3, r4, r5, rIPx, rIPy);
+
+    rIPx *= diameter * 0.5;
+    rIPy *= diameter * 0.5;
+
+    Vector3 orig = camera.position + Vector3(rIPx, rIPy, 0);
+
+    //Blurred ray
+    ray = Ray(orig , focusPoint - orig);
+
+#endif 
+
+\end{lstlisting}
+
 	\begin{figure}
 		\centering
-		\includegraphics[width=0.5\textwidth]{blurring}
+		\includegraphics[width=0.7\textwidth]{blurring}
 		\caption{}
 		\label{fig:label}
 	\end{figure}
-
-
+	
 	
 	\section{Iluminación}
 	
-	La iluminación se define en este contexto como cualquier cuerpo capaz de emitir energía lumínica a la escena. Esta energía lumínica será multiplicada por el factor de reducción de cada fotón, determinado en cada rebote, y, añadida de manera lineal a la energía total del fotón.
+	En la implementación básica solo se hacía uso de luz ambiental para iluminar la escena. Se puede hacer uso de distintos mecanismos de iluminación para dar mayor riqueza visual. A continuación se detallan los tipos de luces implementadas.
+	
+	\begin{itemize}
+		
+	\item Luces de punto:
 
-	Luces de punto:
-
-	Las luces de punto son quizá el elemento más simple de iluminación. Consisten en un punto sin volumen el cual emite radiación lumínica de manera uniforme. Esta radiación se desvanece de manera cuadrática. Debido a que son puntos infinitesimalmente pequeños, jamás serán alcanzados por los fotones emitidos desde la cámara, de manera que requieren un procesamiento especial explicado en el capítulo de Muestreo por importancia de luces de punto.
+	Las luces de punto son quizá el elemento más simple de iluminación. Consisten en un punto sin volumen el cual emite radiación lumínica de manera uniforme. Esta radiación se desvanece de manera cuadrática. Debido a que son puntos infinitesimalmente pequeños, jamás serán alcanzados por los fotones emitidos desde la cámara, de manera que requieren un procesamiento especial explicado posteriormente en \autoref[sec:mi]{Muestreo por importancia}.
 
 	Una luz de punto viene definida por tres atributos: Color, intensidad y posición. La energía lumínica viene dada por la ecuación:
 	
-	Materiales emisivos:
+	\item Materiales emisivos:
 
 	Cuando un objeto es alcanzado por un rayo, lo más común es que se reste energía a dicho rayo debido a la absorción del material. Otra opción es sumarle energía. Si esto ocurre, se pasará a considerar a ese objeto como otra fuente de luz más.
 
 	La energía sumada a dicho rayo será obtenida de una textura denominada emisión del material a través del mapeo correspondiente del punto de intersección, multiplicada así por un factor de intensidad.
 
-	IBL (Image Based Lightning):
+	\item IBL (Image Based Lightning):
 
 	La iluminación basada en imagen ha sido uno de los elementos más relevantes en las técnicas para el renderizado fotorrealista. Se utiliza ampliamente en la industria cinematográfica debido a la complejidad visual que aporta a una escena 3D y debido a que permite captar la iluminación de entornos reales y posteriormente añadirla en escenas digitales. El hecho de poder trasladar la iluminación a un escenario virtual, facilita la composición de modelos tridimensionales en películas y series de televisión donde es necesario juntar una grabación real con un elemento generado por ordenador.
 
@@ -53,13 +84,15 @@
 
 	Los rayos que no interseccionan con nada se consideran que interseccionan en el infinito con el HDRI, por esta razón, al detectar que un rayo ha terminado de rebotar y ha terminado en el infinito, se obtendrá la dirección de este, y esta dirección se traducirá en las coordenadas polares del HDRI que posteriormente recuperarán el valor interpolado bilinearmente del pixel del HDRI correspondiente.
 
+	\end{itemize}
 
 	\section{Texturas}
 	
-	Texturas:
 	El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante.
 
 	La implementación de las texturas viene dada en el código por la clase Texture.
+	
+	
 	Coordenadas UV:
 
 	Una vez se ha definido este tipo de coordenadas se pueden añadir parámetros que las modifiquen, estos parámetros se encuentran en la clase Texture.
@@ -74,6 +107,43 @@
 
 	Por esta razón, cada vez que se quiera acceder a un píxel en las coordenadas UV, se devolverá el valor interpolado con la función getValueBilinear().
 
+	Debido a la naturaleza esférica de los mapas de entorno, resultará útil añadir dos funciones que transformen coordenadas esféricas en coordenadas UV. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas UV para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas UV.
+
+	\begin{lstlisting}
+	
+    __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
+
+        // Point is normalized to radius 1 sphere
+        Vector3 p = (point - origin) / radius;
+
+        float theta = acos(-p.y);
+        float phi = atan2(-p.z, p.x) + PI;
+
+        u = phi / (2 * PI);
+        v = theta / PI;
+
+        limitUV(u,v);
+    }
+	
+	\end{lstlisting}
+	
+	\begin{lstlisting}
+		
+	__host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
+
+        float phi = u * 2 * PI;
+        float theta = v * PI;
+
+        float px = cos(phi - PI);
+        float py = -cos(theta);
+        float pz = -sin(phi - PI);
+
+        float a = sqrt(1 - py * py);
+
+        return Vector3(a * px, py, a * pz);
+    }
+	
+	\end{lstlisting}
 	
 	\section{Sombreado BRDF}
 	

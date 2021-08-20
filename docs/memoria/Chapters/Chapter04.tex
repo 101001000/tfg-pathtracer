@@ -1,7 +1,7 @@
 \chapter{Optimizaciones estructurales}
 	
 \section{Muestreo por importancia}
-
+\label{sec:mi}
 
 El simple hecho de simular los rebotes de los fotones no es eficiente. Se puede buscar una manera para que cada rayo cargue con información "más útil". Este procedimiento se denomina "Muestreo por importancia" y es actualmente una línea de investigación en constante desarrollo puesto que como se verá a continuación, permite mejoras muy significativas en cuanto al tiempo de convergencia de la imagen final.
 
@@ -38,7 +38,7 @@ La función de distribución de probabilidad vendrá entonces dada por la ilumin
 
 El renderizado por luz directa es un método por el cual solo se tiene en cuenta la primera interacción del rayo con la escena y se comprueba si dicho punto es visible a los elementos lumínicos. Este método converge muy rápido puesto que solo necesita computar una interacción y el fotón recibe información directamente de la luz sin tener que desperdiciar fotones que acaben en zonas oscuras, pero carece del fotorrealismo que ofrece la iluminación global o luz indirecta, puesto no tiene en cuenta la luz reflejada en otros elementos no emisivos.
 
-El muestreo por importancia de Estimación de Evento Próximo trata de juntar estos dos métodos: La iluminación directa y la indirecta. De esta manera, la parte expuesta directamente a elementos lumínicos convergerá rápidamente, además de las partes afectadas por la iluminación global, que lo harán también. Además permite añadir luces de punto. 
+El muestreo por importancia de Estimación de Evento Próximo trata de juntar estos dos métodos: La iluminación directa y la indirecta. De esta manera, la parte expuesta directamente a elementos lumínicos convergerá rápidamente, además de las partes afectadas por la iluminación global, que lo harán también. Un añadido de este método es la posibilidad de computar la iluminación dada por luces de punto.
 
 Las luces de punto consisten en un punto en el espacio infinitamente pequeño el cual emite luz de manera uniforme hacia todos los lados. Sin la implementación de la estimación de evento próximo, estas luces al ser infinitesimalmente pequeñas, jamás serían alcanzadas por los fotones y por lo tanto, nunca se recibiría información de ellas. No solo eso, NEE también permite una mejor convergencia en las luces de menor tamaño, puesto que originalmente, las luces tienen menos probabilidades de ser alcanzadas cuanto menor sea su área.
 

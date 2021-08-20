@@ -97,6 +97,12 @@ public:
 		return Vector3(x * s, y * s, z * s);
 	}
 
+
+	__host__ __device__ inline Vector3 operator-() {
+		return *this * -1;
+	}
+
+
 	__host__ __device__ inline float operator[](const int n) {
 		if (n == 0) return x;
 		if (n == 1) return y;

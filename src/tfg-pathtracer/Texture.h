@@ -19,8 +19,6 @@ public:
 
     Vector3 color;
 
-    float multiply = 1;
-
     unsigned int width;
     unsigned int height;
 
@@ -29,6 +27,8 @@ public:
 
     float xOffset = 0;
     float yOffset = 0;
+
+    float multiply = 1;
 
 public:
 
@@ -78,14 +78,9 @@ public:
         height = 1;
 
         USE_IMAGE = false;
-
         color = _color;
-
         data = new float[3];
-
-        data[0] = color.x;
-        data[1] = color.y;
-        data[2] = color.z;
+        data[0] = color.x; data[1] = color.y; data[2] = color.z;
     }
 
     __host__ __device__ Texture() {
@@ -97,10 +92,7 @@ public:
 
         data = new float[3];
 
-        data[0] = 0;
-        data[1] = 0;
-        data[2] = 0;
-
+        data[0] = 0; data[1] = 0; data[2] = 0;
     }
 
     __host__ __device__ Vector3 getValue(int x, int y) {
@@ -125,8 +117,7 @@ public:
         u = ((u + xOffset) * xTile);
         v = ((v + yOffset) * yTile);
 
-        u = limitUV(u);
-        v = limitUV(v);
+        limitUV(u, v);
 
         float x = u * width;
         float y = v * height;
@@ -155,18 +146,18 @@ public:
         float phi = u * 2 * PI;
         float theta = v * PI;
 
-        float py = -cos(theta);
-
-        float pz = -sin(phi - PI);
         float px = cos(phi - PI);
+        float py = -cos(theta);
+        float pz = -sin(phi - PI);
 
         float a = sqrt(1 - py * py);
 
-        return Vector3(a*px, py, a*pz);     
+        return Vector3(a * px, py, a * pz);     
     }
 
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
 
+        // Point is normalized to radius 1 sphere
         Vector3 p = (point - origin) / radius;
 
         float theta = acos(-p.y);
@@ -175,18 +166,8 @@ public:
         u = phi / (2 * PI);
         v = theta / PI;
 
-        u += -(u > 1) + -(u < 0);
-        v += -(v > 1) + -(v < 0);
+        limitUV(u,v);
 
-        /*
-
-        if (u > 1) u -= 1;
-        if (v > 1) v -= 1;
-
-        if (u < 0) u += 1;
-        if (v < 0) v += 1;
-
-        */
     }
 };
 

@@ -45,12 +45,38 @@ Los materiales \code{Material} definen la manera en la que los fotones interact�
 Así pues, habiendo definido estos elementos en la escena, se procederá a transferirlos a la GPU, donde se realizará el resto de computaciones más demandantes. 
 
 
+	\subsection{Trazado de rayo desde la cámara}
 
+Para simular el trazado del rayo desde la cámara hasta la escena, se simula de manera simplificada como funcionaría una cámara estenopéica. Se calcula la posición del sensor por la cual se trazará el rayo a partir de las coordenadas \code{x} e \code{y}. 
 
+Puesto que no se está teniendo en cuenta la rotación de la cámara, la coordenada z del sensor se puede simplificar con la distancia de la cámara hasta el sensor.
 
+\begin{lstlisting}
+	
+__device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float r2, float r3, float r4, float r5) {
 
+    // Relative coordinates for the point where the first ray will be launched
+    float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth;
+    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight;
 
+    // Absolute coordinates for the point where the first ray will be launched
+    float odx = (-camera.sensorWidth / 2.0) + dx;
+    float ody = (-camera.sensorHeight / 2.0) + dy;
 
+    // Random part of the sampling offset so we get antialasing
+    float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth;
+    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight;
+
+    // Sensor point, the point where intersects the ray with the sensor
+    float SPx = odx + rx;
+    float SPy = ody + ry;
+    float SPz = camera.position.z + camera.focalLength;
+
+    // The initial ray is created from the camera position to the sensor point. No rotation is taken into account.
+    ray = Ray(camera.position, Vector3(SPx, SPy, SPz) - camera.position);
+}
+
+\end{lstlisting}
 
 
 

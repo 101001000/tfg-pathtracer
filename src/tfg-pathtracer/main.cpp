@@ -24,7 +24,7 @@ Scene cocheRefachero() {
 
 	scene.camera = Camera(1280, 960);
 	scene.camera.position = Vector3(1.739, -1.5, -8.175);
-	scene.camera.focalLength = 40;
+	scene.camera.focalLength = 40 * 0.001;
 	scene.camera.focusDistance = 4.52;
 	scene.camera.aperture = 0.6;
 
@@ -380,7 +380,6 @@ int startRender(RenderData& data, Scene &scene) {
 
 	data.rawPixelBuffer = new float[pars.width * pars.height * 4];
 	data.beautyBuffer = new unsigned char[pars.width * pars.height * 4];
-	data.startTime = std::chrono::high_resolution_clock::now();
 
 	memset(data.rawPixelBuffer, 0, pars.width * pars.height * 4 * sizeof(float));
 	memset(data.beautyBuffer, 0, pars.width * pars.height * 4 * sizeof(unsigned char));
@@ -392,6 +391,8 @@ int startRender(RenderData& data, Scene &scene) {
 	}
 
 	t = std::thread(renderCuda, &scene, pars.sampleTarget);
+
+	data.startTime = std::chrono::high_resolution_clock::now();
 
 	return 1;
 }
@@ -449,8 +450,6 @@ int main() {
 
 	while (window.isOpen()) {
 
-		std::this_thread::sleep_for(std::chrono::milliseconds(UPDATE_INTERVAL));
-
 		sf::Event event;
 
 		while (window.pollEvent(event)) {
@@ -464,7 +463,14 @@ int main() {
 
 		auto ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - data.startTime);
 
-		printf("\rkPaths/s: %f, %fGB of a total of %fGB used, %d/%d samples", ((float)data.pathCount / (float)ms_int.count()), (float)(data.totalMemory - data.freeMemory) / (1024*1024*1024), (float)data.totalMemory / (1024 * 1024 * 1024), data.samples, data.pars.sampleTarget);
+		printf("\rkPaths/s: %f, %fGB of a total of %fGB used, %d/%d samples. %f seconds running, %d total paths",
+			((float)data.pathCount / (float)ms_int.count()),
+			(float)(data.totalMemory - data.freeMemory) / (1024*1024*1024),
+			(float)data.totalMemory / (1024 * 1024 * 1024),
+			data.samples,
+			data.pars.sampleTarget,
+			((float)(ms_int).count())/1000,
+			data.pathCount);
 
 		text.setString(std::to_string(data.samples));
 		texture.update(data.beautyBuffer);
@@ -472,6 +478,8 @@ int main() {
 		window.draw(sprite);
 		window.draw(text);
 		window.display();
+
+		std::this_thread::sleep_for(std::chrono::milliseconds(UPDATE_INTERVAL));
 	}
 
 	t.join();
