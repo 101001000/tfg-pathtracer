@@ -2,8 +2,6 @@
 #define TRI_H
 #include "MeshObject.h"
 
-class MeshObject;
-
 
 class Tri {
 public:
@@ -15,22 +13,26 @@ public:
     int objectID;
 
 public:
-	Tri(Vector3 _p1, Vector3 _p2, Vector3 _p3) {
-        vertices[0] = _p1;
-        vertices[1] = _p2;
-        vertices[2] = _p3;
-	}
 
     Tri() {
         vertices[0] = Vector3();
         vertices[1] = Vector3();
         vertices[2] = Vector3();
+
+        normals[0] = Vector3();
+        normals[1] = Vector3();
+        normals[2] = Vector3();
+
+        uv[0] = Vector3();
+        uv[1] = Vector3();
+        uv[2] = Vector3();
     }
 
     __host__ __device__ inline Vector3 centroid() {
 
-        return (1.0/3.0) * Vector3(vertices[0].x + vertices[1].x + vertices[2].x, vertices[0].y + vertices[1].y + vertices[2].y, vertices[0].z + vertices[1].z + vertices[2].z);
-
+        return Vector3(vertices[0].x + vertices[1].x + vertices[2].x,
+            vertices[0].y + vertices[1].y + vertices[2].y,
+            vertices[0].z + vertices[1].z + vertices[2].z) / 3.0;
     }
 
     __host__ __device__ inline bool hit(Ray& ray, Hit& hit, Vector3 position) {
@@ -73,7 +75,11 @@ public:
         hit.position = ray.origin + ray.direction * hit.t;
 
         // Interpolación de la normal para smooth shading
-        hit.normal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+        hit.normal = N;
+
+        //hit.smoothNormal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+        hit.smoothNormal = (1 - u - v) * normals[0] + u * normals[1] + v * normals[2];
+
         hit.valid = true;
         hit.type = 1;
         hit.u = nuv.x;
@@ -85,8 +91,12 @@ public:
 };
 
 __host__ __device__ inline bool operator==(const Tri& t1, const Tri& t2) {
-
-    return (t1.uv[0] == t2.uv[0]) && (t1.uv[1] == t2.uv[1]) && (t1.uv[2] == t2.uv[2]) && (t1.vertices[0] == t2.vertices[0]) && (t1.vertices[1] == t2.vertices[1]) && (t1.vertices[2] == t2.vertices[2]);
+    return (t1.uv[0] == t2.uv[0]) &&
+        (t1.uv[1] == t2.uv[1]) &&
+        (t1.uv[2] == t2.uv[2]) &&
+        (t1.vertices[0] == t2.vertices[0]) &&
+        (t1.vertices[1] == t2.vertices[1]) &&
+        (t1.vertices[2] == t2.vertices[2]);
 }
 
 

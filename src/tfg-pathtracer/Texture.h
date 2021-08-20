@@ -3,6 +3,8 @@
 
 #include "Math.h"
 
+enum Filter { NO_FILTER, BILINEAR };
+
 class Texture {
 
 
@@ -17,6 +19,8 @@ public:
 	float* data;
     bool USE_IMAGE;
 
+    Filter filter = BILINEAR;
+
     Vector3 color;
 
     unsigned int width;
@@ -27,8 +31,6 @@ public:
 
     float xOffset = 0;
     float yOffset = 0;
-
-    float multiply = 1;
 
 public:
 
@@ -95,30 +97,27 @@ public:
         data[0] = 0; data[1] = 0; data[2] = 0;
     }
 
-    __host__ __device__ Vector3 getValue(int x, int y) {
+    __host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
 
         Vector3 pixel;
 
-        x *= xTile;
-        y *= yTile;
-
-        x %= width;
-        y %= height;
+        // Offset and tiling tranformations
+        x = (int)(xTile * (x + xOffset)) % width;
+        y = (int)(yTile * (y + yOffset)) % height;
 
         pixel.x = data[(3 * (y * width + x) + 0)];
         pixel.y = data[(3 * (y * width + x) + 1)];
         pixel.z = data[(3 * (y * width + x) + 2)];
 
-        return pixel * multiply;
+        return pixel;
+    }
+
+    __host__ __device__ Vector3 getValueFromUV(float u, float v) {
+        return getValueFromCoordinates(u * width, v * height);
     }
 
     __host__ __device__ Vector3 getValueBilinear(float u, float v) {
         
-        u = ((u + xOffset) * xTile);
-        v = ((v + yOffset) * yTile);
-
-        limitUV(u, v);
-
         float x = u * width;
         float y = v * height;
 
@@ -131,28 +130,20 @@ public:
         float a = (x - t1x) / (t2x - t1x);
         float b = (y - t1y) / (t2y - t1y);
 
-        Vector3 v1 = getValue(t1x, t1y);
-        Vector3 v2 = getValue(t2x, t1y);
-        Vector3 v3 = getValue(t1x, t2y);
-        Vector3 v4 = getValue(t2x, t2y);
+        Vector3 v1 = getValueFromCoordinates(t1x, t1y);
+        Vector3 v2 = getValueFromCoordinates(t2x, t1y);
+        Vector3 v3 = getValueFromCoordinates(t1x, t2y);
+        Vector3 v4 = getValueFromCoordinates(t2x, t2y);
 
+        // Linear interpolation
         return lerp(lerp(v1, v2, a), lerp(v3, v4, a), b);
 	}
 
-    // Calcula las coordenadas UV para un punto en una esfera con cierto radio
-
-    __host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
-
-        float phi = u * 2 * PI;
-        float theta = v * PI;
-
-        float px = cos(phi - PI);
-        float py = -cos(theta);
-        float pz = -sin(phi - PI);
-
-        float a = sqrt(1 - py * py);
-
-        return Vector3(a * px, py, a * pz);     
+    __host__ __device__ Vector3 getValueFromUVFiltered(float u, float v) {
+        if (filter == NO_FILTER)
+            return getValueFromUV(u, v);
+        else if (filter == BILINEAR)
+            return getValueBilinear(u, v);
     }
 
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
@@ -167,7 +158,20 @@ public:
         v = theta / PI;
 
         limitUV(u,v);
+    }
 
+    __host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
+
+        float phi = u * 2 * PI;
+        float theta = v * PI;
+
+        float px = cos(phi - PI);
+        float py = -cos(theta);
+        float pz = -sin(phi - PI);
+
+        float a = sqrt(1 - py * py);
+
+        return Vector3(a * px, py, a * pz);
     }
 };
 

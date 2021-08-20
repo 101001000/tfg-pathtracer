@@ -143,7 +143,7 @@ public:
 
 	__host__ __device__ float HDRI::pdf(int x, int y) {
 
-		Vector3 dv = texture.getValue(x, y);
+		Vector3 dv = texture.getValueFromCoordinates(x, y);
 
 		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI);
 

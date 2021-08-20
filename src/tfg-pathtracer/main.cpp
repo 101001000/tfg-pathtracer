@@ -65,6 +65,7 @@ Scene cocheRefachero() {
 	scene.materials.at(0).albedo = Vector3(0.3, 0.3, 0.3);
 	scene.materials.at(0).metallic = 1;
 	scene.materials.at(0).roughness = 0.1;
+	scene.materials.at(0).smoothShading = false;
 
 	scene.materials.at(1).albedo = Vector3(1, 1, 1);
 	scene.materials.at(1).metallic = 1;
@@ -73,6 +74,7 @@ Scene cocheRefachero() {
 	scene.materials.at(2).albedo = Vector3(0.05, 0.05, 0.05);
 	scene.materials.at(2).metallic = 0;
 	scene.materials.at(2).roughness = 0.3;
+	scene.materials.at(2).smoothShading = false;
 
 	scene.materials.at(3).albedo = Vector3(1, 1, 1);
 	scene.materials.at(3).metallic = 1;
@@ -81,6 +83,7 @@ Scene cocheRefachero() {
 	scene.materials.at(4).albedo = Vector3(0.1, 0.1, 0.1);
 	scene.materials.at(4).metallic = 0;
 	scene.materials.at(4).roughness = 1;
+	scene.materials.at(4).smoothShading = false;
 
 	scene.materials.at(5).albedoTextureID = 0;
 	scene.materials.at(6).albedoTextureID = 1;

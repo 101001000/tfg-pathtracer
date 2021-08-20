@@ -90,22 +90,58 @@
 	
 	El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante.
 
-	La implementación de las texturas viene dada en el código por la clase Texture.
 	
 	
 	Coordenadas UV:
 
-	Una vez se ha definido este tipo de coordenadas se pueden añadir parámetros que las modifiquen, estos parámetros se encuentran en la clase Texture.
+	Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas UV. Ambas coordenadas U y V son valores de punto flotante comprendidas entre [0,1]. U indica la coordenada horizontal mientras que V indica la coordenada vertical.
 
-	xTile e yTile: definen las veces que se repite una textura
-	xOffset e yOffset: definen el desplazamiento de esta textura.
-	Interpolado bilinear:
-	El problema de las texturas es que cuentan con una resolución limitada. Esto provoca que se pixelice cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación los píxeles vecinos de manera lineal. 
+	También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son desplazamientos.
 
+	Un problema de las texturas es que cuentan con una resolución limitada. Esto provoca que se pixelice cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación los píxeles vecinos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilinear.
 
+	
+	\begin{lstlisting}
+	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
+        
+        float x = u * width;
+        float y = v * height;
 
+        float t1x = floor(x);
+        float t1y = floor(y);
 
-	Por esta razón, cada vez que se quiera acceder a un píxel en las coordenadas UV, se devolverá el valor interpolado con la función getValueBilinear().
+        float t2x = t1x + 1;
+        float t2y = t1y + 1;
+
+        float a = (x - t1x) / (t2x - t1x);
+        float b = (y - t1y) / (t2y - t1y);
+
+        Vector3 v1 = getValueFromCoordinates(t1x, t1y);
+        Vector3 v2 = getValueFromCoordinates(t2x, t1y);
+        Vector3 v3 = getValueFromCoordinates(t1x, t2y);
+        Vector3 v4 = getValueFromCoordinates(t2x, t2y);
+
+		// Linear interpolation
+        return lerp(lerp(v1, v2, a), lerp(v3, v4, a), b);
+	}
+	\end{lstlisting}
+
+	\begin{lstlisting}
+    __host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
+	
+        Vector3 pixel;
+
+        // Offset and tiling tranforms
+        x = (int)(xTile * (x + xOffset)) % width;
+        y = (int)(yTile * (y + yOffset)) % height;
+
+        pixel.x = data[(3 * (y * width + x) + 0)];
+        pixel.y = data[(3 * (y * width + x) + 1)];
+        pixel.z = data[(3 * (y * width + x) + 2)];
+
+        return pixel;
+    }
+	\end{lstlisting}
 
 	Debido a la naturaleza esférica de los mapas de entorno, resultará útil añadir dos funciones que transformen coordenadas esféricas en coordenadas UV. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas UV para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas UV.
 

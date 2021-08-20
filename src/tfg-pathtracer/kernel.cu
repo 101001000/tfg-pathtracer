@@ -59,9 +59,10 @@ cudaStream_t kernelStream, bufferStream;
 long textureMemory = 0;
 long geometryMemory = 0;
 
-__device__ void generateHitData(Material* material, HitData& hitdata, float u, float v, Vector3 N) {
+__device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
     Vector3 tangent, bitangent;
+    Vector3 N = material->smoothShading ? hit.smoothNormal : hit.normal;
 
     createBasis(N, tangent, bitangent);
 
@@ -69,28 +70,28 @@ __device__ void generateHitData(Material* material, HitData& hitdata, float u, f
         hitdata.albedo = material->albedo;
     }
     else {
-        hitdata.albedo = dev_scene_g->textures[material->albedoTextureID].getValueBilinear(u, v);
+        hitdata.albedo = dev_scene_g->textures[material->albedoTextureID].getValueBilinear(hit.u, hit.v);
     }
 
     if (material->emissionTextureID < 0) {
         hitdata.emission = material->emission;
     }
     else {
-        hitdata.emission = dev_scene_g->textures[material->emissionTextureID].getValueBilinear(u, v);
+        hitdata.emission = dev_scene_g->textures[material->emissionTextureID].getValueBilinear(hit.u, hit.v);
     }
 
     if (material->roughnessTextureID < 0) {
         hitdata.roughness = material->roughness;
     }
     else {
-        hitdata.roughness = dev_scene_g->textures[material->roughnessTextureID].getValueBilinear(u, v).x;
+        hitdata.roughness = dev_scene_g->textures[material->roughnessTextureID].getValueBilinear(hit.u, hit.v).x;
     }
 
     if (material->metallicTextureID < 0) {
         hitdata.metallic = material->metallic;
     }
     else {
-        hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueBilinear(u, v).x;
+        hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueBilinear(hit.u, hit.v).x;
     }
 
     hitdata.clearcoatGloss = material->clearcoatGloss;
@@ -362,11 +363,6 @@ __global__ void neeRenderKernel(){
 
         Hit nearestHit = throwRay(ray, scene);
 
-        // FIX BACKFACE NORMALS
-        if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
-
-        //nearestHit.normal *= -(Vector3::dot(nearestHit.normal, ray.direction) > 0);
-
         if (!nearestHit.valid) {
             float u, v;
             Texture::sphericalMapping(Vector3(), -1 * ray.direction, 1, u, v);
@@ -374,11 +370,16 @@ __global__ void neeRenderKernel(){
             break;
         }
 
+
         materialID = scene->meshObjects[nearestHit.objectID].materialID;
 
         Material* material = &scene->materials[materialID];
 
-        generateHitData(material, hitdata, nearestHit.u, nearestHit.v, nearestHit.normal);
+        // FIX BACKFACE NORMALS
+        if (Vector3::dot(nearestHit.smoothNormal, ray.direction) > 0) nearestHit.smoothNormal *= -1;
+        if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
+
+        generateHitData(material, hitdata, nearestHit);
 
         calculateBounce(ray, hitdata, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
 
