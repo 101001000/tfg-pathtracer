@@ -1,10 +1,10 @@
 #ifndef MESHOBJECT_H
 #define MESHOBJECT_H
 
-#include "RenderableObject.h"
-#include "Tri.h"
-#include "Ray.h"
-#include "Hit.h"
+#include "RenderableObject.hpp"
+#include "Tri.hpp"
+#include "Ray.hpp"
+#include "Hit.hpp"
 
 class MeshObject : public RenderableObject {
 

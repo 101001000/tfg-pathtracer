@@ -2,11 +2,11 @@
 #define DISNEY_H
 
 
-#include "Math.h"
-#include "Ray.h"
-#include "Material.h"
+#include "Math.hpp"
+#include "Ray.hpp"
+#include "Material.hpp"
 #include "cuda_runtime.h"
-#include "Sampling.h"
+#include "Sampling.hpp"
 
 
 // Adaptación del shader de disney de knightcrawler25, derivar en un futuro para aplicar optimizaciones.

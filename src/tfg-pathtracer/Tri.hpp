@@ -1,6 +1,6 @@
 #ifndef TRI_H
 #define TRI_H
-#include "MeshObject.h"
+#include "MeshObject.hpp"
 
 
 class Tri {

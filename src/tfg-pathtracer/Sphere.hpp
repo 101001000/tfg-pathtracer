@@ -1,10 +1,10 @@
 #ifndef SPHERE_H
 #define SPHERE_H
 
-#include "RenderableObject.h"
-#include "Hit.h"
-#include "Ray.h"
-#include "Texture.h"
+#include "RenderableObject.hpp"
+#include "Hit.hpp"
+#include "Ray.hpp"
+#include "Texture.hpp"
 
 class Sphere : public RenderableObject {
 

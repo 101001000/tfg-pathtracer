@@ -1,17 +1,17 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <Windows.h>
-#include "Camera.h"
-#include "Sphere.h"
-#include "Ray.h"
+#include "Camera.hpp"
+#include "Sphere.hpp"
+#include "Ray.hpp"
 #include "kernel.h"
-#include "Scene.h"
+#include "Scene.hpp"
 #include <thread>         
 #include <chrono>     
-#include "Texture.h"
+#include "Texture.hpp"
 #include "PostProcessing.h"
-#include "ObjLoader.h"
-#include "BVH.h"
+#include "ObjLoader.hpp"
+#include "BVH.hpp"
 
 
 #define UPDATE_INTERVAL 500

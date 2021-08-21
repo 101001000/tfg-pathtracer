@@ -4,16 +4,16 @@
 #include <stdio.h>
 
 #include "kernel.h"
-#include "Sphere.h"
-#include "Camera.h"
-#include "Scene.h"
-#include "Material.h"
-#include "Hit.h"
-#include "Disney.h"
-#include "PointLight.h"
-#include "BVH.h"
-#include "HDRI.h"
-#include "Math.h"
+#include "Sphere.hpp"
+#include "Camera.hpp"
+#include "Scene.hpp"
+#include "Material.hpp"
+#include "Hit.hpp"
+#include "Disney.hpp"
+#include "PointLight.hpp"
+#include "BVH.hpp"
+#include "HDRI.hpp"
+#include "Math.hpp"
 
 #define THREADSIZE 8
 #define MAXBOUNCES 5

@@ -2,9 +2,9 @@
 #define BVH_H
 
 #include <limits>
-#include "Tri.h"
-#include "Math.h"
-#include "Ray.h"
+#include "Tri.hpp"
+#include "Math.hpp"
+#include "Ray.hpp"
 #include <vector>
 #include <algorithm>
 #include <chrono>  

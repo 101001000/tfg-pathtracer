@@ -1,15 +1,15 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "Material.h"
-#include "MeshObject.h"
-#include "Tri.h"
-#include "Camera.h"
-#include "Sphere.h"
-#include "BVH.h"
-#include "PointLight.h"
-#include "HdrLoader.h"
-#include "HDRI.h"
+#include "Material.hpp"
+#include "MeshObject.hpp"
+#include "Tri.hpp"
+#include "Camera.hpp"
+#include "Sphere.hpp"
+#include "BVH.hpp"
+#include "PointLight.hpp"
+#include "HdrLoader.hpp"
+#include "HDRI.hpp"
 
 class Scene {
 

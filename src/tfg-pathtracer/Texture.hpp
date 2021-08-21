@@ -1,7 +1,7 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include "Math.h"
+#include "Math.hpp"
 
 enum Filter { NO_FILTER, BILINEAR };
 

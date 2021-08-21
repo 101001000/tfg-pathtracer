@@ -2,9 +2,9 @@
 #define HDRI_H
 
 
-#include "Texture.h"
-#include "Sampling.h"
-#include "HdrLoader.h"
+#include "Texture.hpp"
+#include "Sampling.hpp"
+#include "HdrLoader.hpp"
 
 
 class HDRI {

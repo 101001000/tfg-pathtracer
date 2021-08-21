@@ -1,7 +1,7 @@
 #ifndef  RENDERABLEOBJECT_H
 #define RENDERABLEOBJECT_H
 
-#include "SceneObject.h"
+#include "SceneObject.hpp"
 
 
 class RenderableObject : public SceneObject {

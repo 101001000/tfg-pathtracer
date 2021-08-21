@@ -1,7 +1,7 @@
 #ifndef MATH_H
 #define MATH_H
 
-#include "Vector.h"
+#include "Vector.hpp"
 #include "cuda_runtime.h"
 
 #define PI 3.14159265358979323846f

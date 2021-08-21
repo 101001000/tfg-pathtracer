@@ -1,7 +1,7 @@
 #ifndef SCENEOBJECT_H
 #define SCENEOBJECT_H
 
-#include "Vector.h"
+#include "Vector.hpp"
 
 static int objectIDCount = 0;
 

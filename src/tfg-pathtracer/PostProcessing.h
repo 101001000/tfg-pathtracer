@@ -1,7 +1,7 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "Math.h"
+#include "Math.hpp"
 
 void applyExposure(float* pixels, int width, int height, float exposure);
 

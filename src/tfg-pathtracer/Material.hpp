@@ -1,5 +1,5 @@
-#include "Vector.h"
-#include "Texture.h"
+#include "Vector.hpp"
+#include "Texture.hpp"
 
 #ifndef MATERIAL_H
 #define MATERIAL_H

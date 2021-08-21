@@ -1,6 +1,6 @@
-#include "Sphere.h"
-#include "Camera.h"
-#include "Scene.h"
+#include "Sphere.hpp"
+#include "Camera.hpp"
+#include "Scene.hpp"
 #include "cuda_runtime.h"
 
 #pragma once

@@ -2,8 +2,8 @@
 #define SAMPLING_H
 
 
-#include "Vector.h"
-#include "Math.h"
+#include "Vector.hpp"
+#include "Math.hpp"
 
 //TODO naming convention
 

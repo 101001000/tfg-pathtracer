@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "SceneObject.h"
+#include "SceneObject.hpp"
 
 class Camera : public SceneObject {
 

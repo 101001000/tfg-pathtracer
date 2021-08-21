@@ -11,28 +11,28 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BVH.h" />
-    <ClInclude Include="Camera.h" />
-    <ClInclude Include="Disney.h" />
-    <ClInclude Include="HDRI.h" />
-    <ClInclude Include="HdrLoader.h" />
-    <ClInclude Include="Hit.h" />
+    <ClInclude Include="BVH.hpp" />
+    <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="Disney.hpp" />
+    <ClInclude Include="HDRI.hpp" />
+    <ClInclude Include="HdrLoader.hpp" />
+    <ClInclude Include="Hit.hpp" />
     <ClInclude Include="kernel.h" />
-    <ClInclude Include="Material.h" />
-    <ClInclude Include="Math.h" />
-    <ClInclude Include="MeshObject.h" />
-    <ClInclude Include="ObjLoader.h" />
-    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Material.hpp" />
+    <ClInclude Include="Math.hpp" />
+    <ClInclude Include="MeshObject.hpp" />
+    <ClInclude Include="ObjLoader.hpp" />
+    <ClInclude Include="PointLight.hpp" />
     <ClInclude Include="PostProcessing.h" />
-    <ClInclude Include="Ray.h" />
-    <ClInclude Include="RenderableObject.h" />
-    <ClInclude Include="Sampling.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="SceneObject.h" />
-    <ClInclude Include="Sphere.h" />
-    <ClInclude Include="Texture.h" />
-    <ClInclude Include="Tri.h" />
-    <ClInclude Include="Vector.h" />
+    <ClInclude Include="Ray.hpp" />
+    <ClInclude Include="RenderableObject.hpp" />
+    <ClInclude Include="Sampling.hpp" />
+    <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="SceneObject.hpp" />
+    <ClInclude Include="Sphere.hpp" />
+    <ClInclude Include="Texture.hpp" />
+    <ClInclude Include="Tri.hpp" />
+    <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="notas.txt" />

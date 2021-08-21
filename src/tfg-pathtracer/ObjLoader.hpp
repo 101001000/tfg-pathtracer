@@ -2,13 +2,13 @@
 #define OBJLOADER_H
 
 #include <vector>
-#include "Vector.h"
+#include "Vector.hpp"
 #include <sstream>
 #include <iostream>
 #include <fstream>
 
-#include "Tri.h"
-#include "MeshObject.h"
+#include "Tri.hpp"
+#include "MeshObject.hpp"
 
 class ObjLoader {
 

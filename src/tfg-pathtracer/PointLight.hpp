@@ -1,7 +1,7 @@
 #ifndef POINTLIGHT_H
 #define POINTLIGHT_H
 
-#include "SceneObject.h"
+#include "SceneObject.hpp"
 
 class PointLight : public SceneObject{
 public:
