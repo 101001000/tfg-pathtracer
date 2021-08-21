@@ -28,7 +28,7 @@ public:
 		position = newPosition;
 	}
 
-	__host__ __device__ inline bool hit(Ray& ray, Hit& hit){
+	__host__ __device__ inline bool hit(Ray& ray, Hit& hit, bool shadowSmooth){
 
 		Hit tempHit = Hit();
 

@@ -98,7 +98,7 @@ public:
 						tri.uv[i] = textureCoord.at(std::stoi(&(v[1])[0]) - 1);
 
 					if (strlen(v[2]) > 0)
-						tri.normals[i] = normals.at(std::stoi(&(v[2])[0]) - 1);
+						tri.normals[i] = normals.at(std::stoi(&(v[2])[0]) - 1).normalized();
 						
 				}
 

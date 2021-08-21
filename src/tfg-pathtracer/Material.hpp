@@ -30,8 +30,6 @@ public:
 	float subsurface = 0;
 	float sheen = 0;
 
-	bool smoothShading = true;
-
 };
 
 

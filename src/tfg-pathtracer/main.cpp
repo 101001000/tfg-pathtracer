@@ -18,6 +18,28 @@
 
 std::thread t;
 
+Scene focus() {
+
+	Scene scene;
+
+	std::string path = "C:\\Users\\Kike\\Downloads\\scenetest\\";
+
+	scene.camera = Camera(1280, 960);
+	scene.camera.position = Vector3(0, 0, 0);
+	scene.camera.focalLength = 50 * 0.001;
+	scene.camera.focusDistance = 10;
+	scene.camera.aperture = 0.3;
+
+	scene.addMeshObject(ObjLoader::loadObj(path + "untitled.obj"));
+
+	scene.addMaterial(Material());
+
+	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Scenes\\DesertCar\\Export\\goegap_4k.hdr");
+
+	return scene;
+
+}
+
 Scene cocheRefachero() {
 
 	Scene scene;
@@ -65,7 +87,6 @@ Scene cocheRefachero() {
 	scene.materials.at(0).albedo = Vector3(0.3, 0.3, 0.3);
 	scene.materials.at(0).metallic = 1;
 	scene.materials.at(0).roughness = 0.1;
-	scene.materials.at(0).smoothShading = false;
 
 	scene.materials.at(1).albedo = Vector3(1, 1, 1);
 	scene.materials.at(1).metallic = 1;
@@ -74,7 +95,6 @@ Scene cocheRefachero() {
 	scene.materials.at(2).albedo = Vector3(0.05, 0.05, 0.05);
 	scene.materials.at(2).metallic = 0;
 	scene.materials.at(2).roughness = 0.3;
-	scene.materials.at(2).smoothShading = false;
 
 	scene.materials.at(3).albedo = Vector3(1, 1, 1);
 	scene.materials.at(3).metallic = 1;
@@ -83,7 +103,6 @@ Scene cocheRefachero() {
 	scene.materials.at(4).albedo = Vector3(0.1, 0.1, 0.1);
 	scene.materials.at(4).metallic = 0;
 	scene.materials.at(4).roughness = 1;
-	scene.materials.at(4).smoothShading = false;
 
 	scene.materials.at(5).albedoTextureID = 0;
 	scene.materials.at(6).albedoTextureID = 1;

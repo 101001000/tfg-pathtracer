@@ -2,6 +2,7 @@
 #define TRI_H
 #include "MeshObject.hpp"
 
+#define SMOOTH_SHADING true
 
 class Tri {
 public:
@@ -15,17 +16,7 @@ public:
 public:
 
     Tri() {
-        vertices[0] = Vector3();
-        vertices[1] = Vector3();
-        vertices[2] = Vector3();
 
-        normals[0] = Vector3();
-        normals[1] = Vector3();
-        normals[2] = Vector3();
-
-        uv[0] = Vector3();
-        uv[1] = Vector3();
-        uv[2] = Vector3();
     }
 
     __host__ __device__ inline Vector3 centroid() {
@@ -33,6 +24,10 @@ public:
         return Vector3(vertices[0].x + vertices[1].x + vertices[2].x,
             vertices[0].y + vertices[1].y + vertices[2].y,
             vertices[0].z + vertices[1].z + vertices[2].z) / 3.0;
+    }
+
+    __host__ __device__ inline Vector3 projectOnPlane(Vector3 position, Vector3 origin, Vector3 normal){
+        return position - Vector3::dot(position - origin, normal) * normal;
     }
 
     __host__ __device__ inline bool hit(Ray& ray, Hit& hit, Vector3 position) {
@@ -68,22 +63,31 @@ public:
 
         if (t < 0) return false;
 
-        // Operar aquí con vectores es ineficiente, mejor serparar u y v
-        Vector3 nuv = uv[0] + (uv[1] - uv[0]) * u + (uv[2] - uv[0]) * v;
-        
-        hit.t = t;
-        hit.position = ray.origin + ray.direction * hit.t;
+        // UV coordinates from the texture, weighted with vertex texture UV
+        Vector3 tUV = uv[0] + (uv[1] - uv[0]) * u + (uv[2] - uv[0]) * v;
+        Vector3 geomPosition = ray.origin + ray.direction * t;
 
-        // Interpolación de la normal para smooth shading
+#if SMOOTH_SHADING 
+
+        // https://gist.github.com/pixnblox/5e64b0724c186313bc7b6ce096b08820
+
+        Vector3 p0 = projectOnPlane(geomPosition, vertices[0], normals[0]);
+        Vector3 p1 = projectOnPlane(geomPosition, vertices[1], normals[1]);
+        Vector3 p2 = projectOnPlane(geomPosition, vertices[2], normals[2]);
+
+        hit.normal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+        hit.position = p0 + (p1 - p0) * u + (p2 - p0) * v;
+#else
+
         hit.normal = N;
+        hit.position = geomPosition;
+#endif
 
-        //hit.smoothNormal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
-        hit.smoothNormal = (1 - u - v) * normals[0] + u * normals[1] + v * normals[2];
-
+        hit.t = t;
         hit.valid = true;
         hit.type = 1;
-        hit.u = nuv.x;
-        hit.v = nuv.y;
+        hit.u = tUV.x;
+        hit.v = tUV.y;
         hit.objectID = objectID;
 
         return true;

@@ -62,9 +62,8 @@ long geometryMemory = 0;
 __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
     Vector3 tangent, bitangent;
-    Vector3 N = material->smoothShading ? hit.smoothNormal : hit.normal;
 
-    createBasis(N, tangent, bitangent);
+    createBasis(hit.normal, tangent, bitangent);
 
     if (material->albedoTextureID < 0) {
         hitdata.albedo = material->albedo;
@@ -105,7 +104,7 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
     hitdata.subsurface = material->subsurface;
     hitdata.sheen = material->sheen;
 
-    hitdata.normal = N;
+    hitdata.normal = hit.normal;
     hitdata.tangent = tangent;
     hitdata.bitangent = bitangent;
 }
@@ -376,7 +375,6 @@ __global__ void neeRenderKernel(){
         Material* material = &scene->materials[materialID];
 
         // FIX BACKFACE NORMALS
-        if (Vector3::dot(nearestHit.smoothNormal, ray.direction) > 0) nearestHit.smoothNormal *= -1;
         if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
 
         generateHitData(material, hitdata, nearestHit);
