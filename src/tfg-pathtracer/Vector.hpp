@@ -153,10 +153,6 @@ public:
 		return *this;
 	}
 
-	__host__ __device__ inline static Vector3 FORWARD() {
-		return Vector3(0, 0, 1);
-	}
-
 	__host__ __device__ inline static float dot(const Vector3& v1, const Vector3& v2) {
 		return v1.x * v2.x + v1.y * v2.y + v1.z * v2.z;
 	}

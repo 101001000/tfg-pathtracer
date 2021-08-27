@@ -41,7 +41,7 @@ public:
 
 			if (line[0] == 'f') {
 
-				char f[3][100];
+				char f[3][1000];
 
 				f[0][0] = '\0';
 				f[1][0] = '\0';
@@ -105,6 +105,10 @@ public:
 				tris->push_back(tri);
 			}
 		}
+
+		printf("Obj loaded with %d tris, %d vertices and %d normals", tris->size(), vertices.size(), normals.size());
+
+		
 
 		MeshObject mo;
 

@@ -15,7 +15,7 @@
 typedef unsigned char RGBE[4];
 #define R			0
 #define G			1
-#define B			2
+#define BLUE			2
 #define E			3
 
 #define  MINELEN	8				// minimum scanline length for encoding
@@ -116,7 +116,7 @@ void inline workOnRGBE(RGBE* scan, int len, float* cols)
 		int expo = scan[0][E] - 128;
 		cols[0] = convertComponent(expo, scan[0][R]);
 		cols[1] = convertComponent(expo, scan[0][G]);
-		cols[2] = convertComponent(expo, scan[0][B]);
+		cols[2] = convertComponent(expo, scan[0][BLUE]);
 		cols += 3;
 		scan++;
 	}
@@ -136,10 +136,10 @@ bool inline decrunch(RGBE* scanline, int len, FILE* file)
 	}
 
 	scanline[0][G] = fgetc(file);
-	scanline[0][B] = fgetc(file);
+	scanline[0][BLUE] = fgetc(file);
 	i = fgetc(file);
 
-	if (scanline[0][G] != 2 || scanline[0][B] & 128) {
+	if (scanline[0][G] != 2 || scanline[0][BLUE] & 128) {
 		scanline[0][R] = 2;
 		scanline[0][E] = i;
 		return oldDecrunch(scanline + 1, len - 1, file);
@@ -173,14 +173,14 @@ bool inline oldDecrunch(RGBE* scanline, int len, FILE* file)
 	while (len > 0) {
 		scanline[0][R] = fgetc(file);
 		scanline[0][G] = fgetc(file);
-		scanline[0][B] = fgetc(file);
+		scanline[0][BLUE] = fgetc(file);
 		scanline[0][E] = fgetc(file);
 		if (feof(file))
 			return false;
 
 		if (scanline[0][R] == 1 &&
 			scanline[0][G] == 1 &&
-			scanline[0][B] == 1) {
+			scanline[0][BLUE] == 1) {
 			for (i = scanline[0][E] << rshift; i > 0; i--) {
 				memcpy(&scanline[0][0], &scanline[-1][0], 4);
 				scanline++;
@@ -207,6 +207,7 @@ static inline float* loadHDR(const char* path, int& width, int& height) {
 
 	for (int i = 0; i < width * height * 3; i++) {
 		if (res.cols[i] < 0) res.cols[i] = 0;
+		//res.cols[i] = pow(res.cols[i], 1.0 / 2.2);
 	}
 
 	return res.cols;

@@ -20,7 +20,7 @@ public:
 		xRes = 1280;
 		yRes = 720;
 		focalLength = 35 * 0.001;
-		sensorWidth = 35 * 0.001;
+		sensorWidth = 36 * 0.001;
 		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
 		aperture = 2.8;
 	}
@@ -29,7 +29,7 @@ public:
 		xRes = _xRes;
 		yRes = _yRes;
 		focalLength = 35 * 0.001;
-		sensorWidth = 35 * 0.001;
+		sensorWidth = 36 * 0.001;
 		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
 		aperture = 2.8;
 	}

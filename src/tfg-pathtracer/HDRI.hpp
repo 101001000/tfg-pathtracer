@@ -37,14 +37,16 @@ public:
 		generateCDF();
 	}
 
-	HDRI::HDRI(const char* filepath) {
+	HDRI::HDRI(std::string filepath) {
 
 		int width, height;
 
-		texture.data = loadHDR(filepath, width, height);
+		texture.data = loadHDR(filepath.c_str(), width, height);
+
 		texture.width = width;
 		texture.height = height;
 		texture.USE_IMAGE = true;
+
 		cdf = new float[texture.width * texture.height + 1];
 
 		generateCDF();
@@ -98,28 +100,24 @@ public:
 
 		cdf[0] = 0;
 
-		for (int i = 0; i < texture.width * texture.height; i++) {
-
-			float r = 0;
-
-			r += texture.data[3 * i + 0];
-			r += texture.data[3 * i + 1];
-			r += texture.data[3 * i + 2];
-
-			radianceSum += r;
+		for (int j = 0; j < texture.height; j++) {
+			for (int i = 0; i < texture.width; i++) {
+				Vector3 data = texture.getValueFromCoordinates(i, j);
+				radianceSum += data.x + data.y + data.z;
+			}
 		}
 
-		for (int i = 0; i < texture.width * texture.height; i++) {
+		int c = 0;
 
-			float r = 0;
+		for (int j = 0; j < texture.height; j++) {
+			for (int i = 0; i < texture.width; i++) {
 
+				Vector3 data = texture.getValueFromCoordinates(i, j);
+				//cdf[c + 1] = (data.x + data.y + data.z) / radianceSum + cdf[c];
 
-
-			r += texture.data[3 * i + 2];
-
-			r /= radianceSum;
-
-			cdf[i + 1] = r + cdf[i];
+				cdf[c + 1] = cdf[c] + (data.x + data.y + data.z) / radianceSum;
+				c++;
+			}
 		}
 	}
 
@@ -145,7 +143,10 @@ public:
 
 		Vector3 dv = texture.getValueFromCoordinates(x, y);
 
-		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI);
+		float theta = (((float)y / (float)texture.height)) * PI;
+
+		// Semisphere area
+		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI * PI * sin(theta));
 
 	}
 
@@ -153,10 +154,13 @@ public:
 
 		int count = binarySearch(cdf, r1, texture.width * texture.height);
 
-		int wu = count % texture.width;
-		int wv = count / texture.width;
+		int x = count % texture.width;
+		int y = count / texture.width;
 
-		return Vector3(wu, wv, count);
+		//x = (int)(texture.xTile * (x + texture.xOffset * texture.width)) % texture.width;
+		//y = (int)(texture.yTile * (y + texture.yOffset * texture.height)) % texture.height;
+
+		return Vector3(x, y, count);
 	}
 
 	__host__ __device__ inline Vector3 HDRI::sample2(float r1) {

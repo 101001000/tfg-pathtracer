@@ -2,7 +2,7 @@
 #define TRI_H
 #include "MeshObject.hpp"
 
-#define SMOOTH_SHADING true
+#define SMOOTH_SHADING false
 
 class Tri {
 public:
@@ -32,13 +32,15 @@ public:
 
     __host__ __device__ inline bool hit(Ray& ray, Hit& hit, Vector3 position) {
 
-        float EPSILON = 0.00001;
+        float EPSILON = 0.000001;
 
         Vector3 edge1 = vertices[1] - vertices[0];
         Vector3 edge2 = vertices[2] - vertices[0];
 
         Vector3 pvec = Vector3::cross(ray.direction, edge2);
+
         Vector3 N = Vector3::cross(edge1, edge2).normalized();
+        if (Vector3::dot(N, ray.direction) > 0) N *= -1;
 
         float u, v, t, inv_det;
 
@@ -71,17 +73,52 @@ public:
 
         // https://gist.github.com/pixnblox/5e64b0724c186313bc7b6ce096b08820
 
+        Vector3 shadingNormal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+
         Vector3 p0 = projectOnPlane(geomPosition, vertices[0], normals[0]);
         Vector3 p1 = projectOnPlane(geomPosition, vertices[1], normals[1]);
         Vector3 p2 = projectOnPlane(geomPosition, vertices[2], normals[2]);
 
-        hit.normal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
-        hit.position = p0 + (p1 - p0) * u + (p2 - p0) * v;
+        Vector3 shadingPosition = p0 + (p1 - p0) * u + (p2 - p0) * v;
+
+        bool convex = Vector3::dot(shadingPosition - geomPosition, shadingNormal) > 0.0f;
+
+        hit.position = convex ? shadingPosition : geomPosition;;
+        hit.normal = shadingNormal;
 #else
 
         hit.normal = N;
         hit.position = geomPosition;
 #endif
+
+        //http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
+
+        Vector3 edgeUV1 = uv[1] - uv[0];
+        Vector3 edgeUV2 = uv[2] - uv[0];
+
+        float r = 1.0f / (edgeUV1.x * edgeUV2.y - edgeUV1.y * edgeUV2.x);
+
+        hit.tangent = ((edge1 * edgeUV2.y - edge2 * edgeUV1.y) * r).normalized();
+        hit.bitangent = ((edge2 * edgeUV1.x - edge1 * edgeUV2.x) * r).normalized();
+
+        /*
+        hit.tangent = (hit.tangent - N * Vector3::dot(N, hit.tangent)).normalized();
+
+
+        if (Vector3::dot(Vector3::cross(N, hit.tangent), hit.bitangent) < 0.0f) {
+           hit.tangent = hit.tangent * -1.0f;
+        }
+
+
+       */
+
+        hit.bitangent = Vector3::cross(hit.normal, hit.tangent).normalized();
+
+
+        if (Vector3::dot(Vector3::cross(hit.normal, hit.bitangent), hit.tangent) > 0.0f) {
+            hit.bitangent = hit.bitangent * -1.0f;
+        }
+
 
         hit.t = t;
         hit.valid = true;

@@ -18,6 +18,137 @@
 
 std::thread t;
 
+Scene clockScene() {
+
+	Scene scene;
+
+	std::string path = "C:\\Users\\Kike\\Desktop\\Scenes\\Clock\\render\\";
+
+	scene.camera = Camera(1280, 720);
+	scene.camera.position = Vector3(0, 0.08836, -0.6336);
+	scene.camera.focalLength = 50 * 0.001;
+	scene.camera.focusDistance = 0.59;
+	scene.camera.aperture = 2.8;
+
+	scene.addMeshObject(ObjLoader::loadObj(path + "clock.obj"));
+	scene.addMaterial(Material());
+	scene.addTexture(Texture(path + "clock_albedo.bmp"));
+	scene.materials.at(0).albedoTextureID = 0;
+	scene.addTexture(Texture(path + "clock_roughness.bmp", CS::LINEAR));
+	scene.materials.at(0).roughnessTextureID = 1;
+	scene.addTexture(Texture(path + "clock_normal.bmp", CS::LINEAR));
+	scene.materials.at(0).normalTextureID = -1;
+	scene.addTexture(Texture(path + "clock_metallic.bmp", CS::LINEAR));
+	scene.materials.at(0).metallicTextureID = 3;
+	scene.meshObjects.at(0).materialID = 0;
+
+	scene.addMeshObject(ObjLoader::loadObj(path + "chair.obj"));
+	scene.addMaterial(Material());
+	scene.addTexture(Texture(path + "chair_albedo.bmp"));
+	scene.materials.at(1).albedoTextureID = 4;
+	scene.addTexture(Texture(path + "chair_roughness.bmp"));
+	scene.materials.at(1).roughnessTextureID = 5;
+	scene.addTexture(Texture(path + "chair_normal.bmp", CS::LINEAR));
+	scene.materials.at(1).normalTextureID = -1;
+	scene.meshObjects.at(1).materialID = 1;
+
+
+	scene.addHDRI(path + std::string("hdri.hdr"));
+	scene.hdri.texture.xOffset = 0.5;
+
+	return scene;
+
+}
+
+Scene cube() {
+
+
+	Scene scene;
+
+	std::string path = "C:\\Users\\Kike\\Desktop\\Scenes\\Cube\\";
+
+	scene.camera = Camera(1280, 720);
+	scene.camera.position = Vector3(0, 0, -7);
+	scene.camera.focalLength = 50 * 0.001;
+
+	scene.addMeshObject(ObjLoader::loadObj(path + "cube.obj"));
+	scene.addMaterial(Material());
+	scene.materials.at(0).roughness = 1;
+
+	scene.addHDRI(Vector3(0.5));
+
+
+	return scene;
+
+}
+
+Scene HDRIBenchmark() {
+
+	Scene scene;
+
+	std::string path = "C:\\Users\\Kike\\Desktop\\Scenes\\Sphere\\";
+
+	scene.camera = Camera(1280, 720);
+	scene.camera.position = Vector3(0, 0, -7);
+	scene.camera.focalLength = 50 * 0.001;
+
+	scene.addMeshObject(ObjLoader::loadObj(path + "sphere.obj"));
+	scene.addMaterial(Material());
+	//scene.materials.at(0).albedo = Vector3(1);
+	scene.addTexture(Texture(path + "normal.bmp", CS::LINEAR));
+	scene.materials.at(0).roughness = 1;
+	scene.materials.at(0).metallic = 0;
+	scene.meshObjects.at(0).materialID = 0;
+
+	scene.addHDRI(path + "hdri.hdr");
+	//scene.hdri.texture.xOffset = 0.5;
+	//scene.addHDRI(Vector3(0.5));
+
+	return scene;
+}
+
+Scene clementine() {
+
+	Scene scene;
+
+	std::string path = "C:\\Users\\Kike\\Desktop\\Scenes\\Clementine\\";
+
+	scene.camera = Camera(1280, 720);
+	scene.camera.position = Vector3(0, 0.218299, -0.988592);
+	scene.camera.focalLength = 50 * 0.001;
+	scene.camera.focusDistance = 0.79;
+	scene.camera.aperture = 0.8;
+
+	scene.addMeshObject(ObjLoader::loadObj(path + "clementine.obj"));
+	scene.addMaterial(Material());
+	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Scenes\\Clementine\\clementine_albedo.bmp"));
+	scene.materials.at(0).albedoTextureID = 0;
+	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Scenes\\Clementine\\clementine_roughness.bmp"));
+	scene.materials.at(0).roughnessTextureID = 1;
+	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Scenes\\Clementine\\clementine_normal.bmp", CS::LINEAR));
+	scene.materials.at(0).normalTextureID = 2;
+	scene.meshObjects.at(0).materialID = 0;
+
+	
+	
+	scene.addMeshObject(ObjLoader::loadObj(path + std::string("rock.obj")));
+	scene.addMaterial(Material());
+	scene.addTexture(Texture(path + std::string("rock_albedo.bmp")));
+	scene.materials.at(1).albedoTextureID = 3;
+	scene.addTexture(Texture(path + std::string("rock_roughness.bmp")));
+	scene.materials.at(1).roughnessTextureID = 4;
+	scene.addTexture(Texture(path + std::string("rock_normal.bmp"), CS::LINEAR));
+	scene.materials.at(1).normalTextureID = 5;
+	scene.meshObjects.at(1).materialID = 1;
+	
+
+	scene.addHDRI(path + std::string("hdri.hdr"));
+	scene.hdri.texture.xOffset = 0.18;
+	
+	return scene;
+
+}
+
 Scene focus() {
 
 	Scene scene;
@@ -33,6 +164,10 @@ Scene focus() {
 	scene.addMeshObject(ObjLoader::loadObj(path + "untitled.obj"));
 
 	scene.addMaterial(Material());
+
+	scene.addTexture(Texture("C:\\Users\\Kike\\Downloads\\normal.bmp", CS::LINEAR));
+
+	scene.materials.at(0).normalTextureID = 0;
 
 	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Scenes\\DesertCar\\Export\\goegap_4k.hdr");
 
@@ -445,11 +580,11 @@ int getRenderData(RenderData& data) {
 
 int main() {
 
-	Scene scene = cocheRefachero();
+	Scene scene = clockScene();
 
 	RenderData data;
 
-	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 1000, 1.0);
+	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 100000, 1.0);
 
 	sf::RenderWindow window(sf::VideoMode(data.pars.width, data.pars.height, 32), "Render Window");
 

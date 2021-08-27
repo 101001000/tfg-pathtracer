@@ -4,6 +4,7 @@
 #include "Math.hpp"
 
 enum Filter { NO_FILTER, BILINEAR };
+enum CS { LINEAR, sRGB };
 
 class Texture {
 
@@ -34,12 +35,16 @@ public:
 
 public:
 
-	__host__ Texture(const char* filepath) {
+    __host__ Texture(std::string filepath) : Texture(filepath, CS::sRGB) {}
+
+    	__host__ Texture(std::string filepath, CS colorSpace) {
+
+        printf("Loading texture from file %s\n", filepath.c_str());
 
         USE_IMAGE = true;
 
         int i;
-        FILE* f = fopen(filepath, "rb");
+        FILE* f = fopen(filepath.c_str(), "rb");
         unsigned char info[54];
 
         // read the 54-byte header
@@ -71,9 +76,13 @@ public:
 
         for (i = 0; i < size; i ++) {
             data[i] = ((float)tmpData[i]) / 256.0;
+
+            if(colorSpace == CS::sRGB)
+                data[i] = pow(data[i], 2.2);
         }
 	}
 
+ 
     __host__ __device__ Texture(Vector3 _color) {
 
         width = 1;
@@ -102,8 +111,8 @@ public:
         Vector3 pixel;
 
         // Offset and tiling tranformations
-        x = (int)(xTile * (x + xOffset)) % width;
-        y = (int)(yTile * (y + yOffset)) % height;
+        x = (int)(xTile * (x + xOffset * width)) % width;
+        y = (int)(yTile * (y + yOffset * height)) % height;
 
         pixel.x = data[(3 * (y * width + x) + 0)];
         pixel.y = data[(3 * (y * width + x) + 1)];
@@ -160,7 +169,44 @@ public:
         limitUV(u,v);
     }
 
-    __host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
+    __host__ __device__ inline Vector3 transformUV(float u, float v) {
+
+        int x = u * width;
+        int y = v * height;
+
+        // OJO TILE
+
+        x = (int)(xTile * (x + xOffset * width)) % width;
+        y = (int)(yTile * (y + yOffset * height)) % height;
+
+
+        float nu = (float)x / (float)width;
+        float nv = (float)y / (float)height;
+
+        limitUV(nu, nv);
+
+        return Vector3(nu, nv, 0);
+    }
+
+    __host__ __device__ inline Vector3 inverseTransformUV(float u, float v) {
+
+        int x = u * width;
+        int y = v * height;
+
+        // OJO TILE
+
+        x = (int)(xTile * (x - xOffset * width)) % width;
+        y = (int)(yTile * (y - yOffset * height)) % height;
+
+        float nu = (float)x / (float)width;
+        float nv = (float)y / (float)height;
+
+        limitUV(nu, nv);
+
+        return Vector3(nu, nv, 0);
+    }
+
+    __host__ __device__ inline Vector3 reverseSphericalMapping(float u, float v) {
 
         float phi = u * 2 * PI;
         float theta = v * PI;

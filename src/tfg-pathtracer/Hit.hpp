@@ -4,7 +4,7 @@
 class Hit {
 
 public:
-	Vector3 position, normal;
+	Vector3 position, normal, tangent, bitangent;
 	bool valid = false;
 	float t;
 	unsigned int objectID;

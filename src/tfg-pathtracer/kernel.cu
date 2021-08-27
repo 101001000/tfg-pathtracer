@@ -59,11 +59,21 @@ cudaStream_t kernelStream, bufferStream;
 long textureMemory = 0;
 long geometryMemory = 0;
 
+__device__ Vector3 color2Normal(Vector3 color) {
+
+    return Vector3(
+        (color.x * 2) - 1,
+        (color.y * 2) - 1,
+        (color.z * 2) - 1);    
+}
+
 __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
-    Vector3 tangent, bitangent;
+    Vector3 tangent, bitangent, normal;
 
-    createBasis(hit.normal, tangent, bitangent);
+    normal = hit.normal;
+    tangent = hit.tangent;
+    bitangent = hit.bitangent;
 
     if (material->albedoTextureID < 0) {
         hitdata.albedo = material->albedo;
@@ -93,6 +103,26 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
         hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueBilinear(hit.u, hit.v).x;
     }
 
+    if (material->normalTextureID < 0) {
+        hitdata.normal = normal;
+        //hitdata.albedo = Vector3(normal.x, normal.y, -normal.z);
+    }
+    else {
+
+        Vector3 localNormal = color2Normal(dev_scene_g->textures[material->normalTextureID].getValueFromUV(hit.u, hit.v));
+        
+
+        Vector3 ws_normal = Vector3(localNormal.x  * tangent.x + localNormal.y  * bitangent.x + localNormal.z  * normal.x,
+                                    localNormal.x  * tangent.y + localNormal.y  * bitangent.y + localNormal.z  * normal.y,
+                                   -1).normalized();
+      
+        hitdata.normal = ws_normal;
+    }
+
+    // Convert linear to sRGB
+    hitdata.roughness = pow(hitdata.roughness, 2.2f);
+    hitdata.metallic = pow(hitdata.metallic, 2.2f);
+
     hitdata.clearcoatGloss = material->clearcoatGloss;
     hitdata.clearcoat = material->clearcoat;
     hitdata.anisotropic = material->anisotropic;
@@ -104,7 +134,6 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
     hitdata.subsurface = material->subsurface;
     hitdata.sheen = material->sheen;
 
-    hitdata.normal = hit.normal;
     hitdata.tangent = tangent;
     hitdata.bitangent = bitangent;
 }
@@ -204,22 +233,25 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         if (shadowHit.valid) return Vector3();
 
-        Vector3 hdriValue = scene->hdri->texture.getValueBilinear(u, v);
+        Vector3 hdriValue = scene->hdri->texture.getValueFromUV(u, v);
 
         Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
 
-        return brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / (1.0 / (2.0 * PI));
+        pdf = (1.0 / (2.0 * PI * PI));
+
+        return brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / (1.0 / (2.0 * PI * PI));
     }
     else {
 
         Vector3 textCoordinate = scene->hdri->sample(r1);
 
-        float nu = (float)textCoordinate.x / (float)scene->hdri->texture.width;
-        float nv = (float)textCoordinate.y / (float)scene->hdri->texture.height;
+        float nu = textCoordinate.x / (float)scene->hdri->texture.width;
+        float nv = textCoordinate.y / (float)scene->hdri->texture.height;
 
-        limitUV(nu, nv);
+        float iu = scene->hdri->texture.inverseTransformUV(nu, nv).x;
+        float iv = scene->hdri->texture.inverseTransformUV(nu, nv).y;
 
-        Vector3 newDir = -1 * Texture::reverseSphericalMapping(nu, nv).normalized();
+        Vector3 newDir = -scene->hdri->texture.reverseSphericalMapping(iu, iv).normalized();
 
         Ray shadowRay(point +  newDir * 0.001, newDir);
 
@@ -227,15 +259,11 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         if (shadowHit.valid) return Vector3();
 
-        float u, v;
-
-        Texture::sphericalMapping(Vector3(), -1 * newDir, 1, u, v);
-
-        Vector3 hdriValue = scene->hdri->texture.getValueBilinear(u, v);
-
+        Vector3 hdriValue = scene->hdri->texture.getValueFromUV(iu, iv);
+       
         Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
 
-        pdf = scene->hdri->pdf(textCoordinate.x, textCoordinate.y);
+        pdf = scene->hdri->pdf(iu * scene->hdri->texture.width, iv * scene->hdri->texture.height);
 
         return brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / pdf;
     }
@@ -308,6 +336,7 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
     if (brdfPdf <= 0) return;
 
     hitLight = w1 * reduction * directLight;
+
     reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf; 
 
 }
@@ -327,13 +356,9 @@ __global__ void neeRenderKernel(){
 
     if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
 
-    //int idx1 = (scene->camera->xRes * y + x);
     int idx = (scene->camera->xRes * y + x);
 
     curandState local_rand_state = d_rand_state_g[idx];
-
-    //x = curand_uniform(&local_rand_state) * scene->camera->xRes;
-    //y = curand_uniform(&local_rand_state) * scene->camera->yRes;
 
     unsigned int sa = dev_samples[idx];
 
@@ -369,19 +394,21 @@ __global__ void neeRenderKernel(){
             break;
         }
 
+        //if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
 
         materialID = scene->meshObjects[nearestHit.objectID].materialID;
 
         Material* material = &scene->materials[materialID];
-
-        // FIX BACKFACE NORMALS
-        if (Vector3::dot(nearestHit.normal, ray.direction) > 0) nearestHit.normal *= -1;
 
         generateHitData(material, hitdata, nearestHit);
 
         calculateBounce(ray, hitdata, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
 
         shade(*scene, ray, hitdata, nearestHit, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), hitLight, reduction);
+
+        float hdriPdf;
+
+        //Vector3 hLight = hdriLight(ray, scene, nearestHit.position, hitdata, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), hdriPdf);;
 
         light += hitLight;
 
@@ -390,7 +417,7 @@ __global__ void neeRenderKernel(){
 
     dev_pathcount[idx] += i;
 
-    light = clamp(light, 0, 3);
+    light = clamp(light, 0, 10);
 
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
@@ -406,8 +433,6 @@ __global__ void neeRenderKernel(){
 
         dev_samples[idx]++;
     }
-
-    
 
     d_rand_state_g[idx] = local_rand_state;
 }
@@ -641,12 +666,12 @@ cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
 
     cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_buffer, size * sizeof(float) * 4, 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
+        fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
     }
 
     cudaStatus = cudaMemcpyFromSymbolAsync(pathcountBuffer, dev_pathcount, size * sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
+        fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
     }
 
     return cudaStatus;
@@ -707,7 +732,7 @@ __host__ void printBRDFMaterial(Material material, int samples) {
     hitdata.subsurface = material.subsurface;
     hitdata.sheen = material.sheen;
 
-    hitdata.normal = Vector3(0, 1, 0);
+    //hitdata.normal = Vector3(0, 1, 0);
     
     createBasis(hitdata.normal, hitdata.tangent, hitdata.bitangent);
 

@@ -15,9 +15,9 @@
 // Limitado solo a BRDF sin BSDF
 
 __device__ __host__ void createBasis(Vector3 normal, Vector3 &tangent, Vector3 &bitangent) {
-    Vector3 UpVector = abs(normal.z) < 0.999 ? Vector3(0, 0, 1) : Vector3(1, 0, 0);
-    tangent = (Vector3::cross(UpVector, normal)).normalized();
-    bitangent = Vector3::cross(normal, tangent);
+    Vector3 UpVector = Vector3(0, 1, 0);
+    tangent = Vector3::cross(UpVector, normal).normalized();
+    bitangent = Vector3::cross(normal, tangent).normalized();
 }
 
 __device__ __host__ float SchlickFresnel(float u) {
@@ -87,6 +87,10 @@ __device__ __host__ float DisneyPdf(Ray ray, HitData& hitdata, Vector3 L) {
     Vector3 V = -1 * ray.direction;
     Vector3 H = (L + V).normalized();
 
+    Vector3 T, B;
+
+    createBasis(hitdata.normal, T, B);
+
     float brdfPdf = 0.0;
     float bsdfPdf = 0.0;
 
@@ -107,7 +111,7 @@ __device__ __host__ float DisneyPdf(Ray ray, HitData& hitdata, Vector3 L) {
     float ay = maxf(0.001, hitdata.roughness * aspect);
 
     // PDFs for brdf
-    float pdfGTR2_aniso = GTR2_aniso(NDotH, Vector3::dot(H, hitdata.tangent), Vector3::dot(H, hitdata.bitangent), ax, ay) * NDotH;
+    float pdfGTR2_aniso = GTR2_aniso(NDotH, Vector3::dot(H, T), Vector3::dot(H, B), ax, ay) * NDotH;
     float pdfGTR1 = GTR1(NDotH, clearcoatAlpha) * NDotH;
     float ratio = 1.0 / (1.0 + hitdata.clearcoat);
     float pdfSpec = lerp(pdfGTR1, pdfGTR2_aniso, ratio) / (4.0 * abs(Vector3::dot(L, H)));
@@ -124,6 +128,11 @@ __device__ __host__ Vector3 DisneySample(Ray ray, HitData& hitdata, float r1, fl
     Vector3 N = hitdata.normal;
     Vector3 V = -1 * ray.direction;
 
+    Vector3 T;
+    Vector3 B;
+
+    createBasis(hitdata.normal, T, B);
+
     Vector3 dir;
 
     float diffuseRatio = 0.5 * (1.0 - hitdata.metallic);
@@ -131,21 +140,26 @@ __device__ __host__ Vector3 DisneySample(Ray ray, HitData& hitdata, float r1, fl
     if (r3 < diffuseRatio)
     {
         Vector3 H = CosineSampleHemisphere(r1, r2);
-        H = hitdata.tangent * H.x + hitdata.bitangent * H.y + N * H.z;
+        H = T * H.x + B * H.y + N * H.z;
         dir = H;
     }
     else
     {
         Vector3 H = ImportanceSampleGGX(hitdata.roughness, r1, r2);
-        H = hitdata.tangent * H.x + hitdata.bitangent * H.y + N * H.z;
+        H = T * H.x + B * H.y + N * H.z;
         dir = reflect(-1 * V, H);
     }
     return dir;
 }
 
 __device__ __host__ Vector3 DisneyEval(Ray ray, HitData& hitdata, Vector3 L) {
+
     Vector3 V = -1 * ray.direction;
     Vector3 H;
+    Vector3 T = Vector3();
+    Vector3 B = Vector3();
+
+    createBasis(hitdata.normal, T, B);
 
     H = (L + V).normalized();
 
@@ -187,11 +201,11 @@ __device__ __host__ Vector3 DisneyEval(Ray ray, HitData& hitdata, Vector3 L) {
         float aspect = sqrt(1.0 - hitdata.anisotropic * 0.9);
         float ax = maxf(0.001, hitdata.roughness / aspect);
         float ay = maxf(0.001, hitdata.roughness * aspect);
-        float Ds = GTR2_aniso(NDotH, Vector3::dot(H, hitdata.tangent), Vector3::dot(H, hitdata.bitangent), ax, ay);
+        float Ds = GTR2_aniso(NDotH, Vector3::dot(H, T), Vector3::dot(H, B), ax, ay);
         float FH = SchlickFresnel(LDotH);
         Vector3 Fs = lerp(Cspec0, Vector3(1.0), FH);
-        float Gs = SmithG_GGX_aniso(NDotL, Vector3::dot(L, hitdata.tangent), Vector3::dot(L, hitdata.bitangent), ax, ay);
-        Gs *= SmithG_GGX_aniso(NDotV, Vector3::dot(V, hitdata.tangent), Vector3::dot(V, hitdata.bitangent), ax, ay);
+        float Gs = SmithG_GGX_aniso(NDotL, Vector3::dot(L, T), Vector3::dot(L, B), ax, ay);
+        Gs *= SmithG_GGX_aniso(NDotV, Vector3::dot(V, T), Vector3::dot(V, B), ax, ay);
 
         // sheen
         Vector3 Fsheen = FH * hitdata.sheen * Csheen;

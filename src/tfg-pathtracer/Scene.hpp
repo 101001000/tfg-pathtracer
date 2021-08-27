@@ -129,7 +129,7 @@ public:
 
 
 
-	void addHDRI(const char* filepath) {
+	void addHDRI(std::string filepath) {
 
 		hdri = HDRI(filepath);
 	}

@@ -198,8 +198,6 @@ public:
 			_tris->push_back(bvhTri);
 		}			
 
-		//buildIt(tris);
-
 		buildAux(0, _tris);
 
 		std::vector<Tri>* sortedTris = new std::vector<Tri>();

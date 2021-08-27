@@ -12,6 +12,10 @@ __host__ __device__ static float map(float a, float b, float c, float d, float e
     return d + ((a - b) / (c - b)) * (e - d);
 }
 
+__host__ __device__ static Vector3 map(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Vector3 e) {
+    return Vector3(map(a.x, b.x, c.x, d.x, e.x), map(a.y, b.y, c.y, d.y, e.y), map(a.z, b.z, c.z, d.z, e.z));
+}
+
 __host__ __device__ static float clamp(float a, float b, float c) {
     return a < b ? b : a > c ? c : a;
 }
