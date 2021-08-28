@@ -21,6 +21,8 @@
     <ClInclude Include="Material.hpp" />
     <ClInclude Include="Math.hpp" />
     <ClInclude Include="MeshObject.hpp" />
+    <ClInclude Include="mikktspace.h" />
+    <ClInclude Include="mikktspaceCallback.hpp" />
     <ClInclude Include="ObjLoader.hpp" />
     <ClInclude Include="PointLight.hpp" />
     <ClInclude Include="PostProcessing.h" />
@@ -45,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="mikktspace.cpp" />
     <ClCompile Include="PostProcessing.cpp" />
   </ItemGroup>
   <ItemGroup>

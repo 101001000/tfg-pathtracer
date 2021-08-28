@@ -2,7 +2,7 @@
 #define TRI_H
 #include "MeshObject.hpp"
 
-#define SMOOTH_SHADING false
+#define SMOOTH_SHADING true
 
 class Tri {
 public:
@@ -10,6 +10,8 @@ public:
 	Vector3 vertices[3];
     Vector3 uv[3];
     Vector3 normals[3];
+    Vector3 tangents[3];
+    float tangentsSigns[3];
 
     int objectID;
 
@@ -32,7 +34,7 @@ public:
 
     __host__ __device__ inline bool hit(Ray& ray, Hit& hit, Vector3 position) {
 
-        float EPSILON = 0.000001;
+        float EPSILON = 0.0000001;
 
         Vector3 edge1 = vertices[1] - vertices[0];
         Vector3 edge2 = vertices[2] - vertices[0];
@@ -40,7 +42,6 @@ public:
         Vector3 pvec = Vector3::cross(ray.direction, edge2);
 
         Vector3 N = Vector3::cross(edge1, edge2).normalized();
-        if (Vector3::dot(N, ray.direction) > 0) N *= -1;
 
         float u, v, t, inv_det;
 
@@ -73,7 +74,8 @@ public:
 
         // https://gist.github.com/pixnblox/5e64b0724c186313bc7b6ce096b08820
 
-        Vector3 shadingNormal = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+        Vector3 shadingNormal  = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+        Vector3 shadingTangent = tangents[0] + (tangents[1] - tangents[0]) * u + (tangents[2] - tangents[0]) * v;
 
         Vector3 p0 = projectOnPlane(geomPosition, vertices[0], normals[0]);
         Vector3 p1 = projectOnPlane(geomPosition, vertices[1], normals[1]);
@@ -83,16 +85,18 @@ public:
 
         bool convex = Vector3::dot(shadingPosition - geomPosition, shadingNormal) > 0.0f;
 
-        hit.position = convex ? shadingPosition : geomPosition;;
+        hit.tangent = shadingTangent;
+
+        hit.position = convex ? shadingPosition : geomPosition;
         hit.normal = shadingNormal;
 #else
-
+        hit.tangent = tangents[0];
         hit.normal = N;
         hit.position = geomPosition;
 #endif
 
         //http://www.opengl-tutorial.org/intermediate-tutorials/tutorial-13-normal-mapping/
-
+        /*
         Vector3 edgeUV1 = uv[1] - uv[0];
         Vector3 edgeUV2 = uv[2] - uv[0];
 
@@ -100,6 +104,8 @@ public:
 
         hit.tangent = ((edge1 * edgeUV2.y - edge2 * edgeUV1.y) * r).normalized();
         hit.bitangent = ((edge2 * edgeUV1.x - edge1 * edgeUV2.x) * r).normalized();
+
+
 
         /*
         hit.tangent = (hit.tangent - N * Vector3::dot(N, hit.tangent)).normalized();
@@ -110,7 +116,6 @@ public:
         }
 
 
-       */
 
         hit.bitangent = Vector3::cross(hit.normal, hit.tangent).normalized();
 
@@ -118,7 +123,25 @@ public:
         if (Vector3::dot(Vector3::cross(hit.normal, hit.bitangent), hit.tangent) > 0.0f) {
             hit.bitangent = hit.bitangent * -1.0f;
         }
+        */
+        /*
+        float x1 = uv[1].x - uv[0].x;
+        float x2 = uv[2].x - uv[0].x;
+        float y1 = uv[1].y - uv[0].y;
+        float y2 = uv[2].y - uv[0].y;
 
+        float r = 1.0F / (x1 * y2 - x2 * y1);
+
+        hit.tangent =   ((edge1 * y2 - edge2 * y1) * r).normalized();
+        hit.bitangent = ((edge2 * x1 - edge1 * x2) * r).normalized();
+
+        hit.tangent = (hit.tangent - N * Vector3::dot(N, hit.tangent)).normalized();
+
+        */
+
+        hit.bitangent = tangentsSigns[0] * Vector3::cross(hit.normal, hit.tangent);
+
+        //if (Vector3::dot(hit.normal, ray.direction) > 0) hit.normal *= -1;
 
         hit.t = t;
         hit.valid = true;

@@ -105,18 +105,24 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
     if (material->normalTextureID < 0) {
         hitdata.normal = normal;
-        //hitdata.albedo = Vector3(normal.x, normal.y, -normal.z);
     }
     else {
 
         Vector3 localNormal = color2Normal(dev_scene_g->textures[material->normalTextureID].getValueFromUV(hit.u, hit.v));
         
+        //localNormal = Vector3(localNormal.x, 0, 0);
 
-        Vector3 ws_normal = Vector3(localNormal.x  * tangent.x + localNormal.y  * bitangent.x + localNormal.z  * normal.x,
-                                    localNormal.x  * tangent.y + localNormal.y  * bitangent.y + localNormal.z  * normal.y,
-                                   -1).normalized();
+        //localNormal = Vector3(0, 0, 1);
+
+        /*
+        Vector3 ws_normal = Vector3(localNormal.x  * tangent.x + localNormal.y  * -bitangent.x + localNormal.z  * normal.x,
+                                    localNormal.x  * tangent.y + localNormal.y  * -bitangent.y + localNormal.z  * normal.y,
+                                    localNormal.x  * tangent.z + localNormal.y  * -bitangent.z + localNormal.z  * normal.z).normalized();*/
+
+        Vector3 ws_normal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized();
       
         hitdata.normal = ws_normal;
+        //hitdata.albedo = clamp(Vector3(ws_normal.x, ws_normal.z, ws_normal.y), 0 , 1);
     }
 
     // Convert linear to sRGB

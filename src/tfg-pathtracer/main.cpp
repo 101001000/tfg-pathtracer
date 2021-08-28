@@ -24,7 +24,7 @@ Scene clockScene() {
 
 	std::string path = "C:\\Users\\Kike\\Desktop\\Scenes\\Clock\\render\\";
 
-	scene.camera = Camera(1280, 720);
+	scene.camera = Camera(960, 1080);
 	scene.camera.position = Vector3(0, 0.08836, -0.6336);
 	scene.camera.focalLength = 50 * 0.001;
 	scene.camera.focusDistance = 0.59;
@@ -36,8 +36,8 @@ Scene clockScene() {
 	scene.materials.at(0).albedoTextureID = 0;
 	scene.addTexture(Texture(path + "clock_roughness.bmp", CS::LINEAR));
 	scene.materials.at(0).roughnessTextureID = 1;
-	scene.addTexture(Texture(path + "clock_normal.bmp", CS::LINEAR));
-	scene.materials.at(0).normalTextureID = -1;
+	scene.addTexture(Texture(path + "clock_normal.bmp", CS::sRGB));
+	scene.materials.at(0).normalTextureID = 2;
 	scene.addTexture(Texture(path + "clock_metallic.bmp", CS::LINEAR));
 	scene.materials.at(0).metallicTextureID = 3;
 	scene.meshObjects.at(0).materialID = 0;

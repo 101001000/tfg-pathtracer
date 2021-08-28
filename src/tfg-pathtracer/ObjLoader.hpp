@@ -1,11 +1,13 @@
 #ifndef  OBJLOADER_H
 #define OBJLOADER_H
 
+#include "mikktspaceCallback.hpp"
 #include <vector>
 #include "Vector.hpp"
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include "mikktspace.h"
 
 #include "Tri.hpp"
 #include "MeshObject.hpp"
@@ -108,12 +110,13 @@ public:
 
 		printf("Obj loaded with %d tris, %d vertices and %d normals", tris->size(), vertices.size(), normals.size());
 
-		
-
 		MeshObject mo;
 
 		mo.tris = tris->data();
 		mo.triCount = tris->size();
+
+		Pretzel::CalcTangents calcTang = Pretzel::CalcTangents();
+		calcTang.calc(&mo);
 
 		return mo;
 	}
