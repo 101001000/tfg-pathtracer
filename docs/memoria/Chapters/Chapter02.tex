@@ -78,6 +78,27 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
 \end{lstlisting}
 
+	\subsection{Intersección triángulo - rayo}
+	\label{subsec:triintersection}
+	
+El cálculo de la intersección de un rayo con un triángulo es una de las operaciones más fundamentales de este algoritmo. Esta operación toma como parámetros un triángulo \code{Tri} y un rayo \code{Ray} y ofrece como resultado si dicho triángulo y rayo intersectan en el espacio y además un objeto \code{Hit} el cual cuenta con información adicional de la intersección.
+
+\code{bool hit(Ray\& ray, Hit\& hit)}
+
+Para la implementación se ha hecho uso del algoritmo Fast Minimum Storage Ray/Triangle Intersection\cite{triintersection}. Este paper también ofrece una implementación en C, la cual ha sido adaptada al proyecto.
+
+La información adicional que devuelve esta operación es la siguiente:
+
+	\code{int hit.objectID}: ID del objecto al que pertenece dicho triángulo.
+	
+	\code{Vector3 hit.position}: Posición en el espacio del punto de intersección entre el rayo y el triángulo.
+	
+	\code{Vector3 hit.normal}: Normal de la superficie, calculada a partir del producto vectorial de dos aristas del triángulo.
+	
+	\code{bool hit.valid}: Validez de una intersección, por defecto falso. Verdadero en caso de haber intersectado correctamente.
+
+
+
 
 
 

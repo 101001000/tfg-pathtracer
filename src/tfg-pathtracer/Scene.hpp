@@ -5,7 +5,6 @@
 #include "MeshObject.hpp"
 #include "Tri.hpp"
 #include "Camera.hpp"
-#include "Sphere.hpp"
 #include "BVH.hpp"
 #include "PointLight.hpp"
 #include "HdrLoader.hpp"
@@ -16,7 +15,6 @@ class Scene {
 public:
 
 	std::vector<Material> materials;
-	std::vector<Sphere> spheres;
 	std::vector<MeshObject> meshObjects;
 	std::vector<Texture> textures;
 	std::vector<Tri> tris;
@@ -33,10 +31,6 @@ public:
 
 	int materialCount() {
 		return materials.size();
-	}
-
-	int sphereCount() {
-		return spheres.size();
 	}
 
 	int textureCount() {
@@ -64,11 +58,6 @@ public:
 		return materials.data();
 	}
 
-	Sphere* getSpheres() {
-		if(spheres.size() == 0) return (Sphere*)0;
-		return spheres.data();
-	}
-
 	Tri* getTris() {
 		if (tris.size() == 0) return (Tri*)0;
 		return tris.data();
@@ -87,11 +76,6 @@ public:
 	Texture* getTextures() {
 		if (textures.size() == 0) return (Texture*)0;
 		return textures.data();
-	}
-
-	void addSphere(Sphere sphere) {
-		sphere.objectID = sphereCount();
-		spheres.push_back(sphere);
 	}
 
 	void addPointLight(PointLight pointLight) {

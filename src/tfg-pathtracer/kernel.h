@@ -1,4 +1,3 @@
-#include "Sphere.hpp"
 #include "Camera.hpp"
 #include "Scene.hpp"
 #include "cuda_runtime.h"

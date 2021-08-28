@@ -4,7 +4,6 @@
 #include <stdio.h>
 
 #include "kernel.h"
-#include "Sphere.hpp"
 #include "Camera.hpp"
 #include "Scene.hpp"
 #include "Material.hpp"
@@ -34,7 +33,6 @@ struct dev_Scene {
     unsigned int pointLightCount;
 
     PointLight* pointLights;
-    Sphere* spheres;
     MeshObject* meshObjects;
     Material* materials;
     Texture* textures;
@@ -79,28 +77,28 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
         hitdata.albedo = material->albedo;
     }
     else {
-        hitdata.albedo = dev_scene_g->textures[material->albedoTextureID].getValueBilinear(hit.u, hit.v);
+        hitdata.albedo = dev_scene_g->textures[material->albedoTextureID].getValueBilinear(hit.tu, hit.tv);
     }
 
     if (material->emissionTextureID < 0) {
         hitdata.emission = material->emission;
     }
     else {
-        hitdata.emission = dev_scene_g->textures[material->emissionTextureID].getValueBilinear(hit.u, hit.v);
+        hitdata.emission = dev_scene_g->textures[material->emissionTextureID].getValueBilinear(hit.tu, hit.tv);
     }
 
     if (material->roughnessTextureID < 0) {
         hitdata.roughness = material->roughness;
     }
     else {
-        hitdata.roughness = dev_scene_g->textures[material->roughnessTextureID].getValueBilinear(hit.u, hit.v).x;
+        hitdata.roughness = dev_scene_g->textures[material->roughnessTextureID].getValueBilinear(hit.tu, hit.tv).x;
     }
 
     if (material->metallicTextureID < 0) {
         hitdata.metallic = material->metallic;
     }
     else {
-        hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueBilinear(hit.u, hit.v).x;
+        hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueBilinear(hit.tu, hit.tv).x;
     }
 
     if (material->normalTextureID < 0) {
@@ -108,7 +106,7 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
     }
     else {
 
-        Vector3 localNormal = color2Normal(dev_scene_g->textures[material->normalTextureID].getValueFromUV(hit.u, hit.v));
+        Vector3 localNormal = color2Normal(dev_scene_g->textures[material->normalTextureID].getValueFromUV(hit.tu, hit.tv));
         
         //localNormal = Vector3(localNormal.x, 0, 0);
 
@@ -472,22 +470,6 @@ void materialsSetup(Scene* scene, dev_Scene* dev_scene) {
 
     cudaMemcpy(&(dev_scene->materials), &(dev_materials), sizeof(Material*), cudaMemcpyHostToDevice);
 }
-void spheresSetup(Scene* scene, dev_Scene* dev_scene) {
-
-    unsigned int sphereCount = scene->sphereCount();
-
-    Sphere* spheres = scene->getSpheres();
-
-    Sphere* dev_spheres;
-
-    cudaMemcpy(&dev_scene->sphereCount, &sphereCount, sizeof(unsigned int), cudaMemcpyHostToDevice);
-
-    cudaMalloc((void**)&dev_spheres, sizeof(Sphere) * sphereCount);
-
-    cudaMemcpy(dev_spheres, spheres, sizeof(Sphere) * sphereCount, cudaMemcpyHostToDevice);
-
-    cudaMemcpy(&(dev_scene->spheres), &(dev_spheres), sizeof(Sphere*), cudaMemcpyHostToDevice);
-}
 void texturesSetup(Scene* scene, dev_Scene* dev_scene) {
 
     unsigned int textureCount = scene->textureCount();
@@ -617,7 +599,6 @@ cudaError_t renderSetup(Scene* scene) {
 
     pointLightsSetup(scene, dev_scene);
     materialsSetup(scene, dev_scene);
-    spheresSetup(scene, dev_scene);
     texturesSetup(scene, dev_scene);
     hdriSetup(scene, dev_scene);
 

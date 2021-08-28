@@ -6,10 +6,8 @@ class Hit {
 public:
 	Vector3 position, normal, tangent, bitangent;
 	bool valid = false;
-	float t;
 	unsigned int objectID;
-	unsigned int type;
-	float u, v;
+	float tu, tv;
 };
 
 #endif

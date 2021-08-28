@@ -2,7 +2,6 @@
 #include <iostream>
 #include <Windows.h>
 #include "Camera.hpp"
-#include "Sphere.hpp"
 #include "Ray.hpp"
 #include "kernel.h"
 #include "Scene.hpp"
@@ -264,102 +263,6 @@ Scene cocheRefachero() {
 
 }
 
-Scene disneyMaterialBenchmarkScene() {
-
-	Scene scene;
-
-	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Models\\church.hdr");
-
-	float sphereRadius = 0.4;
-	float separationMult = 1;
-
-	int materialCount = 0;
-
-	scene.camera = Camera(1000, 1000);
-	scene.camera.position = Vector3(0, 0, -12);
-	scene.camera.focalLength = 35;
-
-	for (int i = 0; i < 10; i++) {
-
-		Material material;
-		Sphere sphere(sphereRadius);
-
-		material.albedo = Vector3(1, 1, 1);
-		material.subsurface = ((float)i) / 10;
-
-		sphere.position = Vector3((i - 5) * separationMult, separationMult * 5, 0);
-		sphere.materialID = materialCount++;
-
-		scene.addMaterial(material);
-		scene.addSphere(sphere);
-	}
-
-
-	for (int i = 0; i < 10; i++) {
-
-		Material material;
-		Sphere sphere(sphereRadius);
-
-		material.albedo = Vector3(1, 0.75, 0);
-		material.roughness = 0;
-		material.metallic = ((float)i) / 10;
-
-		sphere.position = Vector3((i - 5) * separationMult, separationMult * 4, 0);
-		sphere.materialID = materialCount++;
-
-		scene.addMaterial(material);
-		scene.addSphere(sphere);
-	}
-
-
-	return scene;
-}
-
-Scene demoScene1() {
-
-	Scene scene;
-
-	scene.camera = Camera(1000, 1000);
-	scene.camera.focalLength = 20;
-	scene.camera.position = Vector3(0, 0, -8);
-
-	scene.addSphere(Sphere(1));
-	scene.addSphere(Sphere(1));
-	scene.addSphere(Sphere(1));
-
-	scene.spheres.at(0).position = Vector3(-3, 0, 0);
-	scene.spheres.at(1).position = Vector3(0, 0, 0);
-	scene.spheres.at(2).position = Vector3(3, 0, 0);
-
-	scene.addMaterial(Material());
-	scene.addMaterial(Material());
-	scene.addMaterial(Material());
-
-	scene.materials.at(0).roughness = 1;
-	scene.materials.at(0).metallic = 0;
-	scene.materials.at(0).clearcoat = 0;
-	scene.materials.at(0).albedo = Vector3(1, 1, 1);
-
-	scene.materials.at(1).roughness = 0;
-	scene.materials.at(1).metallic = 1;
-	scene.materials.at(1).clearcoat = 0;
-	scene.materials.at(1).albedo = Vector3(1, 1, 1);
-
-	scene.materials.at(2).roughness = 0;
-	scene.materials.at(2).metallic = 0;
-	scene.materials.at(2).clearcoat = 1;
-	scene.materials.at(2).albedo = Vector3(0.1, 1, 1);
-
-	scene.spheres.at(0).materialID = 0;
-	scene.spheres.at(1).materialID = 1;
-	scene.spheres.at(2).materialID = 2;
-
-	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Demo\\landscape.hdr");
-
-	scene.hdri.texture.xOffset = -0.25;
-
-	return scene;
-}
 
 Scene demoScene2() {
 
@@ -446,60 +349,6 @@ Scene coche() {
 
 	return scene;
 
-}
-
-Scene testScene() {
-
-
-
-	Scene scene;
-
-	scene.camera = Camera(1000, 1000);
-	scene.camera.focalLength = 20;
-	scene.camera.position = Vector3(0, 0, -10);
-	scene.hdri.texture.xOffset = 0.20;
-
-	PointLight pl = PointLight();
-	pl.position = Vector3(4, 0, 0);
-	pl.radiance = Vector3(10, 0, 0);
-
-	PointLight pl1 = PointLight();
-	pl1.position = Vector3(-4, 0, 0);
-	pl1.radiance = Vector3(0, 10, 0);
-
-	scene.addPointLight(pl);
-	scene.addPointLight(pl1);
-
-	//scene.addMeshObject(ObjLoader::loadObj("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\models\\carrolow.obj"));
-
-	scene.addSphere(Sphere(2));
-	scene.spheres.at(0).position = Vector3(0, 0, 0);
-
-	scene.addMaterial(Material());
-
-	scene.materials.at(0).roughness = 0;
-	scene.materials.at(0).metallic = 1;
-	scene.materials.at(0).clearcoat = 0;
-	scene.materials.at(0).clearcoatGloss = 0;
-	scene.materials.at(0).albedo = Vector3(1, 1, 1);
-
-	scene.hdri.texture.color = Vector3(0.5);
-
-	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Metal007_1K_Color.bmp"));
-	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Metal007_1K_Roughness.bmp"));
-	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Metal007_1K_Metalness.bmp"));
-
-	scene.materials.at(0).albedoTextureID = 0;
-	scene.materials.at(0).roughnessTextureID = 1;
-	scene.materials.at(0).metallicTextureID = 2;
-
-	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Models\\church.hdr");
-
-	scene.hdri.texture.xOffset = 0.25;
-
-
-
-	return scene;
 }
 
 struct RenderParameters {

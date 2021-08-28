@@ -167,7 +167,7 @@ public:
 
 			Hit hit;
 
-			if (tris[triIndices[i]].hit(ray, hit, Vector3())) {
+			if (tris[triIndices[i]].hit(ray, hit)) {
 
 				if (!nearestHit.valid) {
 					nearestHit = hit;

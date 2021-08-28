@@ -1,6 +1,8 @@
 #ifndef TRI_H
 #define TRI_H
 #include "MeshObject.hpp"
+#include "Hit.hpp"
+#include "Ray.hpp"
 
 #define SMOOTH_SHADING true
 
@@ -32,7 +34,7 @@ public:
         return position - Vector3::dot(position - origin, normal) * normal;
     }
 
-    __host__ __device__ inline bool hit(Ray& ray, Hit& hit, Vector3 position) {
+    __host__ __device__ inline bool hit(Ray& ray, Hit& hit) {
 
         float EPSILON = 0.0000001;
 
@@ -143,11 +145,9 @@ public:
 
         //if (Vector3::dot(hit.normal, ray.direction) > 0) hit.normal *= -1;
 
-        hit.t = t;
         hit.valid = true;
-        hit.type = 1;
-        hit.u = tUV.x;
-        hit.v = tUV.y;
+        hit.tu = tUV.x;
+        hit.tv = tUV.y;
         hit.objectID = objectID;
 
         return true;

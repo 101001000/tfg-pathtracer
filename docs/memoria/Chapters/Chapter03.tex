@@ -1,5 +1,5 @@
 \chapter{Mejoras estructurales}
-	
+				
 	\section{Desenfoque: Modelo de lente fina}
 	
 	Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ``Bokeh`` y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
@@ -84,7 +84,7 @@
 
 	Los rayos que no interseccionan con nada se consideran que interseccionan en el infinito con el HDRI, por esta razón, al detectar que un rayo ha terminado de rebotar y ha terminado en el infinito, se obtendrá la dirección de este, y esta dirección se traducirá en las coordenadas polares del HDRI que posteriormente recuperarán el valor interpolado bilinearmente del pixel del HDRI correspondiente.
 
-	\end{itemize}
+\end{itemize}
 
 	\section{Texturas}
 	
@@ -180,6 +180,23 @@
     }
 	
 	\end{lstlisting}
+	
+	
+	\subsection{Mapas de normales}
+	
+	A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. 
+	
+	
+	\section{Smooth Shading}
+	
+	Anteriormente en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} se explicaba como las normales son calculadas a partir de la superficie que forma el triángulo. Para modelos con poca cantidad de triángulos, este método de cálculo de la normal de la superficie puede resultar insuficiente.
+	
+	Un sencillo arreglo consiste en aplicar el método conocido como Smooth Shading. 
+	
+	Para este método es necesario precalcular una normal por cada vértice, algo que hacen casi todos los programas de diseño 3D. En el caso de los ficheros .obj, estas son definidas con el prefijo "vn". Una vez se cuenta con dichas normales, es necesario interpolarlas. 
+
+	\code{Vector3 shadingNormal  = normals[0] \+ (normals[1] - normals[0]) * u \+ (normals[2] - normals[0]) * v;}
+	
 	
 	\section{Sombreado BRDF}
 	

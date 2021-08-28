@@ -31,7 +31,6 @@
     <ClInclude Include="Sampling.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneObject.hpp" />
-    <ClInclude Include="Sphere.hpp" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Tri.hpp" />
     <ClInclude Include="Vector.hpp" />
