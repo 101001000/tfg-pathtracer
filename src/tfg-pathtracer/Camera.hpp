@@ -1,12 +1,14 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "SceneObject.hpp"
+#include "Vector.hpp"
 
-class Camera : public SceneObject {
+class Camera {
 
 public:
 	unsigned int xRes, yRes;
+
+	Vector3 position;
 
 	float focalLength;
 	float sensorWidth;

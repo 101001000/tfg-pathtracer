@@ -27,10 +27,8 @@
     <ClInclude Include="PointLight.hpp" />
     <ClInclude Include="PostProcessing.h" />
     <ClInclude Include="Ray.hpp" />
-    <ClInclude Include="RenderableObject.hpp" />
     <ClInclude Include="Sampling.hpp" />
     <ClInclude Include="Scene.hpp" />
-    <ClInclude Include="SceneObject.hpp" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Tri.hpp" />
     <ClInclude Include="Vector.hpp" />

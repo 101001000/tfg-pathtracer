@@ -1,12 +1,13 @@
 #ifndef POINTLIGHT_H
 #define POINTLIGHT_H
 
-#include "SceneObject.hpp"
 
-class PointLight : public SceneObject{
+// @todo Define useful constructors as temperature, multiply etc
+class PointLight{
+
 public:
+	Vector3 position;
 	Vector3 radiance;
-
 };
 
 

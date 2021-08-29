@@ -263,44 +263,6 @@ Scene cocheRefachero() {
 
 }
 
-
-Scene demoScene2() {
-
-	Scene scene;
-
-	scene.camera = Camera(1000, 1000);
-	scene.camera.focalLength = 45;
-	scene.camera.position = Vector3(0, 4, -10);
-
-	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Demo\\CashRegister_01_Diffuse.bmp"));
-	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Demo\\CashRegister_01_Metallic.bmp"));
-	scene.addTexture(Texture("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Demo\\CashRegister_01_Roughness.bmp"));
-
-	scene.addMeshObject(ObjLoader::loadObj("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Demo\\cash_register.obj"));
-	scene.addMeshObject(ObjLoader::loadObj("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Models\\pikachubuffed.obj"));
-
-	scene.addMaterial(Material());
-	scene.addMaterial(Material());
-
-	scene.materials.at(0).albedoTextureID = 0;
-	scene.materials.at(0).roughnessTextureID = 2;
-	scene.materials.at(0).metallicTextureID = 1;
-	scene.materials.at(0).clearcoat = 0;
-
-	scene.materials.at(1).roughness = 0;
-	scene.materials.at(1).metallic = 1;
-
-	scene.meshObjects.at(0).materialID = 0;
-	scene.meshObjects.at(1).moveAbsolute(Vector3(7, 3, 20));
-
-	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Demo\\church.hdr");
-
-	//printHDRISampling(scene.hdri, 10000);
-
-	return scene;
-
-}
-
 Scene coche() {
 
 	Scene scene;

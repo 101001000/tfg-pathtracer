@@ -57,14 +57,6 @@ cudaStream_t kernelStream, bufferStream;
 long textureMemory = 0;
 long geometryMemory = 0;
 
-__device__ Vector3 color2Normal(Vector3 color) {
-
-    return Vector3(
-        (color.x * 2) - 1,
-        (color.y * 2) - 1,
-        (color.z * 2) - 1);    
-}
-
 __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
     Vector3 tangent, bitangent, normal;
@@ -106,7 +98,10 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
     }
     else {
 
-        Vector3 localNormal = color2Normal(dev_scene_g->textures[material->normalTextureID].getValueFromUV(hit.tu, hit.tv));
+        Vector3 ncolor = dev_scene_g->textures[material->normalTextureID].getValueFromUV(hit.tu, hit.tv);
+
+        Vector3 localNormal = (ncolor * 2) - 1;
+
         
         //localNormal = Vector3(localNormal.x, 0, 0);
 

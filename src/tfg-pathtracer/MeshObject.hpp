@@ -1,31 +1,38 @@
 #ifndef MESHOBJECT_H
 #define MESHOBJECT_H
 
-#include "RenderableObject.hpp"
 #include "Tri.hpp"
 #include "Ray.hpp"
 #include "Hit.hpp"
 
-class MeshObject : public RenderableObject {
+static int objectIDCount = 0;
+
+// @todo Define constructor for ObjLoader
+
+class MeshObject {
 
 public:
 	Tri* tris;
+
 	unsigned int triCount;
+
+	int materialID = 0;
+	int objectID = 0;
 
 public:
 
+	MeshObject() {
+		objectID = objectIDCount++;
+	}
 
-	void moveAbsolute(Vector3 newPosition) {
-
-		Vector3 dif = newPosition - position;
+	void translate(Vector3 pos) {
 
 		for (int i = 0; i < triCount; i++) {
-			tris[i].vertices[0] += dif;
-			tris[i].vertices[1] += dif;
-			tris[i].vertices[2] += dif;
+			tris[i].vertices[0] += pos;
+			tris[i].vertices[1] += pos;
+			tris[i].vertices[2] += pos;
 		}
 
-		position = newPosition;
 	}
 
 	__host__ __device__ inline bool hit(Ray& ray, Hit& hit, bool shadowSmooth){

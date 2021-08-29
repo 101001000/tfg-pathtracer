@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <chrono>  
 
+// @todo Definitions renaming and move to the same file
+
 #define DEPTH 20
 #define SAHBINS 12
 
