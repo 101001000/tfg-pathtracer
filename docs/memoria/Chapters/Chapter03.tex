@@ -1,5 +1,6 @@
 \chapter{Mejoras estructurales}
 				
+	
 	\section{Desenfoque: Modelo de lente fina}
 	
 	Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ``Bokeh`` y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
@@ -88,46 +89,18 @@
 
 	\section{Texturas}
 	
-	El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante.
-
+	El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante. En la implementación se ha añadido una clase \code{Texture} que contiene dos valores enteros \code{width} y \code{height}, que indican la altura y anchura de la matriz de datos \code{data}. La carga se hace a partir de un constructor que toma como parámetro la dirección de una imagen en formato .bmp y dividirá el valor de cada canal y cada pixel por 256 con el fin de limitar el rango de valores en [0,1). Los valores \code{width} y \code{height} son extraídos de la cabezera. El constructor admite un parámetro opcional \code{colorSpace}, que determina si es necesario convertir la imagen cargada de espacio de color. Por el momento solo se soportan dos espacios de color, el espacio Lineal y el espacio sRGB, que son los más comunes.
 	
+	%@todo add image of a color texture
 	
-	Coordenadas UV:
+	\subsection{Mapeo}
 
-	Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas UV. Ambas coordenadas U y V son valores de punto flotante comprendidas entre [0,1]. U indica la coordenada horizontal mientras que V indica la coordenada vertical.
+	Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas \code{u,v}. Ambas coordenadas \code{u} y \code{v} son valores de punto flotante comprendidas entre [0,1]. \code{u} indica la coordenada horizontal mientras que \code{v} indica la coordenada vertical. Estas coordenadas son diferentes a las coordenadas \code{u,v} explicadas en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} aunque tengan el mismo nombre.
 
-	También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son desplazamientos.
-
-	Un problema de las texturas es que cuentan con una resolución limitada. Esto provoca que se pixelice cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación los píxeles vecinos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilinear.
-
-	
-	\begin{lstlisting}
-	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
-        
-        float x = u * width;
-        float y = v * height;
-
-        float t1x = floor(x);
-        float t1y = floor(y);
-
-        float t2x = t1x + 1;
-        float t2y = t1y + 1;
-
-        float a = (x - t1x) / (t2x - t1x);
-        float b = (y - t1y) / (t2y - t1y);
-
-        Vector3 v1 = getValueFromCoordinates(t1x, t1y);
-        Vector3 v2 = getValueFromCoordinates(t2x, t1y);
-        Vector3 v3 = getValueFromCoordinates(t1x, t2y);
-        Vector3 v4 = getValueFromCoordinates(t2x, t2y);
-
-		// Linear interpolation
-        return lerp(lerp(v1, v2, a), lerp(v3, v4, a), b);
-	}
-	\end{lstlisting}
+	También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes.
 
 	\begin{lstlisting}
-    __host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
+		__host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
 	
         Vector3 pixel;
 
@@ -143,7 +116,8 @@
     }
 	\end{lstlisting}
 
-	Debido a la naturaleza esférica de los mapas de entorno, resultará útil añadir dos funciones que transformen coordenadas esféricas en coordenadas UV. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas UV para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas UV.
+	
+	Debido a la naturaleza esférica de los mapas de entorno, resultará útil añadir dos funciones que transformen coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
 
 	\begin{lstlisting}
 	
@@ -181,10 +155,53 @@
 	
 	\end{lstlisting}
 	
+
+
+	\subsection{Filtrado}
+			
+	Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixelice cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación los píxeles vecinos. Actualmente muchos visualizadores de imágenes no muestran los píxeles naturales si no una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilinear. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{P} comprendido entre los cuatro píxeles más cercanos es la suma ponderada de la distancia del punto a cada pixel en cada dimensión. 	
+	\begin{lstlisting}
+	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
+        
+        float x = u * width;
+        float y = v * height;
+
+        float t1x = floor(x);
+        float t1y = floor(y);
+
+        float t2x = t1x + 1;
+        float t2y = t1y + 1;
+
+		// Weights per dimension
+        float a = (x - t1x) / (t2x - t1x);
+        float b = (y - t1y) / (t2y - t1y);
+
+		// Rounded neighbour values
+        Vector3 v1 = getValueFromCoordinates(t1x, t1y);
+        Vector3 v2 = getValueFromCoordinates(t2x, t1y);
+        Vector3 v3 = getValueFromCoordinates(t1x, t2y);
+        Vector3 v4 = getValueFromCoordinates(t2x, t2y);
+
+		// Linear interpolation
+        return lerp(lerp(v1, v2, a), lerp(v3, v4, a), b);
+	}
+	\end{lstlisting}
+	
+	Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado, además de introducir 
+	%@todo add comparaison between reads
 	
 	\subsection{Mapas de normales}
 	
+	Los mapas de normales son un recurso muy utilizado en programación gráfica, aún así no ha sido posible encontrar explicaciones detalladas para su implementación en bilbiografía orientada específicamente a Path Tracing. Por ejemplo el libro PBRT\cite{pbrt} no incluye mucha
+	
 	A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. 
+	
+	Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utilizará para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues la conversión de un color a una normal se hace con el siguiente código: \code{Vector3 localNormal = (ncolor * 2) - 1;} ya que las coordenadas de la normal pueden se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
+	
+	Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Las normales suministradas por los mapas de normales son normales locales, en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores casi ortogonales (posteriormente se aclarará este "casi").
+	
+	Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
+	
 	
 	
 	\section{Smooth Shading}
@@ -195,14 +212,38 @@
 	
 	Para este método es necesario precalcular una normal por cada vértice, algo que hacen casi todos los programas de diseño 3D. En el caso de los ficheros .obj, estas son definidas con el prefijo "vn". Una vez se cuenta con dichas normales, es necesario interpolarlas. 
 
-	\code{Vector3 shadingNormal  = normals[0] \+ (normals[1] - normals[0]) * u \+ (normals[2] - normals[0]) * v;}
+	Por ello, en la función \code{hit()} de \code{Tri} se añade lo siguente:
+	
+	\begin{lstlisting}
+			
+	#if SMOOTH_SHADING 
+
+        // https://gist.github.com/pixnblox/5e64b0724c186313bc7b6ce096b08820
+
+        Vector3 shadingNormal  = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+        Vector3 shadingTangent = tangents[0] + (tangents[1] - tangents[0]) * u + (tangents[2] - tangents[0]) * v;
+
+	\end{lstlisting}
+			
+	Así pues tanto la normal y la tangente son interpoladas a partir de las coordenadas baricéntricas del triángulo \code{u,v} las cuales indican la distancia a cada vértice.
+	
+	
+	
+		
+	Las coordenadas \code{u,v} son las coordenadas 
 	
 	
 	\section{Sombreado BRDF}
 	
+	El sombreado es el proceso por el cual se asigna un valor de pérdida de energía para un rayo que intersecciona con un punto. Este proceso simula el proceso natural de la interacción entre un haz de fotones y una superficie, dónde parte de los fotones son absorbidos dependiendo de distintos factores como la longitud de onda de los fotones, el tipo de superficie, el tipo de material (los metales reflejarán de manera menos aleatoria que los materiales dieléctricos). La simulación de estas interacciones y simplificación en una función es una ciencia conocida como PBR, o Physically Based Rendering, donde se trata de imitar de manera fiel la realidad física. 
 		
-	El sombreado consiste en dar un valor de pérdida de energía para un rayo que intersecciona con un punto. Así pues, en la industria es utilizada una función conocida como BRDF. Esta función define un valor para la radiación reflejada a partir de un ángulo entrante wi y un ángulo saliente wo.
-
+	En la ecuación de renderizado se encuentra un término denominado BRDF $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$. Hasta ahora ha sido ignorado y simplificado como una superficie Lambertiana perfectamente difusa, esto quiere decir que hasta el momento se ha tratado la luz independientemente del ángulo de incidencia $\omega _{\text{i}}$ y del ángulo de reflexión del rayo $\omega _{\text{o}}$. En el momento en el que se tienen en consideración estos dos ángulos, se pueden configurar funciones complejas que determinen distintos coeficientes para distintos ángulos. Una función BRDF basada en comportamientos físicos reales como los mencionados anteriormente ofrecerá un resultado acercado a la realidad. 
+	
+	Disney propone una función BRDF conocida como Disney Principled BRDF\cite{disneybrdf}
+	
+	El término "material" y "BRDF" están fuertemente ligados, ya que es el material el que define esta función a partir de sus parámetros. 
+		
+	
 	Un elemento clave del renderizado fotorrealista es elegir una función de sombreado apropiada. En este motor se ha hecho uso del modelo de sombreado Disney Principled Shader. Este modelo fue desarrollado por Disney bajo el fin de simplificar los parámetros de las fórmulas matemáticas y que estos sean cómodos para los artistas. Esta decisión tiene más sentido si consideramos el contexto histórico, donde los modelos anteriores contaban con parámetros complejos.
 
 	Este modelo cuenta además con buen fotorrealismo, y por ello, el conocido software de edición 3d de código abierto Blender, hace uso de él como su modelo de sombreado primario.
@@ -226,10 +267,33 @@
 	
 	\section{Renderizado progresivo}
 		
-	Hoy en día, la mayoría de los motores de renderizado de producción son progresivos. Esto implica que las muestras se van acumulando poco a poco hasta que termina por converger la imagen deseada. Esto difiere de los motores de renderizado por CPU tradicionales, los cuales van procesando la imagen en recuadros de tamaño limitado. Se ha decidido hacer una implementación iterativa con el fin de estar más cerca del estado del arte.
-
-
-
+	Hoy en día, la mayoría de los motores de renderizado de producción son progresivos. Esto implica que las muestras se van acumulando poco a poco a lo largo de la imagen hasta que termina por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales y una vez que acumulan las suficientes, pasan a la siguiente sección. Se ha decidido hacer una implementación progresiva con el fin de estar más cerca del estado del arte.
+	
 	Este tipo de implementación se beneficia de la copia de datos asíncrona de la GPU. Mientras el kernel se ejecuta, un flujo de datos secundario hará la copia del buffer de la GPU en la CPU, pudiendo así actualizar la visualización del resultado varias veces por segundo.
 
-	Este flujo de datos secundario se ha implementado con el tipo de datos ``cudaStream\_t`` de la API de CUDA. Han sido necesarios dos flujos, uno denominado ``kernelStream`` y otro denominado ``bufferStream``. Los kernels de inicialización y renderizado correrán en el primero, mientras que la función que obtiene el buffer, será lanzada en el segundo.
+	Este flujo de datos secundario se ha implementado con el tipo de datos ``cudaStream\_t`` de la API de CUDA. Han sido necesarios dos flujos, uno denominado \code{kernelStream} y otro denominado \code{bufferStream}. Los kernels de inicialización y renderizado correrán en el primero, mientras que la función que obtiene el buffer, será lanzada en el segundo.
+	
+	La función que extrae el buffer de píxeles de la GPU a la CPU es la siguente:
+	
+	\begin{lstlisting}
+	cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
+
+		cudaStreamCreate(&bufferStream);
+
+		cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_buffer, size * sizeof(float) * 4, 0, cudaMemcpyDeviceToHost, bufferStream);
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+		}
+
+		cudaStatus = cudaMemcpyFromSymbolAsync(pathcountBuffer, dev_pathcount, size * sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+		}
+
+		return cudaStatus;
+	}
+	\end{lstlisting}
+	
+	Hace uso de la función \code{cudaMemcpyFromSymbolAsync} para realizar la copia asíncrona antes mencionada. También se hace copia del buffer de la suma de rayos emitidos por píxel con el fin de realizar métricas de eficiencia.
+	
+	%@todo analisis de movimiento de datos de memoria.

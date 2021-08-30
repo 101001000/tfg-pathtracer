@@ -14,3 +14,38 @@ Este trabajo cubre las bases teóricas además de explicar la implementación en
 La implementación cuenta con características cercanas al estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney; permite el uso de mapas de textura y además funciona en GPU.
 
 Un aspecto importante en cuanto a la implementación es que se hace uso del menor número de librerías posibles, con el fin de indagar a fondo en la arquitectura de un motor de renderizado de Path Tracing de manera íntegra. Así pues se desmitifica el trabajo que normalmente se delega a las librerías gráficas, y se expondrá de manera clara el funcionamiento de cada pieza de un motor de renderizado de Path Tracing en GPU.
+
+
+\section{Plan de trabajo}
+	
+\subsection{Trabajo previo}
+
+Este motor gráfico tiene sus raices en un trabajo final previo realizado en la asignatura "Programación de GPUs y aceleradores". En este trabajo previo se hizo una prueba de concepto de un motor "Path tracing" extremadamente sencillo 
+	
+El objetivo de este trabajo ha sido implementar el mayor número de características de un motor gráfico de producción y analizarlas una a una. Es por ello que la planificación ha carecido de una estructura formal, y ha sido remodelada constantemente a partir de los logros y el progreso obtenido hasta la fecha.
+
+A continuación se muestra una línea del tiempo con los hitos logrados:
+	
+
+%@todo add hyperlinking
+
+	\begin{table}[h]
+	\renewcommand\arraystretch{1.4}
+	\captionsetup{singlelinecheck=false, font=blue, labelfont=sc, labelsep=quad}
+	\caption{Timeline}\vskip -1.5ex
+	\begin{tabular}{@{\,}r <{\hskip 2pt} !{\foo} >{\raggedright\arraybackslash}p{5cm}}
+	\toprule
+	\addlinespace[1.5ex]
+	
+	Noviembre 2020 & Incialización de proyecto, prototipo inicial de trazado de rayos en CUDA y visualización con SFML, implementación de texturas\\
+	Diciembre 2020 & Mapeado UV, Disney BRDF, carga de modelos .obj\\
+	Enero 2021 & BVH construcción y recorrido\\
+	Abril 2021 & SAH y comienzo de escritura de la memoria, visualizador BRDF\\
+	Febrero 2021 & HDRI y NEE\\
+	Marzo 2021 & Muestreo por importancia de HDRI\\
+	Mayo 2021 & Funciones de benchmarking\\
+	Julio 2021 & Port One Api\\
+	Agosto 2021 & Implementación de mapas de normales, BOKEH\\
+	
+	\end{tabular}
+	\end{table}

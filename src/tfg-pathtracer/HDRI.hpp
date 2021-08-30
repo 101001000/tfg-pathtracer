@@ -24,7 +24,6 @@ public:
 		texture.data = new float[1024 * 1024 * 3];
 		texture.width = 1024;
 		texture.height = 1024;
-		texture.USE_IMAGE = false;
 
 		for (int i = 0; i < texture.width * texture.height; i++) {
 			texture.data[3 * i + 0] = color.x;
@@ -45,7 +44,6 @@ public:
 
 		texture.width = width;
 		texture.height = height;
-		texture.USE_IMAGE = true;
 
 		cdf = new float[texture.width * texture.height + 1];
 

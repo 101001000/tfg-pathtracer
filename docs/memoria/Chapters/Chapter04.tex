@@ -1,13 +1,17 @@
 \chapter{Optimizaciones estructurales}
 	
+Un algoritmo con buenos resultados visuales viene con unos costes computacionales asociados. A parte de buscar fotorrealismo y fidelidad gráfica, un motor de renderizado gráfico requiere de mejoras y optimizaciones para alcanzar tiempos competentes.
+
+La importancia de las optimizaciones implementadas en este capítulo no solo se limita a mejorar la productividad de los artistas con mejoras de rendimiento, si no que hace posible la visualización real de escenas que tardarían tiempos del orden de miles de años, reduciendo el enfoque de fuerza bruta a uno más sofisticado.
+	
 \section{Muestreo por importancia}
 \label{sec:mi}
 
-El simple hecho de simular los rebotes de los fotones no es eficiente. Se puede buscar una manera para que cada rayo cargue con información "más útil". Este procedimiento se denomina "Muestreo por importancia" y es actualmente una línea de investigación en constante desarrollo puesto que como se verá a continuación, permite mejoras muy significativas en cuanto al tiempo de convergencia de la imagen final.
+El simple hecho de simular los caminos de los fotones no es eficiente. Se puede buscar una manera para que cada rayo cargue con información "más útil". Este procedimiento se denomina "Muestreo por importancia" y es actualmente una línea de investigación en constante desarrollo ya que como se verá a continuación, permite mejoras muy significativas en cuanto al tiempo de convergencia de la imagen final.
 
-Así pues este término es bastante general. Esta implementación consta de tres muestreos por importancia distintos: Muestreo por importancia de BRDF, Estimación de Evento Próximo (NEE) y Muestreo por importancia del entorno.
+Así pues este término es bastante general. Esta implementación consta de tres muestreos por importancia distintos: Muestreo por importancia de BRDF, Estimación de Evento Próximo (NEE) y Muestreo por importancia del mapa de entorno.
 
-Algo que todos los muestreos por importancia tienen en común es su funcionamiento elemental: Emitir más rayos en las direcciones que más interesan y a su vez, dividir el resultado por la función de distribución de probabilidad (PDF en adelante). Esto quiere decir que si vamos a emitir el doble de rayos en una dirección que en otra, será necesario dividir este resultado por dos, puesto que se ha recabado el doble de radiación lumínica. Así pues, también se tendrá que multiplicar el resultado menos muestreado por el doble, ya que al muestrearse la mitad, se obtiene la mitad de radiación.
+Algo que todas las técninas de  muestreo por importancia tienen en común es su funcionamiento primario: Emitir más rayos en las direcciones que más interesan y a su vez, dividir el resultado por la función de distribución de probabilidad (PDF en adelante). Esto quiere decir que si se emiten el doble de rayos en una dirección que en otra, será necesario dividir este resultado por dos, puesto que se ha recabado el doble de radiación lumínica. Así pues, también se tendrá que multiplicar el resultado menos muestreado por el doble, ya que al muestrearse la mitad, se obtiene la mitad de radiación.
 
 En la implementación, todo muestreo consiste en una función que genera rayos aleatorios a aquellos lugares donde interesa más muestrear y la función de probabilidad de distribución apropiada derivada de la función de muestreo, que ha de devolver la probabilidad con la que se ha elegido ese rayo. Como se verá más adelante, no siempre es fácil derivar esta función de probabilidad cuando se cuenta con una función de muestreo compleja.
 

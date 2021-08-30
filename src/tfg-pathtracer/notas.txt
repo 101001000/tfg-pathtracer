@@ -8,8 +8,6 @@ Mover los random a dentro de las funciones, ver como pasar cuda_rand_state como 
 
 LOS PDF TIENEN COMO mÁXIMO 1 (?)
 
-Sampleo HDRI de manera esférica
-
 Polygon trianglulation
 
 BVH sin profundidad fija (?)
@@ -22,4 +20,3 @@ Colisiones para las luces puntuales
 
 Convertir disney en un namespace
 
-Epsilon arreglar

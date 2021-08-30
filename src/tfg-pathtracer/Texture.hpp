@@ -18,10 +18,8 @@ class Texture {
 public:
 
 	float* data;
-    bool USE_IMAGE;
 
     Filter filter = BILINEAR;
-
     Vector3 color;
 
     unsigned int width;
@@ -40,8 +38,6 @@ public:
     	__host__ Texture(std::string filepath, CS colorSpace) {
 
         printf("Loading texture from file %s\n", filepath.c_str());
-
-        USE_IMAGE = true;
 
         int i;
         FILE* f = fopen(filepath.c_str(), "rb");
@@ -87,7 +83,6 @@ public:
         width = 1;
         height = 1;
 
-        USE_IMAGE = false;
         color = _color;
         data = new float[3];
         data[0] = color.x; data[1] = color.y; data[2] = color.z;
@@ -97,8 +92,6 @@ public:
         
         width = 1;
         height = 1;
-
-        USE_IMAGE = false;
 
         data = new float[3];
 

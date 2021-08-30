@@ -207,7 +207,6 @@ static inline float* loadHDR(const char* path, int& width, int& height) {
 
 	for (int i = 0; i < width * height * 3; i++) {
 		if (res.cols[i] < 0) res.cols[i] = 0;
-		//res.cols[i] = pow(res.cols[i], 1.0 / 2.2);
 	}
 
 	return res.cols;
