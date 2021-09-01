@@ -13,11 +13,15 @@
 
 	El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara es el siguiente:
 
-	1: Se calcula el rayo original del método anterior, desde la cámara hasta el sensor.
+	\begin{enumerate}
+		
+	\item 1: Se calcula el rayo original del método anterior, desde la cámara hasta el sensor.
 	
-	2: Se calcula la intersección de dicho rayo con el plano de enfoque, situado a la distancia \code{focusDistance}. La intersección se denomina \code{focusPoint}.
+	\item 2: Se calcula la intersección de dicho rayo con el plano de enfoque, situado a la distancia \code{focusDistance}. La intersección se denomina \code{focusPoint}.
 	
-	3: En vez de emitir e rayo desde el punto de la cámara, se elige un punto aleatorio en el iris \code{iRP} y se emite un rayo desde ahí hasta el punto de enfoque \code{focusPoint}. Este nuevo rayo será un rayo bajo el modelo de cámara de lente fina. Los elementos situados a la distancia de enfoque \code{focusDistance} serán más nítidos que aquellos que no lo estén.
+	\item 3: En vez de emitir e rayo desde el punto de la cámara, se elige un punto aleatorio en el iris \code{iRP} y se emite un rayo desde ahí hasta el punto de enfoque \code{focusPoint}. Este nuevo rayo será un rayo bajo el modelo de cámara de lente fina. Los elementos situados a la distancia de enfoque \code{focusDistance} serán más nítidos que aquellos que no lo estén.
+	
+	\end{enumerate}
 
 \begin{lstlisting}
 	
@@ -49,7 +53,7 @@
 
 \end{lstlisting}
 
-	\begin{figure}
+	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.7\textwidth]{blurring}
 		\caption{}
@@ -100,7 +104,7 @@
 	También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes.
 
 	\begin{lstlisting}
-		__host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
+	__host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
 	
         Vector3 pixel;
 
@@ -262,38 +266,4 @@
 	sheenTint:
 	subsurface:
 	sheen:
-
-
 	
-	\section{Renderizado progresivo}
-		
-	Hoy en día, la mayoría de los motores de renderizado de producción son progresivos. Esto implica que las muestras se van acumulando poco a poco a lo largo de la imagen hasta que termina por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales y una vez que acumulan las suficientes, pasan a la siguiente sección. Se ha decidido hacer una implementación progresiva con el fin de estar más cerca del estado del arte.
-	
-	Este tipo de implementación se beneficia de la copia de datos asíncrona de la GPU. Mientras el kernel se ejecuta, un flujo de datos secundario hará la copia del buffer de la GPU en la CPU, pudiendo así actualizar la visualización del resultado varias veces por segundo.
-
-	Este flujo de datos secundario se ha implementado con el tipo de datos ``cudaStream\_t`` de la API de CUDA. Han sido necesarios dos flujos, uno denominado \code{kernelStream} y otro denominado \code{bufferStream}. Los kernels de inicialización y renderizado correrán en el primero, mientras que la función que obtiene el buffer, será lanzada en el segundo.
-	
-	La función que extrae el buffer de píxeles de la GPU a la CPU es la siguente:
-	
-	\begin{lstlisting}
-	cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
-
-		cudaStreamCreate(&bufferStream);
-
-		cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_buffer, size * sizeof(float) * 4, 0, cudaMemcpyDeviceToHost, bufferStream);
-		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
-		}
-
-		cudaStatus = cudaMemcpyFromSymbolAsync(pathcountBuffer, dev_pathcount, size * sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
-		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
-		}
-
-		return cudaStatus;
-	}
-	\end{lstlisting}
-	
-	Hace uso de la función \code{cudaMemcpyFromSymbolAsync} para realizar la copia asíncrona antes mencionada. También se hace copia del buffer de la suma de rayos emitidos por píxel con el fin de realizar métricas de eficiencia.
-	
-	%@todo analisis de movimiento de datos de memoria.

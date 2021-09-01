@@ -11,6 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BMP.hpp" />
     <ClInclude Include="BVH.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Disney.hpp" />
@@ -38,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\Code\tfg-renderer\MAKEFILE" />
+    <None Include="RSJparser.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Font Include="..\..\..\Code\tfg-renderer\RenderCUDA\arial.ttf" />

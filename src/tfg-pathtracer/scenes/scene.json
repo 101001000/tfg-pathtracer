@@ -1,0 +1,10 @@
+{
+	
+'camera'    : 	{'xRes' : 1280, 'yRes' : 720, 'position' : {x : 0, y : 0.08836, z : -0.6336}, 'focalLength' : 0.05, 'focusDistance' : 0.59, 'aperture' : 2.8},
+'materials' :	[{'name' : 'clock'}, {'name' : 'chair'}],
+'objects'   : 	[{'name' : 'clock', 'material' : 'clock'}, {'name' : 'chair', 'material' : 'chair'}],
+'hdri' 		:   {'name' : 'hdri', 'xOffset' : 0.5}
+
+
+}
+

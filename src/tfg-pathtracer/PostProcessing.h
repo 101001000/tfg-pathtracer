@@ -25,9 +25,9 @@ void gaussianBlur(float* pixels, int width, int height, int kernelSize, float* r
 
 void basicBlur(float* pixels, int width, int height, float threshold, float power, float radius);
 
-void downscale(float* pixels, int width, int height, int nWidth, int nHeight, float* result);
+void downscale(float* pixels, int width, int height, int nWidth, int nheight, float* result);
 
-void upscale(float* pixels, int width, int height, int nWidth, int nHeight, float* result);
+void upscale(float* pixels, int width, int height, int nWidth, int nheight, float* result);
 
 void beautyBloom(float* pixels, int width, int height, float threshold, float power, float radius);
 

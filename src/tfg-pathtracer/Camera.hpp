@@ -12,7 +12,7 @@ public:
 
 	float focalLength;
 	float sensorWidth;
-	float sensorHeight;
+	float sensorheight;
 	float aperture;
 	float focusDistance = 1000000;
 
@@ -23,7 +23,7 @@ public:
 		yRes = 720;
 		focalLength = 35 * 0.001;
 		sensorWidth = 36 * 0.001;
-		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
+		sensorheight = sensorWidth * ((float)yRes / (float)xRes);
 		aperture = 2.8;
 	}
 
@@ -32,7 +32,7 @@ public:
 		yRes = _yRes;
 		focalLength = 35 * 0.001;
 		sensorWidth = 36 * 0.001;
-		sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
+		sensorheight = sensorWidth * ((float)yRes / (float)xRes);
 		aperture = 2.8;
 	}
 

@@ -210,13 +210,13 @@ void basicBlur(float* pixels, int width, int height, float threshold, float powe
 
 }
 
-void downscale(float* pixels, int width, int height, int nWidth, int nHeight, float* result) {
+void downscale(float* pixels, int width, int height, int nWidth, int nheight, float* result) {
 
 	float rx = width / nWidth;
-	float ry = height / nHeight;
+	float ry = height / nheight;
 
 	for (int x = 0; x < nWidth; x++) {
-		for (int y = 0; y < nHeight; y++) {
+		for (int y = 0; y < nheight; y++) {
 			result[4 * (y * nWidth + x) + 0] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 0];
 			result[4 * (y * nWidth + x) + 1] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 1];
 			result[4 * (y * nWidth + x) + 2] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 2];
@@ -225,13 +225,13 @@ void downscale(float* pixels, int width, int height, int nWidth, int nHeight, fl
 	}
 }
 
-void upscale(float* pixels, int width, int height, int nWidth, int nHeight, float* result) {
+void upscale(float* pixels, int width, int height, int nWidth, int nheight, float* result) {
 
 	float rx = width / nWidth;
-	float ry = height / nHeight;
+	float ry = height / nheight;
 
 	for (int x = 0; x < nWidth; x++) {
-		for (int y = 0; y < nHeight; y++) {
+		for (int y = 0; y < nheight; y++) {
 			result[4 * (y * nWidth + x) + 0] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 0];
 			result[4 * (y * nWidth + x) + 1] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 1];
 			result[4 * (y * nWidth + x) + 2] = pixels[4 * ((int)(y * ry * width) + (int)(x * rx)) + 2];

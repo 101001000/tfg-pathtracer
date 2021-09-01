@@ -84,20 +84,24 @@ void Pretzel::CalcTangents::get_position(const SMikkTSpaceContext* context, floa
 void Pretzel::CalcTangents::get_normal(const SMikkTSpaceContext* context, float outnormal[],
     int iFace, int iVert) {
     MeshObject* working_mesh = static_cast<MeshObject*> (context->m_pUserData);
-    /*
 
-    Vector3 edge1 = working_mesh->tris[iFace].vertices[1] - working_mesh->tris[iFace].vertices[0];
-    Vector3 edge2 = working_mesh->tris[iFace].vertices[2] - working_mesh->tris[iFace].vertices[0];
-    Vector3 N = Vector3::cross(edge1, edge2).normalized();
-
-    /*
-    outnormal[0] = N.x;
-    outnormal[1] = N.y;
-    outnormal[2] = N.z; */
+ #if SMOOTH_SHADING 
 
     outnormal[0] = working_mesh->tris[iFace].normals[iVert].x;
     outnormal[1] = working_mesh->tris[iFace].normals[iVert].y;
     outnormal[2] = working_mesh->tris[iFace].normals[iVert].z;
+
+#else
+    Vector3 edge1 = working_mesh->tris[iFace].vertices[1] - working_mesh->tris[iFace].vertices[0];
+    Vector3 edge2 = working_mesh->tris[iFace].vertices[2] - working_mesh->tris[iFace].vertices[0];
+
+    Vector3 N = Vector3::cross(edge1, edge2).normalized();
+
+    outnormal[0] = N.x;
+    outnormal[1] = N.y;
+    outnormal[2] = N.z;
+
+#endif
 
 }
 
@@ -117,5 +121,5 @@ void Pretzel::CalcTangents::set_tspace_basic(const SMikkTSpaceContext* context,
     MeshObject* working_mesh = static_cast<MeshObject*> (context->m_pUserData);
 
     working_mesh->tris[iFace].tangents[iVert] = Vector3(tangentu[0], tangentu[1], tangentu[2]);
-    working_mesh->tris[iFace].tangentsSigns[iVert] = fSign;
+    working_mesh->tris[iFace].tangentsSign = fSign;
 }

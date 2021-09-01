@@ -10,6 +10,7 @@
 \usepackage{vmargin}
 \usepackage{hyperref}
 \usepackage{chronology}
+\usepackage{float}
 
 \usepackage[utf8]{inputenc}
 \usepackage[TS1,T1]{fontenc}
@@ -18,7 +19,7 @@
 \DeclareCaptionFont{blue}{\color{LightSteelBlue3}}
 
 \newcommand{\foo}{\color{LightSteelBlue3}\makebox[0pt]{\textbullet}\hskip-0.5pt\vrule width 1pt\hspace{\labelsep}}
-
+\newcommand{\lstfont}[1]{\color{#1}\scriptsize\ttfamily}
 
 \graphicspath{ {Images/} }
  
@@ -35,8 +36,9 @@
 \definecolor{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
 \definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{purple}{rgb}{0.58,0,0.58}
 
-\lstset{frame=tb,
+\lstset{frame=single,
 	language=C++,
 	aboveskip=3mm,
 	belowskip=3mm,
@@ -50,7 +52,14 @@
 	stringstyle=\color{mauve},
 	breaklines=true,
 	breakatwhitespace=true,
-	tabsize=3
+	tabsize=4,
+	emph={
+        cudaMalloc, cudaFree,
+        __global__, __shared__, __device__, __host__,
+        __syncthreads,
+    },
+	emphstyle=\color{purple},
+	moredelim=[s][\ttfamily]{<<<}{>>>}
 }
  
  
@@ -74,6 +83,7 @@
 \input{Chapters/Chapter04.tex}
 \input{Chapters/Chapter05.tex}
 \input{Chapters/Chapter06.tex}
+\input{Chapters/Chapter07.tex}
 
 
 \chapter{Anexo}

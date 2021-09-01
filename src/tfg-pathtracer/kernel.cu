@@ -112,9 +112,9 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
                                     localNormal.x  * tangent.y + localNormal.y  * -bitangent.y + localNormal.z  * normal.y,
                                     localNormal.x  * tangent.z + localNormal.y  * -bitangent.z + localNormal.z  * normal.z).normalized();*/
 
-        Vector3 ws_normal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized();
+        Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized();
       
-        hitdata.normal = ws_normal;
+        hitdata.normal = worldNormal;
         //hitdata.albedo = clamp(Vector3(ws_normal.x, ws_normal.z, ws_normal.y), 0 , 1);
     }
 
@@ -272,15 +272,15 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
     // Relative coordinates for the point where the first ray will be launched
     float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth;
-    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight;
+    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorheight;
 
     // Absolute coordinates for the point where the first ray will be launched
     float odx = (-camera.sensorWidth / 2.0) + dx;
-    float ody = (-camera.sensorHeight / 2.0) + dy;
+    float ody = (-camera.sensorheight / 2.0) + dy;
 
     // Random part of the sampling offset so we get antialasing
     float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth;
-    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight;
+    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorheight;
 
     // Sensor point, the point where intersects the ray with the sensor
     float SPx = odx + rx;
@@ -531,6 +531,7 @@ cudaError_t renderSetup(Scene* scene) {
     Camera* camera = scene->getMainCamera();
 
     MeshObject* meshObjects = scene->getMeshObjects();
+
     Tri* tris = scene->getTris();
     BVH* bvh = scene->buildBVH();
 
@@ -631,15 +632,13 @@ void renderCuda(Scene* scene, int sampleTarget) {
 
     for (int i = 0; i < sampleTarget; i++) {
 
-        neeRenderKernel <<<blocks, threads, 0, kernelStream >>> ();
+        neeRenderKernel << <blocks, threads, 0, kernelStream >> > ();
 
         cudaError_t cudaStatus = cudaStreamSynchronize(kernelStream);
         if (cudaStatus != cudaSuccess) {
             fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
         }
-
     }
-
 }
 
 cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
@@ -661,16 +660,16 @@ cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
 
 int getSamples() {
 
-    int buff[5];
+    int buff;
 
     cudaStreamCreate(&bufferStream);
 
-    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(buff, dev_samples, sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
+    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(&buff, dev_samples, sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "LOL returned error code %d after launching addKernel!\n", cudaStatus);
+        fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
     }
 
-    return buff[0];
+    return buff;
 }
 
 __host__ void printHDRISampling(HDRI hdri, int samples) {

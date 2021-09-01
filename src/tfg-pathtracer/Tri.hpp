@@ -13,7 +13,7 @@ public:
     Vector3 uv[3];
     Vector3 normals[3];
     Vector3 tangents[3];
-    float tangentsSigns[3];
+    float tangentsSign;
 
     int objectID;
 
@@ -42,8 +42,6 @@ public:
         Vector3 edge2 = vertices[2] - vertices[0];
 
         Vector3 pvec = Vector3::cross(ray.direction, edge2);
-
-        Vector3 N = Vector3::cross(edge1, edge2).normalized();
 
         float u, v, t, inv_det;
 
@@ -92,8 +90,11 @@ public:
         hit.position = convex ? shadingPosition : geomPosition;
         hit.normal = shadingNormal;
 #else
+        Vector3 geomNormal = Vector3::cross(edge1, edge2).normalized();
+
+        // tangents[0], tangents[1], tangents[2] are the same when smoothshading is off
         hit.tangent = tangents[0];
-        hit.normal = N;
+        hit.normal = geomNormal;
         hit.position = geomPosition;
 #endif
 
@@ -141,10 +142,7 @@ public:
 
         */
 
-        hit.bitangent = tangentsSigns[0] * Vector3::cross(hit.normal, hit.tangent);
-
-        //if (Vector3::dot(hit.normal, ray.direction) > 0) hit.normal *= -1;
-
+        hit.bitangent = tangentsSign * Vector3::cross(hit.normal, hit.tangent);
         hit.valid = true;
         hit.tu = tUV.x;
         hit.tv = tUV.y;
