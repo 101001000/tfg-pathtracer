@@ -1,6 +1,6 @@
 \chapter{Introducción}
 	
-El renderizado 3d es una técnica por la cual se representan los datos de geometrías tridimensionales en una pantalla en dos dimensiones. Existen distintas técnicas de renderizado tridimensional, siendo el trazado de rayos la más utilizada en la industria cinematográfica gracias a su excepcional fotorrealismo del cual carecen otras técnicas. Tan codiciada es esta técnica, que actualmente industrias realionadas con la visualización 3d como por ejemplo la industria de los videojuegos trata de replicarla y adaptarla en sus proyectos más modernos, con el fin de obtener mejor fidelidad visual.
+El renderizado 3d es una técnica por la cual se representan los datos de geometrías tridimensionales en una pantalla en dos dimensiones. Existen distintas técnicas de renderizado tridimensional, siendo el trazado de rayos la más utilizada en la industria cinematográfica gracias a su excepcional fotorrealismo del cual suelen carecer otras técnicas. Tan codiciada es esta técnica, que actualmente industrias realionadas con la visualización 3d como por ejemplo la industria de los videojuegos trata de replicarla y adaptarla en sus proyectos más modernos, con el fin de obtener mejor fidelidad visual.
 El creciente interés ante el trazado de rayos ha provocado que compañías dedicadas al hardware gráfico dediquen parte de su desarrollo a la implementación del trazado de rayos en sus últimos modelos. Véase por ejemplo las últimas dos series de tarjetas gráficas de NVIDIA, siendo RTX (el nombre de las dos últimas series) acrónimo de "Ray Tracing Texel eXtreme". 
 
 No obstante la implementación de este sistema de renderizado peca de una gran demanda computacional, es por ello que gran parte de los motores de renderizado orientados a la industria cinematográfica han sido adaptados para poder funcionar en aceleradores gráficos. Con la creciente capacidad computacional y las características fotorrealistas mencionadas anteriormente, los motores de renderizado de trazado de rayos han adquirido una especial importancia en el ámbito de la computación gráfica.
@@ -20,7 +20,7 @@ Un aspecto importante en cuanto a la implementación es que se hace uso del meno
 	
 \subsection{Trabajo previo}
 
-Este motor gráfico tiene sus raices en un trabajo final previo realizado en la asignatura "Programación de GPUs y aceleradores". En este trabajo previo se hizo una prueba de concepto de un motor "Path tracing" extremadamente sencillo 
+Este motor gráfico tiene sus raices en un trabajo final previo realizado en la asignatura "Programación de GPUs y aceleradores". En este trabajo previo se hizo una prueba de concepto de un motor "Path tracing" sin ningún tipo de optimización ni mejora visual. 
 	
 \subsection{Desarrollo del trabajo}
 	
@@ -49,6 +49,7 @@ A continuación se muestra una línea del tiempo con los hitos logrados:
 	Mayo 2021 & Funciones de benchmarking\\
 	Julio 2021 & Port One Api\\
 	Agosto 2021 & Implementación de mapas de normales, BOKEH\\
+	Septiembre 2021 & Escenas en formato JSON\\
 	
 	\end{tabular}
 	\end{table}

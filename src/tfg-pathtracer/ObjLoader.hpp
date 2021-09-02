@@ -1,14 +1,14 @@
 #ifndef  OBJLOADER_H
 #define OBJLOADER_H
 
-#include "mikktspaceCallback.hpp"
+#include "mikktspaceCallback.h"
 #include <vector>
-#include "Vector.hpp"
 #include <sstream>
 #include <iostream>
 #include <fstream>
-#include "mikktspace.h"
 
+#include "Vector.hpp"
+#include "mikktspace.h"
 #include "Tri.hpp"
 #include "MeshObject.hpp"
 

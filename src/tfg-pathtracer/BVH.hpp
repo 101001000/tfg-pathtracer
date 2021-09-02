@@ -8,11 +8,7 @@
 #include <vector>
 #include <algorithm>
 #include <chrono>  
-
-// @todo Definitions renaming and move to the same file
-
-#define DEPTH 20
-#define SAHBINS 12
+#include "Definitions.h"
 
 struct BVHTri {
 
@@ -63,7 +59,7 @@ public:
 
 	Tri* tris;
 
-	Node nodes[2 << DEPTH];
+	Node nodes[2 << BVH_DEPTH];
 
 	int triIdx = 0;
 	int* triIndices;
@@ -109,7 +105,7 @@ public:
 
 	__host__ __device__ void transverseAux(Ray ray, Hit& nearestHit, Node& node) {
 		
-		if (node.depth == DEPTH) {
+		if (node.depth == BVH_DEPTH) {
 			intersectNode(ray, node, nearestHit);
 			return;
 		}
@@ -142,14 +138,14 @@ public:
 			bool lOverlap = intersect(ray, lChild.b1, lChild.b2);
 			bool rOverlap = intersect(ray, rChild.b1, rChild.b2);
 
-			if (node.depth == (DEPTH - 1) && rOverlap)
+			if (node.depth == (BVH_DEPTH - 1) && rOverlap)
 				intersectNode(ray, rChild, nearestHit);
 
-			if (node.depth == (DEPTH - 1) && lOverlap)
+			if (node.depth == (BVH_DEPTH - 1) && lOverlap)
 				intersectNode(ray, lChild, nearestHit);
 			
-			bool traverseL = (lOverlap && node.depth != (DEPTH - 1));
-			bool traverseR = (rOverlap && node.depth != (DEPTH - 1));
+			bool traverseL = (lOverlap && node.depth != (BVH_DEPTH - 1));
+			bool traverseR = (rOverlap && node.depth != (BVH_DEPTH - 1));
 
 			if (!traverseL && !traverseR) {
 				node = *--stackPtr;
@@ -182,13 +178,13 @@ public:
 	}
 
 	__host__ __device__ Node leftChild(int idx, int depth) {
-		if (depth == DEPTH) return Node();
+		if (depth == BVH_DEPTH) return Node();
 		return nodes[idx + 1];
 	}
 
 	__host__ __device__ Node rightChild(int idx, int depth) {
-		if (depth == DEPTH) return Node();
-		return nodes[idx + (2 << (DEPTH - depth - 1))];
+		if (depth == BVH_DEPTH) return Node();
+		return nodes[idx + (2 << (BVH_DEPTH - depth - 1))];
 	}
 
 	void build(std::vector<Tri>* _fullTris) {
@@ -255,7 +251,7 @@ public:
 				printf("\rAllocated tris: %d / %d, %d%%", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
 
 			// Nodo hoja
-			if (node.node.depth == DEPTH) {
+			if (node.node.depth == BVH_DEPTH) {
 
 				node.node.from = triIdx;
 				node.node.to = triIdx + node.tris->size();
@@ -292,22 +288,19 @@ public:
 		
 	void buildAux(int depth, std::vector<BVHTri>* _tris) {
 
+		Vector3 b1, b2;
+
 		if (depth == 0)
 			totalTris = _tris->size();
 
 		if(depth == 7)
 			printf("\rAllocated tris: %d / %d, %d%%", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
 
-		Vector3 b1;
-		Vector3 b2;
-
 		bounds(_tris, b1, b2);
 
-		if (depth == DEPTH) {
+		if (depth == BVH_DEPTH) {
 
-			nodes[nodeIdx] = Node(nodeIdx, b1, b2, triIdx, triIdx + _tris->size(), depth);
-
-			nodeIdx++;
+			nodes[nodeIdx++] = Node(nodeIdx, b1, b2, triIdx, triIdx + _tris->size(), depth);
 
 			for (int i = 0; i < _tris->size(); i++)
 				triIndices[triIdx++] = _tris->at(i).index;
@@ -316,9 +309,7 @@ public:
 		}
 		else {
 
-			nodes[nodeIdx] = Node(nodeIdx, b1, b2, 0, 0, depth);
-
-			nodeIdx++;
+			nodes[nodeIdx++] = Node(nodeIdx, b1, b2, 0, 0, depth);
 
 			std::vector<BVHTri>* trisLeft = new std::vector<BVHTri>();
 			std::vector<BVHTri>* trisRight = new std::vector<BVHTri>();
@@ -342,16 +333,12 @@ public:
 
 		bounds(tris, b1, b2);
 
-		// Buscamos que dimensión de la caja que envuelve a todos los triángulos es la más grande y partimos por la mitad de ahí
+		Vector3 l = (b2.x - b1.x, b2.y - b1.y, b2.z - b1.z);
 
-		float lx = b2.x - b1.x;
-		float ly = b2.y - b1.y;
-		float lz = b2.z - b1.z;
-
-		if (lx > ly && lx > lz) {
+		if (l.x > l.y && l.x > l.z) {
 
 			for (int i = 0; i < tris->size(); i++) {
-				if (tris->at(i).tri.centroid().x > b1.x + lx / 2) {
+				if (tris->at(i).tri.centroid().x > b1.x + l.x / 2) {
 					trisLeft->push_back(tris->at(i));
 				}
 				else {
@@ -359,9 +346,9 @@ public:
 				}
 			}
 
-		} else if (ly > lx && ly > lz) {
+		} else if (l.y > l.x && l.y > l.z) {
 			for (int i = 0; i < tris->size(); i++) {
-				if (tris->at(i).tri.centroid().y > b1.y + ly / 2) {
+				if (tris->at(i).tri.centroid().y > b1.y + l.y / 2) {
 					trisLeft->push_back(tris->at(i));
 				}
 				else {
@@ -371,7 +358,7 @@ public:
 		}
 		else {
 			for (int i = 0; i < tris->size(); i++) {
-				if (tris->at(i).tri.centroid().z > b1.z + lz / 2) {
+				if (tris->at(i).tri.centroid().z > b1.z + l.z / 2) {
 					trisLeft->push_back(tris->at(i));
 				}
 				else {
@@ -383,12 +370,10 @@ public:
 
 	static void divideSAH(std::vector<BVHTri>* tris, std::vector<BVHTri>* trisLeft, std::vector<BVHTri>* trisRight) {
 
-		if (tris->size() <= 0) {
+		if (tris->size() <= 0)
 			return;
-		}
 
-		Vector3 totalB1;
-		Vector3 totalB2;
+		Vector3 totalB1, totalB2;
 
 		int bestBin = 0;
 		int bestAxis = 0;
@@ -399,18 +384,16 @@ public:
 
 		for (int axis = 0; axis < 3; axis++) {
 
-			Vector3 b1s[SAHBINS];
-			Vector3 b2s[SAHBINS];
+			Vector3 b1s[BVH_SAHBINS];
+			Vector3 b2s[BVH_SAHBINS];
 
-			int count[SAHBINS];
+			int count[BVH_SAHBINS];
 
-			for (int i = 0; i < SAHBINS; i++) {
+			for (int i = 0; i < BVH_SAHBINS; i++) {
 				count[i] = 0;
 				b1s[i] = Vector3();
 				b2s[i] = Vector3();
 			}
-
-		
 
 			for (int i = 0; i < tris->size(); i++) {
 
@@ -421,7 +404,7 @@ public:
 					bin = 0;
 				}	else {
 					float c = tris->at(i).tri.centroid()[axis];
-					bin = map(c, totalB1[axis], totalB2[axis], 0, SAHBINS - 1);
+					bin = map(c, totalB1[axis], totalB2[axis], 0, BVH_SAHBINS - 1);
 				}
 			
 				count[bin]++;
@@ -434,7 +417,7 @@ public:
 			}
 
 	
-			for (int i = 0; i < SAHBINS; i++) {
+			for (int i = 0; i < BVH_SAHBINS; i++) {
 
 				int count1 = 0;
 				int count2 = 0;
@@ -446,7 +429,7 @@ public:
 					boundsUnion(b1, b2, b1s[j], b2s[j], b1, b2);
 				}
 
-				for (int k = i; k < SAHBINS; k++) {
+				for (int k = i; k < BVH_SAHBINS; k++) {
 					count2 += count[k];
 					boundsUnion(b3, b4, b1s[k], b2s[k], b3, b4);
 				}
@@ -463,12 +446,9 @@ public:
 		
 		for (int i = 0; i < tris->size(); i++) {
 
-			// El bin en el que cae
 			float c = tris->at(i).tri.centroid()[bestAxis];
 
-			int bin = map(c, totalB1[bestAxis], totalB2[bestAxis], 0, SAHBINS - 1);
-
-			//printf("Cae en %d\n", bin);
+			int bin = map(c, totalB1[bestAxis], totalB2[bestAxis], 0, BVH_SAHBINS - 1);
 
 			if (bin < bestBin) {
 				trisLeft->push_back(tris->at(i));

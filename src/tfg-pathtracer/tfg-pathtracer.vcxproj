@@ -14,6 +14,7 @@
     <ClInclude Include="BMP.hpp" />
     <ClInclude Include="BVH.hpp" />
     <ClInclude Include="Camera.hpp" />
+    <ClInclude Include="Definitions.h" />
     <ClInclude Include="Disney.hpp" />
     <ClInclude Include="HDRI.hpp" />
     <ClInclude Include="HdrLoader.hpp" />
@@ -23,7 +24,8 @@
     <ClInclude Include="Math.hpp" />
     <ClInclude Include="MeshObject.hpp" />
     <ClInclude Include="mikktspace.h" />
-    <ClInclude Include="mikktspaceCallback.hpp" />
+    <ClInclude Include="mikktspaceCallback.h" />
+    <CudaCompile Include="mikktspaceCallback.hpp" />
     <ClInclude Include="ObjLoader.hpp" />
     <ClInclude Include="PointLight.hpp" />
     <ClInclude Include="PostProcessing.h" />

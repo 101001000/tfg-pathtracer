@@ -1,42 +1,15 @@
 #pragma once
 
-#include "mikktspace.h"
 #include <cassert>
+
+#include "mikktspace.h"
+#include "mikktspaceCallback.h"
 #include "MeshObject.hpp"
-
-#define CALC_TANGENTS_DEBUG 1
-
-namespace Pretzel {
+#include "Definitions.h"
 
 
-    class CalcTangents {
+//https://www.turais.de/using-mikktspace-in-your-project/
 
-    public:
-        CalcTangents();
-        void calc(MeshObject* mesh);
-
-    private:
-
-        SMikkTSpaceInterface iface{};
-        SMikkTSpaceContext context{};
-
-        static int get_num_faces(const SMikkTSpaceContext* context);
-        static int get_num_vertices_of_face(const SMikkTSpaceContext* context, int iFace);
-        static void get_position(const SMikkTSpaceContext* context, float outpos[],
-            int iFace, int iVert);
-
-        static void get_normal(const SMikkTSpaceContext* context, float outnormal[],
-            int iFace, int iVert);
-
-        static void get_tex_coords(const SMikkTSpaceContext* context, float outuv[],
-            int iFace, int iVert);
-
-        static void set_tspace_basic(const SMikkTSpaceContext* context,
-            const float tangentu[],
-            float fSign, int iFace, int iVert);
-
-    };
-}
 
 Pretzel::CalcTangents::CalcTangents() {
 
@@ -92,6 +65,7 @@ void Pretzel::CalcTangents::get_normal(const SMikkTSpaceContext* context, float 
     outnormal[2] = working_mesh->tris[iFace].normals[iVert].z;
 
 #else
+
     Vector3 edge1 = working_mesh->tris[iFace].vertices[1] - working_mesh->tris[iFace].vertices[0];
     Vector3 edge2 = working_mesh->tris[iFace].vertices[2] - working_mesh->tris[iFace].vertices[0];
 

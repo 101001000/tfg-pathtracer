@@ -144,7 +144,7 @@ public:
 		float theta = (((float)y / (float)texture.height)) * PI;
 
 		// Semisphere area
-		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI * PI * sin(theta));
+		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI * sin(theta));
 
 	}
 

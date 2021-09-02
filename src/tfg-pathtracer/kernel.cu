@@ -5,7 +5,6 @@
 
 #include "kernel.h"
 #include "Camera.hpp"
-#include "Scene.hpp"
 #include "Material.hpp"
 #include "Hit.hpp"
 #include "Disney.hpp"
@@ -13,14 +12,7 @@
 #include "BVH.hpp"
 #include "HDRI.hpp"
 #include "Math.hpp"
-
-#define THREADSIZE 8
-#define MAXBOUNCES 5
-
-#define USEBVH true
-#define HDRIIS true
-#define BOKEH true
-
+#include "Definitions.h"
 struct dev_Scene {
 
     Camera* camera;
@@ -44,7 +36,7 @@ struct dev_Scene {
 
 //TODO HACER ESTO CON MEMORIA DINÁMICA PARA ELIMINAR EL MÁXIMO DE 1920*1080
 
-__device__ float dev_buffer[1920 * 1080 * 4]; 
+__device__ float dev_buffer[1920 * 1080 * 4];
 
 // How many samples per pixels has been calculated. 
 __device__  unsigned int dev_samples[1920 * 1080];
@@ -102,7 +94,7 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
         Vector3 localNormal = (ncolor * 2) - 1;
 
-        
+
         //localNormal = Vector3(localNormal.x, 0, 0);
 
         //localNormal = Vector3(0, 0, 1);
@@ -113,7 +105,7 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
                                     localNormal.x  * tangent.z + localNormal.y  * -bitangent.z + localNormal.z  * normal.z).normalized();*/
 
         Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized();
-      
+
         hitdata.normal = worldNormal;
         //hitdata.albedo = clamp(Vector3(ws_normal.x, ws_normal.z, ws_normal.y), 0 , 1);
     }
@@ -157,7 +149,7 @@ __global__ void setupKernel() {
 
     //Inicialización rápida de curand, se pierden propiedades matemáticas o algo así
     curand_init(idx, 0, 0, &d_rand_state_g[idx]);
-    
+
     if (x == 0 && y == 0) {
 
         int triSum = 0;
@@ -188,7 +180,7 @@ __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
             if ((hit.position - ray.origin).length() < (nearestHit.position - ray.origin).length())
                 nearestHit = hit;
         }
-}
+    }
 #endif    
     return nearestHit;
 }
@@ -252,14 +244,14 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         Vector3 newDir = -scene->hdri->texture.reverseSphericalMapping(iu, iv).normalized();
 
-        Ray shadowRay(point +  newDir * 0.001, newDir);
+        Ray shadowRay(point + newDir * 0.001, newDir);
 
         Hit shadowHit = throwRay(shadowRay, scene);
 
         if (shadowHit.valid) return Vector3();
 
         Vector3 hdriValue = scene->hdri->texture.getValueFromUV(iu, iv);
-       
+
         Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
 
         pdf = scene->hdri->pdf(iu * scene->hdri->texture.width, iv * scene->hdri->texture.height);
@@ -272,15 +264,15 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
     // Relative coordinates for the point where the first ray will be launched
     float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth;
-    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorheight;
+    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight;
 
     // Absolute coordinates for the point where the first ray will be launched
     float odx = (-camera.sensorWidth / 2.0) + dx;
-    float ody = (-camera.sensorheight / 2.0) + dy;
+    float ody = (-camera.sensorHeight / 2.0) + dy;
 
     // Random part of the sampling offset so we get antialasing
     float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth;
-    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorheight;
+    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight;
 
     // Sensor point, the point where intersects the ray with the sensor
     float SPx = odx + rx;
@@ -314,7 +306,7 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
     Vector3 orig = camera.position + Vector3(rIPx, rIPy, 0);
 
     //Blurred ray
-    ray = Ray(orig , focusPoint - orig);
+    ray = Ray(orig, focusPoint - orig);
 
 #endif 
 }
@@ -336,7 +328,7 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
 
     hitLight = w1 * reduction * directLight;
 
-    reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf; 
+    reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
 
 }
 
@@ -346,7 +338,7 @@ __device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bou
 
 }
 
-__global__ void neeRenderKernel(){
+__global__ void neeRenderKernel() {
 
     dev_Scene* scene = dev_scene_g;
 
@@ -501,7 +493,7 @@ void hdriSetup(Scene* scene, dev_Scene* dev_scene) {
 
     HDRI* dev_hdri;
 
-    float* dev_data; 
+    float* dev_data;
     float* dev_cdf;
 
     cudaMalloc((void**)&dev_hdri, sizeof(HDRI));
@@ -587,7 +579,7 @@ cudaError_t renderSetup(Scene* scene) {
 
     cudaStatus = cudaMemcpy(&(dev_bvh->tris), &(dev_tris), sizeof(Tri*), cudaMemcpyHostToDevice);
     cudaStatus = cudaMemcpy(&(dev_bvh->triIndices), &(dev_triIndices), sizeof(int*), cudaMemcpyHostToDevice);
-    
+
     cudaStatus = cudaMemcpyToSymbol(dev_scene_g, &dev_scene, sizeof(dev_Scene*));
     cudaStatus = cudaMemcpyToSymbol(d_rand_state_g, &d_rand_state, sizeof(curandState*));
 
@@ -607,7 +599,7 @@ cudaError_t renderSetup(Scene* scene) {
     dim3 threads(tx, ty);
 
     // Launch a kernel on the GPU with one thread for each element.
-    setupKernel <<<blocks, threads, 0, kernelStream >>>();
+    setupKernel << <blocks, threads, 0, kernelStream >> > ();
 
     cudaStatus = cudaStreamSynchronize(kernelStream);
     if (cudaStatus != cudaSuccess) {
@@ -675,7 +667,7 @@ int getSamples() {
 __host__ void printHDRISampling(HDRI hdri, int samples) {
 
     for (int i = 0; i < samples; i++) {
-        
+
         float r = ((float)i) / ((float)samples);
 
         Vector3 sample = hdri.sample(r);
@@ -714,13 +706,13 @@ __host__ void printBRDFMaterial(Material material, int samples) {
     hitdata.sheen = material.sheen;
 
     //hitdata.normal = Vector3(0, 1, 0);
-    
+
     createBasis(hitdata.normal, hitdata.tangent, hitdata.bitangent);
 
     Vector3 inLight = Vector3(1, -1, 0).normalized();
 
     for (int i = 0; i < sqrt(samples); i++) {
-        
+
         for (int j = 0; j < sqrt(samples); j++) {
 
             float cosPhi = 2.0f * ((float)i / (float)sqrt(samples)) - 1.0f;
@@ -744,11 +736,8 @@ __host__ void printBRDFMaterial(Material material, int samples) {
 
 /*
 __host__ void printPdfMaterial(Material material) {
-
     int samples = 1000;
-
     HitData hitdata;
-
     hitdata.albedo = material.albedo;
     hitdata.roughness = material.roughness;
     hitdata.metallic = material.metallic;
@@ -762,15 +751,10 @@ __host__ void printPdfMaterial(Material material) {
     hitdata.sheenTint = material.sheenTint;
     hitdata.subsurface = material.subsurface;
     hitdata.sheen = material.sheen;
-
     Vector3 inLight = Vector3(1, -1, 0).normalized();
-
     for (int i = 0; i < samples; i++) {
-
         Vector3 rndVector = Vector3(rand(), rand(), rand()).normalized();
-
         float pdf = DisneyPdf(Ray(Vector3(), inLight), hitdata, rndVector);
-
         printf("%f, %f, %f, %f\n", rndVector.x, rndVector.y, rndVector.z, pdf);
     }
 }

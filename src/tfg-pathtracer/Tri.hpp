@@ -1,10 +1,11 @@
 #ifndef TRI_H
 #define TRI_H
-#include "MeshObject.hpp"
+
+
 #include "Hit.hpp"
 #include "Ray.hpp"
+#include "Definitions.h"
 
-#define SMOOTH_SHADING true
 
 class Tri {
 public:

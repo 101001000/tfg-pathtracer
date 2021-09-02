@@ -1,6 +1,8 @@
 #ifndef HIT_H
 #define HIT_H
 
+#include "Vector.hpp"
+
 class Hit {
 
 public:

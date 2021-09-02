@@ -6,34 +6,31 @@
 class Camera {
 
 public:
-	unsigned int xRes, yRes;
 
-	Vector3 position;
+	unsigned int xRes = 1280;
+	unsigned int yRes = 720;
 
-	float focalLength;
-	float sensorWidth;
-	float sensorheight;
-	float aperture;
+	float focalLength = 35 * 0.001;
+	float sensorWidth = 35 * 0.001;
+	float sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
+	float aperture = 2.8;
 	float focusDistance = 1000000;
+
+	Vector3 position = Vector3::Zero();
 
 public:
 
-	__host__ __device__ Camera() {
-		xRes = 1280;
-		yRes = 720;
-		focalLength = 35 * 0.001;
-		sensorWidth = 36 * 0.001;
-		sensorheight = sensorWidth * ((float)yRes / (float)xRes);
-		aperture = 2.8;
-	}
+	__host__ __device__ Camera() {}
 
 	__host__ __device__ Camera(unsigned int _xRes, unsigned int _yRes) {
 		xRes = _xRes;
 		yRes = _yRes;
-		focalLength = 35 * 0.001;
-		sensorWidth = 36 * 0.001;
-		sensorheight = sensorWidth * ((float)yRes / (float)xRes);
-		aperture = 2.8;
+		setSensorWidth(sensorWidth);
+	}
+
+	__host__ __device__ void setSensorWidth(float size) {
+		sensorHeight = size * ((float)yRes / (float)xRes);
+		printf("sensorWidth %f sensorHeight %f", sensorWidth, sensorHeight);
 	}
 
 

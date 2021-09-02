@@ -196,7 +196,7 @@
 	
 	\subsection{Mapas de normales}
 	
-	Los mapas de normales son un recurso muy utilizado en programación gráfica, aún así no ha sido posible encontrar explicaciones detalladas para su implementación en bilbiografía orientada específicamente a Path Tracing. Por ejemplo el libro PBRT\cite{pbrt} no incluye mucha
+	Los mapas de normales son un recurso muy utilizado en programación gráfica, aún así no ha sido posible encontrar explicaciones detalladas para su implementación en bilbiografía orientada específicamente a Path Tracing. Por ejemplo el libro PBRT\cite{pharr2016physically} no incluye mucha
 	
 	A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. 
 	
@@ -243,7 +243,7 @@
 		
 	En la ecuación de renderizado se encuentra un término denominado BRDF $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$. Hasta ahora ha sido ignorado y simplificado como una superficie Lambertiana perfectamente difusa, esto quiere decir que hasta el momento se ha tratado la luz independientemente del ángulo de incidencia $\omega _{\text{i}}$ y del ángulo de reflexión del rayo $\omega _{\text{o}}$. En el momento en el que se tienen en consideración estos dos ángulos, se pueden configurar funciones complejas que determinen distintos coeficientes para distintos ángulos. Una función BRDF basada en comportamientos físicos reales como los mencionados anteriormente ofrecerá un resultado acercado a la realidad. 
 	
-	Disney propone una función BRDF conocida como Disney Principled BRDF\cite{disneybrdf}
+	Disney propone una función BRDF conocida como Disney Principled BRDF\cite{burley2012physically}
 	
 	El término "material" y "BRDF" están fuertemente ligados, ya que es el material el que define esta función a partir de sus parámetros. 
 		

@@ -93,24 +93,77 @@ Esta nueva estructura de datos BVH cuenta con dos operaciones fundamentales: La 
 \subsection{Operación de generación de BVH (CPU)}
 
 
-La operación de generación tiene una implementación recursiva buildAux. Basta con generar un árbol binario, calcular los delimitadores bounds de los triángulos en cada nodo, dividir los triángulos de dicho nodo y aplicar la recursión para los dos subconjuntos de triángulos. Para los nodos hoja además se almacenarán los índices from y to de los triángulos que estos contienen.
+La operación de generación parte de la generación recursiva de un árbol binario, añadiendo información adicional a los nodos.
+
+\begin{enumerate}
+	
+\item Para cada nodo que contiene un conjunto de triángulos, se calcula el volumen delimitador. Este volumen viene dado por el vértice menor y mayor del volumen \code{b1, b2}.
+
+\item Se separa el conjunto de triángulos en dos subconjuntos disjuntos. El cómo se divide este conjunto se delega a la función \code{divideSAH()}, que hará uso de la heurística de superficie de área para decidir que triángulos van a cada subconjunto.
+
+\item Finalmente se aplica recursión para los hijos generados en caso de residir en un nodo interior, o se termina la recursión y se almacenan los índices \code{from} y \code{to} de los triángulos que estos contienen en caso de ser un nodo hoja.
+
+\end{enumerate}
 
 Los delimitadores son dos puntos que representan el volumen que contiene una geometría. El cálculo de estos se hace cogiendo las coordenadas mínimas y máximas. La operación de unión de estos delimitadores se hace aplicando el mismo esquema de coordenadas mínimas y máximas.
 
-
-\begin{figure}
+\begin{figure}[H]
     \centering
 	\includegraphics[width=0.5\textwidth]{delimitadores}
 	\caption{Delimitadores}
 	\label{fig:label}
 \end{figure}
 
+\begin{lstlisting}
+	
+	void buildAux(int depth, std::vector<BVHTri>* _tris) {
 
-Una duda que puede surgir es cómo se almacenan los triángulos de manera eficiente en estos árboles, ya que almacenar tantas listas como nodos hoja hay, es muy ineficiente en términos de memoria. Aquí es donde entran en juego los índices from y to mencionados anteriormente. Se hace uso de una lista de ordenación de triángulos denominada triIndices, la cual contiene índices de los triángulos en la lista original ordenados por nodos. Los nodo hoja tendrán pues dos índices indicando desde qué índice (from) hasta qué índice (to) es necesario leer de manera inclusiva en esta lista para recuperar los triángulos almacenados por dicho nodo.
+		Vector3 b1, b2;
 
-\begin{figure}
+		if (depth == 0)
+			totalTris = _tris->size();
+
+		if(depth == 7)
+			printf("\rAllocated tris: %d / %d, %d%%", allocatedTris, totalTris, (100 * allocatedTris) / totalTris);
+
+		bounds(_tris, b1, b2);
+
+		if (depth == DEPTH) {
+
+			nodes[nodeIdx++] = Node(nodeIdx, b1, b2, triIdx, triIdx + _tris->size(), depth);
+
+			for (int i = 0; i < _tris->size(); i++)
+				triIndices[triIdx++] = _tris->at(i).index;
+
+			allocatedTris += _tris->size();
+		}
+		else {
+
+			nodes[nodeIdx++] = Node(nodeIdx, b1, b2, 0, 0, depth);
+
+			std::vector<BVHTri>* trisLeft = new std::vector<BVHTri>();
+			std::vector<BVHTri>* trisRight = new std::vector<BVHTri>();
+
+			divideSAH(_tris, trisLeft, trisRight);
+
+			buildAux(depth + 1, trisLeft);
+			buildAux(depth + 1, trisRight);
+
+			trisLeft->clear();
+			trisRight->clear();
+
+			delete trisLeft;
+			delete trisRight;
+		}
+	}
+	
+\end{lstlisting}
+
+Una duda que puede surgir es cómo se almacenan los triángulos de manera eficiente en estos árboles, ya que almacenar tantas listas como nodos hoja hay, es muy ineficiente en términos de memoria. Aquí es donde entran en juego los índices \code{from} y \code{to} mencionados anteriormente. Se hace uso de una lista de ordenación de triángulos denominada \code{triIndices}, la cual contiene índices de los triángulos en la lista original ordenados por nodos. Los nodo hoja tendrán pues dos índices indicando desde qué índice (\code{from}) hasta qué índice (\code{to}) es necesario leer de manera inclusiva en esta lista para recuperar los triángulos almacenados por dicho nodo.
+
+\begin{figure}[H]
     \centering
-	\includegraphics[width=1\textwidth]{triIndices}
+	\includegraphics[width=0.5\textwidth]{triIndices}
 	\caption{triIndices}
 	\label{fig:label}
 \end{figure}
@@ -123,16 +176,117 @@ La aplicación de este trabajo requiere de varios segundos e incluso minutos por
 
 Se han implementado dos métodos distintos para comparar su rendimiento. Uno de ellos es un método ingenuo y el segundo es un método utilizado en producción conocido como división por heurística de superficie (SAH).
 
-Método ingenuo:
+\subsubsection{Partición por plano:}
 
-Este método no es nada práctico y se usa tan solo de forma comparativa. Consiste en elegir un triángulo al azar A y buscar el triángulo más lejano a él B. Posteriormente, para cada triángulo en la operación de división se calculará la distancia con A y con B. En caso de estar más cerca de A que de B se añadirá al nodo izquierdo y por lo contrario, al nodo derecho.
+Este método no es práctico y se usa tan solo de forma comparativa. Consiste en elegir la dimensión más grande de la caja que envuelve a los triángulos y partirla por la mitad. Posteriormente se recorrerán todos los triángulos y se dividirán por dicho plano. Para saber si un triángulo se encuentra a un lado o al otro se interpretan los triángulos como un punto en el espacio cuya posición es el centroide.
 
+\begin{lstlisting}
+	
+	static void dividePlane(std::vector<BVHTri>* tris, std::vector<BVHTri>* trisLeft, std::vector<BVHTri>* trisRight) {
+
+		Vector3 b1, b2;
+
+		bounds(tris, b1, b2);
+
+		Vector3 l = (b2.x - b1.x, b2.y - b1.y, b2.z - b1.z);
+
+		if (l.x > l.y && l.x > l.z) {
+
+			for (int i = 0; i < tris->size(); i++) {
+				if (tris->at(i).tri.centroid().x > b1.x + l.x / 2) {
+					trisLeft->push_back(tris->at(i));
+				}
+				else {
+					trisRight->push_back(tris->at(i));
+				}
+			}
+
+		} else if (l.y > l.x && l.y > l.z) {
+			for (int i = 0; i < tris->size(); i++) {
+				if (tris->at(i).tri.centroid().y > b1.y + l.y / 2) {
+					trisLeft->push_back(tris->at(i));
+				}
+				else {
+					trisRight->push_back(tris->at(i));
+				}
+			}
+		}
+		else {
+			for (int i = 0; i < tris->size(); i++) {
+				if (tris->at(i).tri.centroid().z > b1.z + l.z / 2) {
+					trisLeft->push_back(tris->at(i));
+				}
+				else {
+					trisRight->push_back(tris->at(i));
+				}
+			}
+		}
+	}
+	
+\end{lstlisting}
+
+\subsubsection{Heurística SAH:}
+	
 
 \subsection{Operación de recorrido (GPU)}
 
 
 La operación de recorrido implementada se resume en comprob
 
+
+
+
+\subsection{Evaluación:}
+	
+\subsubsection{Comparación de heurísticas:}
+	
+Para justificar el uso de la heurística por superficie de área se muestra una ejecución de ambas heurísticas con tres modelos ampliamente utilizados en evaluaciones comparativas de computación gráfica:
+
+\begin{itemize}
+	
+	\item Suzanne: 
+	\item Standford Bunny: 4968 triángulos
+	\item Standford Dragon: 871306 triángulos
+	
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{bunny}
+    \caption{Standford Bunny.}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.4\textwidth}
+    \includegraphics[width=\textwidth]{dragon}
+    \caption{Standford Dragon.}
+  \end{minipage}
+\end{figure}
+
+Esta evaluación ha sido llevada acabo con los siguientes parámetros:
+
+\code{BVH\_DEPTH = 20}, \code{BVH\_SAHBINS = 12}, \code{MAXBOUNCES = 5}, \code{SMOOTH\_SHADING = true}, 
+
+\begin{tikzpicture}
+	\begin{axis}[
+	x tick label style={
+		/pgf/number format/1000 sep=},
+	ylabel=BVH building time (s),
+	width=13cm,
+	enlarge x limits=-1,
+	ybar interval=0.7,
+	symbolic x coords={Suzanne,Standford Bunny,Standford Dragon, test}
+]
+\addplot 
+	coordinates {(Suzanne,0.201) (Standford Bunny,0.215) (Standford Dragon,3.405) (test,3.405)};
+\addplot 
+	coordinates {(Suzanne,0.233) (Standford Bunny,0.342) (Standford Dragon,8.410) (test,3.405)};
+\legend{Plane,SAH}
+\end{axis}
+\end{tikzpicture}
+
+En primer lugar se muestra 
+	
 
 \subsection{Selección de parámetros}
 

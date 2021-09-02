@@ -7,7 +7,8 @@
 
 static int objectIDCount = 0;
 
-// @todo Define constructor for ObjLoader
+// @todo Define constructor for 
+
 
 class MeshObject {
 
