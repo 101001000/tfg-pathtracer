@@ -64,13 +64,9 @@ public:
 	int triIdx = 0;
 	int* triIndices;
 
-	BVH() {
-
-	}
+	BVH() {	}
 
 	__host__ __device__ bool intersect(Ray ray, Vector3 b1, Vector3 b2) {
-
-		//printf("Testing intersection with %f, %f, %f - %f, %f, %f\n", b1.x, b1.y, b1.z, b2.x, b2.y, b2.z);
 
 		Vector3 dirfrac;
 
@@ -209,6 +205,8 @@ public:
 			//_fullTris->data()[i] = t;
 		}
 
+		delete(_tris);
+		delete(sortedTris);
 	}
 	
 	void buildIt(std::vector<BVHTri>* _tris) {
@@ -276,6 +274,9 @@ public:
 
 				stack[stackPointer++] = rightNode;
 				stack[stackPointer++] = leftNode;
+
+				delete(trisLeft);
+				delete(trisRight);
 			}
 
 			node.tris->clear();
@@ -322,8 +323,8 @@ public:
 			trisLeft->clear();
 			trisRight->clear();
 
-			delete trisLeft;
-			delete trisRight;
+			delete(trisLeft);
+			delete(trisRight);
 		}
 	}
 

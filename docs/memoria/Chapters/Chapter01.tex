@@ -1,7 +1,7 @@
 \chapter{Introducción}
 	
-El renderizado 3d es una técnica por la cual se representan los datos de geometrías tridimensionales en una pantalla en dos dimensiones. Existen distintas técnicas de renderizado tridimensional, siendo el trazado de rayos la más utilizada en la industria cinematográfica gracias a su excepcional fotorrealismo del cual suelen carecer otras técnicas. Tan codiciada es esta técnica, que actualmente industrias realionadas con la visualización 3d como por ejemplo la industria de los videojuegos trata de replicarla y adaptarla en sus proyectos más modernos, con el fin de obtener mejor fidelidad visual.
-El creciente interés ante el trazado de rayos ha provocado que compañías dedicadas al hardware gráfico dediquen parte de su desarrollo a la implementación del trazado de rayos en sus últimos modelos. Véase por ejemplo las últimas dos series de tarjetas gráficas de NVIDIA, siendo RTX (el nombre de las dos últimas series) acrónimo de "Ray Tracing Texel eXtreme". 
+El renderizado 3d es una técnica por la cual se representan los datos de geometrías tridimensionales en una pantalla en dos dimensiones. Existen distintas técnicas de renderizado tridimensional, siendo el trazado de rayos la más utilizada en la industria cinematográfica gracias a su excepcional fotorrealismo del cual suelen carecer otras técnicas. Tan codiciada es esta técnica, que actualmente industrias relacionadas con la visualización 3d como por ejemplo la industria de los videojuegos trata de replicarla y adaptarla en sus proyectos más modernos, con el fin de obtener mejor fidelidad visual.
+El creciente interés ante el trazado de rayos ha provocado que compañías dedicadas al hardware gráfico dediquen parte de su desarrollo a la implementación del trazado de rayos en sus últimos modelos. Véase por ejemplo las últimas dos series de tarjetas gráficas de NVIDIA, siendo RTX (el nombre de las dos últimas series) acrónimo de ''Ray Tracing Texel eXtreme''. 
 
 No obstante la implementación de este sistema de renderizado peca de una gran demanda computacional, es por ello que gran parte de los motores de renderizado orientados a la industria cinematográfica han sido adaptados para poder funcionar en aceleradores gráficos. Con la creciente capacidad computacional y las características fotorrealistas mencionadas anteriormente, los motores de renderizado de trazado de rayos han adquirido una especial importancia en el ámbito de la computación gráfica.
 
@@ -9,7 +9,7 @@ No obstante la implementación de este sistema de renderizado peca de una gran d
 
 \section{Objetivos}
 
-Este trabajo cubre las bases teóricas además de explicar la implementación en CUDA de un motor de renderizado fotorrealista con características a la orden del día de otros motores comerciales. Así pues este trabajo también hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
+Este trabajo cubre brevemente las bases teóricas además de haber realizado una implementación en CUDA de un motor de renderizado fotorrealista con características a la orden del día de otros motores comerciales. Así pues este trabajo también hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
 
 La implementación cuenta con características cercanas al estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney; permite el uso de mapas de textura y además funciona en GPU.
 
@@ -20,12 +20,29 @@ Un aspecto importante en cuanto a la implementación es que se hace uso del meno
 	
 \subsection{Trabajo previo}
 
-Este motor gráfico tiene sus raices en un trabajo final previo realizado en la asignatura "Programación de GPUs y aceleradores". En este trabajo previo se hizo una prueba de concepto de un motor "Path tracing" sin ningún tipo de optimización ni mejora visual. 
-	
+Actualmente existen diversas implementaciones de motores de renderizado por Path Tracing de código abierto, la mayoría de ellas son implementaciones directas los libros Ray Tracing in one Weekend \cite{shirley2016ray} o del libro Physically based rendering: From theory to implementation \cite{pharr2016physically} siendo el primero una rápida implementación funcional y mientras que el segundo contiene casi todos los fundamentos teóricos acompañados de una implementación muy completa. Aún así estos libros están orientado a renderizado por CPU, toda la arquitectura que acompaña sobre todo el segundo libro busca el mayor nivel de abstracción posible, esto es un problema a la hora de usar CUDA, que no permite el uso de funciones virtuales y por tanto cuenta con una herencia de clases limitada.
+
+La mayoría de estas implementaciones son pruebas de concepto como la que se desarrolló en el trabajo final de la asignatura "Programación de GPUs y aceleradores". Estas pruebas de concepto suelen estar limitadas en cuanto a características, pero hay una implementación concreta que destaca: Cycles.
+
+Cycles es sin duda una de las implementaciones de código abierto más relevantes de este algoritmo. Es un motor de renderizado desarrollado por Blender, flexible y con implementación en distintas APIs para poder hacer uso de múltiples tipos de aceleradores, entre ellas CUDA. Además ofrece una amplia gama de características como motor gráfico, a la par de las carácteristicas vistas en el estado del arte, que le permiten hacerse hueco entre el resto de motores de render de producción comerciales.
+
+Hasta ahora se ha hablado de las implementaciones de código abierto, pero es imposible ignorar las aplicaciones comerciales. Debido a que el renderizado fotorrealista es una herramienta muy cotizada en la industria audiovisual, grandes empresas han desarrollado o adquirido motores de Path Tracing propietarios. Unos cuantos ejemplos de motores de renderizado comerciales acelerados por GPU se muestran a continuación:
+\begin{itemize}
+
+\item Autodesk: Arnold Render
+\item Blender Foundation: Cycles
+\item Marmoset: Marmoset Toolbag
+\item Otoy: Octane Render
+\item Maxon: Redshift
+\item Pixar: Renderman
+\item Chaos Group: V-Ray
+
+\end{itemize}
+
+
 \subsection{Desarrollo del trabajo}
 	
 El objetivo del desarrollo de este motor de render ha sido implementar el mayor número de características de un motor gráfico de producción y analizarlas una a una. Es por ello que la planificación ha carecido de una estructura formal, y ha sido remodelada constantemente a partir de los logros y el progreso obtenido hasta la fecha.
-
 
 
 A continuación se muestra una línea del tiempo con los hitos logrados:	
@@ -40,7 +57,8 @@ A continuación se muestra una línea del tiempo con los hitos logrados:
 	\toprule
 	\addlinespace[1.5ex]
 	
-	Noviembre 2020 & Incialización de proyecto, prototipo inicial de trazado de rayos en CUDA y visualización con SFML, implementación de texturas\\
+	Octubre 2020 & Finalización de lectura del curso TU WIEN Rendering \\
+	Noviembre 2020 & Inicialización de proyecto, prototipo inicial de trazado de rayos en CUDA y visualización con SFML, implementación de texturas\\
 	Diciembre 2020 & Mapeado UV, Disney BRDF, carga de modelos .obj\\
 	Enero 2021 & BVH construcción y recorrido\\
 	Abril 2021 & SAH y comienzo de escritura de la memoria, visualizador BRDF\\

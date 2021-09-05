@@ -10,5 +10,5 @@
 
 #define UPDATE_INTERVAL 500
 
-#define BVH_DEPTH 20
-#define BVH_SAHBINS 12
+#define BVH_DEPTH 18
+#define BVH_SAHBINS 14

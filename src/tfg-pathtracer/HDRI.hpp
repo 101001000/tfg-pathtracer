@@ -15,12 +15,13 @@ public:
 	float* cdf;
 	float radianceSum = 0;
 
-	__host__ __device__ HDRI::HDRI() {
+	__host__ __device__ HDRI() {
 		texture = Texture();
 	}
 
-	__host__ __device__ HDRI::HDRI(Vector3 color) {
+	__host__ __device__ HDRI(Vector3 color) {
 
+		// Esto debería hacerlo con constructor
 		texture.data = new float[1024 * 1024 * 3];
 		texture.width = 1024;
 		texture.height = 1024;
@@ -62,9 +63,9 @@ public:
 
 				Texture::sphericalMapping(Vector3(), sample, 1, u, v);
 
-				r += texture.getValueBilinear(u, v).x;
-				r += texture.getValueBilinear(u, v).y;
-				r += texture.getValueBilinear(u, v).z;
+				r += texture.getValueFromUVFiltered(u, v).x;
+				r += texture.getValueFromUVFiltered(u, v).y;
+				r += texture.getValueFromUVFiltered(u, v).z;
 
 				radianceSum += r;
 			}

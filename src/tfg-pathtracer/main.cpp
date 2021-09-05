@@ -47,6 +47,11 @@ struct RenderData {
 	std::chrono::steady_clock::time_point startTime;
 
 	RenderData() {};
+
+	~RenderData() {
+		delete(rawPixelBuffer);
+		delete(beautyBuffer);
+	};
 };
 
 void startRender(RenderData& data, Scene &scene) {
@@ -80,7 +85,6 @@ void getRenderData(RenderData& data) {
 	getBuffer(data.rawPixelBuffer, pathCountBuffer, width * height);
 	cudaMemGetInfo(&data.freeMemory, &data.totalMemory);
 	flipY(data.rawPixelBuffer,width, height);
-	//applyExposure(data.rawPixelBuffer, width, height, data.pars.exposure);
 	clampPixels(data.rawPixelBuffer, width, height);
 	applysRGB(data.rawPixelBuffer, width, height);
 	HDRtoLDR(data.rawPixelBuffer, data.beautyBuffer, width, height);
@@ -90,17 +94,19 @@ void getRenderData(RenderData& data) {
 
 	for (int i = 0; i < width * height; i++)
 		data.pathCount += pathCountBuffer[i];
+
+	delete(pathCountBuffer);
 }
 
 int main(int argc, char* argv[]) {
 
 	//Scene scene = Scene::sceneBuilder(std::string("..\\..\\..\\..\\Scenes\\Clock\\"));
 
-	Scene scene = Scene::sceneBuilder(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\StandfordDragon\\"));
+	Scene scene = Scene::sceneBuilder(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Suzanne\\"));
 
 	RenderData data;
 
-	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 1000);
+	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 10000);
 
 	sf::RenderWindow window(sf::VideoMode(data.pars.width, data.pars.height, 32), "Render Window");
 

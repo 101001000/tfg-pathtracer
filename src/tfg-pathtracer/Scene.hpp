@@ -84,9 +84,6 @@ public:
 			scene.addHDRI(color);
 		}
 
-
-		printf("ASDAKSJHDHKASDKKADS\n\n ºasd\n");
-
 		if (hdri_json["xOffset"].exists())
 			scene.hdri.texture.xOffset = hdri_json["xOffset"].as<double>();
 
@@ -245,7 +242,7 @@ public:
 
 	BVH* buildBVH() {
 
-		printf("\nBuilding BVH with DEPTH=%d and SAHBINS=%d \n", DEPTH, SAHBINS);
+		printf("\nBuilding BVH with DEPTH=%d and SAHBINS=%d \n", BVH_DEPTH, BVH_SAHBINS);
 
 		auto t1 = std::chrono::high_resolution_clock::now();
 

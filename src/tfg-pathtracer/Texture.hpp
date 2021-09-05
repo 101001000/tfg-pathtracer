@@ -11,7 +11,6 @@ class Texture {
 
 /*
     TODO:
-        sustituir la inicialización por memset
         comprobar que pasa con texturas de distinto tamaño, redimensionar(?)
 */
 
@@ -19,7 +18,7 @@ public:
 
 	float* data;
 
-    Filter filter = BILINEAR;
+    Filter filter = NO_FILTER;
     Vector3 color;
 
     unsigned int width;
@@ -76,6 +75,8 @@ public:
             if(colorSpace == CS::sRGB)
                 data[i] = fastPow(data[i], 2.2);
         }
+
+        delete(tmpData);
 	}
 
     __host__ __device__ Texture(Vector3 _color) {

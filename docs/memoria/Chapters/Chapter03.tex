@@ -1,27 +1,28 @@
-\chapter{Mejoras estructurales}
+\chapter{Mejoras visuales}
 				
+En el capítulo anterior se definió la implementación básica para visualizar una escena simple. Así pues este capítulo explica las mejoras visuales más comunes utilizadas en los motores gráficos de producción así como su implementación en Eleven Renderer y su evaluación.
 	
-	\section{Desenfoque: Modelo de lente fina}
+\section{Desenfoque: Modelo de lente fina}
 	
-	Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ``Bokeh`` y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
+Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ``Bokeh`` y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
 
-	Para solventar el problema del enfoque perfecto se va a hacer uso de un modelo de cámara denominado modelo de lente fina. Este modelo es una simplificación de lo que sería una simulación física de unas lentes reales. Al simplificar los cálculos, se pierden artefactos y desperfectos deseados como la aberración cromática o la distorsión de lentes, pero a cambio se obtiene la simplicidad de implementación.
+Para solventar el problema del enfoque perfecto se va a hacer uso de un modelo de cámara denominado modelo de lente fina. Este modelo es una simplificación de lo que sería una simulación física de unas lentes reales. Al simplificar los cálculos, se pierden artefactos y desperfectos deseados como la aberración cromática o la distorsión de lentes, pero a cambio se obtiene la simplicidad de implementación.
 
-	Para activar este efecto, es necesario compilar con la constante \code{BOKEH} definida. Esto desbloqueará la parte de código que hace el cálculo del desenfoque. 
+Para activar este efecto, es necesario compilar con la constante \code{BOKEH} definida. Esto desbloqueará la parte del código que hace el cálculo del desenfoque. 
 	
-	Este nuevo método añade a la clase \code{Camera} dos nuevas variables, por un lado \code{focusDistance} y por otro lado \code{aperture}. La primera define la distancia a la que se encuentra el plano de enfoque, y la segunda, la apertura en f-stops del iris de la cámara. 
+Este nuevo método añade a la clase \code{Camera} dos nuevas variables, por un lado \code{focusDistance} y por otro lado \code{aperture}. La primera define la distancia a la que se encuentra el plano de enfoque, y la segunda, la apertura en f-stops del iris de la cámara. 
 
-	El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara es el siguiente:
+El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara es el siguiente:
 
-	\begin{enumerate}
+\begin{enumerate}
 		
-	\item 1: Se calcula el rayo original del método anterior, desde la cámara hasta el sensor.
+\item Se calcula el rayo original del método anterior, desde la cámara hasta el sensor.
 	
-	\item 2: Se calcula la intersección de dicho rayo con el plano de enfoque, situado a la distancia \code{focusDistance}. La intersección se denomina \code{focusPoint}.
+\item Se calcula la intersección de dicho rayo con el plano de enfoque, situado a la distancia \code{focusDistance}. La intersección se denomina \code{focusPoint}.
 	
-	\item 3: En vez de emitir e rayo desde el punto de la cámara, se elige un punto aleatorio en el iris \code{iRP} y se emite un rayo desde ahí hasta el punto de enfoque \code{focusPoint}. Este nuevo rayo será un rayo bajo el modelo de cámara de lente fina. Los elementos situados a la distancia de enfoque \code{focusDistance} serán más nítidos que aquellos que no lo estén.
+\item En vez de emitir el rayo desde el punto de la cámara, se elige un punto aleatorio en el iris \code{iRP} y se emite un rayo desde ahí hasta el punto de enfoque \code{focusPoint}. Este nuevo rayo será un rayo bajo el modelo de cámara de lente fina. Los elementos situados a la distancia de enfoque \code{focusDistance} serán más nítidos que aquellos que no lo estén.
 	
-	\end{enumerate}
+\end{enumerate}
 
 \begin{lstlisting}
 	
@@ -60,50 +61,42 @@
 		\label{fig:label}
 	\end{figure}
 	
+	\begin{figure}[H]
+	\label{fig:focusboxes}
+		\centering
+	  \begin{minipage}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{nofocus}
+		\caption{Desenfoque desactivado}
+	  \end{minipage}
+	  \hfill
+	  \begin{minipage}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{focusnear}
+		\caption{Distancia de enfoque 10m}
+	  \end{minipage}
+	  	\hfill
+	  \begin{minipage}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth]{focusfar}
+		\caption{Distancia de enfoque 30m}
+	  \end{minipage}
+	\end{figure}
 	
-	\section{Iluminación}
 	
-	En la implementación básica solo se hacía uso de luz ambiental para iluminar la escena. Se puede hacer uso de distintos mecanismos de iluminación para dar mayor riqueza visual. A continuación se detallan los tipos de luces implementadas.
+El resultado final es un desenfoque configurable a partir de la distancia de enfoque. Es posible también aumentar la cantidad de desenfoque reduciendo el número de f-stops, que consecuentemente aumentará la apertura del iris.
+
 	
-	\begin{itemize}
-		
-	\item Luces de punto:
-
-	Las luces de punto son quizá el elemento más simple de iluminación. Consisten en un punto sin volumen el cual emite radiación lumínica de manera uniforme. Esta radiación se desvanece de manera cuadrática. Debido a que son puntos infinitesimalmente pequeños, jamás serán alcanzados por los fotones emitidos desde la cámara, de manera que requieren un procesamiento especial explicado posteriormente en \autoref[sec:mi]{Muestreo por importancia}.
-
-	Una luz de punto viene definida por tres atributos: Color, intensidad y posición. La energía lumínica viene dada por la ecuación:
+\section{Texturas}
 	
-	\item Materiales emisivos:
-
-	Cuando un objeto es alcanzado por un rayo, lo más común es que se reste energía a dicho rayo debido a la absorción del material. Otra opción es sumarle energía. Si esto ocurre, se pasará a considerar a ese objeto como otra fuente de luz más.
-
-	La energía sumada a dicho rayo será obtenida de una textura denominada emisión del material a través del mapeo correspondiente del punto de intersección, multiplicada así por un factor de intensidad.
-
-	\item IBL (Image Based Lightning):
-
-	La iluminación basada en imagen ha sido uno de los elementos más relevantes en las técnicas para el renderizado fotorrealista. Se utiliza ampliamente en la industria cinematográfica debido a la complejidad visual que aporta a una escena 3D y debido a que permite captar la iluminación de entornos reales y posteriormente añadirla en escenas digitales. El hecho de poder trasladar la iluminación a un escenario virtual, facilita la composición de modelos tridimensionales en películas y series de televisión donde es necesario juntar una grabación real con un elemento generado por ordenador.
-
-	Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuentes de luz formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (Imagen de Alto Rango Dinámico). A diferencia de las imágenes tradicionales las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. Esto es debido a que su uso no es meramente la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena.
-
-	La implementación de esta técnica en el motor de render viene dada por el uso de una textura en formato .hdr (imágenes en punto flotante), o un color plano. En caso de utilizar una textura, se considerará cada píxel como una pequeña fuente de luz direccional en el infinito, orientada hacia el centro de la escena. 
-
-	Los rayos que no interseccionan con nada se consideran que interseccionan en el infinito con el HDRI, por esta razón, al detectar que un rayo ha terminado de rebotar y ha terminado en el infinito, se obtendrá la dirección de este, y esta dirección se traducirá en las coordenadas polares del HDRI que posteriormente recuperarán el valor interpolado bilinearmente del pixel del HDRI correspondiente.
-
-\end{itemize}
-
-	\section{Texturas}
-	
-	El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante. En la implementación se ha añadido una clase \code{Texture} que contiene dos valores enteros \code{width} y \code{height}, que indican la altura y anchura de la matriz de datos \code{data}. La carga se hace a partir de un constructor que toma como parámetro la dirección de una imagen en formato .bmp y dividirá el valor de cada canal y cada pixel por 256 con el fin de limitar el rango de valores en [0,1). Los valores \code{width} y \code{height} son extraídos de la cabezera. El constructor admite un parámetro opcional \code{colorSpace}, que determina si es necesario convertir la imagen cargada de espacio de color. Por el momento solo se soportan dos espacios de color, el espacio Lineal y el espacio sRGB, que son los más comunes.
+El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante. En la implementación se ha añadido una clase \code{Texture} que contiene dos valores enteros \code{width} y \code{height}, que indican la altura y anchura de la matriz de datos \code{data}. La carga se hace a partir de un constructor que toma como parámetro la dirección de una imagen en formato .bmp y dividirá el valor de cada canal y cada pixel por 256 con el fin de limitar el rango de valores en [0,1). Los valores \code{width} y \code{height} son extraídos de la cabecera. El constructor admite un parámetro opcional \code{colorSpace}, que determina si es necesario convertir la imagen cargada de espacio de color. Por el momento solo se soportan dos espacios de color, el espacio Lineal y el espacio sRGB, que son los más comunes.
 	
 	%@todo add image of a color texture
 	
-	\subsection{Mapeo}
+\subsection{Mapeo}
 
-	Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas \code{u,v}. Ambas coordenadas \code{u} y \code{v} son valores de punto flotante comprendidas entre [0,1]. \code{u} indica la coordenada horizontal mientras que \code{v} indica la coordenada vertical. Estas coordenadas son diferentes a las coordenadas \code{u,v} explicadas en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} aunque tengan el mismo nombre.
+Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas \code{u,v}. Ambas coordenadas \code{u} y \code{v} son valores de punto flotante comprendidos entre [0,1]. \code{u} indica la coordenada horizontal mientras que \code{v} indica la coordenada vertical. Estas coordenadas son diferentes a las coordenadas \code{u,v} explicadas en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} aunque tengan el mismo nombre.
 
-	También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes.
+También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes.
 
-	\begin{lstlisting}
+\begin{lstlisting}
 	__host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
 	
         Vector3 pixel;
@@ -120,11 +113,23 @@
     }
 	\end{lstlisting}
 
+\subsection{IBL (Image Based Lightning)}
 	
-	Debido a la naturaleza esférica de los mapas de entorno, resultará útil añadir dos funciones que transformen coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
+Hasta ahora la luz que llegaba a la escena desde el fondo ha sido radiación homogénea determinada por un color, sin embargo es posible utilizar imágenes para iluminar la escena.
+	
+La iluminación basada en imagen ha sido uno de los elementos más relevantes en las técnicas para el renderizado fotorrealista. Se utiliza ampliamente en la industria cinematográfica debido a la complejidad visual que aporta a una escena 3D y debido a que permite captar la iluminación de entornos reales y posteriormente añadirla en escenas digitales. El hecho de poder trasladar la iluminación a un escenario virtual, facilita la composición de modelos tridimensionales en películas y series de televisión donde es necesario juntar una grabación real con un elemento generado por ordenador.
 
-	\begin{lstlisting}
+Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuentes de luz formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (Imagen de Alto Rango Dinámico). A diferencia de las imágenes tradicionales las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. Esto es debido a que su uso no es meramente la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena.
+
+La implementación de esta técnica en el motor de render viene dada por el uso de una imagen en formato .hdr (imágenes en punto flotante). Cada píxel de esta imagen se interpreta como una pequeña fuente de luz direccional en el infinito, orientada hacia el centro de la escena. Así pues, los rayos que no interseccionan en la escena con ningún elemento, se consideran que interseccionan en el infinito con el \code{HDRI}, por esta razón, al detectar que un rayo sale de la escena, se obtiene la dirección de este, y esta dirección se traduce en las coordenadas polares de la imagen \code{HDRI}. Una vez se tienen las coordenadas polares, es posible obtener el valor lumínico del píxel al que apunta dicho rayo. Este será el valor lumínico que se utilice para dicho camino.
 	
+	
+	
+	
+Debido a la naturaleza esférica de los mapas de entorno, resultará útil añadir dos funciones que transforman coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
+
+	\label{sphericalmapping}
+	\begin{lstlisting}
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
 
         // Point is normalized to radius 1 sphere
@@ -161,10 +166,11 @@
 	
 
 
-	\subsection{Filtrado}
+\subsection{Filtrado}
 			
-	Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixelice cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación los píxeles vecinos. Actualmente muchos visualizadores de imágenes no muestran los píxeles naturales si no una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilinear. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{P} comprendido entre los cuatro píxeles más cercanos es la suma ponderada de la distancia del punto a cada pixel en cada dimensión. 	
-	\begin{lstlisting}
+Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixelice cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente muchos visualizadores de imágenes no muestran los píxeles naturales si no una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{P} comprendido entre los cuatro píxeles más cercanos es la suma ponderada de la distancia del punto a cada píxel en cada dimensión. 	
+	
+\begin{lstlisting}
 	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
         
         float x = u * width;
@@ -189,71 +195,100 @@
 		// Linear interpolation
         return lerp(lerp(v1, v2, a), lerp(v3, v4, a), b);
 	}
-	\end{lstlisting}
+\end{lstlisting}
 	
-	Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado, además de introducir 
-	%@todo add comparaison between reads
-	
-	\subsection{Mapas de normales}
-	
-	Los mapas de normales son un recurso muy utilizado en programación gráfica, aún así no ha sido posible encontrar explicaciones detalladas para su implementación en bilbiografía orientada específicamente a Path Tracing. Por ejemplo el libro PBRT\cite{pharr2016physically} no incluye mucha
-	
-	A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. 
-	
-	Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utilizará para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues la conversión de un color a una normal se hace con el siguiente código: \code{Vector3 localNormal = (ncolor * 2) - 1;} ya que las coordenadas de la normal pueden se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
-	
-	Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Las normales suministradas por los mapas de normales son normales locales, en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores casi ortogonales (posteriormente se aclarará este "casi").
-	
-	Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
-	
-	
-	
-	\section{Smooth Shading}
-	
-	Anteriormente en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} se explicaba como las normales son calculadas a partir de la superficie que forma el triángulo. Para modelos con poca cantidad de triángulos, este método de cálculo de la normal de la superficie puede resultar insuficiente.
-	
-	Un sencillo arreglo consiste en aplicar el método conocido como Smooth Shading. 
-	
-	Para este método es necesario precalcular una normal por cada vértice, algo que hacen casi todos los programas de diseño 3D. En el caso de los ficheros .obj, estas son definidas con el prefijo "vn". Una vez se cuenta con dichas normales, es necesario interpolarlas. 
+Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado de manera que resulta conveniente analizar el posible impacto en la eficiencia. Para comprobar esto se ha renderizado la misma escena con y sin filtrado:
 
-	Por ello, en la función \code{hit()} de \code{Tri} se añade lo siguente:
+		
+\begin{tikzpicture}
+        \begin{axis}[
+            symbolic x coords={Clock Bilinear Filtering, Clock no filtering},
+            xtick=data,
+			/pgf/number format/.cd,
+			1000 sep={},
+			scaled y ticks=false,
+			ylabel=KPaths/s,
+          ]
+            \addplot[ybar,fill=blue] coordinates {
+                (Clock Bilinear Filtering,   15965)
+                (Clock no filtering,  16093)
+            };
+        \end{axis}
+\end{tikzpicture}
+
 	
-	\begin{lstlisting}
+El render sin filtrado es un 0.8\% más rápido, una penalización poco sustancial, de manera que se utilizará el filtrado bilinear de manera predeterminada. Se esperaría que esta penalización fuera mayor debido a la multiplicación de accesos a memoria, pero como se explica en el \autoref{chap:evaluation}, la mayor carga de trabajo reside en las intersecciones con los objetos en la escena.
+	
+\subsection{Mapas de normales}
+	
+Los mapas de normales son un recurso muy utilizado en programación gráfica, aún así no ha sido posible encontrar explicaciones detalladas para su implementación en bibliografía orientada específicamente a Path Tracing. Por ejemplo el libro PBRT\cite{pharr2016physically} no incluye mucha
+	
+A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. 
+	
+Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utilizará para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues la conversión de un color a una normal se hace con el siguiente código: \code{Vector3 localNormal = (ncolor * 2) - 1;} ya que las coordenadas de la normal pueden se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
+	
+Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Las normales suministradas por los mapas de normales son normales locales, en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores casi ortogonales (posteriormente se aclarará este "casi").
+	
+Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
+	
+	
+	
+\section{Smooth Shading}
+	
+Anteriormente en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} se explicaba como las normales son calculadas a partir de la superficie que forma el triángulo. Para modelos con poca cantidad de triángulos, este método de cálculo de la normal de la superficie puede resultar insuficiente.
+	
+Un sencillo arreglo consiste en aplicar el método conocido como Smooth Shading. 
+	
+Para este método es necesario precalcular una normal por cada vértice, algo que hacen casi todos los programas de diseño 3D. En el caso de los ficheros .obj, estas son definidas con el prefijo "vn". Una vez se cuenta con dichas normales, es necesario interpolarlas. 
+
+Por ello, en la función \code{hit()} de \code{Tri} se añade lo siguiente:
+	
+\begin{lstlisting}
 			
 	#if SMOOTH_SHADING 
-
-        // https://gist.github.com/pixnblox/5e64b0724c186313bc7b6ce096b08820
 
         Vector3 shadingNormal  = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
         Vector3 shadingTangent = tangents[0] + (tangents[1] - tangents[0]) * u + (tangents[2] - tangents[0]) * v;
 
 	\end{lstlisting}
 			
-	Así pues tanto la normal y la tangente son interpoladas a partir de las coordenadas baricéntricas del triángulo \code{u,v} las cuales indican la distancia a cada vértice.
+Así pues tanto la normal y la tangente son interpoladas a partir de las coordenadas baricéntricas del triángulo \code{u,v} las cuales indican la distancia a cada vértice.
 	
+Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Terminator Arctifact". El uso de una normal interpolada implica que se está haciendo uso de una normal que no coincide con la posición de la superficie. Esta discrepancia crea artefactos visuales presentes hasta en las implementaciones más actualizadas de Blender Cycles . Mauricio Vives propone una solución a este problema y es computar una nueva posición de la superficie a partir de la proyección de la antigua posición al plano que define cada vértice y su normal. Estas tres proyecciones son interpoladas de la misma manera que con las normales, haciendo uso de las coordenadas baricéntricas.
 	
+El código adaptado quedaría así:
 	
-		
-	Las coordenadas \code{u,v} son las coordenadas 
+\begin{lstlisting}
 	
+	Vector3 p0 = projectOnPlane(geomPosition, vertices[0], normals[0]);
+    Vector3 p1 = projectOnPlane(geomPosition, vertices[1], normals[1]);
+    Vector3 p2 = projectOnPlane(geomPosition, vertices[2], normals[2]);
+
+    Vector3 shadingPosition = p0 + (p1 - p0) * u + (p2 - p0) * v;
+
+    bool convex = Vector3::dot(shadingPosition - geomPosition, shadingNormal) > 0.0f;
+	
+	hit.position = convex ? shadingPosition : geomPosition;
+	
+\end{lstlisting}
 	
 	\section{Sombreado BRDF}
 	
-	El sombreado es el proceso por el cual se asigna un valor de pérdida de energía para un rayo que intersecciona con un punto. Este proceso simula el proceso natural de la interacción entre un haz de fotones y una superficie, dónde parte de los fotones son absorbidos dependiendo de distintos factores como la longitud de onda de los fotones, el tipo de superficie, el tipo de material (los metales reflejarán de manera menos aleatoria que los materiales dieléctricos). La simulación de estas interacciones y simplificación en una función es una ciencia conocida como PBR, o Physically Based Rendering, donde se trata de imitar de manera fiel la realidad física. 
+El sombreado es el proceso por el cual se asigna un valor de pérdida de energía para un rayo que intersecciona con un punto. Este proceso simula el proceso natural de la interacción entre un haz de fotones y una superficie, dónde parte de los fotones son absorbidos dependiendo de distintos factores como la longitud de onda de los fotones, el tipo de superficie, el tipo de material (los metales reflejarán de manera menos aleatoria que los materiales dieléctricos). La simulación de estas interacciones y simplificación en una función es una ciencia conocida como PBR, o Physically Based Rendering, donde se trata de imitar de manera fiel la realidad física. 
 		
-	En la ecuación de renderizado se encuentra un término denominado BRDF $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$. Hasta ahora ha sido ignorado y simplificado como una superficie Lambertiana perfectamente difusa, esto quiere decir que hasta el momento se ha tratado la luz independientemente del ángulo de incidencia $\omega _{\text{i}}$ y del ángulo de reflexión del rayo $\omega _{\text{o}}$. En el momento en el que se tienen en consideración estos dos ángulos, se pueden configurar funciones complejas que determinen distintos coeficientes para distintos ángulos. Una función BRDF basada en comportamientos físicos reales como los mencionados anteriormente ofrecerá un resultado acercado a la realidad. 
+En la ecuación de renderizado se encuentra un término denominado BRDF $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$. Hasta ahora ha sido ignorado y simplificado como una superficie Lambertiana perfectamente difusa, esto quiere decir que hasta el momento se ha tratado la luz independientemente del ángulo de incidencia $\omega _{\text{i}}$ y del ángulo de reflexión del rayo $\omega _{\text{o}}$. En el momento en el que se tienen en consideración estos dos ángulos, se pueden configurar funciones complejas que determinen distintos coeficientes para distintos ángulos. Una función BRDF basada en comportamientos físicos reales como los mencionados anteriormente ofrecerá un resultado acercado a la realidad. 
 	
-	Disney propone una función BRDF conocida como Disney Principled BRDF\cite{burley2012physically}
+Disney propone una función BRDF conocida como Disney Principled BRDF\cite{burley2012physically}
 	
-	El término "material" y "BRDF" están fuertemente ligados, ya que es el material el que define esta función a partir de sus parámetros. 
+El término "material" y "BRDF" están fuertemente ligados, ya que es el material el que define esta función a partir de sus parámetros. 
 		
 	
-	Un elemento clave del renderizado fotorrealista es elegir una función de sombreado apropiada. En este motor se ha hecho uso del modelo de sombreado Disney Principled Shader. Este modelo fue desarrollado por Disney bajo el fin de simplificar los parámetros de las fórmulas matemáticas y que estos sean cómodos para los artistas. Esta decisión tiene más sentido si consideramos el contexto histórico, donde los modelos anteriores contaban con parámetros complejos.
+Un elemento clave del renderizado fotorrealista es elegir una función de sombreado apropiada. En este motor se ha hecho uso del modelo de sombreado Disney Principled Shader. Este modelo fue desarrollado por Disney bajo el fin de simplificar los parámetros de las fórmulas matemáticas y que estos sean cómodos para los artistas. Esta decisión tiene más sentido si consideramos el contexto histórico, donde los modelos anteriores contaban con parámetros complejos.
 
-	Este modelo cuenta además con buen fotorrealismo, y por ello, el conocido software de edición 3d de código abierto Blender, hace uso de él como su modelo de sombreado primario.
+Este modelo cuenta además con buen fotorrealismo, y por ello, el conocido software de edición 3d de código abierto Blender, hace uso de él como su modelo de sombreado primario.
 
 
-	A continuación se muestra una lista con los parámetros de los materiales descritos bajo este modelo:
+A continuación se muestra una lista con los parámetros de los materiales descritos bajo este modelo:
 
 	roughness:
 	metallic:

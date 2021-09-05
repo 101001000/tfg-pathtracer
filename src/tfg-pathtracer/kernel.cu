@@ -61,28 +61,28 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
         hitdata.albedo = material->albedo;
     }
     else {
-        hitdata.albedo = dev_scene_g->textures[material->albedoTextureID].getValueBilinear(hit.tu, hit.tv);
+        hitdata.albedo = dev_scene_g->textures[material->albedoTextureID].getValueFromUVFiltered(hit.tu, hit.tv);
     }
 
     if (material->emissionTextureID < 0) {
         hitdata.emission = material->emission;
     }
     else {
-        hitdata.emission = dev_scene_g->textures[material->emissionTextureID].getValueBilinear(hit.tu, hit.tv);
+        hitdata.emission = dev_scene_g->textures[material->emissionTextureID].getValueFromUVFiltered(hit.tu, hit.tv);
     }
 
     if (material->roughnessTextureID < 0) {
         hitdata.roughness = material->roughness;
     }
     else {
-        hitdata.roughness = dev_scene_g->textures[material->roughnessTextureID].getValueBilinear(hit.tu, hit.tv).x;
+        hitdata.roughness = dev_scene_g->textures[material->roughnessTextureID].getValueFromUVFiltered(hit.tu, hit.tv).x;
     }
 
     if (material->metallicTextureID < 0) {
         hitdata.metallic = material->metallic;
     }
     else {
-        hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueBilinear(hit.tu, hit.tv).x;
+        hitdata.metallic = dev_scene_g->textures[material->metallicTextureID].getValueFromUVFiltered(hit.tu, hit.tv).x;
     }
 
     if (material->normalTextureID < 0) {
@@ -141,19 +141,14 @@ __global__ void setupKernel() {
     dev_samples[idx] = 0;
     dev_pathcount[idx] = 0;
 
-    // Esto se puede hacer con un cudaMemset
-    dev_buffer[4 * idx + 0] = 0;
-    dev_buffer[4 * idx + 1] = 0;
-    dev_buffer[4 * idx + 2] = 0;
-    dev_buffer[4 * idx + 3] = 1;
+    memset(&dev_buffer[4 * idx], 0, sizeof(float) * 3); // RGB channels
+    dev_buffer[4 * idx + 3] = 1; // Alpha channel
 
-    //Inicialización rápida de curand, se pierden propiedades matemáticas o algo así
-    curand_init(idx, 0, 0, &d_rand_state_g[idx]);
+    curand_init(0, idx, 0, &d_rand_state_g[idx]);
 
+    // Just one thread
     if (x == 0 && y == 0) {
-
         int triSum = 0;
-
         for (int i = 0; i < dev_scene_g->meshObjectCount; i++) {
             dev_scene_g->meshObjects[i].tris += triSum;
             triSum += dev_scene_g->meshObjects[i].triCount;
@@ -338,7 +333,7 @@ __device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bou
 
 }
 
-__global__ void neeRenderKernel() {
+__global__ void renderingKernel() {
 
     dev_Scene* scene = dev_scene_g;
 
@@ -381,7 +376,7 @@ __global__ void neeRenderKernel() {
         if (!nearestHit.valid) {
             float u, v;
             Texture::sphericalMapping(Vector3(), -1 * ray.direction, 1, u, v);
-            light += scene->hdri->texture.getValueBilinear(u, v) * reduction;
+            light += scene->hdri->texture.getValueFromUVFiltered(u, v) * reduction;
             break;
         }
 
@@ -558,7 +553,7 @@ cudaError_t renderSetup(Scene* scene) {
     cudaStatus = cudaMalloc((void**)&dev_bvh, sizeof(BVH));
     cudaStatus = cudaMalloc((void**)&dev_triIndices, sizeof(int) * triCount);
 
-    geometryMemory += sizeof(MeshObject) * meshObjectCount + sizeof(Tri) * triCount + sizeof(BVH) + sizeof(int) * triCount;
+    geometryMemory += sizeof(MeshObject) * meshObjectCount + sizeof(Tri) * triCount + sizeof(BVH) + sizeof(int) * triCount + sizeof(BVH);
 
     cudaStatus = cudaMemcpy(dev_meshObjects, meshObjects, sizeof(MeshObject) * meshObjectCount, cudaMemcpyHostToDevice);
     cudaStatus = cudaMemcpy(dev_camera, camera, sizeof(Camera), cudaMemcpyHostToDevice);
@@ -583,7 +578,7 @@ cudaError_t renderSetup(Scene* scene) {
     cudaStatus = cudaMemcpyToSymbol(dev_scene_g, &dev_scene, sizeof(dev_Scene*));
     cudaStatus = cudaMemcpyToSymbol(d_rand_state_g, &d_rand_state, sizeof(curandState*));
 
-    printf("%dMB of geometry data copied\n", (geometryMemory / (1024 * 1024)));
+    printf("%ldMB of geometry data copied\n", (geometryMemory / (1024L * 1024L)));
 
     pointLightsSetup(scene, dev_scene);
     materialsSetup(scene, dev_scene);
@@ -604,11 +599,7 @@ cudaError_t renderSetup(Scene* scene) {
     cudaStatus = cudaStreamSynchronize(kernelStream);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
-        goto Error;
     }
-
-Error:
-
     return cudaStatus;
 }
 
@@ -624,7 +615,7 @@ void renderCuda(Scene* scene, int sampleTarget) {
 
     for (int i = 0; i < sampleTarget; i++) {
 
-        neeRenderKernel << <blocks, threads, 0, kernelStream >> > ();
+        renderingKernel << <blocks, threads, 0, kernelStream >> > ();
 
         cudaError_t cudaStatus = cudaStreamSynchronize(kernelStream);
         if (cudaStatus != cudaSuccess) {

@@ -1,4 +1,37 @@
 \chapter{Conclusiones}
 	
+Desarrollar software con el fin de ser ejecutado en aceleradores gráficos puede ser una tarea relativamente sencilla en una primera instancia. El verdadero interés está conseguir el mayor rendimiento y exprimir estas arquitecturas, teniendo en cuenta sus limitaciones y sus puntos fuertes. 
+
+Haciendo referencia al desarrollo de un motor de renderizado fotorrealista, han habido grandes desafíos. En primer lugar, el renderizado gráfico cuenta con un gran transfondo teórico y matemático del que conviene conocer para poder explotar a fondo cualquier optimización. Este trabajo ha expuesto solo la implementación y la evaluación de este software, sin hacer demasiado hincapié en las bases teóricas. Como se mencionaba en la introducción, Physically based rendering: From theory to implementation \cite{pharr2016physically} es un excelente recurso para esto, denominado por la comunidad como "La biblia del renderizado PBR".
+
+Por otro lado, la programación de Eleven Renderer sido mucho más tediosa de lo esperado. Mientras que mejoras como la construcción de estructuras de aceleración a primera vista podrían imponer por su complejidad, han resultado ser más sencillas de implementar que mejoras más sutiles y simples. Esto es debido a la falta de opciones de depuración en GPU. Mientras que el desarrollo en CPU cuenta con una infinidad de herramientas para analizar el funcionamiento y la ejecución, CUDA solo ofrece un conjunto muy básico de herramientas de análisis y depuración. Así pues, muchas de las soluciones a problemas que han ido surgiendo han tenido que ser resueltas por prueba y error, un enfoque bastante poco óptimo.
+
+Además el enfoque a lo largo del trabajo de implementar todas las opciones posibles en el tiempo dado tiene la desventaja de no contar con una implementación asentada y limpia, si no una en constante cambio y consecuentemente más complicada de analizar. Aún así este enfoque ha hecho posible abarcar todas las bases de un motor de producción mínimo, y aunque en ciertas secciones carece de trasfondo teórico, da una visión global de todos los componentes necesarios.
+
+Algo que se ha observado tras el desarrollo de Eleven Renderer es la carencia en la industria de estándares definidos. Por un lado, no existe una definición de materiales PBR común. El formato .obj es capaz de incluir archivos .mtl, pero éstos sólo contienen información de modelos de sombreado anticuados. Existen propuestas de extender estos formatos pero en la práctica cada programa utiliza su propio formato de archivo.
+
+
+\section{Trabajo Futuro}
 	
+Eleven Renderer cuenta con las características visuales mínimas de un motor de producción, así pues deja la puerta abierta a un futuro desarrollo comercial o con fines educativos. No obstante, el siguiente desafío si se quiere seguir produciendo es adaptar la implementación a las suites de software 3d a través de plugins que enlacen las escenas con el motor. 
+
+Queda también una larga lista de mejoras, entre ellas:
+
+\begin{itemize}
+	
+	\item Mayor variedad de shaders (además del shader de Disney).
+	\item Incluir refracción, puesto que por el momento los materiales transparentes son incompatibles con el motor.
+	\item Implementar eliminadores de ruido como Open Image Denoise o NVIDIA OptiX™ AI-Accelerated Denoiser.
+	\item Añadir un motor de postprocesado más potente con filtros como Bloom o correcciones de color
+	\item Añadir más formatos de luces
+	\item Experimentar con Embree en CUDA
+	
+\end{itemize}
+
+Queda pendiente también realizar a fondo un análisis exhaustivo de eficiencia. En el trabajo se han dado pinceladas en este aspecto, por ejemplo la comparación entre búsquedas recursivas o iterativas en GPU, pero hay un centenar de posibles optimizaciones y de prácticas recomendadas para exprimir la eficiencia de la programación en paralelo.
+
+\chapter*{Future work}
+
+
+\section{Trabajo Futuro}
 	
