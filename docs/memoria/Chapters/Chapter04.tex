@@ -33,11 +33,18 @@ La implementación de este tipo de muestreo por importancia no es trivial. Las i
 El planteamiento general para este método consiste en precomputar un array del tamaño del número total de píxeles de la imagen HDRI, en el que cada elemento cuente con la iluminación acumulada normalizada hasta el momento de cada píxel.
 La función que determina la iluminación de un píxel viene dada por la respuesta logarítmica media de los bastones y conos de los ojos para cada longitud de onda, pero para simplificar se utilizará la suma de cada componente de color. Este array a efectos prácticos contiene la función de distribución acumulativa discreta normalizada (CDF) y además como está ordenado, es posible hacer búsquedas binarias, las cuales cuentan con una complejidad logarítmica (aproximadamente 25 iteraciones de búsqueda para una imagen de 8K de resolución).
 
-
-
 Así pues, si se quiere obtener un píxel de manera aleatoria proporcional a su iluminación, bastará con buscar en el CDF el intervalo que comprende el valor aleatorio dado. Esta operación de búsqueda también tiene coste logarítmico, ya que es una versión ligeramente modificada de la búsqueda binaria corriente.
 
-La función de distribución de probabilidad vendrá entonces dada por la iluminación para el pixel obtenido dividida por la iluminación total.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.5\textwidth]{CDF}
+	\caption{División BVH}
+	\label{fig:label}
+\end{figure}
+
+
+La función de distribución de probabilidad pdf vendrá entonces dada por la iluminación para el pixel obtenido dividida por la iluminación total.
 
 
 \subsection{Muestreo por importancia de Estimación de Evento Próximo (NEE)}
@@ -59,7 +66,7 @@ Un ejemplo que ayuda a visualizar este caso son los materiales perfectamente ref
 
 Otro ejemplo es el muestreo por coseno. La ecuación de renderizado cuenta con un término que pondera radiación obtenida por el modelo BRDF a partir del coseno del ángulo incidente. Por esta razón, tiene sentido emitir de manera proporcional a este término más rayos allá donde el coseno es más grande.
 
-Muestreo por importancia múltiple:
+\subsection{Muestreo por importancia múltiple:}
 
 El muestreo por importancia es una herramienta que mejora considerablemente los tiempos de convergencia en determinados escenarios, aunque la verdadera utilidad de estos es elegir el muestreo correcto para cada situación. En 1975 se propone una técnica conocida como MIS (Multiple Importance Sampling). Esta técnica evaluará todas las funciones de  muestreo para cada intersección y dará mayor importancia con un escalar a aquellas funciones que proporcionen mayor información de la escena.
 
@@ -174,6 +181,8 @@ La aplicación de este trabajo requiere de varios segundos e incluso minutos por
 Se han implementado dos métodos distintos para comparar su rendimiento. Uno de ellos es un método ingenuo y el segundo es un método utilizado en producción conocido como división por heurística de superficie (SAH).
 
 \subsubsection{Partición por plano:}
+
+En el libro Physically based rendering: From theory to implementation \cite{pharr2016physically} se propone un método de partición sencillo. A continuación se explica una interpretación algo distinta de este método que hace uso de los centroides de los triángulos en vez de utilizar el vértice 0 como hace el libro.
 
 Este método no es práctico y se usa tan solo de forma comparativa. Consiste en elegir la dimensión más grande de la caja que envuelve a los triángulos y partirla por la mitad. Posteriormente se recorrerán todos los triángulos y se dividirán por dicho plano. Para saber si un triángulo se encuentra a un lado o al otro se interpretan los triángulos como un punto en el espacio cuya posición es el centroide.
 
@@ -371,35 +380,38 @@ Esta evaluación ha sido llevada a cabo con los siguientes parámetros:
 	
 Finalmente es necesario elegir los parámetros para \code{BVH\_DEPTH} y \code{SAH\_BINS}. Puesto que existen varios tipos de escenas con distintas geometrías, se va a dejar de lado cualquier tipo de enfoque analítico y se va a hacer uso de medidas en casos reales. Se procede a realizar una evaluación con distintos parámetros.
 	
-En el caso de la selección de \code{SAH\_BINS}, Indigo Wald propone 16 como límite\cite{wald2007fast} debido a la insustancial mejora de rendimiento para valores mayores. Esto se ha podido comprobar directamente en Eleven Renderer donde se ha llevado a cabo la construcción y recorrido de BVH para la escena "Standford Dragon" variando la cantidad de contenedores. Se comprueba que la velocidad de recorrido se estanca para los valores 12-16, mientras que el tiempo de generación permanece lineal.
+En el caso de la selección de \code{SAH\_BINS}, Indigo Wald propone 16 como límite \cite{wald2007fast} debido a la insustancial mejora de rendimiento para valores mayores. Esto se ha podido comprobar directamente en Eleven Renderer donde se ha llevado a cabo la construcción y recorrido de BVH para la escena "Standford Dragon" variando la cantidad de contenedores \autoref{fig:sahbins}. Se comprueba que la velocidad de recorrido se estanca para los valores 12-16, mientras que el tiempo de generación permanece lineal.
 
+\begin{figure}[H]
+\centering
 \begin{tikzpicture}
+\label{fig:sahbins}
 \begin{axis}[
     axis y line = left,
     xlabel = \(SAH bins\),
-    ylabel = {\(BVH building time (s)\)},
+    ylabel = {\(\textcolor{blue}{BVH building time (s)}\)},
+	legend style={at={(1,0.1)},anchor=south east},
+	scaled y ticks=false
 ]
 
-\addplot[smooth, red]
+\addplot[smooth, blue]
 coordinates{(4,4.267) (6, 4.418) (8, 4.628) (10, 5.015) (12, 5.440) (14, 5.782) (16, 6.309)};
+\addlegendentry{\(build\)}
 \end{axis}
 
 \begin{axis}[
     axis y line = right,
 	axis x line = none,
     xlabel = \(SAH bins\),
-    ylabel = {\(KPaths/s\)},
+    ylabel = {\(\textcolor{red}{KPaths/s}\)},
+	legend style={at={(1,0)},anchor=south east},
+	scaled y ticks=false
 ]
 
-\addplot [smooth, blue]
+\addplot [smooth, red]
 coordinates{(4,8310) (6, 12012) (8, 12728) (10, 13100) (12, 13046) (14, 13501) (16, 13458)};
-\addlegendentry{\(build\)}
 \addlegendentry{\(transversal\)}
+
 \end{axis}
 \end{tikzpicture}
-
-\subsection{Selección de parámetros}
-
-Habiendo definido los métodos de construcción y recorrido, el siguiente paso es comprobar para qué parámetros de profundidad del árbol y de bining se obtienen los mejores resultados.
-
-
+\end{figure}

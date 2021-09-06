@@ -2,10 +2,10 @@
 
 #define SMOOTH_SHADING true
 #define USEBVH true
-#define HDRIIS false
+#define HDRIIS true
 #define BOKEH true
 
-#define THREADSIZE 8
+#define THREADSIZE 1
 #define MAXBOUNCES 5
 
 #define UPDATE_INTERVAL 500

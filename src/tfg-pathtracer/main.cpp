@@ -102,11 +102,11 @@ int main(int argc, char* argv[]) {
 
 	//Scene scene = Scene::sceneBuilder(std::string("..\\..\\..\\..\\Scenes\\Clock\\"));
 
-	Scene scene = Scene::sceneBuilder(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Suzanne\\"));
+	Scene scene = Scene::sceneBuilder(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Sphere\\"));
 
 	RenderData data;
 
-	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 10000);
+	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 500);
 
 	sf::RenderWindow window(sf::VideoMode(data.pars.width, data.pars.height, 32), "Render Window");
 

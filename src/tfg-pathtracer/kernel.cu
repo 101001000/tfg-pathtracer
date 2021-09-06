@@ -610,12 +610,12 @@ void renderCuda(Scene* scene, int sampleTarget) {
     int tx = THREADSIZE;
     int ty = THREADSIZE;
 
-    dim3 blocks(scene->camera.xRes / tx + 1, scene->camera.yRes / ty + 1);
-    dim3 threads(tx, ty);
+    dim3 numBlocks(scene->camera.xRes / tx + 1, scene->camera.yRes / ty + 1);
+    dim3 threadsPerBlock(tx, ty);
 
     for (int i = 0; i < sampleTarget; i++) {
 
-        renderingKernel << <blocks, threads, 0, kernelStream >> > ();
+        renderingKernel << <numBlocks, threadsPerBlock, 0, kernelStream >> > ();
 
         cudaError_t cudaStatus = cudaStreamSynchronize(kernelStream);
         if (cudaStatus != cudaSuccess) {

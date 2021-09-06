@@ -58,7 +58,7 @@ Así pues el procedimiento general es el siguiente:
     \centering
 	\includegraphics[width=0.5\textwidth]{algorithmscheme}
 	\caption{Esquema Path Tracing}
-	\label{fig:label}
+	\label{fig:algorithmscheme}
 \end{figure}
 
 
@@ -322,3 +322,38 @@ float EPSILON = 0.0000001;
         return true;
 
 \end{lstlisting}
+
+\subsection{Kernel principal}
+	
+El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algoritmo descrito en la \autoref{fig:algorithmscheme}, donde el número máximo de rebotes es una constante definida en tiempo de compilación como \code{MAX\_BOUNCES}.
+
+La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques estánd distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Resulta interesante conocer el número de hilos óptimo por cada bloque, por esa razón se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}
+
+\begin{lstlisting}
+	
+    int tx = THREADSIZE;
+    int ty = THREADSIZE;
+
+    dim3 numBlocks(scene->camera.xRes / tx + 1, scene->camera.yRes / ty + 1);
+    dim3 threadsPerBlock(tx, ty);
+	
+\end{lstlisting}
+
+
+\begin{figure}[H]
+\label{fig:threadsize}
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    axis y line = left,
+    xlabel = \(THREADSIZE\),
+    ylabel = {\(KPaths/s\)},
+	scaled y ticks=false
+]
+
+\addplot[smooth, blue]
+coordinates{(1,3517) (2, 7544) (4, 12851) (8, 15480) (16, 14114)};
+\end{axis}
+\end{tikzpicture}
+\end{figure}
+

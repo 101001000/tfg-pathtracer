@@ -40,7 +40,7 @@ El modelo Roofline es utilizado en el análisis de eficiencia de aplicaciones de
 
 La línea superior es una cota superior de 29.23 TFLOPS
 
-El análisis de ejecución de Eleven Renderer para precisión simple\autoref{fig:roofline} ha resultado en 0.36 FLOP/byte de intensidad aritmética y 124.47 GFLOPS de eficiencia, mientras que el techo para una intensidad aritmética de 0.36 FLOP/byte está en 330.65 GFLOPS. Esto indica que el algoritmo está corriendo a un 37.6\% de su capacidad máxima teórica según este modelo siempre y cuando la intensidad aritmética no varíe. Este resultado es razonable, indica que no se está infrautilizando el acelerador gráfico, además indica que el algoritmo tiene una gran dependencia de memoria al encontrarse el punto ubicado muy a la izquierda.
+El análisis de ejecución de Eleven Renderer para precisión simple \autoref{fig:roofline} ha resultado en 0.36 FLOP/byte de intensidad aritmética y 124.47 GFLOPS de eficiencia, mientras que el techo para una intensidad aritmética de 0.36 FLOP/byte está en 330.65 GFLOPS. Esto indica que el algoritmo está corriendo a un 37.6\% de su capacidad máxima teórica según este modelo siempre y cuando la intensidad aritmética no varíe. Este resultado es razonable, indica que no se está infrautilizando el acelerador gráfico, además indica que el algoritmo tiene una gran dependencia de memoria al encontrarse el punto ubicado muy a la izquierda.
 
 Si se quisiera optimizar más aún este motor, un buen camino sería romper esta dependencia.
 

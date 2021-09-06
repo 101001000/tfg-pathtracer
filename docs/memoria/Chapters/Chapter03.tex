@@ -220,10 +220,19 @@ Este método introduce cuatro lecturas del valor de la textura en vez de la úni
 El render sin filtrado es un 0.8\% más rápido, una penalización poco sustancial, de manera que se utilizará el filtrado bilinear de manera predeterminada. Se esperaría que esta penalización fuera mayor debido a la multiplicación de accesos a memoria, pero como se explica en el \autoref{chap:evaluation}, la mayor carga de trabajo reside en las intersecciones con los objetos en la escena.
 	
 \subsection{Mapas de normales}
+		
+A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales \autoref{fig:normalmap}. 
 	
-Los mapas de normales son un recurso muy utilizado en programación gráfica, aún así no ha sido posible encontrar explicaciones detalladas para su implementación en bibliografía orientada específicamente a Path Tracing. Por ejemplo el libro PBRT\cite{pharr2016physically} no incluye mucha
+		
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.3\textwidth]{normalmap}
+	\caption{Esfera con mapa de normales}
+	\label{fig:normalmap}
+\end{figure}
+
 	
-A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. 
+La mayor parte de la información acerca de los mapas de normales se ha obtenido en \url{https://learnopengl.com/Advanced-Lighting/Normal-Mapping}, donde se explican las nociones teóricas sobre estos
 	
 Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utilizará para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues la conversión de un color a una normal se hace con el siguiente código: \code{Vector3 localNormal = (ncolor * 2) - 1;} ya que las coordenadas de la normal pueden se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
 	
@@ -252,11 +261,35 @@ Por ello, en la función \code{hit()} de \code{Tri} se añade lo siguiente:
 
 	\end{lstlisting}
 			
-Así pues tanto la normal y la tangente son interpoladas a partir de las coordenadas baricéntricas del triángulo \code{u,v} las cuales indican la distancia a cada vértice.
+Así pues tanto la normal y la tangente son interpoladas \autoref{fig:smoothshading} a partir de las coordenadas baricéntricas del triángulo \code{u,v} las cuales indican la distancia a cada vértice.
 	
-Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Terminator Arctifact". El uso de una normal interpolada implica que se está haciendo uso de una normal que no coincide con la posición de la superficie. Esta discrepancia crea artefactos visuales presentes hasta en las implementaciones más actualizadas de Blender Cycles . Mauricio Vives propone una solución a este problema y es computar una nueva posición de la superficie a partir de la proyección de la antigua posición al plano que define cada vértice y su normal. Estas tres proyecciones son interpoladas de la misma manera que con las normales, haciendo uso de las coordenadas baricéntricas.
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.3\textwidth]{smoothshading}
+	\caption{Interpolación de normales}
+	\label{fig:smoothshading}
+\end{figure}
+
+\begin{figure}[H]
+		\centering
+		\begin{minipage}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{smoothshadingoff}
+		\caption{Smooth Shading desactivado}
+		\label{fig:smoothshadingoff}
+	  \end{minipage}
+	  \hfill
+	  \begin{minipage}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{smoothshadingon}
+		\caption{Smooth Shading activado}
+		\label{fig:smoothshadingon}
+	  \end{minipage}
+	  	\hfill
+\end{figure}
+
+
+Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Terminator Arctifact". El uso de una normal interpolada implica que se está haciendo uso de una normal que no coincide con la posición de la superficie. Esta discrepancia crea artefactos visuales presentes hasta en las implementaciones más actualizadas de Blender Cycles \autoref{fig:shadowterminatorcycles}. Mauricio Vives en \url{https://gist.github.com/pixnblox/5e64b0724c186313bc7b6ce096b08820} propone una solución a este problema y es computar una nueva posición de la superficie a partir de la proyección de la antigua posición al plano que define cada vértice y su normal. Estas tres proyecciones son interpoladas de la misma manera que con las normales, haciendo uso de las coordenadas baricéntricas.
 	
-El código adaptado quedaría así:
+Ecódigo adaptado quedaría así:
 	
 \begin{lstlisting}
 	
@@ -271,34 +304,53 @@ El código adaptado quedaría así:
 	hit.position = convex ? shadingPosition : geomPosition;
 	
 \end{lstlisting}
+
+Y el resultado de la implementación en Eleven Renderer se muestra en la \autoref{fig:shadowterminatoreleven}
+
+\begin{figure}[H]
+		\centering
+	  \begin{minipage}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{shadowterminatorcycles}
+		\caption{Escena básica de esfera en Cycles}
+		\label{fig:shadowterminatorcycles}
+	  \end{minipage}
+	  \hfill
+	  \begin{minipage}[b]{0.4\textwidth}
+		\includegraphics[width=\textwidth]{shadowterminatoreleven}
+		\caption{Escena básica de esfera en Eleven Renderer}
+		\label{fig:shadowterminatoreleven}
+	  \end{minipage}
+	  	\hfill
+\end{figure}
 	
-	\section{Sombreado BRDF}
+\section{Sombreado BRDF}
 	
-El sombreado es el proceso por el cual se asigna un valor de pérdida de energía para un rayo que intersecciona con un punto. Este proceso simula el proceso natural de la interacción entre un haz de fotones y una superficie, dónde parte de los fotones son absorbidos dependiendo de distintos factores como la longitud de onda de los fotones, el tipo de superficie, el tipo de material (los metales reflejarán de manera menos aleatoria que los materiales dieléctricos). La simulación de estas interacciones y simplificación en una función es una ciencia conocida como PBR, o Physically Based Rendering, donde se trata de imitar de manera fiel la realidad física. 
+El sombreado (shading) es el proceso por el cual se asigna un valor de pérdida de energía para un rayo que intersecciona con un punto. Este proceso simula el proceso natural de la interacción entre un haz de fotones y una superficie, dónde parte de los fotones son absorbidos dependiendo de distintos factores como la longitud de onda de los fotones, el tipo de superficie, el tipo de material (los metales reflejarán de manera menos aleatoria que los materiales dieléctricos). La simulación de estas interacciones y simplificación en una función es una ciencia conocida como PBR, o Physically Based Rendering, donde se trata de imitar de manera fiel la realidad física. 
 		
 En la ecuación de renderizado se encuentra un término denominado BRDF $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$. Hasta ahora ha sido ignorado y simplificado como una superficie Lambertiana perfectamente difusa, esto quiere decir que hasta el momento se ha tratado la luz independientemente del ángulo de incidencia $\omega _{\text{i}}$ y del ángulo de reflexión del rayo $\omega _{\text{o}}$. En el momento en el que se tienen en consideración estos dos ángulos, se pueden configurar funciones complejas que determinen distintos coeficientes para distintos ángulos. Una función BRDF basada en comportamientos físicos reales como los mencionados anteriormente ofrecerá un resultado acercado a la realidad. 
 	
-Disney propone una función BRDF conocida como Disney Principled BRDF\cite{burley2012physically}
+Disney propone una función BRDF conocida como Disney Principled BRDF\cite{burley2012physically}. Este modelo ha sido ideado por Disney con el fin de adaptar los parámetros del modelo de sombreado, a unos parámetros amigables para los artistas. Con esto se pretende dejar de lado los antiguos modelos de sombreado poco intuitivos. Esta función de sombreado es utilizada también por Blender Cycles como modelo predeterminado.
 	
-El término "material" y "BRDF" están fuertemente ligados, ya que es el material el que define esta función a partir de sus parámetros. 
+El término ''material'' y ''BRDF'' están fuertemente ligados. Un material es un conjunto de valores para estos atributos.
 		
+Así pues se procede a explicar estos atributos sintetizados:
+
+\begin{itemize}
+
+	\item Albedo: Color base.
+	\item Emission: Energía lumínica añadida, el término $L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}})$ de la ecuación de renderizado.
+	\item Roughness: Rugosidad de una superficie.
+	\item Metallic: Como de metálica es una superficie, cuanto menor sea la cantidad, más dieléctrico el material.
+	\item Clearcoat: Capa de barniz superior.
+	\item ClearcoatGloss: Lo pulida que está dicha capa de barniz.
+	\item Anisotropic: Distorsión de la luz propia de los metales.
+	\item Specular: Cantidad de reflejo especular.
+	\item SpecularTint: Color de dicho reflejo.
+	\item Sheen: Cantidad de luz en los bordes del material.
+	\item SheenTint: Color de la capa de luz anterior.
+	\item Subsurface: Sub Surface Scattering falso simulado.
 	
-Un elemento clave del renderizado fotorrealista es elegir una función de sombreado apropiada. En este motor se ha hecho uso del modelo de sombreado Disney Principled Shader. Este modelo fue desarrollado por Disney bajo el fin de simplificar los parámetros de las fórmulas matemáticas y que estos sean cómodos para los artistas. Esta decisión tiene más sentido si consideramos el contexto histórico, donde los modelos anteriores contaban con parámetros complejos.
+\end{itemize}
 
-Este modelo cuenta además con buen fotorrealismo, y por ello, el conocido software de edición 3d de código abierto Blender, hace uso de él como su modelo de sombreado primario.
-
-
-A continuación se muestra una lista con los parámetros de los materiales descritos bajo este modelo:
-
-	roughness:
-	metallic:
-	clearcoatGloss:
-	clearcoat:
-	anisotropic:
-	eta:
-	specular:
-	specularTint:
-	sheenTint:
-	subsurface:
-	sheen:
+En Eleven Renderer se ha hecho uso de una implementación ya existente\cite{knightcrawler25} de las ecuaciones del shader de Disney adaptada sin utilizar la transmisión. El propio Disney tiene en Github implementaciones de este shader disponibles para su uso en \url{https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf}.
 	
