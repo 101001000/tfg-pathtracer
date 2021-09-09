@@ -236,11 +236,21 @@ La mayor parte de la información acerca de los mapas de normales se ha obtenido
 	
 Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utilizará para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues la conversión de un color a una normal se hace con el siguiente código: \code{Vector3 localNormal = (ncolor * 2) - 1;} ya que las coordenadas de la normal pueden se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
 	
-Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Las normales suministradas por los mapas de normales son normales locales, en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores casi ortogonales (posteriormente se aclarará este "casi").
+Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Las normales suministradas por los mapas de normales son normales locales, en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores aproximadamente ortogonales.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.4\textwidth]{tangentspace}
+	\caption{Espacio tangencial y su proyección en una textura.}
+	\label{fig:tangentspace}
+\end{figure}
 	
-Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
+Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
 	
-	
+El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en \url{https://github.com/mmikk/MikkTSpace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible por esa razón se ha decidido hacer uso de él. El método en sí se encarga de cada caso específico como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v} como se explica en el árticulo de \url{https://learnopengl.com/Advanced-Lighting/Normal-Mapping}.
+
+Para hacer uso de la implementación MikkTSpace, tan solo hay que definir un archivo adicional que enlae las funciones de callback, las cuales solicitarán parámetros para el cálculo de las tangentes tales como las posiciones de los vértices, el número de triángulos etc.
+
 	
 \section{Smooth Shading}
 	
