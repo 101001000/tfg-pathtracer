@@ -93,47 +93,40 @@ public:
 		}
 	}
 
-	__host__ __device__ inline void HDRI::generateCDF() {
+	__host__ __device__ inline void generateCDF() {
 
+		int c = 0;
 		radianceSum = 0;
-
 		cdf[0] = 0;
 
+		// Total radiance of the HDRI
 		for (int j = 0; j < texture.height; j++) {
 			for (int i = 0; i < texture.width; i++) {
 				Vector3 data = texture.getValueFromCoordinates(i, j);
 				radianceSum += data.x + data.y + data.z;
 			}
 		}
-
-		int c = 0;
-
+		// CDF calculation
 		for (int j = 0; j < texture.height; j++) {
 			for (int i = 0; i < texture.width; i++) {
-
 				Vector3 data = texture.getValueFromCoordinates(i, j);
-				//cdf[c + 1] = (data.x + data.y + data.z) / radianceSum + cdf[c];
-
 				cdf[c + 1] = cdf[c] + (data.x + data.y + data.z) / radianceSum;
 				c++;
 			}
 		}
 	}
 
-	__host__ __device__ int HDRI::binarySearch(float* arr, float value, int length) {
+	__host__ __device__ int binarySearch(float* arr, float value, int length) {
 
 		int from = 0;
 		int to = length - 1;
 
 		while (to - from > 0) {
-
 			int m = from + (to - from) / 2;
-
 			if (value == arr[m]) return m;
 			if (value < arr[m])	to = m - 1;
 			if (value > arr[m]) from = m + 1;
 		}
-
 		return to;
 	}
 
@@ -141,12 +134,10 @@ public:
 	__host__ __device__ float HDRI::pdf(int x, int y) {
 
 		Vector3 dv = texture.getValueFromCoordinates(x, y);
-
 		float theta = (((float)y / (float)texture.height)) * PI;
 
 		// Semisphere area
 		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI * sin(theta));
-
 	}
 
 	__host__ __device__ Vector3 HDRI::sample(float r1) {
@@ -156,10 +147,7 @@ public:
 		int x = count % texture.width;
 		int y = count / texture.width;
 
-		//x = (int)(texture.xTile * (x + texture.xOffset * texture.width)) % texture.width;
-		//y = (int)(texture.yTile * (y + texture.yOffset * texture.height)) % texture.height;
-
-		return Vector3(x, y, count);
+		return Vector3(x, y, 0);
 	}
 
 	__host__ __device__ inline Vector3 HDRI::sample2(float r1) {

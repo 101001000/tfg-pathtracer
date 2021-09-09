@@ -5,7 +5,7 @@
 #define HDRIIS true
 #define BOKEH true
 
-#define THREADSIZE 1
+#define THREADSIZE 8
 #define MAXBOUNCES 5
 
 #define UPDATE_INTERVAL 500

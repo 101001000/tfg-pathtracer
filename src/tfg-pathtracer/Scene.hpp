@@ -177,6 +177,24 @@ public:
 			scene.addMeshObject(object);
 		}
 
+		// PointLights
+
+		RSJarray pointLight_json = scene_json["pointLights"].as<RSJarray>();
+
+		for (int i = 0; i < pointLight_json.size(); i++) {
+
+			Vector3 position = pointLight_json[i]["position"].as<Vector3>();
+			Vector3 radiance = pointLight_json[i]["radiance"].as<Vector3>();
+
+			scene.addPointLight(PointLight(position, radiance));
+
+			printf("Loaded pointLight pos ");
+			position.print();
+			printf(" radiance ");
+			radiance.print();
+			printf("\n");
+		}
+
 		return scene;
 	}
 

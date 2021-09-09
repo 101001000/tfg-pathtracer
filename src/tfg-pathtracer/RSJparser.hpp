@@ -775,7 +775,14 @@ Vector3 RSJresource::as<Vector3>(const Vector3& def) {
     // return 'def' if empty
     if (!exists()) return (def); // required
 
-    return (Vector3(RSJresource(data)["x"].as<double>(), RSJresource(data)["y"].as<double>(), RSJresource(data)["z"].as<double>())); // example
+    if (RSJresource(data)["x"].exists()) {
+        return (Vector3(RSJresource(data)["x"].as<double>(), RSJresource(data)["y"].as<double>(), RSJresource(data)["z"].as<double>()));
+    }
+
+    if (RSJresource(data)["r"].exists()) {
+        return (Vector3(RSJresource(data)["r"].as<double>(), RSJresource(data)["g"].as<double>(), RSJresource(data)["b"].as<double>()));
+    }
+    return (def);
 }
 
 // ------------------------------------

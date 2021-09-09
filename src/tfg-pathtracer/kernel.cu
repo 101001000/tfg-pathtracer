@@ -13,6 +13,7 @@
 #include "HDRI.hpp"
 #include "Math.hpp"
 #include "Definitions.h"
+
 struct dev_Scene {
 
     Camera* camera;
@@ -180,24 +181,22 @@ __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
     return nearestHit;
 }
 
-//TODO limpiar los argumentos de esta función
-__device__ Vector3 directLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1, Vector3& newDir) {
 
-    //TODO falta por dios comprobar colisiones
+__device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1) {
 
-    // Sampling pointLights
-
-    // We chose a random pointLight to sample from.
     PointLight light = scene->pointLights[(int)(scene->pointLightCount * r1)];
 
-    pdf = scene->pointLightCount;
+    pdf = scene->pointLightCount / (2.0 * PI);
 
-    newDir = (light.position - point).normalized();
+    Vector3 newDir = (light.position - point).normalized();
 
     float dist = (light.position - point).length();
 
-    return (light.radiance / (dist * dist));
+    Vector3 pointLightValue = (light.radiance / (dist * dist));
 
+    Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
+
+    return pointLightValue * brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) / pdf;
 }
 
 // Sampling HDRI
@@ -225,7 +224,7 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         pdf = (1.0 / (2.0 * PI * PI));
 
-        return brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / (1.0 / (2.0 * PI * PI));
+        return brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) * hdriValue / (1.0 / (2.0 * PI));
     }
     else {
 
@@ -313,15 +312,17 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
     float brdfPdf = DisneyPdf(ray, hitdata, newDir);
 
     float hdriPdf;
+    float pointPdf;
 
-    Vector3 directLight = hdriLight(ray, &scene, nearestHit.position, hitdata, r1, r2, r3, hdriPdf);
+    Vector3 hdriLightCalc = hdriLight(ray, &scene, nearestHit.position, hitdata, r1, r2, r3, hdriPdf);
+    Vector3 pointLightCalc = pointLight(ray, hitdata, &scene, nearestHit.position, r1, pointPdf);
 
     float w1 = hdriPdf / (hdriPdf + brdfPdf);
     float w2 = brdfPdf / (hdriPdf + brdfPdf);
 
     if (brdfPdf <= 0) return;
 
-    hitLight = w1 * reduction * directLight;
+    hitLight = reduction * hdriLightCalc;
 
     reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
 
@@ -330,7 +331,6 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
 __device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bouncedDir, float r1, float r2, float r3) {
 
     bouncedDir = DisneySample(incomingRay, hitdata, r1, r2, r3);
-
 }
 
 __global__ void renderingKernel() {

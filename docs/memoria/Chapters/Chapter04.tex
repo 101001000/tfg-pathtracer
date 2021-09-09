@@ -1,13 +1,13 @@
 ﻿\chapter{Optimizaciones estructurales}
 	
-Un algoritmo con buenos resultados visuales viene con unos costes computacionales asociados. A parte de buscar fotorrealismo y fidelidad gráfica, un motor de renderizado gráfico requiere de mejoras y optimizaciones para alcanzar tiempos competentes.
+Un algoritmo con buenos resultados visuales incluye unos costes computacionales asociados. A parte de buscar fotorrealismo y fidelidad gráfica, un motor de renderizado gráfico requiere de mejoras y optimizaciones para alcanzar tiempos competentes.
 
 La importancia de las optimizaciones implementadas en este capítulo no solo se limita a mejorar la productividad de los artistas con mejoras de rendimiento, si no que hace posible la visualización real de escenas que tardarían tiempos del orden de miles de años, reduciendo el enfoque de fuerza bruta a uno más sofisticado.
 	
 \section{Muestreo por importancia}
 \label{sec:mi}
 
-El simple hecho de simular los caminos de los fotones no es eficiente. Se puede buscar una manera para que cada camino cargue con información ''más útil''. Este procedimiento se denomina ''Muestreo por importancia'' y es actualmente una línea de investigación en constante desarrollo ya que como se verá a continuación, permite mejoras muy significativas en cuanto al tiempo de convergencia de la imagen final.
+El simple hecho de simular los caminos de los fotones no es eficiente. Se puede buscar una manera para que cada camino cargue con información ''más útil''. Este procedimiento se denomina ''Muestreo por Importancia'' y es actualmente una línea de investigación en constante desarrollo ya que como se verá a continuación, permite mejoras muy significativas en cuanto al tiempo de convergencia de la imagen final.
 
 Gran parte de la literatura al respecto se resume en las notas de Importance Sampling for Production Rendering\cite{colbert2010importance} donde se repasan todos los fundamentos teóricos del muestreo por importancia. Así pues en este trabajo solo se va a ofrecer una visión generalizada suficiente para entender la implementación realizada en Eleven Renderer.
 
@@ -20,42 +20,151 @@ Cuando se ha explicado \hyperref[subsec:montecarlo]{la aproximación de la Ecuac
 En la implementación, todo muestreo consiste en una función que genera rayos aleatorios a aquellos lugares donde interesa más muestrear \code{sample()} y la función de distribución de probabilidad apropiada \code{pdf()} derivada de la función de muestreo, que ha de devolver la probabilidad con la que se ha elegido ese camino. Como se verá más adelante, no siempre es fácil derivar esta función de probabilidad cuando se cuenta con una función de muestreo compleja.
 
 
-\subsection{Muestreo por importancia de entorno}
-	
-Anteriormente se ha descrito como la iluminación HDRI permite resultados visualmente complejos de manera sencilla, simplemente una imagen con alta profundidad de color. Este método por otra parte también cuenta con inconvenientes. 
-
-Antes de aplicar cualquier tipo de optimización a este método de iluminación, se estaba trazando un rayo de manera ingenua, recibiendo el color de la imagen a partir de las coordenadas esféricas asumiendo una esfera de radio infinito. Para imágenes homogéneas con luminosidad similar en cada píxel, este método funciona muy bien, pero la mayoría de estas imágenes HDRI consisten en un paisaje con componentes lumínicos condensados tales como el sol el cual actúa como principal fuente de luz.
-
-Esta situación plantea un problema, y es que los focos de luz como puede ser el sol, concentran un gran porcentaje de luminosidad, mientras que el resto de la imagen no. Esto implica que pocas veces se va a recibir información del sol, lo que va a resultar en ''fireflies''. La forma de enfrentar este problema es igual que el resto de muestreo por importancia: Trazar más rayos a los píxeles más luminosos, ya que serán aquellos que más información aporten a la escena.
-
-La implementación de este tipo de muestreo por importancia no es trivial. Las imágenes HDRI utilizadas normalmente en la industria cinematográfica suelen contar con resoluciones extremas (~8K) y son del orden de millones de píxeles. La búsqueda de los píxeles más brillantes y la asignación de su probabilidad de ser elegidos requerirá de un preprocesamiento previo que facilite dicha búsqueda.
-
-El planteamiento general para este método consiste en precomputar un array del tamaño del número total de píxeles de la imagen HDRI, en el que cada elemento cuente con la iluminación acumulada normalizada hasta el momento de cada píxel.
-La función que determina la iluminación de un píxel viene dada por la respuesta logarítmica media de los bastones y conos de los ojos para cada longitud de onda, pero para simplificar se utilizará la suma de cada componente de color. Este array a efectos prácticos contiene la función de distribución acumulativa discreta normalizada (CDF) y además como está ordenado, es posible hacer búsquedas binarias, las cuales cuentan con una complejidad logarítmica (aproximadamente 25 iteraciones de búsqueda para una imagen de 8K de resolución).
-
-Así pues, si se quiere obtener un píxel de manera aleatoria proporcional a su iluminación, bastará con buscar en el CDF el intervalo que comprende el valor aleatorio dado. Esta operación de búsqueda también tiene coste logarítmico, ya que es una versión ligeramente modificada de la búsqueda binaria corriente.
-
-
-\begin{figure}[H]
-    \centering
-	\includegraphics[width=0.5\textwidth]{CDF}
-	\caption{División BVH}
-	\label{fig:label}
-\end{figure}
-
-
-La función de distribución de probabilidad pdf vendrá entonces dada por la iluminación para el pixel obtenido dividida por la iluminación total.
-
-
 \subsection{Muestreo por importancia de Estimación de Evento Próximo (NEE)}
-
-
+\label{sub:nee}
 
 El renderizado por luz directa es un método por el cual solo se tiene en cuenta la primera interacción del rayo con la escena y se comprueba si dicho punto es visible a los elementos lumínicos. Este método converge muy rápido puesto que solo necesita computar una interacción y el fotón recibe información directamente de la luz sin tener que desperdiciar fotones que acaben en zonas oscuras, pero carece del fotorrealismo que ofrece la iluminación global o luz indirecta, puesto no tiene en cuenta la luz reflejada en otros elementos no emisivos.
 
 El muestreo por importancia de Estimación de Evento Próximo trata de juntar estos dos métodos: La iluminación directa y la indirecta. De esta manera, la parte expuesta directamente a elementos lumínicos convergerá rápidamente, además de las partes afectadas por la iluminación global, que lo harán también. Un añadido de este método es la posibilidad de computar la iluminación dada por luces de punto.
 
 Las luces de punto consisten en un punto en el espacio infinitamente pequeño el cual emite luz de manera uniforme hacia todos los lados. Sin la implementación de la estimación de evento próximo, estas luces al ser infinitesimalmente pequeñas, jamás serían alcanzadas por los fotones y por lo tanto, nunca se recibiría información de ellas. No solo eso, NEE también permite una mejor convergencia en las luces de menor tamaño, puesto que originalmente, las luces tienen menos probabilidades de ser alcanzadas cuanto menor sea su área.
+
+En el caso de Eleven Renderer, una nueva función \code{pointLight} es utilizada. Esta función calcula la luz directa de los puntos de luz. De forma resumida se elige un punto de luz aleatorio, se toma como radiación inicial el atributo \code{radiance} para dicho punto de luz y se atenua cuadráticamente con la distancia entre la luz y el punto a sombrear. Este procedimiento es realmente intuitivo si se trata la luz como una esfera y la radiación emitida el área de dicha esfera. Finalmente se aplica la función BRDF para la dirección a la luz y el coseno con la normal. 
+
+La función \code{pdf} se obtiene a partir del número de luces. Por otro lado hay que hacer un cambio de dominio ya que hasta el momento la función \code{pdf} solo tiene en cuenta la luz de las luces y no toda la luz de la escena. Este cambio de dominio se hace dividiendo entre el área de media esfera \code{2.0 * PI}, ya que es el área del que se mide la radiación entrante.
+
+\begin{lstlisting}
+	
+	__device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1, Vector3& newDir) {
+
+		PointLight light = scene->pointLights[(int)(scene->pointLightCount * r1)];
+
+		pdf = scene->pointLightCount / (2.0 * PI);
+
+		newDir = (light.position - point).normalized();
+
+		float dist = (light.position - point).length();
+
+		Vector3 pointLightValue = (light.radiance / (dist * dist));
+
+		Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
+
+		return pointLightValue * brdfDisney * abs(Vector3::dot(newDir, hitdata.normal)) / pdf;
+	}
+	
+\end{lstlisting}
+
+
+\subsection{Muestreo por importancia de entorno}
+	
+Anteriormente se ha descrito como la iluminación HDRI permite resultados visualmente complejos de manera sencilla, simplemente una imagen con alta profundidad de color. Este método por otra parte también cuenta con inconvenientes. 
+
+Antes de aplicar cualquier tipo de optimización a este método de iluminación, se estaba trazando un rayo de manera ingenua, recibiendo el color de la imagen a partir de las coordenadas esféricas asumiendo una esfera de radio infinito. Para imágenes homogéneas con luminosidad similar en cada píxel, este método funciona muy bien, pero la mayoría de estas imágenes HDRI consisten en un paisaje con componentes lumínicos condensados tales como el sol el cual actúa como principal fuente de luz.
+
+Esta situación plantea un problema, y es que los focos de luz como puede ser el sol, concentran un gran porcentaje de luminosidad, mientras que el resto de la imagen no. Esto implica que pocas veces se va a recibir información del sol, lo que va a resultar en ''fireflies'' (píxeles que cargan una gran radiación lumínica, por la naturaleza aleatoria de las muestras) \autoref{fig:hdriisoff}. La forma de enfrentar este problema es igual que el resto de muestreo por importancia: Trazar más rayos a los píxeles más luminosos, ya que serán aquellos que más información aporten a la escena. En la implementación se activa y desactiva con la definición \code{\#define HDRIIS = true/false}
+
+\begin{figure}[H]
+\label{fig:hdriis}
+	\centering
+  \begin{subfigure}[b]{0.4\textwidth}
+	\includegraphics[width=\textwidth]{hdriisoff}
+	\caption{HDRIIS = false}
+	\label{fig:hdriisoff}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.4\textwidth}
+	\includegraphics[width=\textwidth]{hdriison}
+	\caption{HDRIIS = true}
+	\label{fig:hdriison}
+  \end{subfigure}
+\end{figure}
+
+La implementación de este tipo de muestreo por importancia no es trivial. Las imágenes HDRI utilizadas normalmente en la industria cinematográfica suelen contar con resoluciones extremas (\~8K) y son del orden de millones de píxeles. La búsqueda de los píxeles más brillantes y la asignación de su probabilidad de ser elegidos requerirá de un preprocesamiento previo que facilite dicha búsqueda.
+
+El planteamiento general para este método consiste en precomputar un array del tamaño del número total de píxeles de la imagen HDRI, en el que cada elemento cuente con la iluminación acumulada normalizada hasta el momento de cada píxel \autoref{fig:CDF}.
+La función que determina la iluminación de un píxel viene dada por la respuesta logarítmica media de los bastones y conos de los ojos para cada longitud de onda, pero para simplificar se utilizará la suma de cada componente de color. Este array a efectos prácticos contiene la función de distribución acumulativa discreta normalizada (CDF) y además como está ordenado, es posible hacer búsquedas binarias, las cuales cuentan con una complejidad logarítmica (aproximadamente 25 iteraciones de búsqueda para una imagen de 8K de resolución).
+
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.5\textwidth]{CDF}
+	\caption{Función de distribución acumulada}
+	\label{fig:CDF}
+\end{figure}
+
+
+\begin{lstlisting}
+	
+	__host__ __device__ inline void generateCDF() {
+
+		int c = 0;
+		radianceSum = 0;
+		cdf[0] = 0;
+
+		// Total radiance of the HDRI
+		for (int j = 0; j < texture.height; j++) {
+			for (int i = 0; i < texture.width; i++) {
+				Vector3 data = texture.getValueFromCoordinates(i, j);
+				radianceSum += data.x + data.y + data.z;
+			}
+		}
+		// CDF calculation
+		for (int j = 0; j < texture.height; j++) {
+			for (int i = 0; i < texture.width; i++) {
+				Vector3 data = texture.getValueFromCoordinates(i, j);
+				cdf[c + 1] = cdf[c] + (data.x + data.y + data.z) / radianceSum;
+				c++;
+			}
+		}
+	}
+	
+\end{lstlisting}
+
+La función de cálculo de CDF implementada realiza dos simplificaciones en comparación al método propuesto en la literatura. En primer lugar simplifica la dimensionalidad del array CDF en una sola dimensión (en la literatura se utiliza una segunda dimensión que acumula un sumatorio de radiancia con el fin de acelerar la búsqueda) y en segundo lugar realiza el muestreo por importancia utilizando las coordenadas de las texturas en píxeles y no en coordenadas esféricas (normalmente se muestrea a través de las coordenadas esféricas con el fin de evitar deformaciones en los polos). Se ha determinado que este método modificado es más intuitivo para una versión preeliminar aún así queda sujeto a cambios en posteriores versiones. 
+
+Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminación, bastará con buscar en el CDF el intervalo que comprende el valor aleatorio dado. Esta operación de búsqueda también tiene coste logarítmico, ya que es una versión ligeramente modificada de la búsqueda binaria corriente. (Este tipo de búsqueda está disponible en la librería estándar de C++, \code{std::lower\_bound} pero se ha realizado la implementación manual para CUDA). Esta acción es realizada por la función \code{sample}, que a partir de un número aleatorio, devolverá un píxel del HDRI, siendo los más brillantes los más comunes.
+
+\begin{lstlisting}
+	
+	// Lower_bound kinda function.
+	__host__ __device__ int binarySearch(float* arr, float value, int length) {
+
+		int from = 0;
+		int to = length - 1;
+
+		while (to - from > 0) {
+			int m = from + (to - from) / 2;
+			if (value == arr[m]) return m;
+			if (value < arr[m])	to = m - 1;
+			if (value > arr[m]) from = m + 1;
+		}
+		return to;
+	}
+	
+	__host__ __device__ Vector3 HDRI::sample(float r1) {
+		// Returns position in the array
+		int count = binarySearch(cdf, r1, texture.width * texture.height);
+
+		int x = count % texture.width;
+		int y = count / texture.width;
+
+		return Vector3(x, y, 0);
+	}
+	
+	__host__ __device__ float HDRI::pdf(int x, int y) {
+
+		Vector3 dv = texture.getValueFromCoordinates(x, y);
+		float theta = (((float)y / (float)texture.height)) * PI;
+
+		// Semisphere area
+		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI * sin(theta));
+	}
+	
+\end{lstlisting}
+
+Por último, como se está muestreando en mayor proporción los píxeles más brillantes, es necesario ofrecer una función \code{pdf} apropiada. La intuición sugiere que la posibilidad de elegir un píxel entre el resto es la iluminación de dicho píxel dividida entre la suma de toda la iluminación del HDRI \code{(dv.x + dv.y + dv.z) / radianceSum}. No obstante aún faltan matices. Puesto que se está calculando la luz de un solo píxel en vez de toda la imagen, es necesario multiplicar el \code{pdf} por el número total de píxeles de la imagen \code{texture.width * texture.height}. Además se aplica el cambio de dominio explicado en \autoref{sub:nee}. El cáculo de esta función \code{pdf} es una extensión del cálculo en NEE, a fin de cuentas se está considerando un HDRI como un conjunto de luces.
+
+Debido a la deformación de una imagen plana al ser transladada a una superficie esférica, se va a observar un mayor número de muestras en los polos. Este mayor número de muestras en los polos se podría reducir en la función de CDF (es una de las simplificaciones realizadas), pero en vez de eso se añade un término adicional \code{sin(theta)} que reduce la intensidad de los píxeles más cercanos a los polos.
 
 
 \subsection{Muestreo por importancia de BRDF}
@@ -68,13 +177,7 @@ Otro ejemplo es el muestreo por coseno. La ecuación de renderizado cuenta con u
 
 \subsection{Muestreo por importancia múltiple:}
 
-El muestreo por importancia es una herramienta que mejora considerablemente los tiempos de convergencia en determinados escenarios, aunque la verdadera utilidad de estos es elegir el muestreo correcto para cada situación. En 1975 se propone una técnica conocida como MIS (Multiple Importance Sampling). Esta técnica evaluará todas las funciones de  muestreo para cada intersección y dará mayor importancia con un escalar a aquellas funciones que proporcionen mayor información de la escena.
-
-(AÑADIR TEORÏA AQUÍ)
-
-
-
-
+El muestreo por importancia es una herramienta que mejora considerablemente los tiempos de convergencia en determinados escenarios, aunque la verdadera utilidad de estos es elegir el muestreo correcto para cada situación. En 1975 se propone una técnica conocida como MIS (Multiple Importance Sampling) \cite{veach1995optimally}. Esta técnica evaluará todas las funciones de  muestreo para cada intersección y dará mayor importancia con un escalar a aquellas funciones que proporcionen mayor información de la escena.
 
 
 
