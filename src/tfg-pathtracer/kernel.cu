@@ -322,7 +322,9 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
 
     if (brdfPdf <= 0) return;
 
-    hitLight = reduction * hdriLightCalc;
+    brdfPdf = 1/(2*PI);
+
+   // hitLight = reduction * hdriLightCalc;
 
     reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
 
@@ -330,7 +332,11 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
 
 __device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bouncedDir, float r1, float r2, float r3) {
 
-    bouncedDir = DisneySample(incomingRay, hitdata, r1, r2, r3);
+    //bouncedDir = DisneySample(incomingRay, hitdata, r1, r2, r3);
+    //bouncedDir = CosineSampleHemisphere(r1, r2).normalized();
+    bouncedDir = uniformSampleSphere(r1, r2).normalized();
+
+    if (Vector3::dot(hitdata.normal, bouncedDir) < 0) bouncedDir *= -1;
 }
 
 __global__ void renderingKernel() {
@@ -403,7 +409,7 @@ __global__ void renderingKernel() {
 
     dev_pathcount[idx] += i;
 
-    light = clamp(light, 0, 10);
+    //light = clamp(light, 0, 10);
 
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 

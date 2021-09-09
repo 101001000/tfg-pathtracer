@@ -15,11 +15,11 @@ C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\RSJparser
   
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.hpp(119): warning : variable "bsdfPdf" was declared but never referenced
   
-C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(320): warning : variable "pointPdf" is used before its value is set
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(318): warning : variable "pointPdf" is used before its value is set
   
-C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(397): warning : variable "hdriPdf" was declared but never referenced
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(401): warning : variable "hdriPdf" was declared but never referenced
   
-C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(533): warning : variable "dev_pixelBuffer" was declared but never referenced
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(537): warning : variable "dev_pixelBuffer" was declared but never referenced
   
 C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(164): warning C4067: sÝmbolos (token) inesperados despuÚs de la directiva del preprocesador; se esperaba una nueva lÝnea
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Math.hpp(41): warning : missing return statement at end of non-void function "limitUV"
@@ -30,7 +30,7 @@ C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\RSJparser
   
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\RSJparser.hpp(514): warning : missing return statement at end of non-void function "seek_next"
   
-C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(320): warning : variable "pointPdf" is used before its value is set
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(318): warning : variable "pointPdf" is used before its value is set
   
   kernel.cu
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Vector.hpp(119): warning C4305: 'inicializando': truncamiento de 'double' a 'float'
@@ -128,16 +128,15 @@ C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(83): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(88): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(91): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(140): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(140): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(140): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(148): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(150): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(199): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(200): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(201): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(202): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(203): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(204): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(205): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(242): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(279): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 1 tiene el tipo '_To'
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(240): warning C4018: '<': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(277): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 1 tiene el tipo '_To'
           with
           [
               _To=std::chrono::duration<__int64,std::ratio<1,1000>>
@@ -177,9 +176,9 @@ C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.hp
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.hpp(246): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.hpp(246): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Disney.hpp(246): warning C4244: 'argumento': conversión de 'double' a 'const float'; posible pérdida de datos
-C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(472): warning C4018: '<': no coinciden signed/unsigned
-C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(566): warning C4018: '<': no coinciden signed/unsigned
-C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(533): warning C4101: 'dev_pixelBuffer': variable local sin referencia
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(476): warning C4018: '<': no coinciden signed/unsigned
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(570): warning C4018: '<': no coinciden signed/unsigned
+C:/Users/Kike/Desktop/Uni/TFG/Github/tfg-pathtracer/src/tfg-pathtracer/kernel.cu(537): warning C4101: 'dev_pixelBuffer': variable local sin referencia
   
   C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer>"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\bin\nvcc.exe" -dlink -o x64\Release\tfg-pathtracer.device-link.obj -Xcompiler "/EHsc /W3 /nologo /O2 /Fdx64\Release\vc142.pdb   /MD " -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\bin/crt" -L"C:\Users\Kike\Desktop\Uni\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\\..\SFML-2.5.1\lib" -L"C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v11.1\lib\x64" cudart_static.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib "sfml-graphics.lib" "sfml-window.lib" "sfml-system.lib" "sfml-audio.lib" "sfml-network.lib" cudart.lib cudadevrt.lib  -gencode=arch=compute_52,code=sm_52  --machine 64 x64\Release\mikktspaceCallback.hpp.obj x64\Release\kernel.cu.obj 
   cudart_static.lib

@@ -171,9 +171,29 @@ Debido a la deformación de una imagen plana al ser transladada a una superficie
 
 La función BRDF aporta distintas intensidades lumínicas dependiendo de la dirección entrante y la dirección saliente, así pues sería mucho más óptimo lanzar más rayos a los sitios en los que esta función sea mayor e ignorar aquellos sitios donde no se aporte mucha información al resultado final.
 
-Un ejemplo que ayuda a visualizar este caso son los materiales perfectamente reflectantes, (espejos). Los materiales reflectantes tienen un valor BRDF = 1 para todo rayo entrante simétrico al saliente con la normal como eje de reflexión. Para el resto de direcciones, el valor será 0. Así pues, no tiene sentido emitir rayos aleatorios donde se conozca que el resultado del BRDF será 0.
+Un ejemplo que ayuda a visualizar este caso son los materiales perfectamente reflectantes (espejos). Los materiales reflectantes tienen un valor \code{BRDF = 1} para todo rayo entrante simétrico al saliente con la normal como eje de reflexión. Para el resto de direcciones el valor será 0. Por esta razón no tiene sentido emitir rayos aleatorios donde se conozca que el resultado del BRDF será 0.
 
-Otro ejemplo es el muestreo por coseno. La ecuación de renderizado cuenta con un término que pondera radiación obtenida por el modelo BRDF a partir del coseno del ángulo incidente. Por esta razón, tiene sentido emitir de manera proporcional a este término más rayos allá donde el coseno es más grande.
+Así pues, la función \code{sample} deberá emitir más muestrás allá donde la función \code{brdf} sea mayor. La implementación utilizada contiene una función \code{DisneySample} que se encarga de esto. Un análisis más detallado de la derivación de esta función a partir de las ecuaciones del shader de Disney se puede encontrar en la implementación de este en el motor de renderizado Autodesk Arnold \url{https://shihchinw.github.io/2015/07/implementing-disney-principled-brdf-in-arnold.html}
+
+A partir de esta función de muestreo, el autor de la implementación utilizada ofrece también la función \code{pdf}. Cabe decir que ambas funciones han sido modificadas y adaptadas para la implementación de Eleven Renderer, eliminando por ejemplo los términos de transmisión en ambas funciones.
+
+Gracias a este muestreo, es posible renderizar materiales metálicos. Anteriormente la convergencia de estos materiales era lenta e impráctica \autoref{fig:brdfisoff} incluso para un número de muestras muy elevado. Tras aplicar el muestreo por importancia el resultado de los materiales metálicos es mucho más nítido \autoref{fig:brdfison}.
+
+\begin{figure}[H]
+	\label{fig:brdfis}
+	\centering
+  \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{brdfisoff}
+	\caption{Muestreo uniforme}
+	\label{fig:brdfisoff}
+  \end{subfigure}
+  \hfill
+  \begin{subfigure}[b]{0.45\textwidth}
+	\includegraphics[width=\textwidth]{brdfison}
+	\caption{Muestreo por importancia}
+	\label{fig:brdfison}
+  \end{subfigure}
+\end{figure}
 
 \subsection{Muestreo por importancia múltiple:}
 

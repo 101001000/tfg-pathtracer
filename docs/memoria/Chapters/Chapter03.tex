@@ -119,7 +119,15 @@ Hasta ahora la luz que llegaba a la escena desde el fondo ha sido radiación hom
 	
 La iluminación basada en imagen ha sido uno de los elementos más relevantes en las técnicas para el renderizado fotorrealista. Se utiliza ampliamente en la industria cinematográfica debido a la complejidad visual que aporta a una escena 3D y debido a que permite captar la iluminación de entornos reales y posteriormente añadirla en escenas digitales. El hecho de poder trasladar la iluminación a un escenario virtual, facilita la composición de modelos tridimensionales en películas y series de televisión donde es necesario juntar una grabación real con un elemento generado por ordenador.
 
-Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuentes de luz formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (Imagen de Alto Rango Dinámico). A diferencia de las imágenes tradicionales las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. Esto es debido a que su uso no es meramente la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena.
+Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuentes de luz formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (Imagen de Alto Rango Dinámico). A diferencia de las imágenes tradicionales las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. El uso de las imágenes HDRI no se limita a la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena.
+
+		
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.7\textwidth]{hdriexample}
+	\caption{Escena iluminada con una imagen HDRI de estudio, nótese como la luz superior incide directamente en la esfera acorde a la dirección}
+	\label{fig:hdriexample}
+\end{figure}
 
 La implementación de esta técnica en el motor de render viene dada por el uso de una imagen en formato .hdr (imágenes en punto flotante). Cada píxel de esta imagen se interpreta como una pequeña fuente de luz direccional en el infinito, orientada hacia el centro de la escena. Así pues, los rayos que no interseccionan en la escena con ningún elemento, se consideran que interseccionan en el infinito con el \code{HDRI}, por esta razón, al detectar que un rayo sale de la escena, se obtiene la dirección de este, y esta dirección se traduce en las coordenadas polares de la imagen \code{HDRI}. Una vez se tienen las coordenadas polares, es posible obtener el valor lumínico del píxel al que apunta dicho rayo. Este será el valor lumínico que se utilice para dicho camino.
 	
@@ -318,19 +326,19 @@ Ecódigo adaptado quedaría así:
 Y el resultado de la implementación en Eleven Renderer se muestra en la \autoref{fig:shadowterminatoreleven}
 
 \begin{figure}[H]
-		\centering
-	  \begin{minipage}[b]{0.4\textwidth}
+	\centering
+	  \begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{shadowterminatorcycles}
-		\caption{Escena básica de esfera en Cycles}
+		\caption{Escena de esfera en Cycles}
 		\label{fig:shadowterminatorcycles}
-	  \end{minipage}
-	  \hfill
-	  \begin{minipage}[b]{0.4\textwidth}
+	  \end{subfigure}
+	 \hfill
+	  \begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{shadowterminatoreleven}
-		\caption{Escena básica de esfera en Eleven Renderer}
+		\caption{Escena de esfera en Eleven Renderer}
 		\label{fig:shadowterminatoreleven}
-	  \end{minipage}
-	  	\hfill
+	  \end{subfigure}
+	 \hfill
 \end{figure}
 	
 \section{Sombreado BRDF}

@@ -137,19 +137,17 @@ public:
 				else if (materials_json[i][mapnames[j]].exists()) {
 					RSJresource json_data = materials_json[i][mapnames[j]];
 
-					Vector3 color = Vector3(json_data["r"].as<double>(), json_data["g"].as<double>(), json_data["b"].as<double>());
-
 					//Maybe I need to adjust colorspace here
 
 					switch (j) {
 					case 0:
-						material.albedo = color;
+						material.albedo = json_data.as<Vector3>();
 					case 1:
-						material.emission = color;
+						material.emission = json_data.as<Vector3>();
 					case 2:
-						material.roughness = color.x;
+						material.roughness = json_data.as<double>();
 					case 3:
-						material.metallic = color.x;
+						material.metallic = json_data.as<double>();
 					}
 				}
 			}

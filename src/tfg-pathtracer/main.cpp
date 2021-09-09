@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
 
 	RenderData data;
 
-	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 500);
+	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 10000);
 
 	sf::RenderWindow window(sf::VideoMode(data.pars.width, data.pars.height, 32), "Render Window");
 

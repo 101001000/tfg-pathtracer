@@ -155,9 +155,11 @@ Finalmente la librería de \code{SFML} se encarga de mostrar la imagen y superpo
 
 \section{Acumulado de muestras}
 	
-Puesto que el añadir la luz a un píxel puede sonar ambiguo, se acompaña el código hecho para la acumulación de muestras. \code{dev\_samples[]} es una variable global que almacena un contador con el número de muestras acumuladas hasta el momento para un píxel determinado.
+Por cada píxel por el que se traza un camino es necesario añadir la radiación de dicho camino. Ese píxel tendrá anteriormente radiación previa acumulada.
 
-\[{pixelAccumulatedLight * \frac{samples}{samples + 1} + \frac{newLight}{samples + 1}}\]
+\[{newAccumulatedLight = \frac{oldAccumulatedLight * samples}{samples + 1} + \frac{newLight}{samples + 1}}\]
+	
+Se acompaña el código hecho para la acumulación de muestras. \code{dev\_samples[]} es una variable global que almacena un contador con el número de muestras acumuladas hasta el momento para un píxel determinado.
 
 \begin{lstlisting}
 	
@@ -226,28 +228,28 @@ Si se observa un sensor físico real se puede ver como los píxeles del sensor t
 
 \begin{lstlisting}
 	
-__device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float r2) {
+	__device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float r2) {
 
-    // Relative coordinates for the point where the first ray will be launched
-    float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth;
-    float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight;
+		// Relative coordinates for the point where the first ray will be launched
+		float dx = camera.position.x + ((float)x) / ((float)camera.xRes) * camera.sensorWidth;
+		float dy = camera.position.y + ((float)y) / ((float)camera.yRes) * camera.sensorHeight;
 
-    // Absolute coordinates for the point where the first ray will be launched
-    float odx = (-camera.sensorWidth / 2.0) + dx;
-    float ody = (-camera.sensorHeight / 2.0) + dy;
+		// Absolute coordinates for the point where the first ray will be launched
+		float odx = (-camera.sensorWidth / 2.0) + dx;
+		float ody = (-camera.sensorHeight / 2.0) + dy;
 
-    // Random part of the sampling offset so we get antialiasing
-    float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth;
-    float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight;
+		// Random part of the sampling offset so we get antialiasing
+		float rx = (1.0 / (float)camera.xRes) * (r1 - 0.5) * camera.sensorWidth;
+		float ry = (1.0 / (float)camera.yRes) * (r2 - 0.5) * camera.sensorHeight;
 
-    // Sensor point, the point where intersects the ray with the sensor
-    float SPx = odx + rx;
-    float SPy = ody + ry;
-    float SPz = camera.position.z + camera.focalLength;
+		// Sensor point, the point where intersects the ray with the sensor
+		float SPx = odx + rx;
+		float SPy = ody + ry;
+		float SPz = camera.position.z + camera.focalLength;
 
-    // The initial ray is created from the camera position to the sensor point. No rotation is taken into account.
-    ray = Ray(camera.position, Vector3(SPx, SPy, SPz) - camera.position);
-}
+		// The initial ray is created from the camera position to the sensor point. No rotation is taken into account.
+		ray = Ray(camera.position, Vector3(SPx, SPy, SPz) - camera.position);
+	}
 
 \end{lstlisting}
 
@@ -279,9 +281,9 @@ Para la implementación se ha hecho uso del algoritmo Fast Minimum Storage Ray/T
 	
 \begin{lstlisting}
 	
-__host__ __device__ inline bool hit(Ray& ray, Hit& hit) {
+	__host__ __device__ inline bool hit(Ray& ray, Hit& hit) {
 
-float EPSILON = 0.0000001;
+		float EPSILON = 0.0000001;
 
         Vector3 edge1 = vertices[1] - vertices[0];
         Vector3 edge2 = vertices[2] - vertices[0];
@@ -320,6 +322,7 @@ float EPSILON = 0.0000001;
 		hit.objectID = objectID;
 
         return true;
+	}
 
 \end{lstlisting}
 
@@ -330,7 +333,6 @@ El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algori
 La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques estánd distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Resulta interesante conocer el número de hilos óptimo por cada bloque, por esa razón se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}
 
 \begin{lstlisting}
-	
     int tx = THREADSIZE;
     int ty = THREADSIZE;
 
@@ -357,3 +359,4 @@ coordinates{(1,3517) (2, 7544) (4, 12851) (8, 15480) (16, 14114)};
 \end{tikzpicture}
 \end{figure}
 
+Tras ejecutar el análisis se concluye que 8 es el tamaño óptimo para el número de hilos por cada dimensión.
