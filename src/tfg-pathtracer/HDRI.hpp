@@ -51,7 +51,7 @@ public:
 		generateCDF();
 	}
 
-	__host__ __device__ inline void HDRI::generateCDF2() {
+	__host__ __device__ inline void generateCDF2() {
 
 		for (int y = 0; y < texture.height; y++) {
 			for (int x = 0; x < texture.width; x++) {
@@ -131,7 +131,7 @@ public:
 	}
 
 
-	__host__ __device__ float HDRI::pdf(int x, int y) {
+	__host__ __device__ float pdf(int x, int y) {
 
 		Vector3 dv = texture.getValueFromCoordinates(x, y);
 		float theta = (((float)y / (float)texture.height)) * PI;
@@ -140,7 +140,7 @@ public:
 		return ((dv.x + dv.y + dv.z) / radianceSum) * texture.width * texture.height / (2.0 * PI * sin(theta));
 	}
 
-	__host__ __device__ Vector3 HDRI::sample(float r1) {
+	__host__ __device__ Vector3 sample(float r1) {
 
 		int count = binarySearch(cdf, r1, texture.width * texture.height);
 
@@ -150,7 +150,7 @@ public:
 		return Vector3(x, y, 0);
 	}
 
-	__host__ __device__ inline Vector3 HDRI::sample2(float r1) {
+	__host__ __device__ inline Vector3 sample2(float r1) {
 
 		int count = binarySearch(cdf, r1, texture.width * texture.height);
 

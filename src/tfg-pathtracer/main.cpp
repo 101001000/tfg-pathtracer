@@ -2,7 +2,6 @@
 #include <thread>         
 #include <chrono>    
 #include <iostream>
-#include <Windows.h>
 #include <vector>
 #include <string>
 #include <filesystem>
@@ -17,6 +16,7 @@
 #include "BVH.hpp"
 #include "BMP.hpp"
 #include "Definitions.h"
+#include "SceneLoader.hpp"
 
 
 std::thread t;
@@ -102,7 +102,7 @@ int main(int argc, char* argv[]) {
 
 	//Scene scene = Scene::sceneBuilder(std::string("..\\..\\..\\..\\Scenes\\Clock\\"));
 
-	Scene scene = Scene::sceneBuilder(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Sphere\\"));
+	Scene scene = loadScene(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Sphere\\"));
 
 	RenderData data;
 

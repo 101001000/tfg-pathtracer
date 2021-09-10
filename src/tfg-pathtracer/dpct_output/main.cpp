@@ -1,6 +1,5 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
-#include <Windows.h>
 #include "Camera.h"
 #include "Sphere.h"
 #include "Ray.h"
@@ -16,7 +15,7 @@ Scene cocheRefachero() {
 
 	Scene scene;
 
-	scene.camera = Camera(1280, 960);
+	scene.camera = Camera(128, 96);
 	scene.camera.position = Vector3(1.739, -1.5, -8.175);
 	scene.camera.focalLength = 40;
 	scene.camera.focusDistance = 4.52;
@@ -650,12 +649,12 @@ int sumPathcount(int* pathcountBuffer, int size) {
 int main() {
 
 	Scene* scene = new Scene();
-	*scene = demoScene2();
+	*scene = cocheRefachero();
 
 	int width = scene->camera.xRes;
 	int height = scene->camera.yRes;
 
-	int sampleTarget = 512;
+	int sampleTarget = 10;
 
 	int updateInterval = 500;
 
@@ -692,7 +691,7 @@ int main() {
 	text.setCharacterSize(24);
 	text.setFillColor(sf::Color::Red);
 
-	std::thread t1(renderCuda, scene, sampleTarget);
+	renderCuda(scene, sampleTarget);
 
 	//renderCuda(scene, 2);
 
@@ -741,7 +740,6 @@ int main() {
 		window.display();
 	}
 
-	t1.join();
 
 	//cudaDeviceReset();
 

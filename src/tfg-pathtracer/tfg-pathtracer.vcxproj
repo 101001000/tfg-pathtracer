@@ -32,6 +32,7 @@
     <ClInclude Include="Ray.hpp" />
     <ClInclude Include="Sampling.hpp" />
     <ClInclude Include="Scene.hpp" />
+    <ClInclude Include="SceneLoader.hpp" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Tri.hpp" />
     <ClInclude Include="Vector.hpp" />

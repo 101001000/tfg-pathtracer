@@ -212,7 +212,7 @@ Existen diversas formas de estructurar estas jerarquías. Nombrando las más con
 
 BVH es acrónimo de "Bounding Volume Hierarchy", traducido como jerarquía del volumen delimitador y consiste en un árbol binario de profundidad definida en el que cada nodo cuenta con un el prisma rectangular que delimita un conjunto de triángulos (en la práctica este prisma consiste en dos puntos en el espacio). Cada nodo interior tiene dos hijos y cada hijo, el volumen delimitador del subconjunto disjunto de los triángulos del nodo padre. Los nodos hoja cuentan con el volumen delimitador y con una lista de los triángulos que contienen.
 
-\begin{figure}
+\begin{figure}[H]
     \centering
 	\includegraphics[width=0.5\textwidth]{BVH}
 	\caption{División BVH}
@@ -385,7 +385,7 @@ Para demostrar esto se ha hecho uso de dos implementaciones de la función de re
 \end{lstlisting}
 
 	
-Karras explica en el blog de desarrolladores de Nvidia cómo usar las estructuras BVH para detectar colisiones físicas entre objetos en la GPU. Así pues, la segunda implementación viene dada a partir de ciertas modificaciones al código de recorrido propuesto, donde se puede adaptar a un caso más específico como es la intersección de Rayo \- BVH necesaria en Eleven Renderer. Esta implementación rompe con la recursividad a partir de una pila de nodos, quedando así una función iterativa.
+Karras explica en el blog de desarrolladores de Nvidia \url{https://developer.nvidia.com/blog/thinking-parallel-part-ii-tree-traversal-gpu/} cómo usar las estructuras BVH para detectar colisiones físicas entre objetos en la GPU. Así pues, la segunda implementación viene dada a partir de ciertas modificaciones al código de recorrido propuesto, donde se puede adaptar a un caso más específico como es la intersección de Rayo \- BVH necesaria en Eleven Renderer. Esta implementación rompe con la recursividad a partir de una pila de nodos, quedando así una función iterativa.
 
 \begin{lstlisting}
 		
@@ -506,9 +506,9 @@ Finalmente es necesario elegir los parámetros para \code{BVH\_DEPTH} y \code{SA
 En el caso de la selección de \code{SAH\_BINS}, Indigo Wald propone 16 como límite \cite{wald2007fast} debido a la insustancial mejora de rendimiento para valores mayores. Esto se ha podido comprobar directamente en Eleven Renderer donde se ha llevado a cabo la construcción y recorrido de BVH para la escena "Standford Dragon" variando la cantidad de contenedores \autoref{fig:sahbins}. Se comprueba que la velocidad de recorrido se estanca para los valores 12-16, mientras que el tiempo de generación permanece lineal.
 
 \begin{figure}[H]
+	\label{fig:sahbins}
 \centering
 \begin{tikzpicture}
-\label{fig:sahbins}
 \begin{axis}[
     axis y line = left,
     xlabel = \(SAH bins\),
