@@ -1,0 +1,3021 @@
+---
+MainSourceFile:  MainSrcFiles_placehold
+Replacements:
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          0
+    Length:          0
+    ReplacementText: "#include <CL/sycl.hpp>\n#include <dpct/dpct.hpp>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19
+    Length:          0
+    ReplacementText: "\n#include <oneapi/mkl.hpp>\n#include <oneapi/mkl/rng/device.hpp>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20
+    Length:          27
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          47
+    Length:          26
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          309
+    Length:          0
+    ReplacementText: "\n#include <cmath>\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          774
+    Length:          45
+    ReplacementText: 'dpct::global_memory<float, 1> dev_buffer(1920 * 1080 * 4);'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          874
+    Length:          50
+    ReplacementText: 'dpct::global_memory<unsigned int, 1> dev_samples(1920 * 1080);'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          925
+    Length:          51
+    ReplacementText: 'dpct::global_memory<unsigned int, 1> dev_pathcount(1920 * 1080);'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          977
+    Length:          34
+    ReplacementText: 'dpct::global_memory<dev_Scene *, 0> dev_scene_g;'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          1012
+    Length:          39
+    ReplacementText: "/*\nDPCT1032:2: A different random number generator is used. You may need to adjust the code.\n*/\ndpct::global_memory<curandState *, 0> d_rand_state_g;"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          1053
+    Length:          12
+    ReplacementText: 'sycl::queue'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          1066
+    Length:          0
+    ReplacementText: '*'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          1145
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          1222
+    Length:          0
+    ReplacementText: ",\n                     dev_Scene **dev_scene_g"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          3338
+    Length:          28
+    ReplacementText: 'sycl::pow<double>(hitdata.roughness, 2.2f)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          3391
+    Length:          27
+    ReplacementText: 'sycl::pow<double>(hitdata.metallic, 2.2f)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          3947
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          3975
+    Length:          0
+    ReplacementText: "sycl::nd_item<3> item_ct1, float *dev_buffer,\n                 unsigned int *dev_samples, unsigned int *dev_pathcount,\n                 dev_Scene **dev_scene_g, curandState **d_rand_state_g"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          3992
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          4006
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          4019
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range().get(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          4043
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          4057
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          4070
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range().get(1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          4404
+    Length:          44
+    ReplacementText: 'd_rand_state_g[idx] = oneapi::mkl::rng::device::philox4x32x10<1>(0, {0, static_cast<std::uint64_t>(idx * 8)})'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          4726
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          5339
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          5862
+    Length:          41
+    ReplacementText: 'sycl::fabs(Vector3::dot(newDir, hitdata.normal))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          6133
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          6805
+    Length:          41
+    ReplacementText: 'sycl::fabs(Vector3::dot(newDir, hitdata.normal))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          7764
+    Length:          41
+    ReplacementText: 'sycl::fabs(Vector3::dot(newDir, hitdata.normal))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          7834
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          9777
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          10532
+    Length:          41
+    ReplacementText: 'sycl::fabs(Vector3::dot(newDir, hitdata.normal))'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          10590
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          10978
+    Length:          11
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11010
+    Length:          0
+    ReplacementText: "sycl::nd_item<3> item_ct1, float *dev_buffer,\n                     unsigned int *dev_samples, unsigned int *dev_pathcount,\n                     dev_Scene **dev_scene_g, curandState **d_rand_state_g"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11019
+    Length:          0
+    ReplacementText: "oneapi::mkl::rng::device::uniform<float> distr_ct1;\n    "
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11038
+    Length:          0
+    ReplacementText: '(*'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11049
+    Length:          0
+    ReplacementText: ')'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11064
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11078
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11091
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range().get(2)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11115
+    Length:          11
+    ReplacementText: 'item_ct1.get_local_id(1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11129
+    Length:          10
+    ReplacementText: 'item_ct1.get_group(1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11142
+    Length:          10
+    ReplacementText: 'item_ct1.get_local_range().get(1)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11276
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1032:3: A different random number generator is used. You may need to adjust the code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11280
+    Length:          11
+    ReplacementText: 'oneapi::mkl::rng::device::philox4x32x10<1>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11311
+    Length:          0
+    ReplacementText: '(*'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11325
+    Length:          0
+    ReplacementText: ')'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11438
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11473
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11508
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11543
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11578
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct1, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          11992
+    Length:          0
+    ReplacementText: "oneapi::mkl::rng::device::uniform<float> distr_ct2;\n        "
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          12671
+    Length:          0
+    ReplacementText: ', dev_scene_g'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          12725
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          12760
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          12795
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          12892
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          12927
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          12962
+    Length:          33
+    ReplacementText: 'oneapi::mkl::rng::device::generate(distr_ct2, local_rand_state)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          13423
+    Length:          14
+    ReplacementText: 'sycl::isnan(light.x)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          13442
+    Length:          14
+    ReplacementText: 'sycl::isnan(light.y)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          13461
+    Length:          14
+    ReplacementText: 'sycl::isnan(light.z)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          13955
+    Length:          0
+    ReplacementText: '(*'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          13969
+    Length:          0
+    ReplacementText: ')'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14104
+    Length:          0
+    ReplacementText: "\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14206
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14284
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14309
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14316
+    Length:          10
+    ReplacementText: 'dev_pointLights = sycl::malloc_device<PointLight>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14327
+    Length:          26
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14353
+    Length:          36
+    ReplacementText: pointLightCount
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14389
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14396
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14485
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14510
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14517
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14594
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14619
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14680
+    Length:          0
+    ReplacementText: "\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14774
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14848
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14873
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14880
+    Length:          10
+    ReplacementText: 'dev_materials = sycl::malloc_device<Material>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14891
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14915
+    Length:          32
+    ReplacementText: materialCount
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14947
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          14955
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15036
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15061
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15068
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15139
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15164
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15224
+    Length:          0
+    ReplacementText: "\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15361
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15433
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15458
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15465
+    Length:          10
+    ReplacementText: 'dev_textures = sycl::malloc_device<Texture>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15476
+    Length:          23
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15499
+    Length:          30
+    ReplacementText: textureCount
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15529
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15590
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15655
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15680
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15766
+    Length:          10
+    ReplacementText: 'textureData = (float *)sycl::malloc_device'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15777
+    Length:          22
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15857
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          15954
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16054
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16079
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16089
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16153
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16178
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16286
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16354
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16379
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16435
+    Length:          0
+    ReplacementText: "\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16536
+    Length:          10
+    ReplacementText: 'dev_hdri = sycl::malloc_device<HDRI>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16547
+    Length:          19
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16566
+    Length:          12
+    ReplacementText: '1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16578
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16585
+    Length:          10
+    ReplacementText: 'dev_data = (float *)sycl::malloc_device'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16596
+    Length:          19
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16677
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16684
+    Length:          10
+    ReplacementText: 'dev_cdf = (float *)sycl::malloc_device'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16695
+    Length:          18
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16771
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16880
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16919
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16944
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          16950
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17053
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17078
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17084
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17173
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17198
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17205
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17270
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17295
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17301
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17356
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17381
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17387
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17445
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17470
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17475
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17513
+    Length:          0
+    ReplacementText: ' try '
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17514
+    Length:          0
+    ReplacementText: "\n dpct::device_ext &dev_ct1 = dpct::get_current_device();\n sycl::queue &q_ct1 = dev_ct1.default_queue();"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          17565
+    Length:          31
+    ReplacementText: 'kernelStream = dpct::get_current_device().create_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18058
+    Length:          10
+    ReplacementText: 'dev_scene = sycl::malloc_device<dev_Scene>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18069
+    Length:          20
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18089
+    Length:          17
+    ReplacementText: '1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18106
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18114
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18139
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1032:5: A different random number generator is used. You may need to adjust the code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18143
+    Length:          11
+    ReplacementText: 'oneapi::mkl::rng::device::philox4x32x10<1>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18170
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1032:6: A different random number generator is used. You may need to adjust the code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18174
+    Length:          10
+    ReplacementText: 'd_rand_state = sycl::malloc_device<oneapi::mkl::rng::device::philox4x32x10<1>>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18185
+    Length:          23
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18208
+    Length:          49
+    ReplacementText: 'camera->xRes * camera->yRes'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18257
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18265
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18343
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18368
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18374
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18438
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18463
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18577
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:7: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18594
+    Length:          13
+    ReplacementText: '(dpct::dev_mgr::instance().select_device'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18610
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18613
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:8: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18630
+    Length:          10
+    ReplacementText: '(dev_camera = sycl::malloc_device<Camera>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18641
+    Length:          21
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18662
+    Length:          14
+    ReplacementText: '1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18676
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18677
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18679
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:9: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18696
+    Length:          10
+    ReplacementText: '(dev_meshObjects = sycl::malloc_device<MeshObject>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18707
+    Length:          26
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18733
+    Length:          36
+    ReplacementText: meshObjectCount
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18769
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18770
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18773
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:10: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18790
+    Length:          10
+    ReplacementText: '(dev_tris = sycl::malloc_device<Tri>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18801
+    Length:          19
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18820
+    Length:          22
+    ReplacementText: triCount
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18842
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18843
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18845
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:11: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18862
+    Length:          10
+    ReplacementText: '(dev_bvh = sycl::malloc_device<BVH>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18873
+    Length:          18
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18891
+    Length:          11
+    ReplacementText: '1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18902
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18903
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18905
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:12: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18922
+    Length:          10
+    ReplacementText: '(dev_triIndices = sycl::malloc_device<int>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18933
+    Length:          25
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18958
+    Length:          22
+    ReplacementText: triCount
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18980
+    Length:          0
+    ReplacementText: ', dpct::get_default_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          18981
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19123
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:13: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19140
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19217
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19242
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19244
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:14: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19261
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19306
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19331
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19333
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:15: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19350
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19399
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19424
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19426
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:16: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19443
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19479
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19504
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19506
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:17: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19523
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19589
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19614
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19673
+    Length:          10
+    ReplacementText: 'dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19735
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19760
+    Length:          0
+    ReplacementText: '.wait()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19806
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:18: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19823
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19900
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19925
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19927
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:19: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          19944
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20007
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20032
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20034
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:20: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20051
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20107
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20132
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20134
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:21: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20151
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20205
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20230
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20233
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:22: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20250
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20304
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20329
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20331
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:23: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20348
+    Length:          10
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20414
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20439
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20442
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:24: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20459
+    Length:          18
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20478
+    Length:          11
+    ReplacementText: 'dev_scene_g.get_ptr()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20522
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20524
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:25: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n    /*\n    DPCT1032:26: A different random number generator is used. You may need to adjust the code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20541
+    Length:          18
+    ReplacementText: '(dpct::get_default_queue().memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20560
+    Length:          14
+    ReplacementText: 'd_rand_state_g.get_ptr()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20598
+    Length:          11
+    ReplacementText: 'oneapi::mkl::rng::device::philox4x32x10<1>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20612
+    Length:          0
+    ReplacementText: '.wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20982
+    Length:          4
+    ReplacementText: 'sycl::range<3>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          20994
+    Length:          44
+    ReplacementText: '1, camera->yRes / ty + 1, camera->xRes / tx + 1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21045
+    Length:          4
+    ReplacementText: 'sycl::range<3>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21058
+    Length:          6
+    ReplacementText: 1, ty, tx
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21136
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1049:4: The workgroup size passed to the SYCL kernel may exceed the limit. To get the device limit, query info::device::max_work_group_size. Adjust the workgroup size if needed.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21140
+    Length:          54
+    ReplacementText: "kernelStream->submit(\n      [&](sycl::handler &cgh) {\n        dev_buffer.init(*kernelStream);\n        dev_samples.init(*kernelStream);\n        dev_pathcount.init(*kernelStream);\n        dev_scene_g.init(*kernelStream);\n        d_rand_state_g.init(*kernelStream);\n\n        auto dev_buffer_ptr_ct1 = dev_buffer.get_ptr();\n        auto dev_samples_ptr_ct1 = dev_samples.get_ptr();\n        auto dev_pathcount_ptr_ct1 = dev_pathcount.get_ptr();\n        auto dev_scene_g_ptr_ct1 = dev_scene_g.get_ptr();\n        auto d_rand_state_g_ptr_ct1 = d_rand_state_g.get_ptr();\n\n        cgh.parallel_for(\n          sycl::nd_range<3>(blocks * threads, threads), \n          [=](sycl::nd_item<3> item_ct1) {\n            setupKernel(item_ct1, dev_buffer_ptr_ct1, dev_samples_ptr_ct1, dev_pathcount_ptr_ct1, dev_scene_g_ptr_ct1, d_rand_state_g_ptr_ct1);\n          });\n      });"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21194
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21197
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:27: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21214
+    Length:          35
+    ReplacementText: '(kernelStream->wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21255
+    Length:          152
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21432
+    Length:          0
+    ReplacementText: "\ncatch (sycl::exception const &exc) {\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\n  std::exit(1);\n}"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21550
+    Length:          0
+    ReplacementText: ' try '
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21608
+    Length:          4
+    ReplacementText: 'sycl::range<3>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21623
+    Length:          56
+    ReplacementText: '1, scene->camera.yRes / ty + 1, scene->camera.xRes / tx + 1'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21686
+    Length:          4
+    ReplacementText: 'sycl::range<3>'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21707
+    Length:          6
+    ReplacementText: 1, ty, tx
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21763
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1049:28: The workgroup size passed to the SYCL kernel may exceed the limit. To get the device limit, query info::device::max_work_group_size. Adjust the workgroup size if needed.\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21771
+    Length:          69
+    ReplacementText: "kernelStream->submit(\n          [&](sycl::handler &cgh) {\n            dev_buffer.init(*kernelStream);\n            dev_samples.init(*kernelStream);\n            dev_pathcount.init(*kernelStream);\n            dev_scene_g.init(*kernelStream);\n            d_rand_state_g.init(*kernelStream);\n\n            auto dev_buffer_ptr_ct1 = dev_buffer.get_ptr();\n            auto dev_samples_ptr_ct1 = dev_samples.get_ptr();\n            auto dev_pathcount_ptr_ct1 = dev_pathcount.get_ptr();\n            auto dev_scene_g_ptr_ct1 = dev_scene_g.get_ptr();\n            auto d_rand_state_g_ptr_ct1 = d_rand_state_g.get_ptr();\n\n            cgh.parallel_for(\n              sycl::nd_range<3>(numBlocks * threadsPerBlock, threadsPerBlock), \n              [=](sycl::nd_item<3> item_ct1) {\n                renderingKernel(item_ct1, dev_buffer_ptr_ct1, dev_samples_ptr_ct1, dev_pathcount_ptr_ct1, dev_scene_g_ptr_ct1, d_rand_state_g_ptr_ct1);\n              });\n          });"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: true
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21840
+    Length:          1
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21843
+    Length:          0
+    ReplacementText: "        /*\n        DPCT1003:29: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n        */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21851
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21876
+    Length:          35
+    ReplacementText: '(kernelStream->wait(), 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          21921
+    Length:          160
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22089
+    Length:          0
+    ReplacementText: "\ncatch (sycl::exception const &exc) {\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\n  std::exit(1);\n}"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22091
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22165
+    Length:          0
+    ReplacementText: ' try '
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22172
+    Length:          31
+    ReplacementText: 'bufferStream = dpct::get_current_device().create_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22206
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:30: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22210
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22235
+    Length:          25
+    ReplacementText: '(bufferStream->memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22274
+    Length:          10
+    ReplacementText: 'dev_buffer.get_ptr(*bufferStream)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22310
+    Length:          3
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22313
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22337
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22352
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22358
+    Length:          130
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22490
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:31: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22507
+    Length:          25
+    ReplacementText: '(bufferStream->memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22550
+    Length:          13
+    ReplacementText: 'dev_pathcount.get_ptr(*bufferStream)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22592
+    Length:          3
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22595
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22619
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22634
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22640
+    Length:          130
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22796
+    Length:          0
+    ReplacementText: "\ncatch (sycl::exception const &exc) {\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\n  std::exit(1);\n}"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22815
+    Length:          0
+    ReplacementText: ' try '
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22837
+    Length:          31
+    ReplacementText: 'bufferStream = dpct::get_current_device().create_queue()'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22871
+    Length:          0
+    ReplacementText: "    /*\n    DPCT1003:32: Migrated API does not return error code. (*, 0) is inserted. You may need to rewrite this code.\n    */\n"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22875
+    Length:          11
+    ReplacementText: int
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22900
+    Length:          25
+    ReplacementText: '(bufferStream->memcpy'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22933
+    Length:          11
+    ReplacementText: 'dev_samples.get_ptr(*bufferStream)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22966
+    Length:          3
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22969
+    Length:          24
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          22993
+    Length:          14
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          23008
+    Length:          0
+    ReplacementText: ', 0)'
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          23014
+    Length:          130
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          23164
+    Length:          0
+    ReplacementText: "\ncatch (sycl::exception const &exc) {\n  std::cerr << exc.what() << \"Exception caught at file:\" << __FILE__ << \", line:\" << __LINE__ << std::endl;\n  std::exit(1);\n}"
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          23166
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+  - FilePath:        '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Offset:          23608
+    Length:          9
+    ReplacementText: ''
+    ConstantFlag:    ''
+    ConstantOffset:  0
+    InitStr:         ''
+    NewHostVarName:  ''
+    BlockLevelFormatFlag: false
+MainSourceFilesDigest:
+  - MainSourceFile:  '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+    Digest:          a7c44466c99ba4f1b3dd9ccfa6c93f64
+DpctVersion:     2021.3.0
+MainHelperFileName: dpct
+USMLevel:        restricted
+FeatureMap:
+  device.hpp:
+    dev_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    device_ext:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    device_info:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    exception_handler:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    get_current_device:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    get_default_queue:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    get_tid:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+  dpct.hpp:
+    non_local_include_dependency:
+      IsCalled:        true
+      CallerSrcFiles:
+        - ''
+      FeatureName:     ''
+  memory.hpp:
+    device_memory:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_accessor:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_free:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_malloc_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d_3d_pitch_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_2d_pitch_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_3d:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_3d_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    dpct_memcpy_detail:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    get_buffer_T:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    get_buffer_byte_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    global_memory_alias:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    mem_mgr:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    memcpy_direction:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    memory_region:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    memory_traits:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    pitched_data:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    typedef_buffer_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+    typedef_byte_t:
+      IsCalled:        true
+      CallerSrcFiles:
+        - '/home/kike/Desktop/TFG/dpct/renderer/tfg-pathtracer/src/tfg-pathtracer/kernel.cu'
+      FeatureName:     ''
+...
