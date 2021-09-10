@@ -37,7 +37,7 @@ public:
 		generateCDF();
 	}
 
-	HDRI::HDRI(std::string filepath) {
+	HDRI(std::string filepath) {
 
 		int width, height;
 

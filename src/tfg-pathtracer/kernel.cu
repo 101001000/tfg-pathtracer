@@ -600,7 +600,7 @@ cudaError_t renderSetup(Scene* scene) {
     dim3 threads(tx, ty);
 
     // Launch a kernel on the GPU with one thread for each element.
-    setupKernel << <blocks, threads, 0, kernelStream >> > ();
+    setupKernel <<<blocks, threads, 0, kernelStream >>> ();
 
     cudaStatus = cudaStreamSynchronize(kernelStream);
     if (cudaStatus != cudaSuccess) {
@@ -621,7 +621,7 @@ void renderCuda(Scene* scene, int sampleTarget) {
 
     for (int i = 0; i < sampleTarget; i++) {
 
-        renderingKernel << <numBlocks, threadsPerBlock, 0, kernelStream >> > ();
+        renderingKernel <<<numBlocks, threadsPerBlock, 0, kernelStream >>> ();
 
         cudaError_t cudaStatus = cudaStreamSynchronize(kernelStream);
         if (cudaStatus != cudaSuccess) {
