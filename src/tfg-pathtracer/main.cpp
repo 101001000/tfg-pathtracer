@@ -64,11 +64,7 @@ void startRender(RenderData& data, Scene &scene) {
 	memset(data.rawPixelBuffer, 0, pars.width * pars.height * 4 * sizeof(float));
 	memset(data.beautyBuffer, 0, pars.width * pars.height * 4 * sizeof(unsigned char));
 
-	cudaError_t cudaStatus = renderSetup(&scene);
-	if (cudaStatus != cudaSuccess) {
-		fprintf(stderr, "renderCuda failed!");
-		return;
-	}
+	renderSetup(&scene);
 
 	t = std::thread(renderCuda, &scene, pars.sampleTarget);
 
@@ -83,7 +79,7 @@ void getRenderData(RenderData& data) {
 	int* pathCountBuffer = new int[width * height];
 
 	getBuffer(data.rawPixelBuffer, pathCountBuffer, width * height);
-	cudaMemGetInfo(&data.freeMemory, &data.totalMemory);
+	//cudaMemGetInfo(&data.freeMemory, &data.totalMemory);
 	flipY(data.rawPixelBuffer,width, height);
 	clampPixels(data.rawPixelBuffer, width, height);
 	applysRGB(data.rawPixelBuffer, width, height);
@@ -168,7 +164,7 @@ int main(int argc, char* argv[]) {
 
 	t.join();
 
-	cudaDeviceReset();
+	//cudaDeviceReset();
 
 	window.close();
 }

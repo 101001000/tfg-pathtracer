@@ -1,10 +1,10 @@
 #include "Camera.hpp"
 #include "Scene.hpp"
-#include "cuda_runtime.h"
+#include "HDRI.hpp"
 
 #pragma once
 
-cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size);
+void getBuffer(float* pixelBuffer, int* pathcountBuffer, int size);
 
 struct HitData {
 
@@ -37,7 +37,7 @@ void printHDRISampling(HDRI hdri, int samples);
 
 void renderCuda(Scene* scene, int sampleTarget);
 
-cudaError_t renderSetup(Scene* scene);
+void renderSetup(Scene* scene);
 
 int getSamples();
 

@@ -39,6 +39,8 @@ struct dev_Scene {
 
 };
 
+typedef oneapi::mkl::rng::device::philox4x32x10<1> curandState;
+
 //TODO HACER ESTO CON MEMORIA DINÁMICA PARA ELIMINAR EL MÁXIMO DE 1920*1080
 
 dpct::global_memory<float, 1> dev_buffer(1920 * 1080 * 4);
@@ -53,13 +55,16 @@ the code.
 */
 dpct::global_memory<curandState *, 0> d_rand_state_g;
 
-sycl::queue *kernelStream, bufferStream;
+sycl::queue *kernelStream, *bufferStream;
 
 long textureMemory = 0;
 long geometryMemory = 0;
 
 void generateHitData(Material* material, HitData& hitdata, Hit hit,
-                     dev_Scene **dev_scene_g) {
+                     dev_Scene **_dev_scene_g) {
+
+
+    dev_Scene* dev_scene_g = *_dev_scene_g;
 
     Vector3 tangent, bitangent, normal;
 
@@ -141,7 +146,10 @@ void generateHitData(Material* material, HitData& hitdata, Hit hit,
 
 void setupKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
                  unsigned int *dev_samples, unsigned int *dev_pathcount,
-                 dev_Scene **dev_scene_g, curandState **d_rand_state_g) {
+                 dev_Scene **_dev_scene_g, curandState **_d_rand_state_g) {
+
+    dev_Scene* dev_scene_g = *_dev_scene_g;
+    curandState* d_rand_state_g = *_d_rand_state_g;
 
     int x = item_ct1.get_local_id(2) +
             item_ct1.get_group(2) * item_ct1.get_local_range().get(2);
@@ -454,7 +462,7 @@ void renderingKernel(sycl::nd_item<3> item_ct1, float *dev_buffer,
 
     //light = clamp(light, 0, 10);
 
-    if (!sycl::isnan(light.x) && !sycl::isnan(light.y) && !sycl::isnan(light.z)) {
+    if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
         if (sa > 0) {
             dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
