@@ -1,6 +1,6 @@
 \documentclass[11pt]{report}
  
- \usepackage[x11names,table]{xcolor}
+\usepackage[x11names,table]{xcolor}
  
 \usepackage[spanish]{babel} %Español 
 \usepackage{amsmath}
@@ -8,20 +8,21 @@
 \usepackage{listings}
 \usepackage{color}
 \usepackage{vmargin}
-\usepackage{hyperref}
 \usepackage{graphbox}
 
 \usepackage{pgf-pie}  
 \usepackage{chronology}
 \usepackage{float}
 \usepackage{pgfplots}
-\usepackage{url}
 \usepackage[utf8x]{inputenc}
 \usepackage[TS1,T1]{fontenc}
 \usepackage{array, booktabs}
 \usepackage{caption}
 \usepackage{subcaption}
 \DeclareCaptionFont{blue}{\color{LightSteelBlue3}}
+
+\PassOptionsToPackage{hyphens}{url}
+\usepackage[breaklinks=true]{hyperref}
 
 \newcommand{\foo}{\color{LightSteelBlue3}\makebox[0pt]{\textbullet}\hskip-0.5pt\vrule width 1pt\hspace{\labelsep}}
 \newcommand{\lstfont}[1]{\color{#1}\scriptsize\ttfamily}

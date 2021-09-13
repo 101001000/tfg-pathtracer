@@ -184,11 +184,20 @@ __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
 
 __device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1) {
 
+    if (scene->pointLightCount <= 0) {
+        pdf = 0;
+        return Vector3::Zero();
+    }
+
     PointLight light = scene->pointLights[(int)(scene->pointLightCount * r1)];
 
-    pdf = scene->pointLightCount / (2.0 * PI);
+    pdf = ((float)scene->pointLightCount) / (2.0 * PI);
 
     Vector3 newDir = (light.position - point).normalized();
+
+    Ray shadowRay(point + newDir * 0.001, newDir);
+    Hit shadowHit = throwRay(shadowRay, scene);
+    if (shadowHit.valid) return Vector3();
 
     float dist = (light.position - point).length();
 
@@ -239,9 +248,7 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
         Vector3 newDir = -scene->hdri->texture.reverseSphericalMapping(iu, iv).normalized();
 
         Ray shadowRay(point + newDir * 0.001, newDir);
-
         Hit shadowHit = throwRay(shadowRay, scene);
-
         if (shadowHit.valid) return Vector3();
 
         Vector3 hdriValue = scene->hdri->texture.getValueFromUV(iu, iv);
@@ -310,33 +317,29 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
     Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
 
     float brdfPdf = DisneyPdf(ray, hitdata, newDir);
-
     float hdriPdf;
-    float pointPdf;
+    float pointPdf = 0;
 
     Vector3 hdriLightCalc = hdriLight(ray, &scene, nearestHit.position, hitdata, r1, r2, r3, hdriPdf);
-    Vector3 pointLightCalc = pointLight(ray, hitdata, &scene, nearestHit.position, r1, pointPdf);
+    Vector3 pointLightCalc = pointLight(ray, hitdata, &scene, nearestHit.position, pointPdf, r1);
+    Vector3 brdfLightCalc = hitdata.emission * (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
 
-    float w1 = hdriPdf / (hdriPdf + brdfPdf);
-    float w2 = brdfPdf / (hdriPdf + brdfPdf);
+    float w1 = hdriPdf  / (hdriPdf + pointPdf + brdfPdf);
+    float w2 = pointPdf / (hdriPdf + pointPdf + brdfPdf);
+    float w3 = brdfPdf  / (hdriPdf + pointPdf + brdfPdf);
 
-    if (brdfPdf <= 0) return;
-
-    brdfPdf = 1/(2*PI);
-
-   // hitLight = reduction * hdriLightCalc;
+    hitLight = reduction * (w1 * hdriLightCalc + w2 * pointLightCalc + w3 * brdfLightCalc);
 
     reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
-
 }
 
 __device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bouncedDir, float r1, float r2, float r3) {
 
-    //bouncedDir = DisneySample(incomingRay, hitdata, r1, r2, r3);
+    bouncedDir = DisneySample(incomingRay, hitdata, r1, r2, r3);
     //bouncedDir = CosineSampleHemisphere(r1, r2).normalized();
-    bouncedDir = uniformSampleSphere(r1, r2).normalized();
+    //bouncedDir = uniformSampleSphere(r1, r2).normalized();
 
-    if (Vector3::dot(hitdata.normal, bouncedDir) < 0) bouncedDir *= -1;
+    //if (Vector3::dot(hitdata.normal, bouncedDir) < 0) bouncedDir *= -1;
 }
 
 __global__ void renderingKernel() {
@@ -397,10 +400,6 @@ __global__ void renderingKernel() {
         calculateBounce(ray, hitdata, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
 
         shade(*scene, ray, hitdata, nearestHit, bouncedDir, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), hitLight, reduction);
-
-        float hdriPdf;
-
-        //Vector3 hLight = hdriLight(ray, scene, nearestHit.position, hitdata, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), hdriPdf);;
 
         light += hitLight;
 
@@ -611,7 +610,9 @@ cudaError_t renderSetup(Scene* scene) {
 
 //TODO quitar variables globales pasando por parámetro el puntero.
 
-void renderCuda(Scene* scene, int sampleTarget) {
+cudaError_t renderCuda(Scene* scene, int sampleTarget) {
+
+    cudaError_t cudaStatus;
 
     int tx = THREADSIZE;
     int ty = THREADSIZE;
@@ -628,6 +629,8 @@ void renderCuda(Scene* scene, int sampleTarget) {
             fprintf(stderr, "cudaDeviceSynchronize returned error code %d after launching addKernel!\n", cudaStatus);
         }
     }
+
+    return cudaStatus;
 }
 
 cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {

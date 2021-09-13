@@ -4,7 +4,7 @@
 
 #pragma once
 
-void getBuffer(float* pixelBuffer, int* pathcountBuffer, int size);
+cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size);
 
 struct HitData {
 
@@ -35,9 +35,9 @@ void printPdfMaterial(Material material, int samples);
 void printBRDFMaterial(Material material, int samples);
 void printHDRISampling(HDRI hdri, int samples);
 
-void renderCuda(Scene* scene, int sampleTarget);
+cudaError_t renderCuda(Scene* scene, int sampleTarget);
 
-void renderSetup(Scene* scene);
+cudaError_t renderSetup(Scene* scene);
 
 int getSamples();
 

@@ -27,7 +27,7 @@ struct RenderParameters {
 	unsigned int width, height;
 	unsigned int sampleTarget;
 
-	RenderParameters(unsigned int width, unsigned int height, unsigned int sampleTarget) : width(width), height(height) , sampleTarget(sampleTarget) {};
+	RenderParameters(unsigned int width, unsigned int height, unsigned int sampleTarget) : width(width), height(height), sampleTarget(sampleTarget) {};
 	RenderParameters() : width(1280), height(720), sampleTarget(100) {};
 };
 
@@ -54,7 +54,7 @@ struct RenderData {
 	};
 };
 
-void startRender(RenderData& data, Scene &scene) {
+void startRender(RenderData& data, Scene& scene) {
 
 	RenderParameters pars = data.pars;
 
@@ -79,8 +79,8 @@ void getRenderData(RenderData& data) {
 	int* pathCountBuffer = new int[width * height];
 
 	getBuffer(data.rawPixelBuffer, pathCountBuffer, width * height);
-	//cudaMemGetInfo(&data.freeMemory, &data.totalMemory);
-	flipY(data.rawPixelBuffer,width, height);
+	cudaMemGetInfo(&data.freeMemory, &data.totalMemory);
+	flipY(data.rawPixelBuffer, width, height);
 	clampPixels(data.rawPixelBuffer, width, height);
 	applysRGB(data.rawPixelBuffer, width, height);
 	HDRtoLDR(data.rawPixelBuffer, data.beautyBuffer, width, height);
@@ -98,7 +98,7 @@ int main(int argc, char* argv[]) {
 
 	//Scene scene = Scene::sceneBuilder(std::string("..\\..\\..\\..\\Scenes\\Clock\\"));
 
-	Scene scene = loadScene(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Sphere\\"));
+	Scene scene = loadScene(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Clock\\"));
 
 	RenderData data;
 
@@ -145,11 +145,11 @@ int main(int argc, char* argv[]) {
 
 		printf("\rkPaths/s: %f, %fGB of a total of %fGB used, %d/%d samples. %f seconds running, %d total paths",
 			((float)data.pathCount / (float)ms_int.count()),
-			(float)(data.totalMemory - data.freeMemory) / (1024*1024*1024),
+			(float)(data.totalMemory - data.freeMemory) / (1024 * 1024 * 1024),
 			(float)data.totalMemory / (1024 * 1024 * 1024),
 			data.samples,
 			data.pars.sampleTarget,
-			((float)(ms_int).count())/1000,
+			((float)(ms_int).count()) / 1000,
 			data.pathCount);
 
 		text.setString(std::to_string(data.samples));
@@ -164,7 +164,7 @@ int main(int argc, char* argv[]) {
 
 	t.join();
 
-	//cudaDeviceReset();
+	cudaDeviceReset();
 
 	window.close();
 }

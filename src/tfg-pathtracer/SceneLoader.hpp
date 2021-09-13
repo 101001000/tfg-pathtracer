@@ -86,15 +86,20 @@ static Scene loadScene(std::string path) {
 				case 0:
 					material.albedoTextureID = scene.textureCount();
 					colorSpace = CS::sRGB;
+					break;
 				case 1:
 					material.emissionTextureID = scene.textureCount();
 					colorSpace = CS::sRGB;
+					break;
 				case 2:
 					material.roughnessTextureID = scene.textureCount();
+					break;
 				case 3:
 					material.metallicTextureID = scene.textureCount();
+					break;
 				case 4:
 					material.normalTextureID = scene.textureCount();
+					break;
 				}
 
 				scene.addTexture(Texture(path + "Textures\\" + name + "_" + mapnames[j] + ".bmp", colorSpace));

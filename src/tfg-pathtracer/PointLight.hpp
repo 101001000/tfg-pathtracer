@@ -12,7 +12,7 @@ public:
 
 	PointLight(Vector3 _position, Vector3 _radiance) {
 		position = _position;
-		radiance = radiance;
+		radiance = _radiance;
 	}
 
 };
