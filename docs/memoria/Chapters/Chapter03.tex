@@ -4,15 +4,15 @@ En el capítulo anterior se definió la implementación básica para visualizar 
 	
 \section{Desenfoque: Modelo de lente fina}
 	
-Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ``Bokeh`` y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
+Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ''Bokeh'' y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
 
-Para solventar el problema del enfoque perfecto se va a hacer uso de un modelo de cámara denominado modelo de lente fina. Este modelo es una simplificación de lo que sería una simulación física de unas lentes reales. Al simplificar los cálculos, se pierden artefactos y desperfectos deseados como la aberración cromática o la distorsión de lentes, pero a cambio se obtiene la simplicidad de implementación.
+Para solventar el problema del enfoque perfecto se hace uso de un modelo de cámara denominado modelo de lente fina. Este modelo es una simplificación de lo que sería una simulación física de unas lentes reales. Al simplificar los cálculos, se pierden artefactos y desperfectos deseados como la aberración cromática o la distorsión de lentes, pero a cambio se obtiene la simplicidad de implementación.
 
-Para activar este efecto, es necesario compilar con la constante \code{BOKEH} definida. Esto desbloqueará la parte del código que hace el cálculo del desenfoque. 
+Para activar este efecto, es necesario compilar con la constante \code{BOKEH} definida. Esto desbloqueará la parte del código que hace el cálculo del desenfoque, ubicado en \autoref{cod:bokeh} 
 	
 Este nuevo método añade a la clase \code{Camera} dos nuevas variables, por un lado \code{focusDistance} y por otro lado \code{aperture}. La primera define la distancia a la que se encuentra el plano de enfoque, y la segunda, la apertura en f-stops del iris de la cámara. 
 
-El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara es el siguiente:
+El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara se muestra de manera visual en la \autoref{cod:bokeh} y es el siguiente:
 
 \begin{enumerate}
 		
@@ -25,7 +25,7 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
 \end{enumerate}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:bokeh}, caption={Código de desenfoque}]
 	
 	#if BOKEH
 	
@@ -59,9 +59,11 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{blurring}
-	\caption{}
-	\label{fig:label}
+	\caption{Esquema cámara modelo de lente fina}
+	\label{fig:thinlensecamera}
 \end{figure}
+
+El resultado final es un desenfoque configurable a partir de la distancia de enfoque. Es posible también aumentar la cantidad de desenfoque reduciendo el número de f-stops, que consecuentemente aumentará la apertura del iris. La \autoref{fig:focusboxes} muestra un ejemplo de la modificación de distancia de enfoque mencionada.
 
 \begin{figure}[H]
 \label{fig:focusboxes}
@@ -82,10 +84,7 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
   \end{minipage}
 \end{figure}
 	
-	
-El resultado final es un desenfoque configurable a partir de la distancia de enfoque. Es posible también aumentar la cantidad de desenfoque reduciendo el número de f-stops, que consecuentemente aumentará la apertura del iris.
-
-	
+		
 \section{Texturas}
 	
 El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante. En la implementación se ha añadido una clase \code{Texture} que contiene dos valores enteros \code{width} y \code{height}, que indican la altura y anchura de la matriz de datos \code{data}. La carga se hace a partir de un constructor que toma como parámetro la dirección de una imagen en formato .bmp y dividirá el valor de cada canal y cada pixel por 256 con el fin de limitar el rango de valores en [0,1). Los valores \code{width} y \code{height} son extraídos de la cabecera. El constructor admite un parámetro opcional \code{colorSpace}, que determina si es necesario convertir la imagen cargada de espacio de color. Por el momento solo se soportan dos espacios de color, el espacio Lineal y el espacio sRGB, que son los más comunes.
@@ -96,10 +95,11 @@ El uso de colores planos en los materiales limita la capacidad de imitación de 
 
 Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas \code{u,v}. Ambas coordenadas \code{u} y \code{v} son valores de punto flotante comprendidos entre [0,1]. \code{u} indica la coordenada horizontal mientras que \code{v} indica la coordenada vertical. Estas coordenadas son diferentes a las coordenadas \code{u,v} explicadas en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} aunque tengan el mismo nombre.
 
-También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes.
+También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes. Dicha transformación queda contemplada en \autoref{cod:getval}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:getval}, caption={Código para obtener valor de una textura}]
+	
 	__host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
 	
         Vector3 pixel;
@@ -123,27 +123,26 @@ Hasta ahora, la luz que llegaba a la escena desde el fondo es una radiación hom
 	
 La iluminación basada en imagen ha sido uno de los elementos más relevantes en las técnicas para el renderizado fotorrealista. Se utiliza ampliamente en la industria cinematográfica debido a la complejidad visual que aporta a una escena 3D porque permite captar la iluminación de entornos reales y posteriormente añadirla en escenas digitales. El hecho de poder trasladar la iluminación a un escenario virtual facilita la composición de modelos tridimensionales en películas y series de televisión, donde es necesario juntar una grabación real con un elemento generado por ordenador.
 
-Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuentes de luz formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (del inglés High Dynamic Range Image). A diferencia de las imágenes tradicionales, las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. El uso de las imágenes HDRI no se limita a la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena.
+Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuentes de luz formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (del inglés High Dynamic Range Image). A diferencia de las imágenes tradicionales, las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. El uso de las imágenes HDRI no se limita a la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena. Un ejemplo de este tipo de iluminación se aprecia en la \autoref{fig:hdriexample}
 
 		
 \begin{figure}[H]
+	\label{fig:hdriexample}
     \centering
 	\includegraphics[width=0.7\textwidth]{hdriexample}
 	\caption{Escena iluminada con una imagen HDRI de estudio, nótese como la luz superior incide directamente en la esfera acorde a la dirección}
-	\label{fig:hdriexample}
 \end{figure}
 
 La implementación de esta técnica en el motor de render viene dada por el uso de una imagen en formato .hdr (imágenes en punto flotante). Cada píxel de esta imagen se interpreta como una pequeña fuente de luz direccional en el infinito, orientada hacia el centro de la escena. Así pues, los rayos que no interseccionan en la escena con ningún elemento se considera que interseccionan en el infinito con el \code{HDRI}. Por esta razón, al detectar que un rayo sale de la escena, se obtiene la dirección de este, y esta dirección se traduce en las coordenadas polares de la imagen \code{HDRI}. Una vez se tienen las coordenadas polares, es posible obtener el valor lumínico del píxel al que apunta dicho rayo. Este será el valor lumínico que se utilice para dicho camino.
 	
-	
-	
-	
-Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir dos funciones que transforman coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
+
+Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir dos funciones que transforman coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping} definida en \autoref{cod:sphericalmapping} y su inversa \code{reverseSphericalMapping} definida en \autoref{cod:reversesphericalmapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
 
 \label{sphericalmapping}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:sphericalmapping}, caption={Código para calcular las coordenadas u,v a través de un vector en una esfera de radio determinado}]
+	
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
 
         // Point is normalized to radius 1 sphere
@@ -162,7 +161,7 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
 \end{minipage}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:reversesphericalmapping}, caption={Función inversa al mapeo esférico}]
 		
 	__host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
 
@@ -184,10 +183,11 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
 
 \subsection{Filtrado}
 			
-Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixele cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente, muchos visualizadores de imágenes no muestran los píxeles naturales, sino una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{P} comprendido entre los cuatro píxeles más cercanos es la suma ponderada de la distancia del punto a cada píxel en cada dimensión. 	
+Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixele cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente, muchos visualizadores de imágenes no muestran los píxeles naturales, sino una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{x} comprendido entre los cuatro píxeles más cercanos es la suma ponderada de la distancia del punto a cada píxel en cada dimensión. 	
 	
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
+	
 	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
         
         float x = u * width;

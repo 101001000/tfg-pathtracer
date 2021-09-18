@@ -12,7 +12,7 @@ En este capítulo se procede a dar un esquema básico de los fundamentos de este
 {\displaystyle L_{\text{o}}(\mathbf {x} ,\omega _{\text{o}})=L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}})\ +\int _{\Omega }f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})L_{\text{i}}(\mathbf {x} ,\omega _{\text{i}})(\omega _{\text{i}}\cdot \mathbf {n} )\operatorname {d} \omega _{\text{i}}}
 \]
 
-La Ecuación de Renderizado \cite{kajiya1986rendering} aparece por primera vez en 1986 junto al algoritmo de Path Tracing, siendo este algoritmo una propuesta para resolverla. Es el pilar de la visualización 3d fotorrealista, ya que simula de una manera suficientemente precisa la interacción de la luz en una escena tridimensional. En este trabajo se utiliza una interpretación más moderna que sustituye términos como el ''término geométrico'' y adapta dicha ecuación al estado del arte.
+La Ecuación de Renderizado \cite{kajiya1986rendering} aparece por primera vez en 1986 junto al algoritmo de Path Tracing, siendo este algoritmo una propuesta para resolverla. Es el pilar de la visualización 3D fotorrealista, ya que simula de una manera suficientemente precisa la interacción de la luz en una escena tridimensional. En este trabajo se utiliza una interpretación más moderna que sustituye términos como el ''término geométrico'' y adapta dicha ecuación al estado del arte.
 
 La interpretación de esta ecuación es la siguiente: Para un punto $\mathbf {x}$ del espacio y un ángulo $\omega _{\text{o}}$ desde el cual se observa a dicho punto, cuál es la cantidad de energía lumínica que el observador recibe $L_{\text{o}}$. La interpretación geométrica se muestra en la \autoref{fig:renderingequation}.
 
@@ -336,11 +336,27 @@ Para la implementación se ha hecho uso del algoritmo Fast Minimum Storage Ray/T
 
 \subsection{Kernel principal}
 	
-El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algoritmo descrito en la \autoref{fig:algorithmscheme}, donde el número máximo de rebotes es una constante definida en tiempo de compilación como \code{MAX\_BOUNCES}. La paralelización se hace a nivel de píxel, aunque existen distintos tipos de paralelización aplicable.
+El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algoritmo descrito en la \autoref{fig:algorithmscheme}, donde el número máximo de rebotes es una constante definida en tiempo de compilación como \code{MAX\_BOUNCES}. La paralelización se hace a nivel de píxel, es decir, por cada bloque CUDA bidimensional, habrá una equivalencia a un grupo de píxeles del sensor.
 
-Este tipo de paralelización cuenta con la ventaja de ofrecer localidad espacial hasta el primer rebote. Para escenas abiertas, la gran mayoría de los bloques no sufrirán del fenómeno de ''branching'', ya que los píxeles más  . Este método cuenta con limitaciones tras realizar un rebote aleatorio, es común que los propios hilos divergen ya que puede que algunos hilos realicen un solo rebote mientras que otros realizen \code{MAX\_BOUNCES}. 
+Este tipo de paralelización cuenta con la ventaja de ofrecer cierto grado de localidad espacial en varios tipos de escena. Para escenas abiertas, la gran mayoría de los bloques no sufrirán del fenómeno de ''branching'', ya que la mayoría de caminos no intersecan con ningún objeto más que el cielo. Este método cuenta con limitaciones tras realizar un rebote aleatorio. Es común que los propios hilos divergen ya que puede que algunos hilos realicen un solo rebote mientras que otros realizen \code{MAX\_BOUNCES} - 1.
 
-La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques estánd distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Estos parámetros se definen en \code{cod:kernelpars}.
+En la \autoref{fig:bounces} se muestra un mapa de calor para una escena abierta, realizado con Eleven Renderer. Los distintos colores indican el número de rebotes necesarios para cada píxel. Véase por ejemplo que las zonas de cielo cuentan con 0 rebotes debido a que no intersecan con nada, mientras que las partes más ocultas cuentan con un mayor número de rebotes. Esta breve visualización muestra como existe localidad bidimensional en el número de rebotes, de manera que justifica el enfoque de paralelización a nivel de píxel.
+
+\begin{figure}[H]
+\label{fig:bounces}
+	\centering
+	\includegraphics[width=\textwidth]{bounces}
+	
+	\colorbox{red}{\strut \color{white}{0 bounces}}
+	\colorbox{yellow}{\strut \color{black}{1 bounce}}
+	\colorbox{green}{\strut \color{black}{2 bounces}}
+	\colorbox{blue}{\strut \color{white}{3 bounces}}
+	\colorbox{purple}{\strut \color{white}{4 bounces}}
+
+	\caption{Mapa de calor para el número de rebotes de cada píxel}
+\end{figure}
+
+La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques estánd distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Estos parámetros se definen en \autoref{cod:kernelpars}.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[label={cod:kernelpars}, caption={Selección de parámetros para el kernel principal}]
@@ -354,7 +370,7 @@ La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el
 \end{lstlisting}
 \end{minipage}
 
-Resulta interesante conocer el número de hilos óptimo por cada bloque, por lo que se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}. En esta figura aparece por primera vez el término kPath/s. Como la eficiencia es un campo esencial en el renderizado 3d, Eleven renderer cuenta con unas pocas funciones que dan una breve información del estado actual del motor. Uno de estos datos es el número global de caminos que se trazan por segundo. La medida kPath/s es útil de manera comparativa para una misma escena, ya que indica el rendimiento general del motor. En el caso de la comparativa del número de hilos, aquellas ejecuciones de 8 hilos por dimensión, son las que han mostrado mayor número de caminos trazados por segundo, de manera que este es el número óptimo y el usado para el resto de la implementación.
+Resulta interesante conocer el número de hilos óptimo por cada bloque, por lo que se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}. En esta figura aparece por primera vez el término kPath/s. Como la eficiencia es un campo esencial en el renderizado 3D, Eleven renderer cuenta con unas pocas funciones que dan una breve información del estado actual del motor. Uno de estos datos es el número global de caminos que se trazan por segundo. La medida kPath/s es útil de manera comparativa para una misma escena, ya que indica el rendimiento general del motor. En el caso de la comparativa del número de hilos, aquellas ejecuciones de 8 hilos por dimensión, son las que han mostrado mayor número de caminos trazados por segundo, de manera que este es el número óptimo y el usado para el resto de la implementación.
 
 \begin{figure}[H]
 \centering
