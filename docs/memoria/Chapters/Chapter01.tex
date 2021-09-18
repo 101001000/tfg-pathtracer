@@ -11,7 +11,7 @@ No obstante, la implementación de este sistema de renderizado peca de una gran 
 
 Este trabajo cubre brevemente las bases teóricas de un motor de renderizado fotorrealista con características a la orden del día de otros motores comerciales, además de haber realizado una implementación en CUDA. Además, este trabajo hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
 
-La implementación cuenta con características cercanas al estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney \autoref{burley2012physically}; permite el uso de mapas de textura y además funciona en GPU.
+La implementación cuenta con características cercanas al estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney \cite{burley2012physically}; permite el uso de mapas de textura y además funciona en GPU.
 
 Un aspecto importante en cuanto a la implementación es que se hace uso del menor número de librerías posibles, con el fin de indagar a fondo en la arquitectura de un motor de renderizado de Path Tracing de manera íntegra. Así pues, se desmitifica el trabajo que normalmente se delega a las librerías gráficas, y se expone de manera clara el funcionamiento de cada pieza de un motor de renderizado de Path Tracing en GPU.
 
@@ -36,6 +36,8 @@ Hasta ahora se ha hablado de las implementaciones de código abierto, pero es im
 \item Maxon: Redshift
 \item Pixar: Renderman
 \item Chaos Group: V-Ray
+
+La gran mayoría de los motores mencionados funcionan exclusivamente con aceleradores de NVIDIA debido a que están implementados con CUDA. De la misma manera, Eleven Renderer hará uso de esta misma API.
 
 \end{itemize}
 
@@ -71,3 +73,5 @@ A continuación se muestra una línea del tiempo con los hitos logrados:
 	
 	\end{tabular}
 	\end{table}
+
+Cabe destacar que toda figura es original y que todas las muestras y comparaciones visuales de renderizado han sido realizadas con Eleven Renderer salvo excepciones que están debidamente señaladas.

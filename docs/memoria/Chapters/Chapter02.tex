@@ -14,7 +14,7 @@ En este capítulo se procede a dar un esquema básico de los fundamentos de este
 
 La Ecuación de Renderizado \cite{kajiya1986rendering} aparece por primera vez en 1986 junto al algoritmo de Path Tracing, siendo este algoritmo una propuesta para resolverla. Es el pilar de la visualización 3d fotorrealista, ya que simula de una manera suficientemente precisa la interacción de la luz en una escena tridimensional. En este trabajo se utiliza una interpretación más moderna que sustituye términos como el ''término geométrico'' y adapta dicha ecuación al estado del arte.
 
-La interpretación de esta ecuación es la siguiente: Para un punto $\mathbf {x}$ del espacio y un ángulo $\omega _{\text{o}}$ desde el cual se observa a dicho punto, cuál es la cantidad de energía lumínica que el observador recibe $L_{\text{o}}$.
+La interpretación de esta ecuación es la siguiente: Para un punto $\mathbf {x}$ del espacio y un ángulo $\omega _{\text{o}}$ desde el cual se observa a dicho punto, cuál es la cantidad de energía lumínica que el observador recibe $L_{\text{o}}$. La interpretación geométrica se muestra en la \autoref{fig:renderingequation}.
 
 El primer término $L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}})$ indica la luz que dicho punto $\mathbf {x}$ emite, así pues se podrán modelar materiales que emitan luz propia y no dependan de energía externa.
 
@@ -29,8 +29,8 @@ El tercer coeficiente $(\omega _{\text{i}}\cdot \mathbf {n})$ es el producto de 
 \begin{figure}[H]
     \centering
 	\includegraphics[width=0.5\textwidth]{renderingequation}
-	\caption{Interpretación geométrica del término de integración la ecuación de renderizado}
-	\label{fig:label}
+	\caption{Interpretación geométrica del término de integración de la ecuación de renderizado}
+	\label{fig:renderingequation}
 \end{figure}
 
 
@@ -53,6 +53,8 @@ Así pues el procedimiento general es el siguiente:
 	\item Comprobar si se ha alcanzado el número máximo de rebotes, en caso negativo se calcula la dirección a la que rebota dicho rayo y se vuelve al paso 2.
 	\item Se añade al píxel la luz que contiene dicho rayo.
 \end{enumerate}
+
+Este procedimiento queda más claro en la \autoref{fig:algorithmscheme} donde se utilizan los nombres de las funciones utilizadas en la implementación.
 
 \begin{figure}[H]
     \centering
@@ -102,11 +104,11 @@ Para ello si un objeto \code{Object} contiene un atributo \code{int* array}, hab
 \end{figure}
 
 
-La función \code{startRender}, tras realizar toda la copia de los elementos a la GPU, ejecuta un kernel que configura algunos parámetros iniciales. Este kernel \code{setupKernel} se ejecuta de manera síncrona y se hace cargo de inicializar los bufferes de píxeles y contador de rayos, inicializar \code{curand} (la librería utilizada para generar números aleatorios en CUDA) y por último, enlazar cada \code{MeshObject} con sus pertinentes triángulos. Esto es llevado a cabo con un puntero a una posición de la lista global de triángulos, ya que por motivos que posteriormente se explican en \hyperref[BVH]{Estructuras de Aceleración} es conveniente almacenar todos los triángulos por separado. 
+La función \code{startRender}, tras realizar toda la copia de los elementos a la GPU, ejecuta un kernel que configura algunos parámetros iniciales. \code{setupKernel} cuyo código se muestra en \autoref{cod:setupkernel}, se ejecuta de manera síncrona y se hace cargo de inicializar los buffers de píxeles y contador de rayos, inicializar \code{curand} (la librería utilizada para generar números aleatorios en CUDA) y por último, enlazar cada \code{MeshObject} con sus pertinentes triángulos. Esto es llevado a cabo con un puntero a una posición de la lista global de triángulos, ya que por motivos que posteriormente se explican en \hyperref[BVH]{Estructuras de Aceleración} es conveniente almacenar todos los triángulos por separado. 
 
 
-
-\begin{lstlisting}
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:setupkernel}, caption={Kernel de configuración inicial}]
 	
 	__global__ void setupKernel() {
 
@@ -135,7 +137,8 @@ La función \code{startRender}, tras realizar toda la copia de los elementos a l
 		}
 	}
 \end{lstlisting}
-	
+\end{minipage}
+
 Una vez la escena está correctamente configurada en la GPU, se crea un hilo nuevo que ejecutará en bucle el kernel de renderizado tantas iteraciones como muestras se hayan definido en los parámetros \code{RenderParameters}. Es necesario el uso de la librería \code{std::thread} para este proceso, ya que este bucle de llamadas a la GPU es un proceso bloqueante. El uso de dos hilos, uno para la ejecución de los kernels de renderizado y otro para la recolección de datos de la GPU de manera asíncrona, permite una previsualización dinámica del resultado del motor. Más detalles sobre este proceso se describen en el apartado \hyperref[progressiverender]{Renderizado Progresivo}.
 
 En este punto, el algoritmo está ejecutándose en la GPU. Para mostrar el resultado se crea una ventana con la librería multiplataforma \code{SFML}. Esta librería permite mostrar en pantalla una imagen en formato RGB de 8 bits. Para poder adaptar el resultado del algoritmo a una imagen visible es necesario aplicar una serie de funciones de postprocesado. \code{getRenderData} se encarga de aplicar estas funciones y obtener una imagen postprocesada visible, también conocida en informática gráfica como "Beauty Pass".
@@ -159,9 +162,11 @@ Por cada píxel por el que se traza un camino es necesario añadir la radiación
 
 \[{newAccumulatedLight = \frac{oldAccumulatedLight * samples}{samples + 1} + \frac{newLight}{samples + 1}}\]
 	
-Se acompaña el código hecho para la acumulación de muestras. \code{dev\_samples[]} es una variable global que almacena un contador con el número de muestras acumuladas hasta el momento para un píxel determinado.
+Dicha radiación queda reflejada en cada píxel siguiendo el código mostrado en \autoref{cod:sampleaccumulation} donde \code{dev\_samples[]} es una variable global que almacena un contador con el número de muestras acumuladas hasta el momento para un píxel determinado y \code{dev\_buffer[]} almacena la radiación total por píxel hasta el momento. Por otro lado
+la función \code{isnan} es necesaria para evitar errores numéricos, puesto que en determinadas escenas se han encontrado artefactos gráficos.
 
-\begin{lstlisting}
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:sampleaccumulation}, caption={Código para la acumulación de luz por cada píxel}]
 	
 	unsigned int sa = dev_samples[idx]; // sa is the number of samples accumulated for this pixel.
 	
@@ -181,21 +186,21 @@ Se acompaña el código hecho para la acumulación de muestras. \code{dev\_sampl
     }
 	
 \end{lstlisting}
-
-La función \code{isnan} es necesaria para evitar errores numéricos al encontrar artefactos gráficos en determinadas escenas. 
+\end{minipage}
 	
 \subsection{Renderizado Progresivo}
 \label{progressiverender}
 		
-	Una ventaja de los motores de renderizado más modernos es el renderizado progresivo. En el renderizado progresivo, las muestras se van acumulando poco a poco a lo largo de la imagen hasta que terminan por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales y una vez que acumulan las suficientes, pasan a la siguiente sección. Este trabajo utiliza una implementación progresiva con el fin de estar más cerca del estado del arte.
-	
-	Este tipo de implementación se beneficia de la copia de datos asíncrona de la GPU. Mientras el kernel se ejecuta, un flujo de datos secundario hace la copia del buffer de la GPU en la CPU, pudiendo así actualizar la visualización del resultado varias veces por segundo.
+Una ventaja de los motores de renderizado más modernos es el renderizado progresivo. En este proceso, las muestras se van acumulando poco a poco a lo largo de la imagen hasta que terminan por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales y una vez que acumulan las suficientes, pasan a la siguiente sección. Este trabajo utiliza una implementación progresiva con el fin de estar más cerca del estado del arte.
 
-	Este flujo de datos secundario se implementa con el tipo de datos \code{cudastream\_t} de la API de CUDA. Son necesarios dos flujos, uno denominado \code{kernelStream} y otro denominado \code{bufferStream}. Los kernels de inicialización y renderizado corren en el primero, mientras que la función que obtiene el buffer es lanzada en el segundo.
+Este tipo de implementación se beneficia de la copia de datos asíncrona de la GPU. Mientras el kernel se ejecuta, un flujo de datos secundario hace la copia del buffer de la GPU en la CPU, pudiendo así actualizar la visualización del resultado varias veces por segundo.
+
+Este flujo de datos secundario se implementa con el tipo de datos \code{cudastream\_t} de la API de CUDA. Son necesarios dos flujos, uno denominado \code{kernelStream} y otro denominado \code{bufferStream}. Los kernels de inicialización y renderizado corren en el primer flujo, mientras que la función que obtiene el buffer es ejecutada en el segundo flujo. El código \autoref{cod:getbuffer} muestra la copia asíncrona de los buffers a través de la función \code{cudaMemcpyFromSymbolAsync}. También se hace copia del buffer de la suma de rayos emitidos por píxel \code{pathcountBuffer} con el fin de realizar métricas de eficiencia.
+
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:getbuffer}, caption={Código para obtener los buffers de la GPU}]
 	
-	La función que extrae el buffer de píxeles de la GPU a la CPU es la siguiente:
-	
-	\begin{lstlisting}
 	cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
 
 		cudaStreamCreate(&bufferStream);
@@ -212,12 +217,11 @@ La función \code{isnan} es necesaria para evitar errores numéricos al encontra
 
 		return cudaStatus;
 	}
-	\end{lstlisting}
 	
-	\code{getBuffer} hace uso de la función \code{cudaMemcpyFromSymbolAsync} para realizar la copia asíncrona antes mencionada. También se hace copia del buffer de la suma de rayos emitidos por píxel con el fin de realizar métricas de eficiencia.
-	
-	%@todo analisis de movimiento de datos de memoria.
+\end{lstlisting}
+\end{minipage}
 
+%@todo analisis de movimiento de datos de memoria.
 
 \section{Trazado de rayo desde la cámara}
 \label{sec:calculatecameraray}
@@ -226,7 +230,8 @@ Para simular el trazado del rayo desde la cámara hasta la escena, se simula de 
 
 Si se observa un sensor físico real, se puede ver como los píxeles del sensor tienen un área. En la anterior explicación se determina la posición de cada píxel, pero es necesario muestrear a lo largo de todo el área del píxel para simular la realidad, no solo el centro de cada uno. Es por ello que se añade un término aleatorio \code{rx, ry} que se encargará de distribuir las posiciones a lo largo de la zona de cada píxel.
 
-\begin{lstlisting}
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:cameraray}, caption={Trazado de rayo a cámara}]
 	
 	__device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float r1, float r2) {
 
@@ -252,7 +257,8 @@ Si se observa un sensor físico real, se puede ver como los píxeles del sensor 
 	}
 
 \end{lstlisting}
-
+\end{minipage}
+	
 \section{Intersección en la escena}
 \label{sec:throwray}
 
@@ -279,7 +285,8 @@ La información adicional que devuelve esta operación es la siguiente:
 
 Para la implementación se ha hecho uso del algoritmo Fast Minimum Storage Ray/Triangle Intersection\cite{moller1997fast}. En este paper se explica detalladamente el algoritmo de intersección, mientras este trabajo se limita a implementar dicho algoritmo a partir de una adaptación de la implementación en C que el autor ofrece.
 	
-\begin{lstlisting}
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:triintersection}, caption={Adaptación de código Fast Minimum Storage Ray/Triangle Intersection\cite{moller1997fast} a Eleven Renderer}]
 	
 	__host__ __device__ inline bool hit(Ray& ray, Hit& hit) {
 
@@ -325,14 +332,19 @@ Para la implementación se ha hecho uso del algoritmo Fast Minimum Storage Ray/T
 	}
 
 \end{lstlisting}
+\end{minipage}
 
 \subsection{Kernel principal}
 	
-El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algoritmo descrito en la \autoref{fig:algorithmscheme}, donde el número máximo de rebotes es una constante definida en tiempo de compilación como \code{MAX\_BOUNCES}.
+El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algoritmo descrito en la \autoref{fig:algorithmscheme}, donde el número máximo de rebotes es una constante definida en tiempo de compilación como \code{MAX\_BOUNCES}. La paralelización se hace a nivel de píxel, aunque existen distintos tipos de paralelización aplicable.
 
-La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques estánd distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Resulta interesante conocer el número de hilos óptimo por cada bloque, por lo que se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}
+Este tipo de paralelización cuenta con la ventaja de ofrecer localidad espacial hasta el primer rebote. Para escenas abiertas, la gran mayoría de los bloques no sufrirán del fenómeno de ''branching'', ya que los píxeles más  . Este método cuenta con limitaciones tras realizar un rebote aleatorio, es común que los propios hilos divergen ya que puede que algunos hilos realicen un solo rebote mientras que otros realizen \code{MAX\_BOUNCES}. 
 
-\begin{lstlisting}
+La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques estánd distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Estos parámetros se definen en \code{cod:kernelpars}.
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:kernelpars}, caption={Selección de parámetros para el kernel principal}]
+	
     int tx = THREADSIZE;
     int ty = THREADSIZE;
 
@@ -340,16 +352,18 @@ La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el
     dim3 threadsPerBlock(tx, ty);
 	
 \end{lstlisting}
+\end{minipage}
 
+Resulta interesante conocer el número de hilos óptimo por cada bloque, por lo que se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}. En esta figura aparece por primera vez el término kPath/s. Como la eficiencia es un campo esencial en el renderizado 3d, Eleven renderer cuenta con unas pocas funciones que dan una breve información del estado actual del motor. Uno de estos datos es el número global de caminos que se trazan por segundo. La medida kPath/s es útil de manera comparativa para una misma escena, ya que indica el rendimiento general del motor. En el caso de la comparativa del número de hilos, aquellas ejecuciones de 8 hilos por dimensión, son las que han mostrado mayor número de caminos trazados por segundo, de manera que este es el número óptimo y el usado para el resto de la implementación.
 
 \begin{figure}[H]
-\label{fig:threadsize}
 \centering
 \begin{tikzpicture}
 \begin{axis}[
     axis y line = left,
     xlabel = \(THREADSIZE\),
     ylabel = {\(KPaths/s\)},
+	ylabel style={yshift=0.5cm},
 	scaled y ticks=false
 ]
 
@@ -357,6 +371,8 @@ La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el
 coordinates{(1,3517) (2, 7544) (4, 12851) (8, 15480) (16, 14114)};
 \end{axis}
 \end{tikzpicture}
+\caption{Comparación eficiencia con tamaño de bloque}
+\label{fig:threadsize}
 \end{figure}
 
-Tras ejecutar el análisis se concluye que 8 es el tamaño óptimo para el número de hilos por cada dimensión.
+

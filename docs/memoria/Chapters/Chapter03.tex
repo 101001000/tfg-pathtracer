@@ -17,13 +17,14 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
 \begin{enumerate}
 		
 \item Se calcula el rayo original del método anterior, desde la cámara hasta el sensor.
-	
+
 \item Se calcula la intersección de dicho rayo con el plano de enfoque, situado a la distancia \code{focusDistance}. La intersección se denomina \code{focusPoint}.
 	
 \item En vez de emitir el rayo desde el punto de la cámara, se elige un punto aleatorio en el iris \code{iRP} y se emite un rayo desde ahí hasta el punto de enfoque \code{focusPoint}. Este nuevo rayo será un rayo bajo el modelo de cámara de lente fina. Los elementos situados a la distancia de enfoque \code{focusDistance} serán más nítidos que aquellos que no lo estén.
 	
 \end{enumerate}
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 	#if BOKEH
@@ -50,35 +51,36 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
     //Blurred ray
     ray = Ray(orig , focusPoint - orig);
 
-#endif 
+	#endif 
 
 \end{lstlisting}
+\end{minipage}
 
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.7\textwidth]{blurring}
-		\caption{}
-		\label{fig:label}
-	\end{figure}
-	
-	\begin{figure}[H]
-	\label{fig:focusboxes}
-		\centering
-	  \begin{minipage}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{nofocus}
-		\caption{Desenfoque desactivado}
-	  \end{minipage}
-	  \hfill
-	  \begin{minipage}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{focusnear}
-		\caption{Distancia de enfoque 10m}
-	  \end{minipage}
-	  	\hfill
-	  \begin{minipage}[b]{0.3\textwidth}
-		\includegraphics[width=\textwidth]{focusfar}
-		\caption{Distancia de enfoque 30m}
-	  \end{minipage}
-	\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{blurring}
+	\caption{}
+	\label{fig:label}
+\end{figure}
+
+\begin{figure}[H]
+\label{fig:focusboxes}
+	\centering
+  \begin{minipage}[b]{0.3\textwidth}
+	\includegraphics[width=\textwidth]{nofocus}
+	\caption{Desenfoque desactivado}
+  \end{minipage}
+  \hfill
+  \begin{minipage}[b]{0.3\textwidth}
+	\includegraphics[width=\textwidth]{focusnear}
+	\caption{Distancia de enfoque 10m}
+  \end{minipage}
+  	\hfill
+  \begin{minipage}[b]{0.3\textwidth}
+	\includegraphics[width=\textwidth]{focusfar}
+	\caption{Distancia de enfoque 30m}
+  \end{minipage}
+\end{figure}
 	
 	
 El resultado final es un desenfoque configurable a partir de la distancia de enfoque. Es posible también aumentar la cantidad de desenfoque reduciendo el número de f-stops, que consecuentemente aumentará la apertura del iris.
@@ -96,6 +98,7 @@ Puesto que cada textura puede tener distintas resoluciones, es bastante útil de
 
 También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes.
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	__host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
 	
@@ -111,7 +114,8 @@ También resulta útil definir dos parámetros de transformación para las textu
 
         return pixel;
     }
-	\end{lstlisting}
+\end{lstlisting}
+\end{minipage}
 
 \subsection{IBL (Image Based Lightning)}
 	
@@ -136,8 +140,10 @@ La implementación de esta técnica en el motor de render viene dada por el uso 
 	
 Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir dos funciones que transforman coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping} y su inversa \code{reverseSphericalMapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
 
-	\label{sphericalmapping}
-	\begin{lstlisting}
+\label{sphericalmapping}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
 
         // Point is normalized to radius 1 sphere
@@ -152,9 +158,11 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
         limitUV(u,v);
     }
 	
-	\end{lstlisting}
-	
-	\begin{lstlisting}
+\end{lstlisting}
+\end{minipage}
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}
 		
 	__host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
 
@@ -170,14 +178,15 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
         return Vector3(a * px, py, a * pz);
     }
 	
-	\end{lstlisting}
-	
+\end{lstlisting}
+\end{minipage}
 
 
 \subsection{Filtrado}
 			
 Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixele cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente, muchos visualizadores de imágenes no muestran los píxeles naturales, sino una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{P} comprendido entre los cuatro píxeles más cercanos es la suma ponderada de la distancia del punto a cada píxel en cada dimensión. 	
 	
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
         
@@ -204,7 +213,8 @@ Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoc
         return lerp(lerp(v1, v2, a), lerp(v3, v4, a), b);
 	}
 \end{lstlisting}
-	
+\end{minipage}	
+
 Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado de manera que resulta conveniente analizar el posible impacto en la eficiencia. Para comprobar esto se ha renderizado la misma escena con y sin filtrado:
 
 		
@@ -240,7 +250,7 @@ A nivel artístico resulta muy útil definir la normal para cada intersección e
 \end{figure}
 
 	
-La mayor parte de la información acerca de los mapas de normales se ha obtenido en \url{https://learnopengl.com/Advanced-Lighting/Normal-Mapping}, donde se explican las nociones teóricas sobre estos
+La mayor parte de la información acerca de los mapas de normales se ha obtenido en LearnOpenGL.com \cite{learnopengl}, donde se explican las nociones teóricas sobre estos.
 	
 Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utiliza para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues, la conversión de un color a una normal se hace con el siguiente código: \code{Vector3 localNormal = (ncolor * 2) - 1;} ya que las coordenadas de la normal se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
 	
@@ -255,7 +265,7 @@ Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se en
 	
 Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
 	
-El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en \url{https://github.com/mmikk/MikkTSpace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de ello. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}, como se explica en el árticulo de \url{https://learnopengl.com/Advanced-Lighting/Normal-Mapping}.
+El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en su repositorio \cite{mikktspace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de ello. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}, como se explica en el árticulo de LearnOpenGL \cite{learnopengl}
 
 Para hacer uso de la implementación MikkTSpace tan solo hay que definir un archivo adicional que enlace las funciones de callback, las cuales solicitarán parámetros para el cálculo de las tangentes tales como las posiciones de los vértices, el número de triángulos etc.
 
@@ -269,16 +279,18 @@ Un arreglo sencillo consiste en aplicar el método conocido como Smooth Shading.
 Para este método es necesario precalcular una normal por cada vértice, algo que hacen casi todos los programas de diseño 3D. En el caso de los ficheros .obj, estas son definidas con el prefijo "vn". Una vez se cuenta con dichas normales, es necesario interpolarlas. 
 
 Por ello, en la función \code{hit()} de \code{Tri} se añade lo siguiente:
-	
+
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 			
 	#if SMOOTH_SHADING 
 
-        Vector3 shadingNormal  = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
-        Vector3 shadingTangent = tangents[0] + (tangents[1] - tangents[0]) * u + (tangents[2] - tangents[0]) * v;
+    Vector3 shadingNormal  = normals[0] + (normals[1] - normals[0]) * u + (normals[2] - normals[0]) * v;
+    Vector3 shadingTangent = tangents[0] + (tangents[1] - tangents[0]) * u + (tangents[2] - tangents[0]) * v;
 
-	\end{lstlisting}
-			
+\end{lstlisting}
+\end{minipage}
+	
 Así pues tanto la normal y la tangente son interpoladas \autoref{fig:smoothshading} a partir de las coordenadas baricéntricas del triángulo \code{u,v}, las cuales indican la distancia a cada vértice.
 	
 \begin{figure}[H]
@@ -305,10 +317,11 @@ Así pues tanto la normal y la tangente son interpoladas \autoref{fig:smoothshad
 \end{figure}
 
 
-Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Terminator Arctifact". El uso de una normal interpolada implica que se está haciendo uso de una normal que no coincide con la posición de la superficie. Esta discrepancia crea artefactos visuales presentes hasta en las implementaciones más actualizadas de Blender Cycles \autoref{fig:shadowterminatorcycles}. Mauricio Vives en \url{https://gist.github.com/pixnblox/5e64b0724c186313bc7b6ce096b08820} propone una solución a este problema y es computar una nueva posición de la superficie a partir de la proyección de la antigua posición al plano que define cada vértice y su normal. Estas tres proyecciones son interpoladas de la misma manera que con las normales, haciendo uso de las coordenadas baricéntricas.
+Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Terminator Arctifact". El uso de una normal interpolada implica que se está haciendo uso de una normal que no coincide con la posición de la superficie. Esta discrepancia crea artefactos visuales presentes hasta en las implementaciones más actualizadas de Blender Cycles \autoref{fig:shadowterminatorcycles}. Mauricio Vives en \cite{shadowterminatorrepo} propone una solución a este problema y es computar una nueva posición de la superficie a partir de la proyección de la antigua posición al plano que define cada vértice y su normal. Estas tres proyecciones son interpoladas de la misma manera que con las normales, haciendo uso de las coordenadas baricéntricas.
 	
 \autoref{cod:shadowterminator} muestra el código adaptado a Eleven Renderer.
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[label={cod:shadowterminator}, caption={Código Shadow Terminator}]
 	
 	Vector3 p0 = projectOnPlane(geomPosition, vertices[0], normals[0]);
@@ -322,6 +335,7 @@ Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Ter
 	hit.position = convex ? shadingPosition : geomPosition;
 	
 \end{lstlisting}
+\end{minipage}
 
 El resultado de la implementación en Eleven Renderer se muestra en la \autoref{fig:shadowterminatoreleven}
 
@@ -372,5 +386,5 @@ Así pues se procede a explicar estos atributos sintetizados:
 	
 \end{itemize}
 
-En Eleven Renderer se ha hecho uso de una implementación ya existente\cite{knightcrawler25} de las ecuaciones del shader de Disney adaptada sin utilizar la transmisión. El propio Disney tiene en Github implementaciones de este shader disponibles para su uso en \url{https://github.com/wdas/brdf/blob/main/src/brdfs/disney.brdf}.
+En Eleven Renderer se ha hecho uso de una implementación ya existente \cite{knightcrawler25} de las ecuaciones del shader de Disney adaptada sin utilizar la transmisión. El propio Disney tiene en Github implementaciones de este shader disponibles \cite{disneyrepo}.
 	

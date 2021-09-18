@@ -410,6 +410,8 @@ __global__ void renderingKernel() {
 
     //light = clamp(light, 0, 10);
 
+    light = i * Vector3(1.0/MAXBOUNCES);
+
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
         if (sa > 0) {

@@ -33,6 +33,7 @@ En el caso de Eleven Renderer, una nueva función \code{pointLight} es utilizada
 
 La función \code{pdf} se obtiene a partir del número de luces. Por otro lado, hay que hacer un cambio de dominio, ya que hasta el momento la función \code{pdf} solo tiene en cuenta la luz de las luces y no toda la luz de la escena. Este cambio de dominio se hace dividiendo entre el área de media esfera \code{2.0 * PI}, ya que es el área del que se mide la radiación entrante.
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 	__device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1, Vector3& newDir) {
@@ -53,7 +54,7 @@ La función \code{pdf} se obtiene a partir del número de luces. Por otro lado, 
 	}
 	
 \end{lstlisting}
-
+\end{minipage}
 
 \subsection{Muestreo por importancia de entorno}
 	
@@ -92,7 +93,7 @@ La función que determina la iluminación de un píxel viene dada por la respues
 	\label{fig:CDF}
 \end{figure}
 
-
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 	__host__ __device__ inline void generateCDF() {
@@ -119,11 +120,13 @@ La función que determina la iluminación de un píxel viene dada por la respues
 	}
 	
 \end{lstlisting}
+\end{minipage}
 
 La función de cálculo de CDF implementada realiza dos simplificaciones en comparación al método propuesto en la literatura. En primer lugar simplifica la dimensionalidad del array CDF en una sola dimensión (en la literatura se utiliza una segunda dimensión que acumula un sumatorio de radiancia con el fin de acelerar la búsqueda). En segundo lugar, realiza el muestreo por importancia utilizando las coordenadas de las texturas en píxeles y no en coordenadas esféricas (normalmente se muestrea a través de las coordenadas esféricas con el fin de evitar deformaciones en los polos). Se ha determinado que este método modificado es más intuitivo para una versión preeliminar, aunque queda sujeto a cambios en posteriores versiones. 
 
 Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminación, bastará con buscar en el CDF el intervalo que comprende el valor aleatorio dado. Esta operación de búsqueda también tiene coste logarítmico, ya que es una versión ligeramente modificada de la búsqueda binaria corriente. Este tipo de búsqueda está disponible en la librería estándar de C++ \code{std::lower\_bound}, pero se ha realizado la implementación manual para CUDA. Esta acción es realizada por la función \code{sample}, que a partir de un número aleatorio, devolverá un píxel del HDRI, siendo los más brillantes los más comunes.
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 	// Lower_bound kinda function.
@@ -161,6 +164,7 @@ Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminació
 	}
 	
 \end{lstlisting}
+\end{minipage}
 
 Por último, como se está muestreando en mayor proporción los píxeles más brillantes, es necesario ofrecer una función \code{pdf} apropiada. La intuición sugiere que la posibilidad de elegir un píxel entre el resto es la iluminación de dicho píxel dividida entre la suma de toda la iluminación del HDRI \code{(dv.x + dv.y + dv.z) / radianceSum}. No obstante aún faltan matices. Puesto que se está calculando la luz de un solo píxel en vez de toda la imagen, es necesario multiplicar el \code{pdf} por el número total de píxeles de la imagen \code{texture.width * texture.height}. Además, se aplica el cambio de dominio explicado en \autoref{sub:nee}. El cálculo de esta función \code{pdf} es una extensión del cálculo en NEE, ya que se está considerando un HDRI como un conjunto de luces.
 
@@ -173,7 +177,7 @@ La función BRDF aporta distintas intensidades lumínicas dependiendo de la dire
 
 Un ejemplo que ayuda a visualizar este caso son los materiales perfectamente reflectantes (espejos). Los materiales reflectantes tienen un valor \code{BRDF = 1} para todo rayo entrante simétrico al saliente con la normal como eje de reflexión. Para el resto de direcciones el valor será 0. Por esta razón no tiene sentido emitir rayos aleatorios donde se conozca que el resultado del BRDF será 0.
 
-Así pues, la función \code{sample} deberá emitir más muestrás allá donde la función \code{brdf} sea mayor. La implementación utilizada contiene una función \code{DisneySample} que se encarga de esto. Un análisis más detallado de la derivación de esta función a partir de las ecuaciones del shader de Disney se puede encontrar en la implementación de este en el motor de renderizado Autodesk Arnold \url{https://shihchinw.github.io/2015/07/implementing-disney-principled-brdf-in-arnold.html}
+Así pues, la función \code{sample} deberá emitir más muestrás allá donde la función \code{brdf} sea mayor. La implementación utilizada contiene una función \code{DisneySample} que se encarga de esto. Un análisis más detallado de la derivación de esta función a partir de las ecuaciones del shader de Disney se puede encontrar en la implementación de este en el motor de renderizado Autodesk Arnold \cite{arnoldimplementation}
 
 A partir de esta función de muestreo, el autor de la implementación utilizada ofrece también la función \code{pdf}. Cabe decir que ambas funciones han sido modificadas y adaptadas para la implementación de Eleven Renderer, eliminando por ejemplo los términos de transmisión en ambas funciones.
 
@@ -202,7 +206,7 @@ El muestreo por importancia es una herramienta que mejora considerablemente los 
 
 El cálculo de este escalar se realiza a través de una heurística y debe tener una propiedad esencial: $\sum{w(M_i)} = 1$. En primer lugar el enfoque más ingénuo es utilizar escalares constantes que sumen 1. Esto garantizará el uso de todos los métodos de muestreo de manera igualitaria pero con el inconveniente de no aportar ningún tipo de ventaja a los métodos más relevantes. 
 
-Por otro lado, una heurística más acertada e intuitiva es ponderar cada método a partir de su \code{pdf}. Esto quiere decir que será más eficiente dar más importancia al método con mayor \code{pdf}. Con dos tipos de muestreo diferentes \code{M_1, M_2} quedaría así: $w(M_1) = \frac{pdf1}{pdf1 + pdf2}, w(M_2) = \frac{pdf2}{pdf1 + pdf2}$. Se puede comprobar algebraicamente que la suma de ambos pesos es uno.
+Por otro lado, una heurística más acertada e intuitiva es ponderar cada método a partir de su \code{pdf}. Esto quiere decir que será más eficiente dar más importancia al método con mayor \code{pdf}. Con dos tipos de muestreo diferentes $M_1, M_2$ quedaría así: $w(M_1) = \frac{pdf1}{pdf1 + pdf2}, w(M_2) = \frac{pdf2}{pdf1 + pdf2}$. Se puede comprobar algebraicamente que la suma de ambos pesos es uno.
 
 
 En los motores de producción se utiliza por lo general una heurística llamada Power Heuristic debido a que Veach \cite{veach1995optimally} la determina empíricamente mejor. Para Eleven Renderer se ha utilizado heurística de ponderación por \code{pdf} con el fin de ser más comprensivo. En futuras versiones más orientadas a producción se procederá a cambiar esta heurística.
@@ -247,6 +251,7 @@ La operación de generación parte de la generación recursiva de un árbol bina
 
 Los delimitadores son dos puntos que representan el volumen que contiene una geometría. El cálculo de estos se hace cogiendo las coordenadas mínimas y máximas. La operación de unión de estos delimitadores se hace aplicando el mismo esquema de coordenadas mínimas y máximas.
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 	void buildAux(int depth, std::vector<BVHTri>* _tris) {
@@ -291,6 +296,7 @@ Los delimitadores son dos puntos que representan el volumen que contiene una geo
 	}
 	
 \end{lstlisting}
+\end{minipage}
 
 Una duda que puede surgir es cómo se almacenan los triángulos de manera eficiente en estos árboles, ya que almacenar tantas listas como nodos hoja hay, es muy ineficiente en términos de memoria. Aquí es donde entran en juego los índices \code{from} y \code{to} mencionados anteriormente. Se hace uso de una lista de ordenación de triángulos denominada \code{triIndices}, la cual contiene índices de los triángulos en la lista original ordenados por nodos. Los nodo hoja tendrán pues dos índices indicando desde qué índice (\code{from}) hasta qué índice (\code{to}) es necesario leer de manera inclusiva en esta lista para recuperar los triángulos almacenados por dicho nodo.
 
@@ -315,6 +321,7 @@ En el libro Physically based rendering: From theory to implementation \cite{phar
 
 Este método no es práctico y se usa tan solo de forma comparativa. Consiste en elegir la dimensión más grande de la caja que envuelve a los triángulos y partirla por la mitad. Posteriormente se recorrerán todos los triángulos y se dividirán por dicho plano. Para saber si un triángulo se encuentra a un lado o al otro se interpretan los triángulos como un punto en el espacio cuya posición es el centroide.
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 	static void dividePlane(std::vector<BVHTri>* tris, std::vector<BVHTri>* trisLeft, std::vector<BVHTri>* trisRight) {
@@ -359,6 +366,7 @@ Este método no es práctico y se usa tan solo de forma comparativa. Consiste en
 	}
 	
 \end{lstlisting}
+\end{minipage}
 
 \subsubsection{Heurística SAH:}
 	
@@ -369,6 +377,7 @@ El recorrido de árboles es una tarea intuitivamente recursiva y cuenta con una 
 
 Para demostrar esto se ha hecho uso de dos implementaciones de la función de recorrido. La primera es una función recursiva de recorrido de árboles binarios:
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 	__host__ __device__ void transverseAux(Ray ray, Hit& nearestHit, Node& node) {
@@ -389,10 +398,11 @@ Para demostrar esto se ha hecho uso de dos implementaciones de la función de re
 	}
 
 \end{lstlisting}
-
+\end{minipage}
 	
-Karras explica en el blog de desarrolladores de Nvidia \url{https://developer.nvidia.com/blog/thinking-parallel-part-ii-tree-traversal-gpu/} cómo usar las estructuras BVH para detectar colisiones físicas entre objetos en la GPU. Así pues, la segunda implementación viene dada a partir de ciertas modificaciones al código de recorrido propuesto, donde se puede adaptar a un caso más específico como es la intersección de Rayo \- BVH necesaria en Eleven Renderer. Esta implementación rompe con la recursividad a partir de una pila de nodos, quedando así una función iterativa.
+Karras explica en el blog de desarrolladores de Nvidia \cite{karrastransversal} cómo usar las estructuras BVH para detectar colisiones físicas entre objetos en la GPU. Así pues, la segunda implementación viene dada a partir de ciertas modificaciones al código de recorrido propuesto, donde se puede adaptar a un caso más específico como es la intersección de Rayo \- BVH necesaria en Eleven Renderer. Esta implementación rompe con la recursividad a partir de una pila de nodos, quedando así una función iterativa.
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 		
 	__device__ void transverse(Ray ray, Hit& nearestHit) {
@@ -435,6 +445,7 @@ Karras explica en el blog de desarrolladores de Nvidia \url{https://developer.nv
 	}
 	
 \end{lstlisting}
+\end{minipage}
 
 Una breve evaluación de ambas funciones muestran una clara ventaja en la implementación iterativa. Además ha sido necesario limitar la profundidad a 6 nodos debido a las limitaciones mencionadas anteriormente. El uso de más profundidad en el entorno utilizado provoca el bloqueo del kernel
 
@@ -512,11 +523,11 @@ Finalmente es necesario elegir los parámetros para \code{BVH\_DEPTH} y \code{SA
 En el caso de la selección de \code{SAH\_BINS}, Indigo Wald propone 16 como límite \cite{wald2007fast} debido a la insustancial mejora de rendimiento para valores mayores. Esto se ha podido comprobar directamente en Eleven Renderer donde se ha llevado a cabo la construcción y recorrido de BVH para la escena "Standford Dragon" variando la cantidad de contenedores \autoref{fig:sahbins}. Se comprueba que la velocidad de recorrido se estanca para los valores 12-16, mientras que el tiempo de generación permanece lineal.
 
 \begin{figure}[H]
-	\label{fig:sahbins}
 \centering
 \begin{tikzpicture}
+
 \begin{axis}[
-    axis y line = left,
+    axis y line = right,
     xlabel = \(SAH bins\),
     ylabel = {\(\textcolor{blue}{BVH building time (s)}\)},
 	legend style={at={(1,0.1)},anchor=south east},
@@ -529,10 +540,11 @@ coordinates{(4,4.267) (6, 4.418) (8, 4.628) (10, 5.015) (12, 5.440) (14, 5.782) 
 \end{axis}
 
 \begin{axis}[
-    axis y line = right,
+    axis y line = left,
 	axis x line = none,
     xlabel = \(SAH bins\),
     ylabel = {\(\textcolor{red}{KPaths/s}\)},
+	ylabel style={yshift=0.5cm},
 	legend style={at={(1,0)},anchor=south east},
 	scaled y ticks=false
 ]
@@ -543,4 +555,6 @@ coordinates{(4,8310) (6, 12012) (8, 12728) (10, 13100) (12, 13046) (14, 13501) (
 
 \end{axis}
 \end{tikzpicture}
+\caption{Comparación de tiempos de construcción y eficiencia de recorrido para distinto número de contenedores}
+\label{fig:sahbins}
 \end{figure}
