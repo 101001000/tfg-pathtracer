@@ -66,7 +66,6 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
 El resultado final es un desenfoque configurable a partir de la distancia de enfoque. Es posible también aumentar la cantidad de desenfoque reduciendo el número de f-stops, que consecuentemente aumentará la apertura del iris. La \autoref{fig:focusboxes} muestra un ejemplo de la modificación de distancia de enfoque mencionada.
 
 \begin{figure}[H]
-\label{fig:focusboxes}
 	\centering
   \begin{minipage}[b]{0.3\textwidth}
 	\includegraphics[width=\textwidth]{nofocus}
@@ -82,6 +81,8 @@ El resultado final es un desenfoque configurable a partir de la distancia de enf
 	\includegraphics[width=\textwidth]{focusfar}
 	\caption{Distancia de enfoque 30m}
   \end{minipage}
+\caption{Comparación de distintas distancias de enfoque}
+\label{fig:focusboxes}
 \end{figure}
 	
 		
@@ -183,10 +184,17 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
 
 \subsection{Filtrado}
 			
-Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixele cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente, muchos visualizadores de imágenes no muestran los píxeles naturales, sino una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{x} comprendido entre los cuatro píxeles más cercanos es la suma ponderada de la distancia del punto a cada píxel en cada dimensión. 	
+Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixele cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente, muchos visualizadores de imágenes no muestran los píxeles naturales, sino una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{x} comprendido entre los cuatro píxeles más cercanos \code{v1-v4} es la suma ponderada de la distancia del punto a cada píxel en cada dimensión.
+	
+\begin{figure}[H]
+	\label{fig:bilinear}
+	\centering
+	\includegraphics[width=0.3\textwidth]{bilinear}
+	\caption{Interpolación bilineal}
+\end{figure}
 	
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:bilinear}, caption={Código interpolación bilinear}]
 	
 	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
         
@@ -215,46 +223,58 @@ Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoc
 \end{lstlisting}
 \end{minipage}	
 
-Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado de manera que resulta conveniente analizar el posible impacto en la eficiencia. Para comprobar esto se ha renderizado la misma escena con y sin filtrado:
-
-		
-\begin{tikzpicture}
-        \begin{axis}[
-            symbolic x coords={Clock Bilinear Filtering, Clock no filtering},
-            xtick=data,
-			/pgf/number format/.cd,
-			1000 sep={},
-			scaled y ticks=false,
-			ylabel=KPaths/s,
-          ]
-            \addplot[ybar,fill=blue] coordinates {
-                (Clock Bilinear Filtering,   15965)
-                (Clock no filtering,  16093)
-            };
-        \end{axis}
-\end{tikzpicture}
-
+Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado de manera que resulta conveniente analizar el posible impacto en la eficiencia. Para comprobar esto se ha renderizado la misma escena con y sin filtrado en la \autoref{fig:filtercomparaison}. 
 	
 El render sin filtrado es un 0.8\% más rápido, una penalización poco sustancial, de manera que se utilizará el filtrado bilinear de manera predeterminada. Se esperaría que esta penalización fuera mayor debido a la multiplicación de accesos a memoria, pero como se explica en el \autoref{chap:evaluation}, la mayor carga de trabajo reside en las intersecciones con los objetos en la escena.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+       \begin{axis}[
+           symbolic x coords={Bilinear filtering, No filtering},
+           xtick=data,
+		/pgf/number format/.cd,
+		1000 sep={},
+		scaled y ticks=false,
+		ylabel=KPaths/s,
+		ylabel style={yshift=0.5cm},
+         ]
+           \addplot[ybar,fill=blue] coordinates {
+               (Bilinear filtering,   15965)
+               (No filtering,  16093)
+           };
+       \end{axis}
+\end{tikzpicture}
+\caption{Comparación de eficiencia para filtrado / no filtrado}
+\label{fig:filtercomparaison}
+\end{figure}
 	
 \subsection{Mapas de normales}
 		
-A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales \autoref{fig:normalmap}. 
+A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. Un ejemplo de esto es la \autoref{fig:normalmap} donde se puede ver como una simple textura puede simular relieve en la superficie de una esfera a partir de la textura en la \autoref{fig:normalmaptexture}. 
 	
 		
 \begin{figure}[H]
     \centering
-	\includegraphics[width=0.3\textwidth]{normalmap}
+	\includegraphics[width=0.6\textwidth]{normalmap}
 	\caption{Esfera con mapa de normales}
 	\label{fig:normalmap}
 \end{figure}
 
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.3\textwidth]{normalmaptexture}
+	\caption{Textura para mapa de normales}
+	\label{fig:normalmaptexture}
+\end{figure}
+
+
 	
 La mayor parte de la información acerca de los mapas de normales se ha obtenido en LearnOpenGL.com \cite{learnopengl}, donde se explican las nociones teóricas sobre estos.
 	
-Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utiliza para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues, la conversión de un color a una normal se hace con el siguiente código: \code{Vector3 localNormal = (ncolor * 2) - 1;} ya que las coordenadas de la normal se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
+Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utiliza para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues, la conversión de un color a una normal se hace con el siguiente código: \code{localNormal = (color * 2) - 1;} ya que las coordenadas de la normal se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
 	
-Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Los vectores suministrados por los mapas de normales son locales en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores aproximadamente ortogonales.
+Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Los vectores suministrados por los mapas de normales son locales en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores aproximadamente ortogonales. La representación visual de estos tres vectores que forman el espacio tangencial se muestra en la \autoref{fig:tangentspace}.
 
 \begin{figure}[H]
     \centering
@@ -265,7 +285,7 @@ Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se en
 	
 Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
 	
-El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en su repositorio \cite{mikktspace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de ello. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}, como se explica en el árticulo de LearnOpenGL \cite{learnopengl}
+El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en su repositorio \cite{mikktspace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de él. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}. Este proceso de manera más detallada se explica en el árticulo de LearnOpenGL \cite{learnopengl}
 
 Para hacer uso de la implementación MikkTSpace tan solo hay que definir un archivo adicional que enlace las funciones de callback, las cuales solicitarán parámetros para el cálculo de las tangentes tales como las posiciones de los vértices, el número de triángulos etc.
 
@@ -278,10 +298,10 @@ Un arreglo sencillo consiste en aplicar el método conocido como Smooth Shading.
 	
 Para este método es necesario precalcular una normal por cada vértice, algo que hacen casi todos los programas de diseño 3D. En el caso de los ficheros .obj, estas son definidas con el prefijo "vn". Una vez se cuenta con dichas normales, es necesario interpolarlas. 
 
-Por ello, en la función \code{hit()} de \code{Tri} se añade lo siguiente:
+Por ello, en la función \code{hit()} de \code{Tri} se añade el código determinado en \autoref{cod:smoothshading}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:smoothshading}, caption={Código interpolación de normales}]
 			
 	#if SMOOTH_SHADING 
 
@@ -291,7 +311,7 @@ Por ello, en la función \code{hit()} de \code{Tri} se añade lo siguiente:
 \end{lstlisting}
 \end{minipage}
 	
-Así pues tanto la normal y la tangente son interpoladas \autoref{fig:smoothshading} a partir de las coordenadas baricéntricas del triángulo \code{u,v}, las cuales indican la distancia a cada vértice.
+Así pues tanto la normal y la tangente son interpoladas a partir de las coordenadas baricéntricas del triángulo \code{u,v}, las cuales indican la distancia a cada vértice, como se muestra en la \autoref{fig:smoothshading}. El resultado de implementar "Smooth Shading" queda reflejado en las figuras \autoref{fig:smoothshadingoff} y \autoref{fig:smoothshadingon}, donde la primera es un ejemplo de esta característica desactivada y la segunda es un ejemplo de la característica activada.
 	
 \begin{figure}[H]
     \centering
@@ -317,7 +337,7 @@ Así pues tanto la normal y la tangente son interpoladas \autoref{fig:smoothshad
 \end{figure}
 
 
-Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Terminator Arctifact". El uso de una normal interpolada implica que se está haciendo uso de una normal que no coincide con la posición de la superficie. Esta discrepancia crea artefactos visuales presentes hasta en las implementaciones más actualizadas de Blender Cycles \autoref{fig:shadowterminatorcycles}. Mauricio Vives en \cite{shadowterminatorrepo} propone una solución a este problema y es computar una nueva posición de la superficie a partir de la proyección de la antigua posición al plano que define cada vértice y su normal. Estas tres proyecciones son interpoladas de la misma manera que con las normales, haciendo uso de las coordenadas baricéntricas.
+Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Terminator Arctifact". El uso de una normal interpolada implica que se está haciendo uso de una normal que no coincide con la posición de la superficie. Esta discrepancia crea artefactos visuales presentes hasta en las implementaciones más actualizadas de Blender Cycles, véase por ejemplo la \autoref{fig:shadowterminatorcycles}. Mauricio Vives en \cite{shadowterminatorrepo} propone una solución a este problema y es computar una nueva posición de la superficie a partir de la proyección de la antigua posición al plano que define cada vértice y su normal. Estas tres proyecciones son interpoladas de la misma manera que con las normales, haciendo uso de las coordenadas baricéntricas.
 	
 \autoref{cod:shadowterminator} muestra el código adaptado a Eleven Renderer.
 
@@ -386,5 +406,14 @@ Así pues se procede a explicar estos atributos sintetizados:
 	
 \end{itemize}
 
-En Eleven Renderer se ha hecho uso de una implementación ya existente \cite{knightcrawler25} de las ecuaciones del shader de Disney adaptada sin utilizar la transmisión. El propio Disney tiene en Github implementaciones de este shader disponibles \cite{disneyrepo}.
+En Eleven Renderer se ha hecho uso de una implementación ya existente \cite{knightcrawler25} de las ecuaciones del shader de Disney adaptada sin utilizar la transmisión. El propio Disney tiene en Github implementaciones de este shader disponibles \cite{disneyrepo}. Se compara en la \autoref{fig:materialtest} tres parámetros distintos en Eleven Renderer. La primera hilera muestra distintos valores de ''albedo'', la segunda muestra la variación de ''rougness'' incrementando de izquierda a derecha, siendo los materiales de la derecha más lisos. En la tercera hilera se muestra una comparativa del parámetro ''metallic'', siendo los materiales de la derecha más metálicos.
+
+Gracias a la implementación previa de texturas es posible además definir estos valores de manera arbitraria para distintas partes del objeto.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{materialtest}
+	\caption{Comparación de los atributos albedo, roughness y metallic}
+	\label{fig:materialtest}
+\end{figure}
 	

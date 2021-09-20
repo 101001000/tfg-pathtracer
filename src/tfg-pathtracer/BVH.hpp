@@ -379,7 +379,7 @@ public:
 		int bestBin = 0;
 		int bestAxis = 0;
 
-		float bestHeuristic = 1000000000000;
+		float bestHeuristic = std::numeric_limits<float>::max();
 
 		bounds(tris, totalB1, totalB2);
 
@@ -390,34 +390,30 @@ public:
 
 			int count[BVH_SAHBINS];
 
+			// Bin initialization
 			for (int i = 0; i < BVH_SAHBINS; i++) {
 				count[i] = 0;
 				b1s[i] = Vector3();
 				b2s[i] = Vector3();
 			}
 
+			// Bin filling
 			for (int i = 0; i < tris->size(); i++) {
 
-				// El bin en el que cae
-				int bin;
-				
-				if (totalB1[axis] == totalB2[axis]) {
-					bin = 0;
-				}	else {
+				int bin = 0;
+				Vector3 b1, b2;
+
+				// The bin which corresponds to certain triangle is calculated
+				if (totalB1[axis] != totalB2[axis]) {
 					float c = tris->at(i).tri.centroid()[axis];
 					bin = map(c, totalB1[axis], totalB2[axis], 0, BVH_SAHBINS - 1);
 				}
-			
+
 				count[bin]++;
-
-				Vector3 b1, b2;
-
 				bounds(tris->at(i).tri, b1, b2);
-
 				boundsUnion(b1s[bin], b2s[bin], b1, b2, b1s[bin], b2s[bin]);
 			}
-
-	
+			
 			for (int i = 0; i < BVH_SAHBINS; i++) {
 
 				int count1 = 0;
@@ -448,7 +444,6 @@ public:
 		for (int i = 0; i < tris->size(); i++) {
 
 			float c = tris->at(i).tri.centroid()[bestAxis];
-
 			int bin = map(c, totalB1[bestAxis], totalB2[bestAxis], 0, BVH_SAHBINS - 1);
 
 			if (bin < bestBin) {

@@ -29,23 +29,38 @@ El muestreo por importancia de Estimación de Evento Próximo trata de juntar es
 
 Las luces de punto consisten en un punto en el espacio infinitamente pequeño que emite luz de manera uniforme hacia todos los lados. Sin la implementación de la estimación de evento próximo, nunca se recibiría información lumínica de estas luces ya que al ser infinitamente pequeñas no sérian alcanzadas por los caminos. No solo eso, NEE también permite una mejor convergencia en las luces de menor tamaño, puesto que originalmente, las luces tienen menos probabilidades de ser alcanzadas cuanto menor sea su área.
 
-En el caso de Eleven Renderer, una nueva función \code{pointLight} es utilizada. Esta función calcula la luz directa de los puntos de luz. De forma resumida, se elige un punto de luz aleatorio, se toma como radiación inicial el atributo \code{radiance} para dicho punto de luz y se atenúa cuadráticamente con la distancia entre la luz y el punto a sombrear. Este procedimiento es realmente intuitivo si se trata la luz como una esfera y la radiación emitida como el área de dicha esfera. Finalmente se aplica la función BRDF para la dirección a la luz y el coseno con la normal. 
+En el caso de Eleven Renderer, una nueva función \code{pointLight} en \autoref{cod:pointlight} es utilizada. Esta función calcula la luz directa de los puntos de luz. De forma resumida, se elige un punto de luz aleatorio, se toma como radiación inicial el atributo \code{radiance} para dicho punto de luz y se atenúa cuadráticamente con la distancia entre la luz y el punto a sombrear. Este procedimiento es realmente intuitivo si se trata la luz como una esfera y la radiación emitida como el área de dicha esfera. Finalmente se aplica la función BRDF para la dirección a la luz y el coseno con la normal. También es necesario un paso por el que se comprueba si dicho punto es visible por la luz o está obstruído por un objeto, para ello se traza un rayo hasta la luz y se comprueba si interseca con algún triángulo.
 
 La función \code{pdf} se obtiene a partir del número de luces. Por otro lado, hay que hacer un cambio de dominio, ya que hasta el momento la función \code{pdf} solo tiene en cuenta la luz de las luces y no toda la luz de la escena. Este cambio de dominio se hace dividiendo entre el área de media esfera \code{2.0 * PI}, ya que es el área del que se mide la radiación entrante.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:pointlight}, caption={Código de iluminación por luces puntuales}]
 	
-	__device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1, Vector3& newDir) {
+	__device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1) {
 
+		if (scene->pointLightCount <= 0) {
+			pdf = 0;
+			return Vector3::Zero();
+		}
+
+		pdf = ((float)scene->pointLightCount) / (2.0 * PI);
+
+		// Retrieve a random light
 		PointLight light = scene->pointLights[(int)(scene->pointLightCount * r1)];
 
-		pdf = scene->pointLightCount / (2.0 * PI);
-
-		newDir = (light.position - point).normalized();
-
+		Vector3 newDir = (light.position - point).normalized();
+		
 		float dist = (light.position - point).length();
 
+		// Test if the point is visible from the light
+		Ray shadowRay(point + newDir * 0.000001, newDir);
+		Hit shadowHit = throwRay(shadowRay, scene);
+		float shadowDist = (shadowHit.position - point).length();
+
+		if (shadowHit.valid && shadowDist < dist)
+			return Vector3();
+
+		// Quadratic attenuation
 		Vector3 pointLightValue = (light.radiance / (dist * dist));
 
 		Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
@@ -62,7 +77,9 @@ Anteriormente se ha descrito cómo la iluminación HDRI permite resultados visua
 
 Antes de aplicar cualquier tipo de optimización a este método de iluminación, se estaba trazando un rayo de manera ingenua, recibiendo el color de la imagen a partir de las coordenadas esféricas asumiendo una esfera de radio infinito. Para imágenes homogéneas con luminosidad similar en cada píxel. Este método funciona muy bien, pero la mayoría de estas imágenes HDRI consisten en un paisaje con componentes lumínicos condensados como el sol, que actúa como principal fuente de luz.
 
-Esta situación plantea un problema, y es que los focos de luz como puede ser el sol, concentran un gran porcentaje de luminosidad, mientras que el resto de la imagen no. Esto implica que pocas veces se va a recibir información del sol, lo que va a resultar en ''fireflies'' (píxeles que cargan una gran radiación lumínica, por la naturaleza aleatoria de las muestras) \autoref{fig:hdriisoff}. La forma de enfrentar este problema es igual que el resto de muestreo por importancia: Trazar más rayos a los píxeles más luminosos, ya que serán aquellos que más información aporten a la escena. En la implementación se activa y desactiva con la definición \code{\#define HDRIIS = true/false}
+Esta situación plantea un problema, y es que los focos de luz como puede ser el sol, concentran un gran porcentaje de luminosidad, mientras que el resto de la imagen no. Esto implica que pocas veces se va a recibir información del sol, lo que va a resultar en ''fireflies'' (píxeles que cargan una gran radiación lumínica, por la naturaleza aleatoria de las muestras). En la \autoref{fig:hdriisoff} se muestra este fenómeno.
+
+La forma de enfrentar este problema es igual que el resto de muestreo por importancia: Trazar más rayos a los píxeles más luminosos, ya que serán aquellos que más información aporten a la escena. En la implementación se activa y desactiva con la definición \code{\#define HDRIIS = true/false}
 
 \begin{figure}[H]
 \label{fig:hdriis}
@@ -85,6 +102,8 @@ La implementación de este tipo de muestreo por importancia no es trivial. Las i
 El planteamiento general para este método consiste en precomputar un array del tamaño del número total de píxeles de la imagen HDRI, en el que cada elemento cuente con la iluminación acumulada normalizada hasta el momento de cada píxel \autoref{fig:CDF}.
 La función que determina la iluminación de un píxel viene dada por la respuesta logarítmica media de los bastones y conos de los ojos para cada longitud de onda, pero para simplificar se utilizará la suma de cada componente de color. Este array, a efectos prácticos contiene la función de distribución acumulativa discreta normalizada (CDF) y, como está ordenado, es posible hacer búsquedas binarias, las cuales cuentan con una complejidad logarítmica (aproximadamente 25 iteraciones de búsqueda para una imagen de 8K de resolución).
 
+En el código desarrollado para la implementación \autoref{cod:generatecdf}, el primer bucle anidado computa la radiación total de la imagen. Este valor se usa para posteriormente normalizar el \code{CDF} a la vez que se calcula en el segundo bucle anidado.
+
 
 \begin{figure}[H]
     \centering
@@ -94,7 +113,7 @@ La función que determina la iluminación de un píxel viene dada por la respues
 \end{figure}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:generatecdf}, caption={Generación de la función de distribución acumulada}]
 	
 	__host__ __device__ inline void generateCDF() {
 
@@ -127,7 +146,7 @@ La función de cálculo de CDF implementada realiza dos simplificaciones en comp
 Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminación, bastará con buscar en el CDF el intervalo que comprende el valor aleatorio dado. Esta operación de búsqueda también tiene coste logarítmico, ya que es una versión ligeramente modificada de la búsqueda binaria corriente. Este tipo de búsqueda está disponible en la librería estándar de C++ \code{std::lower\_bound}, pero se ha realizado la implementación manual para CUDA. Esta acción es realizada por la función \code{sample}, que a partir de un número aleatorio, devolverá un píxel del HDRI, siendo los más brillantes los más comunes.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:hdriis}, caption={Código para el muestreo por importancia de entorno y función auxiliar}]
 	
 	// Lower_bound kinda function.
 	__host__ __device__ int binarySearch(float* arr, float value, int length) {
@@ -144,7 +163,7 @@ Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminació
 		return to;
 	}
 	
-	__host__ __device__ Vector3 HDRI::sample(float r1) {
+	__host__ __device__ Vector3 sample(float r1) {
 		// Returns position in the array
 		int count = binarySearch(cdf, r1, texture.width * texture.height);
 
@@ -154,7 +173,7 @@ Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminació
 		return Vector3(x, y, 0);
 	}
 	
-	__host__ __device__ float HDRI::pdf(int x, int y) {
+	__host__ __device__ float pdf(int x, int y) {
 
 		Vector3 dv = texture.getValueFromCoordinates(x, y);
 		float theta = (((float)y / (float)texture.height)) * PI;
@@ -181,7 +200,7 @@ Así pues, la función \code{sample} deberá emitir más muestrás allá donde l
 
 A partir de esta función de muestreo, el autor de la implementación utilizada ofrece también la función \code{pdf}. Cabe decir que ambas funciones han sido modificadas y adaptadas para la implementación de Eleven Renderer, eliminando por ejemplo los términos de transmisión en ambas funciones.
 
-Gracias a este muestreo, es posible renderizar materiales metálicos. Anteriormente, la convergencia de estos materiales era lenta e impráctica \autoref{fig:brdfisoff} incluso para un número de muestras muy elevado. Tras aplicar el muestreo por importancia el resultado de los materiales metálicos es mucho más nítido \autoref{fig:brdfison}.
+Gracias a este muestreo, es posible renderizar materiales metálicos. Anteriormente, la convergencia de estos materiales era lenta e impráctica como se aprecia en la \autoref{fig:brdfisoff} incluso para un número de muestras muy elevado. Tras aplicar el muestreo por importancia el resultado de los materiales metálicos es mucho más nítido \autoref{fig:brdfison}.
 
 \begin{figure}[H]
 	\label{fig:brdfis}
@@ -220,13 +239,13 @@ El enfoque más ingenuo y utilizado hasta el momento en este motor de renderizad
 
 Existen diversas formas de estructurar estas jerarquías. Nombrando las más conocidas: Octrees, k-d tree y BVH. En esta implementación se ha usado BVH puesto que se considera que tiene muy buenos resultados.
 
-BVH es acrónimo de "Bounding Volume Hierarchy", traducido como jerarquía del volumen delimitador y consiste en un árbol binario de profundidad definida en el que cada nodo cuenta con un el prisma rectangular que delimita un conjunto de triángulos (en la práctica este prisma consiste en dos puntos en el espacio). Cada nodo interior tiene dos hijos y cada hijo, el volumen delimitador del subconjunto disjunto de los triángulos del nodo padre. Los nodos hoja cuentan con el volumen delimitador y con una lista de los triángulos que contienen.
+BVH es acrónimo de "Bounding Volume Hierarchy", traducido como jerarquía del volumen delimitador y consiste en un árbol binario de profundidad definida en el que cada nodo cuenta con un el prisma rectangular que delimita un conjunto de triángulos (en la práctica este prisma consiste en dos puntos en el espacio). Cada nodo interior tiene dos hijos y cada hijo, el volumen delimitador del subconjunto disjunto de los triángulos del nodo padre. Los nodos hoja cuentan con el volumen delimitador y con una lista de los triángulos que contienen, como se muestra en la \autoref{fig:bvhdiagram}.
 
 \begin{figure}[H]
     \centering
 	\includegraphics[width=0.5\textwidth]{BVH}
 	\caption{División BVH}
-	\label{fig:label}
+	\label{fig:bvhdiagram}
 \end{figure}
 
 De esta manera será posible descartar gran parte de los triángulos comprobando los volúmenes por los cuales interseccionan los rayos.
@@ -237,22 +256,38 @@ El algoritmo empleado es una interpretación del libro PBRT, pero difiere en var
 
 \subsection{Operación de generación de BVH (CPU)}
 
-La operación de generación parte de la generación recursiva de un árbol binario por profundidad, añadiendo información adicional a los nodos.
+La operación de generación parte de la generación recursiva de un árbol binario por profundidad, añadiendo información adicional a los nodos. Esta operación queda definida en \autoref{cod:generatebvh}
 
 \begin{enumerate}
 	
-\item Para cada nodo que contiene un conjunto de triángulos, se calcula el volumen delimitador. Este volumen viene dado por el vértice menor y mayor del volumen \code{b1, b2}.
+\item Para cada nodo que contiene un conjunto de triángulos, se calcula el volumen delimitador. Este volumen viene dado por el vértice menor y mayor del volumen \code{b1, b2}. 
+Los delimitadores son dos puntos que representan el volumen que contiene una geometría. El cálculo de estos se hace cogiendo las coordenadas mínimas y máximas por cada dimensión. Véase \autoref{cod:bounds}
 
-\item Se separa el conjunto de triángulos en dos subconjuntos disjuntos. El cómo se divide este conjunto se delega a la función \code{divideSAH()}, que hará uso de la heurística de superficie de área para decidir qué triángulos van a cada subconjunto.
+\item Se separa el conjunto de triángulos en dos subconjuntos disjuntos. El cómo se divide este conjunto se delega a la función \code{divideSAH()}, que hará uso de la \hyperref[sub:sah]{heurística de superficie de área} para decidir qué triángulos van a cada subconjunto. Distintas funciones de división de triángulos pueden ser usadas en este punto.
 
 \item Finalmente se aplica recursión para los hijos generados en caso de residir en un nodo interior, o se termina la recursión y se almacenan los índices \code{from} y \code{to} de los triángulos que estos contienen en caso de ser un nodo hoja.
 
 \end{enumerate}
 
-Los delimitadores son dos puntos que representan el volumen que contiene una geometría. El cálculo de estos se hace cogiendo las coordenadas mínimas y máximas. La operación de unión de estos delimitadores se hace aplicando el mismo esquema de coordenadas mínimas y máximas.
+\begin{minipage}[c]{0.95\textwidth}
+	\begin{lstlisting}[label={cod:bounds}, caption={Cálculo de delimitadores}]
+
+	static void bounds(Tri tri, Vector3& b1, Vector3& b2) {
+
+		b1.x = minf(tri.vertices[0].x, minf(tri.vertices[1].x, tri.vertices[2].x));
+		b1.y = minf(tri.vertices[0].y, minf(tri.vertices[1].y, tri.vertices[2].y));
+		b1.z = minf(tri.vertices[0].z, minf(tri.vertices[1].z, tri.vertices[2].z));
+
+		b2.x = maxf(tri.vertices[0].x, maxf(tri.vertices[1].x, tri.vertices[2].x));
+		b2.y = maxf(tri.vertices[0].y, maxf(tri.vertices[1].y, tri.vertices[2].y));
+		b2.z = maxf(tri.vertices[0].z, maxf(tri.vertices[1].z, tri.vertices[2].z));
+	}
+	
+\end{lstlisting}
+\end{minipage}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:generatebvh}, caption={Generación recursiva del árbol BVH}]
 	
 	void buildAux(int depth, std::vector<BVHTri>* _tris) {
 
@@ -298,13 +333,13 @@ Los delimitadores son dos puntos que representan el volumen que contiene una geo
 \end{lstlisting}
 \end{minipage}
 
-Una duda que puede surgir es cómo se almacenan los triángulos de manera eficiente en estos árboles, ya que almacenar tantas listas como nodos hoja hay, es muy ineficiente en términos de memoria. Aquí es donde entran en juego los índices \code{from} y \code{to} mencionados anteriormente. Se hace uso de una lista de ordenación de triángulos denominada \code{triIndices}, la cual contiene índices de los triángulos en la lista original ordenados por nodos. Los nodo hoja tendrán pues dos índices indicando desde qué índice (\code{from}) hasta qué índice (\code{to}) es necesario leer de manera inclusiva en esta lista para recuperar los triángulos almacenados por dicho nodo.
+Una duda que puede surgir es cómo se almacenan los triángulos de manera eficiente en estos árboles, ya que almacenar tantas listas como nodos hoja hay, añade una fuerte penalización en términos de memoria. Aquí es donde entran en juego los índices \code{from} y \code{to} mencionados anteriormente. Se hace uso de una lista de ordenación de triángulos denominada \code{triIndices}, la cual contiene índices de los triángulos en la lista original ordenados por nodos \autoref{fig:triindices}. Los nodo hoja tendrán pues dos índices indicando desde qué índice (\code{from}) hasta qué índice (\code{to}) es necesario leer de manera inclusiva en esta lista para recuperar los triángulos almacenados por dicho nodo.
 
 \begin{figure}[H]
     \centering
-	\includegraphics[width=0.5\textwidth]{triIndices}
-	\caption{triIndices}
-	\label{fig:label}
+	\includegraphics[width=0.4\textwidth]{triIndices}
+	\caption{Ejemplo de la ordenación de triángulos a partir de los índices de cada nodo}
+	\label{fig:triindices}
 \end{figure}
 
 Una vez definida la función de generación de árboles BVH solo queda decidir cómo se van a particionar los triángulos en cada nodo.
@@ -322,7 +357,7 @@ En el libro Physically based rendering: From theory to implementation \cite{phar
 Este método no es práctico y se usa tan solo de forma comparativa. Consiste en elegir la dimensión más grande de la caja que envuelve a los triángulos y partirla por la mitad. Posteriormente se recorrerán todos los triángulos y se dividirán por dicho plano. Para saber si un triángulo se encuentra a un lado o al otro se interpretan los triángulos como un punto en el espacio cuya posición es el centroide.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:planeheuristic}, caption={Heurística de división de plano}]
 	
 	static void dividePlane(std::vector<BVHTri>* tris, std::vector<BVHTri>* trisLeft, std::vector<BVHTri>* trisRight) {
 
@@ -369,6 +404,122 @@ Este método no es práctico y se usa tan solo de forma comparativa. Consiste en
 \end{minipage}
 
 \subsubsection{Heurística SAH:}
+\label{sub:sah}	
+
+Esta heurística parte de una simplificación en la estimación de tiempo de recorrido para un nodo.
+
+Para un nodo $N$, con $n$ triángulos, se estima que el tiempo en comprobar las intersecciones con cada triángulo es constante $t_triángulo$, de manera que el tiempo total para un nodo es $n * t_triángulo$. Si este nodo tiene dos hijos, $A$ y $B$, el tiempo en recorrer dicho nodo será $p_A\sum{n_A} + p_B\sum{n_B}$ donde $p$ es la probabilidad de intersecar cada hijo individualmente. La probabilidad de intersecar un nodo se simplifica como el área del volumen delimitador que encierra dicho nodo, de manera que se busca una división de los triángulos que minimice la suma $p_A\sum{n_A} + p_B\sum{n_B}$. El valor de esta suma es la denominada \code{SAH} y como se ha concluído que estima el tiempo de recorrido de un nodo, es necesario construir un árbol BVH para el cual sus nodos cuenten con un valor mínimo de esta estimación de tiempo de recorrido.
+
+Dicho esto, buscar una división de los triángulos que minimicen la fórmula propuesta sería una tarea sencilla si se probara cada combinación de triángulos. No hace falta decir que es inviable comprobar todas las combinaciones para escenas del orden de millones de triángulos, por lo que es necesario aplicar otra simplifiación adicional. Esta simplificación se propone en \cite{wald2007fast}, donde Wald la denomina ''bining''. Por otro lado, PBRT \cite{pharr2016physically} describe esta misma simplificación utilizando el término ''buckets''.
+
+La técnica de ''bining'' se aplica para cada dimensión individualmente. Se divide un nodo en \code{BVH\_SAHBINS} partes iguales y cada una de estas divisiones se considera un ''bin''. Para todos los triángulos, se calcula el ''bin'' en el que se encuentran (utilizando su centroide como punto de división) y se añaden a este. Añadir un triángulo a un ''bin'' significa incrementar la cuenta de triángulos en dicho ''bin'' y recalcular el volumen delimitador teniendo en cuenta el nuevo triángulo. Este primer paso se encuentra en la sección del código \code{//Bin initialization}.
+
+En la figura \autoref{fig:binning} se ejemplifica el primer procedimiento, el contenedor 1 tiene la suma de 2 triángulos y el volumen delimitador asociado $BB1$ mientras que los contenedores 3 y 5 solo cuentan con un triángulo y sus volúmenes delimitadores son $BB3$ y $BB5$ respectivamente.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.5\textwidth]{binning}
+	\caption{Relleno de ''bins''}
+	\label{fig:binning}
+\end{figure}
+
+Se ha explicado como se clasifican los triángulos en contenedores, pero queda pendiente la manera en la que se aprovecha esta clasificación. Se crean \code{BVH\_SAHBINS} nodos hipotéticos. Cada nodo hipotético representa una división entre los contenedores, determinada por un índice entre 0 y \code{BVH\_SAHBINS} - 1. Dicho nodo hipotético contiene dos hijos: el primero cuenta con la unión de los volúmenes delimitadores y la suma de triángulos de todos los contenedores hasta el índice del nodo hipotético. El segundo es igual pero desde el índice hasta el último contenedor. Esta división se encuentra en la sección del código \code{//Bin filling}.
+
+Por útlimo se procederá a calcular la estimación de tiempo de recorrido para cada nodo hipotético, y el nodo que tenga el valor más bajo, será la división de triángulos que se use.
+
+
+\begin{lstlisting}[label={cod:sah}, caption={Función de división por SAH}]
+	
+	static void divideSAH(std::vector<BVHTri>* tris, std::vector<BVHTri>* trisLeft, std::vector<BVHTri>* trisRight) {
+
+		if (tris->size() <= 0)
+			return;
+
+		Vector3 totalB1, totalB2;
+
+		int bestBin = 0;
+		int bestAxis = 0;
+		float bestHeuristic = std::numeric_limits<float>::max();
+
+		bounds(tris, totalB1, totalB2);
+
+		for (int axis = 0; axis < 3; axis++) {
+
+			Vector3 b1s[BVH_SAHBINS];
+			Vector3 b2s[BVH_SAHBINS];
+
+			int count[BVH_SAHBINS];
+
+			// Bin initialization
+			for (int i = 0; i < BVH_SAHBINS; i++) {
+				count[i] = 0;
+				b1s[i] = Vector3();
+				b2s[i] = Vector3();
+			}
+
+			// Bin filling
+			for (int i = 0; i < tris->size(); i++) {
+
+				int bin = 0;
+				Vector3 b1, b2;
+
+				// The bin which corresponds to certain triangle is calculated
+				if (totalB1[axis] != totalB2[axis]) {
+					float c = tris->at(i).tri.centroid()[axis];
+					bin = map(c, totalB1[axis], totalB2[axis], 0, BVH_SAHBINS - 1);
+				}
+
+				count[bin]++;
+				bounds(tris->at(i).tri, b1, b2);
+				boundsUnion(b1s[bin], b2s[bin], b1, b2, b1s[bin], b2s[bin]);
+			}
+			
+			for (int i = 0; i < BVH_SAHBINS; i++) {
+
+				// Tris in the first and second child
+				int count1 = 0;	int count2 = 0;
+
+				// b1, b2 are the boundings for first child, b3, b4 for the second one
+				Vector3 b1, b2, b3, b4;
+
+				// First swept for first child from 0 to i
+				for (int j = 0; j < i; j++) {
+					count1 += count[j];
+					boundsUnion(b1, b2, b1s[j], b2s[j], b1, b2);
+				}
+
+				// Second swept for second child from i to BVH_SAHBINS - 1
+				for (int k = i; k < BVH_SAHBINS; k++) {
+					count2 += count[k];
+					boundsUnion(b3, b4, b1s[k], b2s[k], b3, b4);
+				}
+
+				float heuristic = boundsArea(b1, b2) * (float)count1 + boundsArea(b3, b4) * (float)count2;
+
+				if (heuristic < bestHeuristic) {
+					bestHeuristic = heuristic;
+					bestBin = i;
+					bestAxis = axis;
+				}
+			}
+		}
+		
+		// Tri division depending on the bin
+		for (int i = 0; i < tris->size(); i++) {
+
+			float c = tris->at(i).tri.centroid()[bestAxis];
+			int bin = map(c, totalB1[bestAxis], totalB2[bestAxis], 0, BVH_SAHBINS - 1);
+
+			if (bin < bestBin) {
+				trisLeft->push_back(tris->at(i));
+			}
+			else {
+				trisRight->push_back(tris->at(i));
+			}
+		}
+	}
+
+\end{lstlisting}
 	
 
 \subsection{Operación de recorrido (GPU)}
@@ -378,7 +529,7 @@ El recorrido de árboles es una tarea intuitivamente recursiva y cuenta con una 
 Para demostrar esto se ha hecho uso de dos implementaciones de la función de recorrido. La primera es una función recursiva de recorrido de árboles binarios:
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:bvhtransversalrec}, caption={Recorrido del árbol BVH recursivo}]
 	
 	__host__ __device__ void transverseAux(Ray ray, Hit& nearestHit, Node& node) {
 	
@@ -403,7 +554,7 @@ Para demostrar esto se ha hecho uso de dos implementaciones de la función de re
 Karras explica en el blog de desarrolladores de Nvidia \cite{karrastransversal} cómo usar las estructuras BVH para detectar colisiones físicas entre objetos en la GPU. Así pues, la segunda implementación viene dada a partir de ciertas modificaciones al código de recorrido propuesto, donde se puede adaptar a un caso más específico como es la intersección de Rayo \- BVH necesaria en Eleven Renderer. Esta implementación rompe con la recursividad a partir de una pila de nodos, quedando así una función iterativa.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}
+\begin{lstlisting}[label={cod:bvhtransversalit}, caption={Recorrido del árbol BVH iterativo}]
 		
 	__device__ void transverse(Ray ray, Hit& nearestHit) {
 
@@ -457,12 +608,12 @@ Una breve evaluación de ambas funciones muestran una clara ventaja en la implem
 	width=13cm,
 	enlarge x limits=-1,
 	ybar interval=0.7,
-	symbolic x coords={Suzanne,Standford Bunny,Standford Dragon, test}
+	symbolic x coords={Suzanne,Stanford Bunny,Stanford Dragon, test}
 ]
 \addplot 
-	coordinates {(Standford Dragon,31.03) (test,0)};
+	coordinates {(Stanford Dragon,31.03) (test,0)};
 \addplot 
-	coordinates {(Standford Dragon,56.23) (test,0)};
+	coordinates {(Stanford Dragon,56.23) (test,0)};
 \legend{Recursive,Iterative}
 \end{axis}
 \end{tikzpicture}
@@ -476,8 +627,8 @@ Para justificar el uso de la heurística por superficie de área se muestra una 
 \begin{itemize}
 	
 	\item Suzanne: 968 triángulos
-	\item Standford Bunny: 4968 triángulos
-	\item Standford Dragon: 871306 triángulos
+	\item Stanford Bunny: 4968 triángulos
+	\item Stanford Dragon: 871306 triángulos
 	
 \end{itemize}
 
@@ -485,12 +636,12 @@ Para justificar el uso de la heurística por superficie de área se muestra una 
 	\centering
   \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{bunny}
-    \caption{Standford Bunny.}
+    \caption{Stanford Bunny.}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.4\textwidth}
     \includegraphics[width=\textwidth]{dragon}
-    \caption{Standford Dragon.}
+    \caption{Stanford Dragon.}
   \end{minipage}
 \end{figure}
 
@@ -506,21 +657,23 @@ Esta evaluación ha sido llevada a cabo con los siguientes parámetros:
 	width=13cm,
 	enlarge x limits=-1,
 	ybar interval=0.7,
-	symbolic x coords={Suzanne,Standford Bunny,Standford Dragon, test}
+	symbolic x coords={Suzanne,Stanford Bunny,Stanford Dragon, test}
 ]
 \addplot 
-	coordinates {(Suzanne,0.201) (Standford Bunny,0.215) (Standford Dragon,3.405) (test,3.405)};
+	coordinates {(Suzanne,0.201) (Stanford Bunny,0.215) (Stanford Dragon,3.405) (test,3.405)};
 \addplot 
-	coordinates {(Suzanne,0.233) (Standford Bunny,0.342) (Standford Dragon,8.410) (test,3.405)};
+	coordinates {(Suzanne,0.233) (Stanford Bunny,0.342) (Stanford Dragon,8.410) (test,3.405)};
 \legend{Plane,SAH}
 \end{axis}
 \end{tikzpicture}
+	
+
 	
 \subsection{Evaluación:}
 	
 Finalmente es necesario elegir los parámetros para \code{BVH\_DEPTH} y \code{SAH\_BINS}. Puesto que existen varios tipos de escenas con distintas geometrías, se va a dejar de lado cualquier tipo de enfoque analítico y se va a hacer uso de medidas en casos reales. Se procede a realizar una evaluación con distintos parámetros.
 	
-En el caso de la selección de \code{SAH\_BINS}, Indigo Wald propone 16 como límite \cite{wald2007fast} debido a la insustancial mejora de rendimiento para valores mayores. Esto se ha podido comprobar directamente en Eleven Renderer donde se ha llevado a cabo la construcción y recorrido de BVH para la escena "Standford Dragon" variando la cantidad de contenedores \autoref{fig:sahbins}. Se comprueba que la velocidad de recorrido se estanca para los valores 12-16, mientras que el tiempo de generación permanece lineal.
+En el caso de la selección de \code{SAH\_BINS}, Indigo Wald propone 16 como límite \cite{wald2007fast} debido a la insustancial mejora de rendimiento para valores mayores. Esto se ha podido comprobar directamente en Eleven Renderer donde se ha llevado a cabo la construcción y recorrido de BVH para la escena "Stanford Dragon" variando la cantidad de contenedores \autoref{fig:sahbins}. Se comprueba que la velocidad de recorrido se estanca para los valores 12-16, mientras que el tiempo de generación permanece lineal. Eleven Render utiliza de manera predeterminada \code{SAH\_BINS = 14} tras el análisis realizado.
 
 \begin{figure}[H]
 \centering

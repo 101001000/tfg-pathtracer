@@ -95,19 +95,14 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
         Vector3 localNormal = (ncolor * 2) - 1;
 
-
         //localNormal = Vector3(localNormal.x, 0, 0);
 
         //localNormal = Vector3(0, 0, 1);
 
-        /*
-        Vector3 ws_normal = Vector3(localNormal.x  * tangent.x + localNormal.y  * -bitangent.x + localNormal.z  * normal.x,
-                                    localNormal.x  * tangent.y + localNormal.y  * -bitangent.y + localNormal.z  * normal.y,
-                                    localNormal.x  * tangent.z + localNormal.y  * -bitangent.z + localNormal.z  * normal.z).normalized();*/
-
         Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized();
 
         hitdata.normal = worldNormal;
+
         //hitdata.albedo = clamp(Vector3(ws_normal.x, ws_normal.z, ws_normal.y), 0 , 1);
     }
 
@@ -181,7 +176,6 @@ __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
     return nearestHit;
 }
 
-
 __device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector3 point, float& pdf, float r1) {
 
     if (scene->pointLightCount <= 0) {
@@ -189,18 +183,24 @@ __device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector
         return Vector3::Zero();
     }
 
-    PointLight light = scene->pointLights[(int)(scene->pointLightCount * r1)];
-
     pdf = ((float)scene->pointLightCount) / (2.0 * PI);
 
+    // Retrieve a random light
+    PointLight light = scene->pointLights[(int)(scene->pointLightCount * r1)];
+
     Vector3 newDir = (light.position - point).normalized();
-
-    Ray shadowRay(point + newDir * 0.001, newDir);
-    Hit shadowHit = throwRay(shadowRay, scene);
-    if (shadowHit.valid) return Vector3();
-
+    
     float dist = (light.position - point).length();
 
+    // Test if the point is visible from the light
+    Ray shadowRay(point + newDir * 0.000001, newDir);
+    Hit shadowHit = throwRay(shadowRay, scene);
+    float shadowDist = (shadowHit.position - point).length();
+
+    if (shadowHit.valid && shadowDist < dist)
+        return Vector3();
+
+    // Quadratic attenuation
     Vector3 pointLightValue = (light.radiance / (dist * dist));
 
     Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
@@ -221,7 +221,7 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         Texture::sphericalMapping(Vector3(), -1 * newDir, 1, u, v);
 
-        Ray shadowRay(point + newDir * 0.001, newDir);
+        Ray shadowRay(point + newDir * 0.000001, newDir);
 
         Hit shadowHit = throwRay(shadowRay, scene);
 
@@ -247,7 +247,7 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         Vector3 newDir = -scene->hdri->texture.reverseSphericalMapping(iu, iv).normalized();
 
-        Ray shadowRay(point + newDir * 0.001, newDir);
+        Ray shadowRay(point + newDir * 0.000001, newDir);
         Hit shadowHit = throwRay(shadowRay, scene);
         if (shadowHit.valid) return Vector3();
 
@@ -403,14 +403,14 @@ __global__ void renderingKernel() {
 
         light += hitLight;
 
-        ray = Ray(nearestHit.position + bouncedDir * 0.001, bouncedDir);
+        ray = Ray(nearestHit.position + bouncedDir * 0.000001, bouncedDir);
     }
 
     dev_pathcount[idx] += i;
 
-    //light = clamp(light, 0, 10);
+    light = clamp(light, 0, 10);
 
-    light = i * Vector3(1.0/MAXBOUNCES);
+    //light = i * Vector3(1.0/MAXBOUNCES);
 
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 

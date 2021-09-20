@@ -9,7 +9,7 @@ No obstante, la implementación de este sistema de renderizado peca de una gran 
 
 \section{Objetivos}
 
-Este trabajo cubre brevemente las bases teóricas de un motor de renderizado fotorrealista con características a la orden del día de otros motores comerciales, además de haber realizado una implementación en CUDA. Además, este trabajo hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
+Este trabajo cubre brevemente las bases teóricas de un motor de renderizado fotorrealista con características a la orden del día de otros motores comerciales, incluyendo una implementación en CUDA desde cero. Dicha implemención está basada en el algoritmo de Path Tracing, un tipo de trazado de rayos específico caracterizado por su capacidad de simular luz indirecta. Además, este trabajo hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
 
 La implementación cuenta con características cercanas al estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney \cite{burley2012physically}; permite el uso de mapas de textura y además funciona en GPU.
 

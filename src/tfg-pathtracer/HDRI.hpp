@@ -49,6 +49,8 @@ public:
 		cdf = new float[texture.width * texture.height + 1];
 
 		generateCDF();
+
+		printf("HDRI %s loaded\n", filepath.c_str());
 	}
 
 	__host__ __device__ inline void generateCDF2() {
