@@ -36,7 +36,7 @@ public:
 
 	}
 
-	__host__ __device__ inline bool hit(Ray& ray, Hit& hit, bool shadowSmooth){
+	__host__ __device__ inline bool hit(Ray& ray, Hit& hit){
 
 		Hit tempHit = Hit();
 

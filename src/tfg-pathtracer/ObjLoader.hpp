@@ -108,7 +108,7 @@ public:
 			}
 		}
 
-		printf("Obj loaded with %d tris, %d vertices and %d normals", tris->size(), vertices.size(), normals.size());
+		printf("Obj loaded with %d tris, %d vertices and %d normals\n", tris->size(), vertices.size(), normals.size());
 
 		MeshObject mo;
 

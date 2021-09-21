@@ -47,8 +47,8 @@ __device__ curandState* d_rand_state_g;
 
 cudaStream_t kernelStream, bufferStream;
 
-long textureMemory = 0;
-long geometryMemory = 0;
+unsigned long textureMemory = 0;
+unsigned long geometryMemory = 0;
 
 __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
 
@@ -92,18 +92,10 @@ __device__ void generateHitData(Material* material, HitData& hitdata, Hit hit) {
     else {
 
         Vector3 ncolor = dev_scene_g->textures[material->normalTextureID].getValueFromUV(hit.tu, hit.tv);
-
         Vector3 localNormal = (ncolor * 2) - 1;
-
-        //localNormal = Vector3(localNormal.x, 0, 0);
-
-        //localNormal = Vector3(0, 0, 1);
-
         Vector3 worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized();
 
         hitdata.normal = worldNormal;
-
-        //hitdata.albedo = clamp(Vector3(ws_normal.x, ws_normal.z, ws_normal.y), 0 , 1);
     }
 
     // Convert linear to sRGB
@@ -156,9 +148,8 @@ __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
 
     Hit nearestHit = Hit();
 
-#ifdef USEBVH:
+#if USEBVH:
     scene->bvh->transverse(ray, nearestHit);
-    //scene->bvh->transverseAux(ray, nearestHit, scene->bvh->nodes[0]);
 #else:
     for (int j = 0; j < scene->meshObjectCount; j++) {
 
@@ -193,7 +184,7 @@ __device__ Vector3 pointLight(Ray ray, HitData hitdata, dev_Scene* scene, Vector
     float dist = (light.position - point).length();
 
     // Test if the point is visible from the light
-    Ray shadowRay(point + newDir * 0.000001, newDir);
+    Ray shadowRay(point + newDir * 0.001, newDir);
     Hit shadowHit = throwRay(shadowRay, scene);
     float shadowDist = (shadowHit.position - point).length();
 
@@ -221,7 +212,7 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         Texture::sphericalMapping(Vector3(), -1 * newDir, 1, u, v);
 
-        Ray shadowRay(point + newDir * 0.000001, newDir);
+        Ray shadowRay(point + newDir * 0.001, newDir);
 
         Hit shadowHit = throwRay(shadowRay, scene);
 
@@ -247,7 +238,7 @@ __device__ Vector3 hdriLight(Ray ray, dev_Scene* scene, Vector3 point, HitData h
 
         Vector3 newDir = -scene->hdri->texture.reverseSphericalMapping(iu, iv).normalized();
 
-        Ray shadowRay(point + newDir * 0.000001, newDir);
+        Ray shadowRay(point + newDir * 0.001, newDir);
         Hit shadowHit = throwRay(shadowRay, scene);
         if (shadowHit.valid) return Vector3();
 
@@ -330,6 +321,8 @@ __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearest
 
     hitLight = reduction * (w1 * hdriLightCalc + w2 * pointLightCalc + w3 * brdfLightCalc);
 
+    //hitLight = reduction * brdfLightCalc;
+
     reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
 }
 
@@ -403,14 +396,12 @@ __global__ void renderingKernel() {
 
         light += hitLight;
 
-        ray = Ray(nearestHit.position + bouncedDir * 0.000001, bouncedDir);
+        ray = Ray(nearestHit.position + bouncedDir * 0.001, bouncedDir);
     }
 
     dev_pathcount[idx] += i;
 
     light = clamp(light, 0, 10);
-
-    //light = i * Vector3(1.0/MAXBOUNCES);
 
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
@@ -484,7 +475,7 @@ void texturesSetup(Scene* scene, dev_Scene* dev_scene) {
         cudaMemcpy(textureData, textures[i].data, sizeof(float) * textures[i].width * textures[i].height * 3, cudaMemcpyHostToDevice);
         cudaMemcpy(&(dev_textures[i].data), &textureData, sizeof(float*), cudaMemcpyHostToDevice);
 
-        printf("Texture %d copied, %dpx x %dpx\n", i, textures[i].width, textures[i].height);
+        printf("Texture %ld copied, %dpx x %ldpx\n", i, textures[i].width, textures[i].height);
     }
 
     cudaMemcpy(&(dev_scene->textures), &(dev_textures), sizeof(Texture*), cudaMemcpyHostToDevice);
@@ -585,14 +576,14 @@ cudaError_t renderSetup(Scene* scene) {
     cudaStatus = cudaMemcpyToSymbol(dev_scene_g, &dev_scene, sizeof(dev_Scene*));
     cudaStatus = cudaMemcpyToSymbol(d_rand_state_g, &d_rand_state, sizeof(curandState*));
 
-    printf("%ldMB of geometry data copied\n", (geometryMemory / (1024L * 1024L)));
+    printf("%luMB of geometry data copied\n", (geometryMemory / (1024L * 1024L)));
 
     pointLightsSetup(scene, dev_scene);
     materialsSetup(scene, dev_scene);
     texturesSetup(scene, dev_scene);
     hdriSetup(scene, dev_scene);
 
-    printf("%dMB of texture data copied\n", (textureMemory / (1024 * 1024)));
+    printf("%luMB of texture data copied\n", (textureMemory / (1024L * 1024L)));
 
     int tx = THREADSIZE;
     int ty = THREADSIZE;

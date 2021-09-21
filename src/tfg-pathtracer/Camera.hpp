@@ -30,7 +30,6 @@ public:
 
 	__host__ __device__ void setSensorWidth(float size) {
 		sensorHeight = size * ((float)yRes / (float)xRes);
-		printf("sensorWidth %f sensorHeight %f", sensorWidth, sensorHeight);
 	}
 
 

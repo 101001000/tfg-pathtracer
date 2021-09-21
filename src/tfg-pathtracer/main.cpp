@@ -144,15 +144,13 @@ Scene materialScene() {
 
 int main(int argc, char* argv[]) {
 
-	//Scene scene = Scene::sceneBuilder(std::string("..\\..\\..\\..\\Scenes\\Clock\\"));
+	Scene scene = loadScene(std::string(argv[1]));
 
-	Scene scene = loadScene(std::string("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Sphere\\"));
-
-	//Scene scene = materialScene();
+	printf("%s\n", argv[1]);
 
 	RenderData data;
 
-	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, 5000);
+	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, atoi(argv[2]));
 
 	sf::RenderWindow window(sf::VideoMode(data.pars.width, data.pars.height, 32), "Render Window");
 
@@ -185,7 +183,7 @@ int main(int argc, char* argv[]) {
 		getRenderData(data);
 
 		if (data.samples >= data.pars.sampleTarget) {
-			saveBMP("render.bmp", data.pars.width, data.pars.height, data.beautyBuffer);
+			saveBMP(argv[3], data.pars.width, data.pars.height, data.beautyBuffer);
 			break;
 		}
 

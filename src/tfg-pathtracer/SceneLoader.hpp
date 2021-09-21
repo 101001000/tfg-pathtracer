@@ -5,6 +5,8 @@
 
 static Scene loadScene(std::string path) {
 
+	path += "\\";
+
 	printf("Loading scene \n");
 
 	Scene scene = Scene();
@@ -112,12 +114,16 @@ static Scene loadScene(std::string path) {
 				switch (j) {
 				case 0:
 					material.albedo = json_data.as<Vector3>();
+					break;
 				case 1:
 					material.emission = json_data.as<Vector3>();
+					break;
 				case 2:
 					material.roughness = json_data.as<double>();
+					break;
 				case 3:
 					material.metallic = json_data.as<double>();
+					break;
 				}
 			}
 		}

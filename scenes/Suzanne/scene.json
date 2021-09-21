@@ -1,0 +1,10 @@
+{
+	
+'camera'    		: 	{'xRes' : 640, 'yRes' : 360, 'position' : {x : 0, y : 0, z : -10}, 'focalLength' : 0.05, 'focusDistance' : 10, 'aperture' : 2.8},
+'materials' 		:	[{'name' : 'white', 'albedo' : {'r' : 0.5, 'g' : 0.5, 'b' : 0.5}}],
+'objects'   		: 	[{'name' : 'suzanne', 'material' : 'white'}],
+'hdri' 				:   {'color' : {'r' : 0.5, 'g' : 0.5, 'b' : 0.5}}
+
+
+}
+

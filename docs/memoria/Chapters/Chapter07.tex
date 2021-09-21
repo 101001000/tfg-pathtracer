@@ -34,5 +34,48 @@ Además será obligatorio incluir un archivo llamado scene.json. Este archivo ha
 
 El ejemplo mostrado deberá contener dos objetos dentro de la carpeta Objects: obj1.obj y obj2.obj. El material mat1 utilizará las texturas que empiecen por mat1\_...bmp mientras que el mat2 utilizará los valores rgb(1,0,0) para albedo y el valor 0.2 para roughness. Para más ejemplos consultar la carpeta Scenes del repositorio.
 
+\subsection{Ejemplo de renderizado de escena \emph{ClockCC0}}
+
+Con el fin de demostrar el funcionamiento con un ejemplo real, se ha preparado una escena para la cual, todos los recursos tienen licencia CC0. Esta escena se encuentra en el repositorio y puede ser recreada si se siguen los pasos mostrados en este punto.
+
+Los modelos y texturas utilizados para esta escena son los siguientes:
+
+\begin{itemize}
+	\item Modelo de planta: \url{https://polyhaven.com/a/potted_plant_04}
+	\item Modelo de mesa: \url{https://polyhaven.com/a/vintage_wooden_drawer_01}
+	\item Modelo de reloj: \url{https://polyhaven.com/a/alarm_clock_01}
+	\item HDRI de interior: \url{https://polyhaven.com/a/photo_studio_london_hall}
+\end{itemize}
+
+Para la ejecución del programa, en el entorno utilizado, ha sido necesario utilizar los siguientes argumentos:
+	\code{eleven.exe ''C:$\backslash\backslash$Users$\backslash\backslash$Kike$\backslash\backslash$Desktop$\backslash\backslash$Uni$\backslash\backslash$TFG$\backslash\backslash$Scenes$\backslash\backslash$ClockCC0'' output.bmp 5000}
+
+Tras comenzar el renderizado aparecen dos ventanas, la primera es la consola de salida que se muestra en la \autoref{fig:debugwindow}. Esta ventana contiene datos relevantes en cuanto a la ejecución, como: El progreso de la construcción del BVH, cantidad de memoria utilizada por las geometrías/texturas, eficiencia en kPaths/s, cuanta memoria consume la escena en la GPU y cuanta hay libre, cuantas muestras se han tomado y el tiempo total de ejecución.
+
+Por otro lado, está la ventana de previsualización \autoref{execsamples}. Esta ventana muestra el progreso visual del render y en la esquina superior izqda, el número de muestras tomadas por cada pixel hasta el momento.
+
+Finalmente la imagen será guardada como "render.bmp" tras ejecutar las 5000 muestras. En este caso la salida es la \autoref{fig:finalimagewindow}. Este resultado se ha obtenido tras 20 minutos y 39 segundos en una NVIDIA RTX 3090. Con un número mucho menor de muestras es posible seguir obteniendo buenos resultados.
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.9\textwidth]{execdebug}
+	\caption{Ventana de depuración}
+	\label{fig:debugwindow}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.9\textwidth]{execsamples}
+	\caption{Ventana de previsualización}
+	\label{fig:samplewindow}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+	\includegraphics[width=0.9\textwidth]{execfinalimage}
+	\caption{Ventana de previsualización}
+	\label{fig:finalimagewindow}
+\end{figure}
+
 \section{Galería}
 	

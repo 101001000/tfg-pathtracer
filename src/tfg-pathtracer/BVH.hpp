@@ -378,7 +378,6 @@ public:
 
 		int bestBin = 0;
 		int bestAxis = 0;
-
 		float bestHeuristic = std::numeric_limits<float>::max();
 
 		bounds(tris, totalB1, totalB2);
@@ -416,16 +415,19 @@ public:
 			
 			for (int i = 0; i < BVH_SAHBINS; i++) {
 
-				int count1 = 0;
-				int count2 = 0;
+				// Tris in the first and second child
+				int count1 = 0;	int count2 = 0;
 
+				// b1, b2 are the boundings for first child, b3, b4 for the second one
 				Vector3 b1, b2, b3, b4;
 
+				// First swept for first child from 0 to i
 				for (int j = 0; j < i; j++) {
 					count1 += count[j];
 					boundsUnion(b1, b2, b1s[j], b2s[j], b1, b2);
 				}
 
+				// Second swept for second child from i to BVH_SAHBINS - 1
 				for (int k = i; k < BVH_SAHBINS; k++) {
 					count2 += count[k];
 					boundsUnion(b3, b4, b1s[k], b2s[k], b3, b4);
@@ -441,6 +443,7 @@ public:
 			}
 		}
 		
+		// Tri division depending on the bin
 		for (int i = 0; i < tris->size(); i++) {
 
 			float c = tris->at(i).tri.centroid()[bestAxis];

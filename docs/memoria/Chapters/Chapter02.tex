@@ -1,5 +1,6 @@
 \chapter{Implementación básica de Path Tracing}
-	
+\label{chap:2}
+
 En este capítulo se procede a dar un esquema básico de los fundamentos del algoritmo de \emph{Path Tracing}. El objetivo es describir un motor de renderizado previo a cualquier optimización, que cuente con las funcionalidades básicas para producir una imagen de una escena tridimensional simple.
 
 
@@ -14,17 +15,26 @@ En este capítulo se procede a dar un esquema básico de los fundamentos del alg
 
 La Ecuación de Renderizado \cite{kajiya1986rendering} aparece por primera vez en 1986, junto al algoritmo de \emph{Path Tracing}, siendo este algoritmo una propuesta para resolverla. Es el pilar de la visualización 3D fotorrealista, ya que simula de una manera suficientemente precisa la interacción de la luz en una escena tridimensional. En este trabajo se utiliza una interpretación más moderna, que sustituye términos como el ''término geométrico'' y adapta dicha ecuación al estado del arte.
 
-La interpretación de esta ecuación es la siguiente: Para un punto $\mathbf {x}$ del espacio y un ángulo $\omega _{\text{o}}$ desde el que se observa a dicho punto, cuál es la cantidad de energía lumínica que el observador recibe $L_{\text{o}}$. La interpretación geométrica se muestra en la \autoref{fig:renderingequation}.
+La interpretación de esta ecuación es la siguiente: Para un punto $\mathbf {x}$ del espacio y un ángulo $\omega _{\text{o}}$ desde el que se observa a dicho punto, cuál es la cantidad de energía lumínica que el observador recibe $L_{\text{o}}$. La interpretación geométrica se muestra en la \autoref{fig:renderingequation}.\linebreak 
 
-El primer término $L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}})$ indica la luz que dicho punto $\mathbf {x}$ emite; así pues se podrán modelar materiales que emitan luz propia y no dependan de energía externa.
 
-El segundo término calcula toda la iluminación entrante y reflejada a través del ángulo $\omega _{\text{o}}$ por dicho punto $\mathbf {x}$, es por ello que integra todos los ángulos del hemisferio superior. Este segundo término se compone de tres coeficientes:
 
-El primer coeficiente $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$ es la función BRDF, la cual es dependiente del material e indica cuánta energía se refleja en dicho punto para las direcciones de entrada $\omega _{\text{i}}$ y salida $\omega _{\text{o}}$.
+\begin{itemize}
 
-El segundo coeficiente $L_{\text{i}}(\mathbf {x} ,\omega _{\text{i}})$ hace referencia a toda la energía lumínica entrante desde todas las direcciones posibles.
+\item El primer término $L_{\text{e}}(\mathbf {x} ,\omega _{\text{o}})$ indica la luz que dicho punto $\mathbf {x}$ emite; así pues se podrán modelar materiales que emitan luz propia y no dependan de energía externa.
 
-El tercer coeficiente $(\omega _{\text{i}}\cdot \mathbf {n})$ es el producto de la ley del coseno de Lambert \cite{lambert1760jh}, un escalar que atenúa los ángulos menos pronunciados con la normal de la superficie.
+\item El segundo término calcula toda la iluminación entrante y reflejada a través del ángulo $\omega _{\text{o}}$ por dicho punto $\mathbf {x}$, es por ello que integra todos los ángulos del hemisferio superior. Este segundo término se compone de tres coeficientes:
+
+\begin{itemize}
+
+\item El primer coeficiente $f_{\text{r}}(\mathbf {x} ,\omega _{\text{i}},\omega _{\text{o}})$ es la función BRDF, la cual es dependiente del material e indica cuánta energía se refleja en dicho punto para las direcciones de entrada $\omega _{\text{i}}$ y salida $\omega _{\text{o}}$.
+
+\item El segundo coeficiente $L_{\text{i}}(\mathbf {x} ,\omega _{\text{i}})$ hace referencia a toda la energía lumínica entrante desde todas las direcciones posibles.
+
+\item El tercer coeficiente $(\omega _{\text{i}}\cdot \mathbf {n})$ es el producto de la ley del coseno de Lambert \cite{lambert1760jh}, un escalar que atenúa los ángulos menos pronunciados con la normal de la superficie.
+
+\end{itemize}
+\end{itemize}
 
 \begin{figure}[H]
     \centering
@@ -73,7 +83,7 @@ En primer lugar es apropiado dar una visión de la estructura que se ha programa
 
 El primer paso es preparar la escena a renderizar \code{Scene}. Una escena básica se compone de una cámara \code{Camera}, geometrías \code{MeshObject} y materiales \code{Material}.
 
-La clase \code{Scene} contiene un array dinámico para cada conjunto de elementos, con sus pertinentes funciones de añadido. Por ejemplo, la función \code{addMeshObject()} lleva la cuenta de objetos en la escena y actualiza el ID de cada uno acorde a esta. Además esta clase cuenta con una función denominada \code{Scene sceneBuilder(std::string path)} que cargará una escena localizada en un directorio. Más detalles sobre el formato de estas escenas se puede encontrar en \hyperref[sceneformat]{el manual ubicado en el anexo}
+La clase \code{Scene} contiene un array dinámico para cada conjunto de elementos, con sus pertinentes funciones de añadido. Por ejemplo, la función \code{addMeshObject()} lleva la cuenta de objetos en la escena y actualiza el ID de cada uno acorde a esta. Además esta clase cuenta con un archivo auxiliar \code{SceneLoader} que cargará una escena en formato \code{JSON} localizada en un directorio. Más detalles sobre el formato de estas escenas se puede encontrar en \hyperref[sceneformat]{el manual ubicado en el anexo}
 
 Los elementos básicos que almacena una escena son los siguientes:
 
@@ -81,7 +91,7 @@ Los elementos básicos que almacena una escena son los siguientes:
 
 \item Cámaras \code{Camera}: consisten en una simulación aproximada de una cámara física real, así pues, sus atributos serán: tamaño del sensor (en metros) \code{sensorWidth} y \code{sensorHeight}, distancia focal (en metros) \code{focalLength} y resolución (en píxeles) \code{xRes} e \code{yRes}. 
 
-\item Geometrías \code{MeshObject}: son elementos que contienen un conjunto de triángulos \code{Tri} que a su vez consisten en 3 puntos tridimensionales \code{Vector3 vertices[3]}.
+\item Geometrías \code{MeshObject}: son elementos que contienen un conjunto de triángulos \code{Tri} que a su vez consisten en 3 puntos tridimensionales \code{Vector3 vertices[3]}. Se ha programado un parser en el archivo \code{ObjLoader.hpp} que lee el formato de archivo .obj (Wavefront Object), un formato común para definir geometrías 3D. Este formato almacena las geometrías y triángulos en texto plano, se ha elegido por la facilidad de lectura, aun así, este parser solo acepta ficheros \code{.obj} triangulados (con polígonos de tres vértices), ya que se ha elaborado como prueba de concepto.
 
 \item Materiales \code{Material}: definen la manera en la que los fotones interactúan con ellos. En su forma más primitiva consisten en un color base, que absorberá ciertas longitudes de onda en mayor o menor medida. Para simplificar las computaciones, no es necesario calcular las interacciones con todo el espectro electromagnético visible, basta con usar los tres colores primarios aditivos: rojo, verde y azul. Así, un color consiste en un vector \code{Vector3(R,G,B)}.
 
@@ -89,10 +99,11 @@ Los elementos básicos que almacena una escena son los siguientes:
 
 Una vez preparada la escena, se inicia el proceso de renderizado. La función \code{startRender} prepara dos buffers en la CPU, \code{rawPixelBuffer} que recibirá los píxeles procedentes del algoritmo, previos a cualquier modificación, y \code{beautyBuffer}, que contendrá la imagen final preparada para ser mostrada en pantalla. 
 
+\paragraph{Transferencia de escena a GPU}\mbox{} \\
 
-El siguiente paso es transferir la escena a la GPU, donde se realizará el resto de computaciones más demandantes. Esto es llevado a cabo por la función \code{renderSetup}, que a través de las funciones de la API de CUDA \code{cudaMalloc} y \code{cudaMemcpy} copia la información de la escena y lleva la cuenta de la memoria transferida en las variables globales \code{textureMemory, geometryMemory}. La copia de memoria de la CPU a la GPU requiere de un tratado especial en cuanto a objetos con atributos se refiere, requiriendo así una copia profunda de los atributos en formato array o punteros, además de un proceso posterior denominado \emph{pointer binding}. Este proceso como se aprecia en la \autoref{fig:pointerbinding}, es necesario, ya que los objetos que hacen referencias a punteros al ser copiados a la GPU, pierden dicha referencia al cambiar de contexto. 
+El siguiente paso es transferir la escena a la GPU, donde se realizará el resto de computaciones más demandantes. Esto es llevado a cabo por la función \code{renderSetup}, que a través de las funciones de la API de CUDA \code{cudaMalloc} y \code{cudaMemcpy} copia la información de la escena y lleva la cuenta de la memoria transferida en las variables globales \code{textureMemory, geometryMemory}. La copia de memoria de la CPU a la GPU requiere de un tratado especial en cuanto a objetos con atributos se refiere, requiriendo así una copia profunda de los atributos en formato array o punteros, además de un proceso posterior denominado \emph{pointer binding}. Este proceso es necesario, ya que los objetos que contienen referencias a punteros, al ser copiados a la GPU, pierden dicha referencia al cambiar de contexto. 
 
-Para ello, si un objeto \code{Object} contiene un atributo \code{int* array}, habrá que asignar espacios de memoria diferentes para cada uno, copiar ambos independientemente y posteriormente, a través de la función \code{cudaMemcpy}, copiar la dirección del array a la dirección del atributo.
+Véase el ejemplo de un objeto \code{Object} en la \autoref{fig:pointerbinding} Este contiene un atributo \code{int* array} de manera que habrá que asignar espacios de memoria diferentes tanto para el objeto como para el array, copiar ambos independientemente y posteriormente, a través de la función \code{cudaMemcpy}, copiar el puntero del array, a la dirección del atributo.
 
 \code{cudaMemcpy(\&(Object->array), \&(array), sizeof(array*), cudaMemcpyHostToDevice);}
 
@@ -103,8 +114,11 @@ Para ello, si un objeto \code{Object} contiene un atributo \code{int* array}, ha
 	\label{fig:pointerbinding}
 \end{figure}
 
+La implementación cuenta con funciones de copia para cada elemento, teniendo en cuenta sus atributos y peculiaridades.
 
-La función \code{startRender}, tras realizar toda la copia de los elementos a la GPU, ejecuta un kernel que configura algunos parámetros iniciales. \code{setupKernel} cuyo código se muestra en \autoref{cod:setupkernel}, se ejecuta de manera síncrona y se hace cargo de inicializar los buffers de píxeles y contador de rayos, inicializar \code{curand} (la librería utilizada para generar números aleatorios en CUDA) y por último, enlazar cada \code{MeshObject} con sus pertinentes triángulos. Esto es llevado a cabo con un puntero a una posición de la lista global de triángulos, ya que por motivos que posteriormente se explican en \hyperref[BVH]{Estructuras de Aceleración} es conveniente almacenar todos los triángulos por separado. 
+\paragraph{Setup}\mbox{} \\
+
+La función \code{startRender}, tras realizar toda la copia de los elementos a la GPU, ejecuta un kernel que configura algunos parámetros iniciales. \code{setupKernel} cuyo código se muestra en \autoref{cod:setupkernel}, se ejecuta de manera síncrona y se hace cargo de inicializar los buffers de píxeles y contador de rayos, inicializar \code{curand} (la librería utilizada para generar números aleatorios en CUDA) y por último, enlazar cada \code{MeshObject} con sus pertinentes triángulos. Esto es llevado a cabo con un puntero a una posición de la lista global de triángulos.
 
 
 \begin{minipage}[c]{0.95\textwidth}
@@ -139,9 +153,13 @@ La función \code{startRender}, tras realizar toda la copia de los elementos a l
 \end{lstlisting}
 \end{minipage}
 
+\paragraph{Ejecución del algoritmo}\mbox{} \\
+
 Una vez la escena está correctamente configurada en la GPU, se crea un hilo nuevo que ejecutará en bucle el kernel de renderizado tantas iteraciones como muestras se hayan definido en los parámetros \code{RenderParameters}. Es necesario el uso de la librería \code{std::thread} para este proceso, ya que este bucle de llamadas a la GPU es un proceso bloqueante. El uso de dos hilos, uno para la ejecución de los kernels de renderizado y otro para la recolección de datos de la GPU de manera asíncrona, permite una previsualización dinámica del resultado del motor. Más detalles sobre este proceso se describen en el apartado \hyperref[progressiverender]{Renderizado Progresivo}.
 
-En este punto, el algoritmo está ejecutándose en la GPU. Para mostrar el resultado se crea una ventana con la librería multiplataforma \code{SFML}. Esta librería permite mostrar en pantalla una imagen en formato RGB de 8 bits. Para poder adaptar el resultado del algoritmo a una imagen visible, es necesario aplicar una serie de funciones de postprocesado. \code{getRenderData} se encarga de aplicar estas funciones y obtener una imagen postprocesada visible, también conocida en informática gráfica como "Beauty Pass".
+\paragraph{Visualización de escena}\mbox{} \\
+
+En este punto, el algoritmo está ejecutándose en la GPU. Para mostrar el resultado se crea una ventana con la librería multiplataforma \code{SFML}. Esta librería permite mostrar en pantalla una imagen en formato RGB de 8 bits. Para poder adaptar el resultado del algoritmo a una imagen visible, es necesario aplicar una serie de funciones de postprocesado. \code{getRenderData} se encarga de aplicar estas funciones y obtener una imagen postprocesada visible, también conocida en informática gráfica como \emph{Beauty Pass}.
 
 Las funciones a ejecutar de postprocesado son las siguientes:
 
@@ -149,12 +167,12 @@ Las funciones a ejecutar de postprocesado son las siguientes:
 	
 	\item \code{flipY}: Debido a la configuración de la cámara, los píxeles son calculados de abajo a arriba, es necesario entonces invertirlos en el eje Y.
 	\item \code{clampPixels}: Es la forma más sencilla de mapeo de tonos, limitar los valores al rango [0-1].
-	\item \code{applysRGB}: Los monitores no trabajan en un espacio de color lineal, por eso es necesario aplicar la curva de correción de gamma 2.2.
+	\item \code{applysRGB}: Los monitores no trabajan en un espacio de color lineal, mientras que el motor sí, por eso es necesario aplicar la curva de correción de gamma con valor 2.2.
 	\item \code{HDRtoLDR}: Por último, se debe convertir el array de píxeles de punto flotante a bytes. Ya que los valores en punto flotante están en [0,1], basta con multiplicar por 255 y hacer un posterior truncamiento.
 
 \end{enumerate}
 
-Finalmente, la librería de \code{SFML} se encarga de mostrar la imagen y superpone un texto con el número de muestras calculadas hasta el momento, obtenidas con \code{getSamples}.
+La librería de \code{SFML} se encarga de mostrar la imagen y superpone un texto con el número de muestras calculadas hasta el momento, obtenidas con \code{getSamples}, y tras acumular el número de muestras deseado, se guardará un archivo con la imagen final en formato \code{.bmp}.
 
 \section{Acumulado de muestras}
 	
@@ -190,7 +208,7 @@ La radiación queda reflejada en cada píxel siguiendo el código mostrado en \a
 \subsection{Renderizado Progresivo}
 \label{progressiverender}
 		
-Una ventaja de los motores de renderizado más modernos es el renderizado progresivo. En este proceso, las muestras se van acumulando poco a poco a lo largo de la imagen hasta que terminan por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales y tras cumular las suficientes, pasan a la siguiente sección. Este trabajo utiliza una implementación progresiva con el fin de estar más cerca del estado del arte.
+Una ventaja de los motores de renderizado más modernos es el renderizado progresivo. En este proceso, las muestras se van acumulando poco a poco a lo largo de la imagen hasta que terminan por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales, y tras acumular las suficientes, pasan a la siguiente sección. Este trabajo utiliza una implementación progresiva con el fin de estar más cerca del estado del arte.
 
 Este tipo de implementación se beneficia de la copia de datos asíncrona de la GPU. Mientras el kernel se ejecuta, un flujo de datos secundario hace la copia del buffer de la GPU en la CPU, pudiendo así actualizar la visualización del resultado varias veces por segundo.
 
@@ -266,7 +284,7 @@ Una vez se conoce el rayo primario que se lanza desde la cámara, se debe determ
 \subsection{Intersección triángulo - rayo}
 \label{subsec:triintersection}
 	
-El cálculo de la intersección de un rayo con un triángulo es una de las operaciones más fundamentales de este algoritmo. Esta operación toma como parámetros un triángulo \code{Tri} y un rayo \code{Ray} y ofrece como resultado si dicho triángulo y rayo intersecan en el espacio y además, un objeto \code{Hit}que cuenta con información adicional de la intersección.
+El cálculo de la intersección de un rayo con un triángulo es una de las operaciones más fundamentales de este algoritmo. Esta operación toma como parámetros un triángulo \code{Tri} y un rayo \code{Ray} y ofrece como resultado si dicho triángulo y rayo intersecan en el espacio y además, un objeto \code{Hit} que cuenta con información adicional de la intersección.
 
 La información adicional que devuelve esta operación es la siguiente:
 
@@ -282,7 +300,7 @@ La información adicional que devuelve esta operación es la siguiente:
 
 \end{itemize}
 
-Para la implementación se ha hecho uso del algoritmo Fast Minimum Storage Ray/Triangle Intersection\cite{moller1997fast}. En este paper se explica detalladamente el algoritmo de intersección, mientras este trabajo se limita a implementar dicho algoritmo a partir de una adaptación de la implementación en C que el autor ofrece.
+En el caso de esta implementación, se ha hecho uso del algoritmo Fast Minimum Storage Ray/Triangle Intersection\cite{moller1997fast}. En dicho paper, se explica detalladamente el algoritmo de intersección. Este trabajo hace uso de una adaptación de la implementación en C que el autor ofrece. La mencionada adaptación se encuentra en \autoref{cod:triintersection}
 	
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[label={cod:triintersection}, caption={Adaptación de código Fast Minimum Storage Ray/Triangle Intersection\cite{moller1997fast} a Eleven Renderer}]

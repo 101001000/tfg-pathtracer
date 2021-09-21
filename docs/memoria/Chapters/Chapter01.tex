@@ -1,32 +1,52 @@
 \chapter{Introducción}
-	
-El renderizado 3D es una técnica por la cual se representan los datos de geometrías tridimensionales en una pantalla en dos dimensiones. Existen distintas técnicas de renderizado tridimensional, siendo el trazado de rayos la más utilizada en la industria cinematográfica gracias a su excepcional fotorrealismo del cual suelen carecer otras técnicas. Tan codiciada es esta técnica que, actualmente industrias relacionadas con la visualización 3D como por ejemplo la industria de los videojuegos trata de replicarla y adaptarla en sus proyectos más modernos, con el fin de obtener mayor fidelidad visual.
+\label{chap:1}	
+
+El renderizado 3D es una técnica por la cual se representan los datos de geometrías tridimensionales en una pantalla en dos dimensiones. Existen distintas técnicas de renderizado tridimensional, siendo el trazado de rayos la más utilizada en la industria cinematográfica gracias a su excepcional fotorrealismo del cual suelen carecer otras técnicas. Tan codiciada es esta técnica que, actualmente industrias relacionadas con la visualización 3D como por ejemplo la industria de los videojuegos, trata de replicarla y adaptarla en sus proyectos más modernos, con el fin de obtener mayor fidelidad visual.
 El creciente interés ante el trazado de rayos ha provocado que compañías dedicadas al hardware gráfico dediquen parte de su desarrollo a la implementación del trazado de rayos en sus últimos modelos. Véase, por ejemplo, las últimas dos series de tarjetas gráficas de NVIDIA, las series RTX (del inglés Ray Tracing Texel eXtreme).
 
 No obstante, la implementación de este sistema de renderizado peca de una gran demanda computacional, por lo que gran parte de los motores de renderizado orientados a la industria cinematográfica han sido adaptados para poder funcionar en aceleradores gráficos. Con la creciente capacidad computacional y las características fotorrealistas mencionadas anteriormente, los motores de renderizado de trazado de rayos han adquirido una especial importancia en el ámbito de la computación gráfica.
 
-
-
 \section{Objetivos}
+	
+Este trabajo cubre brevemente las bases teóricas de un motor de renderizado fotorrealista con características no muy distantes de otros motores comerciales, incluyendo una implementación propia en CUDA desde cero. Dicha implemención ha sido desarrollada por mí, para este trabajo, y bautizada como Eleven Renderer. Es de código abierto y puede encontrarse en \url{https://github.com/101001000/tfg-pathtracer}.
 
-Este trabajo cubre brevemente las bases teóricas de un motor de renderizado fotorrealista con características a la orden del día de otros motores comerciales, incluyendo una implementación en CUDA desde cero. Dicha implemención está basada en el algoritmo de Path Tracing, un tipo de trazado de rayos específico caracterizado por su capacidad de simular luz indirecta. Además, este trabajo hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
+Eleven Renderer está basado en el algoritmo de \emph{Path Tracing}, un tipo de trazado de rayos específico caracterizado por su capacidad de simular luz indirecta. Además, este trabajo hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
+	
+Eleven Renderer cuenta con propiedades no muy alejadas del estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney \cite{burley2012physically}; permite el uso de mapas de textura y además funciona en GPU.
 
-La implementación cuenta con características cercanas al estado del arte: es capaz de renderizar escenas del orden de millones de triángulos en tiempos razonables; usa un modelo de sombreado realista desarrollado por Disney \cite{burley2012physically}; permite el uso de mapas de textura y además funciona en GPU.
+Un aspecto importante en cuanto a esta implementación de Eleven Renderer es que se intenta limitar el número de librerías usadas, con el fin de indagar a fondo en la arquitectura de un motor de renderizado de \emph{Path Tracing} de manera íntegra. Así pues, se desmitifica el trabajo que normalmente se delega a las librerías gráficas, y se expone de manera clara el funcionamiento de cada pieza de un motor de renderizado de Path Tracing en GPU.
 
-Un aspecto importante en cuanto a la implementación es que se hace uso del menor número de librerías posibles, con el fin de indagar a fondo en la arquitectura de un motor de renderizado de Path Tracing de manera íntegra. Así pues, se desmitifica el trabajo que normalmente se delega a las librerías gráficas, y se expone de manera clara el funcionamiento de cada pieza de un motor de renderizado de Path Tracing en GPU.
+Este documento cuenta con seis capítulos:
 
+\begin{itemize}
+	\item \autoref{chap:1}: Introducción. Se incluye una breve introducción de cada capítulo además de ofrecer un contexto al trabajo.
+	\item \autoref{chap:2}: Implementación básica de Path Tracing. Se explican los fundamentos de este algoritmo y su implemención paralelizada en Eleven Renderer. 
+	\item \autoref{chap:3}: Mejoras visuales. El algoritmo de \emph{Path Tracing} es un algoritmo muy abierto y existen muchos detalles que pueden ser añadidos con el fin de crear resultados con más detalles visuales. Este capítulo cubre las mejoras que se han considerado necesarias para garantizar una fidelidad visual mínima.
+	\item \autoref{chap:4}: Optimizaciones estructurales. Muchas mejoras visuales necesitan de optimizaciones adicionales para tener tiempos de ejecución razonables. En este capítulo se explican las optimizaciones a nivel de algoritmo realizadas.
+	\item \autoref{chap:evaluation}: Evaluación. Varias características implementadas son evaluadas, además de realizar un perfil general del algoritmo con NVIDIA NSight para identificar las posibles optimizaciones futuras.
+	\item \autoref{chap:6}: Conclusiones. 
+\end{itemize}
+
+Cabe destacar que toda figura es original y que todas las muestras y comparaciones visuales de renderizado han sido realizadas con Eleven Renderer, salvo las excepciones que están debidamente señaladas.
 
 \section{Plan de trabajo}
 	
 \subsection{Trabajo previo}
 
-Actualmente existen diversas implementaciones de motores de renderizado por Path Tracing de código abierto. La mayoría de ellas son implementaciones directas de los libros Ray Tracing in one Weekend \cite{shirley2016ray} o del libro Physically based rendering: From theory to implementation \cite{pharr2016physically} siendo el primero una rápida implementación funcional y mientras que el segundo contiene casi todos los fundamentos teóricos acompañados de una implementación muy completa. Aún así estos libros están orientado a renderizado por CPU, toda la arquitectura que acompaña sobre todo el segundo libro busca el mayor nivel de abstracción posible, esto es un problema a la hora de usar CUDA, que no permite el uso de funciones virtuales y por tanto cuenta con una herencia de clases limitada.
+\paragraph{Código abierto}\mbox{} \\
 
-La mayoría de estas implementaciones son pruebas de concepto como la que se desarrolló en el trabajo final de la asignatura "Programación de GPUs y aceleradores". Estas pruebas de concepto suelen estar limitadas en cuanto a características, pero hay una implementación concreta que destaca: Cycles.
+Actualmente existen diversas implementaciones de motores de renderizado por \emph{Path Tracing} de código abierto. La mayoría de ellas son implementaciones directas de los libros Ray Tracing in one Weekend \cite{shirley2016ray} o del libro Physically based rendering: From theory to implementation \cite{pharr2016physically} siendo el primero una rápida implementación funcional, mientras que el segundo contiene casi todos los fundamentos teóricos acompañados de una implementación muy completa.
 
-Cycles es sin duda una de las implementaciones de código abierto más relevantes de este algoritmo. Es un motor de renderizado desarrollado por Blender, flexible y con implementación en distintas APIs para poder hacer uso de múltiples tipos de aceleradores, entre ellas CUDA. Además ofrece una amplia gama de características como motor gráfico, a la par de las carácteristicas vistas en el estado del arte, que le permiten hacerse hueco entre el resto de motores de render de producción comerciales.
+Ambos libros han servido excelentemente como documentación, aún así, ambos están orientado a renderizado por CPU, toda la arquitectura que acompaña sobre todo el segundo libro, busca el mayor nivel de abstracción posible. Esto es un problema a la hora de usar CUDA, ya que no permite el uso de funciones virtuales y por tanto cuenta con una herencia de clases limitada.
 
-Hasta ahora se ha hablado de las implementaciones de código abierto, pero es imposible ignorar las aplicaciones comerciales. Debido a que el renderizado fotorrealista es una herramienta muy cotizada en la industria audiovisual, grandes empresas han desarrollado o adquirido motores de Path Tracing propietarios. Unos cuantos ejemplos de motores de renderizado comerciales acelerados por GPU se muestran a continuación:
+La mayoría de estas implementaciones de código abierto son pruebas de concepto y la mayoría están limitadas en cuanto a características, pero hay una implementación concreta que destaca: Cycles.
+
+Cycles es sin duda una de las implementaciones de código abierto más relevantes de este algoritmo. Es un motor de renderizado desarrollado por Blender, flexible y con implementación en distintas APIs, entre ellas CUDA, para poder hacer uso de múltiples tipos de aceleradores. Además ofrece una amplia gama de características como motor gráfico, a la par de las carácteristicas vistas en el estado del arte, que le permiten hacerse hueco entre el resto de motores de render de producción comerciales.
+
+\paragraph{Aplicaciones comerciales}\mbox{} \\
+
+Hasta ahora se ha hablado de las implementaciones de código abierto, pero es imposible ignorar las aplicaciones comerciales. Debido a que el renderizado fotorrealista es una herramienta muy cotizada en la industria audiovisual, grandes empresas han desarrollado o adquirido motores de \emph{Path Tracing} propietarios. Unos cuantos ejemplos de motores de renderizado comerciales acelerados por GPU se muestran a continuación:
+
 \begin{itemize}
 
 \item Autodesk: Arnold Render
@@ -37,21 +57,17 @@ Hasta ahora se ha hablado de las implementaciones de código abierto, pero es im
 \item Pixar: Renderman
 \item Chaos Group: V-Ray
 
-La gran mayoría de los motores mencionados funcionan exclusivamente con aceleradores de NVIDIA debido a que están implementados con CUDA. De la misma manera, Eleven Renderer hará uso de esta misma API.
-
 \end{itemize}
 
+La gran mayoría de los motores mencionados funcionan exclusivamente con aceleradores de NVIDIA debido a que están implementados con CUDA. De la misma manera, Eleven Renderer hará uso de esta misma API, con el fin de imitar y seguir el desarrollo de la industria.
 
 \subsection{Desarrollo del trabajo}
 	
 El objetivo del desarrollo de este motor de render ha sido implementar el mayor número de características de un motor gráfico de producción y analizarlas una a una. Es por ello que la planificación ha carecido de una estructura formal, y ha sido remodelada constantemente a partir de los logros y el progreso obtenido hasta la fecha.
 
-
 A continuación se muestra una línea del tiempo con los hitos logrados:	
 
-%@todo add hyperlinking
-
-	\begin{table}[h]
+\begin{table}[H]
 	\renewcommand\arraystretch{1.4}
 	\captionsetup{singlelinecheck=false, font=blue, labelfont=sc, labelsep=quad}
 	\caption{Timeline}\vskip -1.5ex
@@ -59,7 +75,7 @@ A continuación se muestra una línea del tiempo con los hitos logrados:
 	\toprule
 	\addlinespace[1.5ex]
 	
-	Octubre 2020 & Finalización de lectura del curso TU WIEN Rendering \\
+	Octubre 2020 & Finalización de lectura del curso TU WIEN Rendering\footnotemark \\
 	Noviembre 2020 & Inicialización de proyecto, prototipo inicial de trazado de rayos en CUDA y visualización con SFML, implementación de texturas\\
 	Diciembre 2020 & Mapeado UV, Disney BRDF, carga de modelos .obj\\
 	Enero 2021 & BVH construcción y recorrido\\
@@ -71,7 +87,7 @@ A continuación se muestra una línea del tiempo con los hitos logrados:
 	Agosto 2021 & Implementación de mapas de normales, BOKEH\\
 	Septiembre 2021 & Escenas en formato JSON\\
 	
-	\end{tabular}
-	\end{table}
+\end{tabular}
+\end{table}
 
-Cabe destacar que toda figura es original y que todas las muestras y comparaciones visuales de renderizado han sido realizadas con Eleven Renderer salvo excepciones que están debidamente señaladas.
+\footnotetext{TU Wien Rendering Lectures: \url{https://www.youtube.com/watch?v=pjc1QAI6zS0&list=PLujxSBD-JXgnGmsn7gEyN28P1DnRZG7qi}}

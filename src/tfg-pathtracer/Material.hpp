@@ -16,7 +16,7 @@ public:
 	int normalTextureID = -1;
 
 	Vector3 albedo = Vector3(0.5,0.5,0.5);
-	Vector3 emission = Vector3::Zero();;
+	Vector3 emission = Vector3::Zero();
 
 	float roughness = 1;
 	float metallic = 0;

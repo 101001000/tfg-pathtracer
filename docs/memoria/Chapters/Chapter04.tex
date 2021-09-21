@@ -1,5 +1,6 @@
 ﻿\chapter{Optimizaciones estructurales}
-	
+\label{chap:4}
+
 Un algoritmo con buenos resultados visuales incluye unos costes computacionales asociados. A parte de buscar fotorrealismo y fidelidad gráfica, un motor de renderizado gráfico requiere de mejoras y optimizaciones para alcanzar tiempos competentes.
 
 La importancia de las optimizaciones implementadas en este capítulo no solo se limita a mejorar la productividad de los artistas con mejoras de rendimiento, si no que hace posible la visualización real de escenas que tardarían tiempos del orden de miles de años, reduciendo el enfoque de fuerza bruta a uno más sofisticado.
@@ -7,7 +8,7 @@ La importancia de las optimizaciones implementadas en este capítulo no solo se 
 \section{Muestreo por importancia}
 \label{sec:mi}
 
-El simple hecho de simular los caminos de los fotones no es eficiente. Se puede buscar una manera para que cada camino cargue con información ''más útil''. Este procedimiento se denomina ''Muestreo por Importancia'' y es actualmente una línea de investigación en constante desarrollo ya que como se verá a continuación, permite mejoras muy significativas en cuanto al tiempo de convergencia de la imagen final.
+El simple hecho de simular los caminos de los fotones no es eficiente. Se puede buscar una manera para que cada camino cargue con información ''más útil''. Este procedimiento se denomina muestreo por importancia, y es actualmente una línea de investigación en constante desarrollo ya que como se verá a continuación, permite mejoras muy significativas en cuanto al tiempo de convergencia de la imagen final.
 
 Gran parte de la literatura al respecto se resume en las notas de Importance Sampling for Production Rendering\cite{colbert2010importance} donde se repasan todos los fundamentos teóricos del muestreo por importancia. Así pues en este trabajo solo se va a ofrecer una visión generalizada suficiente para entender la implementación realizada en Eleven Renderer.
 
@@ -47,7 +48,7 @@ La función \code{pdf} se obtiene a partir del número de luces. Por otro lado, 
 
 		// Retrieve a random light
 		PointLight light = scene->pointLights[(int)(scene->pointLightCount * r1)];
-
+		
 		Vector3 newDir = (light.position - point).normalized();
 		
 		float dist = (light.position - point).length();
@@ -408,7 +409,7 @@ Este método no es práctico y se usa tan solo de forma comparativa. Consiste en
 
 Esta heurística parte de una simplificación en la estimación de tiempo de recorrido para un nodo.
 
-Para un nodo $N$, con $n$ triángulos, se estima que el tiempo en comprobar las intersecciones con cada triángulo es constante $t_triángulo$, de manera que el tiempo total para un nodo es $n * t_triángulo$. Si este nodo tiene dos hijos, $A$ y $B$, el tiempo en recorrer dicho nodo será $p_A\sum{n_A} + p_B\sum{n_B}$ donde $p$ es la probabilidad de intersecar cada hijo individualmente. La probabilidad de intersecar un nodo se simplifica como el área del volumen delimitador que encierra dicho nodo, de manera que se busca una división de los triángulos que minimice la suma $p_A\sum{n_A} + p_B\sum{n_B}$. El valor de esta suma es la denominada \code{SAH} y como se ha concluído que estima el tiempo de recorrido de un nodo, es necesario construir un árbol BVH para el cual sus nodos cuenten con un valor mínimo de esta estimación de tiempo de recorrido.
+Para un nodo $N$, con $n$ triángulos, se estima que el tiempo en comprobar las intersecciones con cada triángulo es constante $t_{triangulo}$, de manera que el tiempo total para un nodo es $n * t_{triangulo}$. Si este nodo tiene dos hijos, $A$ y $B$, el tiempo en recorrer dicho nodo será $p_A\sum{n_A} + p_B\sum{n_B}$ donde $p$ es la probabilidad de intersecar cada hijo individualmente. La probabilidad de intersecar un nodo se simplifica como el área del volumen delimitador que encierra dicho nodo, de manera que se busca una división de los triángulos que minimice la suma $p_A\sum{n_A} + p_B\sum{n_B}$. El valor de esta suma es la denominada \code{SAH} y como se ha concluído que estima el tiempo de recorrido de un nodo, es necesario construir un árbol BVH para el cual sus nodos cuenten con un valor mínimo de esta estimación de tiempo de recorrido.
 
 Dicho esto, buscar una división de los triángulos que minimicen la fórmula propuesta sería una tarea sencilla si se probara cada combinación de triángulos. No hace falta decir que es inviable comprobar todas las combinaciones para escenas del orden de millones de triángulos, por lo que es necesario aplicar otra simplifiación adicional. Esta simplificación se propone en \cite{wald2007fast}, donde Wald la denomina ''bining''. Por otro lado, PBRT \cite{pharr2016physically} describe esta misma simplificación utilizando el término ''buckets''.
 
@@ -632,6 +633,33 @@ Para justificar el uso de la heurística por superficie de área se muestra una 
 	
 \end{itemize}
 
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}| }
+	 \hline
+	 \multicolumn{3}{|c|}{Heuristic comparaison: Build time\footnotemark} \\
+	 \hline
+	 Model Name&PD\footnotemark build time&SAH build time\\
+	 \hline
+	 Suzanne   &68ms&93ms\\
+	 Stanford Bunny &70ms&205ms\\
+	 Stanford Dragon &3490ms&5647ms\\
+	 \hline
+\end{tabular}
+
+\begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}| }
+	 \hline
+	 \multicolumn{3}{|c|}{Heuristic comparaison: Transversal efficiency} \\
+	 \hline
+	 Model Name&PD transversal eff&SAH transversal eff\\
+	 \hline
+	 Suzanne   &2829 kPath/s&13073 kPath/s\\
+	 Stanford Bunny &553 kPath/s&14153 kPath/s\\
+	 Stanford Dragon &1.78 kPath/s&11587 kPath/s\\
+	 \hline
+\end{tabular}
+
+\footnotetext{Evaluaciones llevadas a cabo en una GPU NVIDIA RTX 3090 y un procesador Intel i5 6600K}
+\footnotetext{PD = Plane Division}
+
 \begin{figure}[H]
 	\centering
   \begin{minipage}[b]{0.4\textwidth}
@@ -645,29 +673,7 @@ Para justificar el uso de la heurística por superficie de área se muestra una 
   \end{minipage}
 \end{figure}
 
-Esta evaluación ha sido llevada a cabo con los siguientes parámetros:
-
-\code{BVH\_DEPTH = 20}, \code{BVH\_SAHBINS = 12}, \code{MAXBOUNCES = 5}, \code{SMOOTH\_SHADING = true}, 
-
-\begin{tikzpicture}
-	\begin{axis}[
-	x tick label style={
-		/pgf/number format/1000 sep=},
-	ylabel=BVH building time (s),
-	width=13cm,
-	enlarge x limits=-1,
-	ybar interval=0.7,
-	symbolic x coords={Suzanne,Stanford Bunny,Stanford Dragon, test}
-]
-\addplot 
-	coordinates {(Suzanne,0.201) (Stanford Bunny,0.215) (Stanford Dragon,3.405) (test,3.405)};
-\addplot 
-	coordinates {(Suzanne,0.233) (Stanford Bunny,0.342) (Stanford Dragon,8.410) (test,3.405)};
-\legend{Plane,SAH}
-\end{axis}
-\end{tikzpicture}
-	
-
+Tras el análisis de ambas heurísticas en distintas escenas, se concluye que el tiempo de generación de árboles BVH es significativamente más lento con SAH para escenas complejas. Por otro lado, la heurística de división de plano tiene un rendimiento de recorrido nefasto hasta el punto de ser inservible para escenas del orden de cientos de miles de triángulos.
 	
 \subsection{Evaluación:}
 	
