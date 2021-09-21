@@ -20,14 +20,14 @@ Este documento cuenta con seis capítulos:
 
 \begin{itemize}
 	\item \autoref{chap:1}: Introducción. Se incluye una breve introducción de cada capítulo además de ofrecer un contexto al trabajo.
-	\item \autoref{chap:2}: Implementación básica de Path Tracing. Se explican los fundamentos de este algoritmo y su implemención paralelizada en Eleven Renderer. 
+	\item \autoref{chap:2}: Implementación básica de Path Tracing. Se explican los fundamentos de este algoritmo y su implementación paralelizada en Eleven Renderer. 
 	\item \autoref{chap:3}: Mejoras visuales. El algoritmo de \emph{Path Tracing} es un algoritmo muy abierto y existen muchos detalles que pueden ser añadidos con el fin de crear resultados con más detalles visuales. Este capítulo cubre las mejoras que se han considerado necesarias para garantizar una fidelidad visual mínima.
 	\item \autoref{chap:4}: Optimizaciones estructurales. Muchas mejoras visuales necesitan de optimizaciones adicionales para tener tiempos de ejecución razonables. En este capítulo se explican las optimizaciones a nivel de algoritmo realizadas.
 	\item \autoref{chap:evaluation}: Evaluación. Varias características implementadas son evaluadas, además de realizar un perfil general del algoritmo con NVIDIA NSight para identificar las posibles optimizaciones futuras.
 	\item \autoref{chap:6}: Conclusiones. 
 \end{itemize}
 
-Cabe destacar que toda figura es original y que todas las muestras, comparaciones visuales y renders 3d han sido realizadas con Eleven Renderer, salvo las excepciones que están debidamente señaladas. La mayor parte del código, excepto el indicado o bien en la memoria, o bien en el código fuente, es una interpretación personal del material académico estudiado al respecto.
+Cabe destacar que toda figura es original y que todas las muestras, comparaciones visuales y renders 3D han sido realizadas con Eleven Renderer, salvo las excepciones que están debidamente señaladas. La mayor parte del código, excepto el indicado o bien en la memoria, o bien en el código fuente, es una interpretación personal del material académico estudiado al respecto.
 
 \section{Plan de trabajo}
 	
@@ -92,3 +92,99 @@ A continuación se muestra una línea del tiempo con los hitos logrados:
 Se está realizando también, de forma paralela, un port a Intel oneAPI, aunque este trabajo no cubre dicho apartado debido al progreso en desarrollo inacabado del mencionado port.
 
 \footnotetext{TU Wien Rendering Lectures: \url{https://www.youtube.com/watch?v=pjc1QAI6zS0&list=PLujxSBD-JXgnGmsn7gEyN28P1DnRZG7qi}}
+
+\chapter*{Introduction}
+\markboth{INTRODUCTION}{INTRODUCTION}
+
+3D rendering is a technique which represents three dimensional geometry data in a two dimensional screen. There are different 3D rendering techniques, Ray Tracing being the most used in the film industry, thanks to the exceptional photorealism which other techniques lack. It's so valued this technique that nowadays, 3D visualization related industries lique video game industry, try to implement and adapt it to their most modern projects. Growing interest in Ray Tracing has made graphics hardware related companies spend part of their development resources into the implementations of Ray Tracing in their latest models. For example, the last two GPU series from NVIDIA, RTX series (Ray Tracing Texel eXtreme)
+
+Nevertheless, the implementation of this rendering scheme, requires many computational resources, for that reason, a big part of the 3D rendering engines are being adapted to work with hardware graphics accelerators. With the growing computational capacity and the photorealistic characteristics mentioned before, Ray Tracing rendering engines did acquire a special importance in graphics computing.
+
+\section{Objectives}
+	
+This work covers briefly the theoretical bases of a photorealistic 3d engine, with characteristics not far away from other commercial engines. This implementation includes their own CUDA implementation from scratch. This implementation has been developed by myself, for this work, and has been called Eleven Renderer. It is Open Source and can be found in \url{https://github.com/101001000/tfg-pathtracer}.
+
+Eleven Renderer has their foundations on the Path Tracing algorithm, a kind of Ray Tracing, able to simulate global illumination. This work also emphasizes the analysis of this implementation in modern GPUS, testing different parametters and optimizations.
+
+Eleven Renderer has properties not far away from the state of the art: it can render scenes in the order of million triangles in reasonable times; it uses a realistic shading model developed by Disney \cite{burley2012physically}; it allows the use of texture maps and it also works on the GPU.
+
+An important aspect for this implementation is that it has been tried to limit the number of libraries used to get a deeper understanding of a Path Tracing engine architecture. The work which usually is done by the graphics libraries is demystified, and the internal workings of the engine are explained.
+
+
+This document has six chapters:
+
+
+\begin{itemize}
+	\item \autoref{chap:1}: Introduction. A brief context is given about how the work has been done and what to expect from it.
+	\item \autoref{chap:2}: Path Tracing basic implementation. Its explained the pipeline and how its parallelized the basics of the Path Tracing algorithnm. 
+	\item \autoref{chap:3}: Visual improvements. Path Tracing's algorithm is really open and allows a big number of changes to make it more appealing.
+	\item \autoref{chap:4}: Optimizations. Many of the visual improvements require some optimizactions to have reasonable rendering times.
+	\item \autoref{chap:evaluation}: Evaluation. A couple changes are evaluated and benchmarked, also a its used NVIDIA NSight to make a profile the app.
+	\item \autoref{chap:6}: Conclusions.
+\end{itemize}
+
+Every figure it's original, and every 3D render except where indicated, has been done with Eleven Renderer. Most of the code, except indicated in the source file or this document, is a personal interpretation and implementation of the academic material.
+
+
+\section{Work plan}
+	
+\subsection{Previous work}
+
+\paragraph{Open Source}\mbox{} \\
+
+Nowadays, many open source implementations of Path Tracing exist. Most of them are direct implementations of the books Ray Tracing in one Weekend \cite{shirley2016ray} or Physically based rendering: From theory to implementation \cite{pharr2016physically}. The first is a quick functional implementation and the second one contains almost every foundation of the Path Tracing, accompanied with a very complete implementation.
+
+Both books have excellenetly worked as documentation, that being said, both are aimed at CPU rendering, all the architecture which brings the second book, it's focused on abstracting every component. This is a problem when using CUDA, as it doesn't allow the usage of virtual functions, so it has a limited classes inheritance 
+
+Most of these open source implementations are proof of concepts, and most of them are feature limited. There's one implementation which shines: Blender Cycles.
+
+Cycles is without doubt, one of the most relevant open source implementations of this algorithm. Is a renderer developed by Blender, flexible and with implementations in different APIs, like CUDA, so many different accelerators can be used. It also offers a broad range of graphical features, most of them in the state of the art. These features allow Cycles to find his place among the rest of the commercial production rendering engines.
+
+\paragraph{Commercial applications}\mbox{} \\
+
+At the moment, only Open Source implementations have been mentioned, but it's impossible to ignore commercial applications. Because photorealistic rendering is a very valuable tool in the audiovisual industry, big businesses have developed or acquired some Path Tracing proprietary 3D renderers. A couple examples are:
+
+\begin{itemize}
+
+	\item Autodesk: Arnold Render
+	\item Blender Foundation: Cycles
+	\item Marmoset: Marmoset Toolbag
+	\item Otoy: Octane Render
+	\item Maxon: Redshift
+	\item Pixar: Renderman
+	\item Chaos Group: V-Ray
+
+\end{itemize}
+
+Most of the mentioned engines work exclusively with NVIDIA accelerators because they are implemented in CUDA. The same way, Eleven Renderer uses this same API trying to mimic the industry.
+
+\subsection{Work development}
+	
+The objective of the development of this rendering engine has been to implement the biggest number of features for a production rendering engine and to analyze it. For that reason, the planification has lacked a formal structure, and has been defined from the milestones and achievements to the date. A timeline with the milestones is shown:
+	
+\begin{table}[H]
+	\renewcommand\arraystretch{1.4}
+	\captionsetup{singlelinecheck=false, font=blue, labelfont=sc, labelsep=quad}
+	\caption{Timeline}\vskip -1.5ex
+	\begin{tabular}{@{\,}r <{\hskip 2pt} !{\foo} >{\raggedright\arraybackslash}p{5cm}}
+	\toprule
+	\addlinespace[1.5ex]
+	
+	October 2020 & TU WIEN Rendering lectures finished\footnotemark \\
+	November 2020 & Project setup, initial Path Tracing prototype in CUDA and SFML visualization, texture maps\\
+	December 2020 & UV Mapping, Disney BRDF, .obj 3D model loading\\
+	January 2021 & BVH build and traversal\\
+	April 2021 & SAH and start the documentation, BRDF visualizer\\
+	February 2021 & HDRI and NEE\\
+	March 2021 & HDRI importance sampling\\
+	May 2021 & Benchmarking methods\\
+	August 2021 & Normal map implementations, BOKEH\\
+	September 2021 & JSON Scenes\\
+	
+\end{tabular}
+\end{table}
+
+It's being developed at the same time, a Intel oneAPI port, but this work doesn't cover it as the progress is not finished.
+
+\footnotetext{TU Wien Rendering Lectures: \url{https://www.youtube.com/watch?v=pjc1QAI6zS0&list=PLujxSBD-JXgnGmsn7gEyN28P1DnRZG7qi}}
+

@@ -7,11 +7,11 @@
 #include "MeshObject.hpp"
 #include "Definitions.h"
 
-
+//Adaptation from
 //https://www.turais.de/using-mikktspace-in-your-project/
 
 
-Pretzel::CalcTangents::CalcTangents() {
+CalcTangents::CalcTangents() {
 
     iface.m_getNumFaces = get_num_faces;
     iface.m_getNumVerticesOfFace = get_num_vertices_of_face;
@@ -24,14 +24,14 @@ Pretzel::CalcTangents::CalcTangents() {
     context.m_pInterface = &iface;
 }
 
-void Pretzel::CalcTangents::calc(MeshObject* mesh) {
+void CalcTangents::calc(MeshObject* mesh) {
 
     context.m_pUserData = mesh;
 
     genTangSpaceDefault(&this->context);
 }
 
-int Pretzel::CalcTangents::get_num_faces(const SMikkTSpaceContext* context) {
+int CalcTangents::get_num_faces(const SMikkTSpaceContext* context) {
 
     MeshObject* working_mesh = static_cast<MeshObject*> (context->m_pUserData);
 
@@ -39,12 +39,12 @@ int Pretzel::CalcTangents::get_num_faces(const SMikkTSpaceContext* context) {
 
 }
 
-int Pretzel::CalcTangents::get_num_vertices_of_face(const SMikkTSpaceContext* context,
+int CalcTangents::get_num_vertices_of_face(const SMikkTSpaceContext* context,
     const int iFace) {
     return 3;
 }
 
-void Pretzel::CalcTangents::get_position(const SMikkTSpaceContext* context, float outpos[],
+void CalcTangents::get_position(const SMikkTSpaceContext* context, float outpos[],
     int iFace, int iVert) {
 
     MeshObject* working_mesh = static_cast<MeshObject*> (context->m_pUserData);
@@ -54,7 +54,7 @@ void Pretzel::CalcTangents::get_position(const SMikkTSpaceContext* context, floa
     outpos[2] = working_mesh->tris[iFace].vertices[iVert].z;
 }
 
-void Pretzel::CalcTangents::get_normal(const SMikkTSpaceContext* context, float outnormal[],
+void CalcTangents::get_normal(const SMikkTSpaceContext* context, float outnormal[],
     int iFace, int iVert) {
     MeshObject* working_mesh = static_cast<MeshObject*> (context->m_pUserData);
 
@@ -79,7 +79,7 @@ void Pretzel::CalcTangents::get_normal(const SMikkTSpaceContext* context, float 
 
 }
 
-void Pretzel::CalcTangents::get_tex_coords(const SMikkTSpaceContext* context,
+void CalcTangents::get_tex_coords(const SMikkTSpaceContext* context,
     float outuv[],
     const int iFace, const int iVert) {
 
@@ -89,7 +89,7 @@ void Pretzel::CalcTangents::get_tex_coords(const SMikkTSpaceContext* context,
     outuv[1] = working_mesh->tris[iFace].uv[iVert].y;
 }
 
-void Pretzel::CalcTangents::set_tspace_basic(const SMikkTSpaceContext* context,
+void CalcTangents::set_tspace_basic(const SMikkTSpaceContext* context,
     const float tangentu[],
     const float fSign, const int iFace, const int iVert) {
     MeshObject* working_mesh = static_cast<MeshObject*> (context->m_pUserData);

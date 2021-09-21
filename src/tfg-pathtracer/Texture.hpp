@@ -36,6 +36,8 @@ public:
 
     	__host__ Texture(std::string filepath, CS colorSpace) {
 
+        //https://stackoverflow.com/questions/2654480/writing-bmp-image-in-pure-c-c-without-other-libraries
+
         printf("Loading texture from file %s\n", filepath.c_str());
 
         int i;
