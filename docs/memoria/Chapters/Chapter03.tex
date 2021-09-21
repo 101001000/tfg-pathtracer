@@ -1,10 +1,10 @@
 \chapter{Mejoras visuales}
 				
-En el capítulo anterior se definió la implementación básica para visualizar una escena simple. Así pues este capítulo explica las mejoras visuales más comunes utilizadas en los motores gráficos de producción así como su implementación en Eleven Renderer y su evaluación.
+En el capítulo anterior se definió la implementación básica para visualizar una escena simple. Así pues, este capítulo explica las mejoras visuales más comunes utilizadas en los motores gráficos de producción, así como su implementación en Eleven Renderer y su evaluación.
 	
 \section{Desenfoque: Modelo de lente fina}
 	
-Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, ya que la mayoría de las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena, y desenfocar el resto. Este efecto se conoce como ''Bokeh'' y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
+Hasta ahora se ha estado utilizando un modelo de cámara ideal denominado cámara estenopeica. Esta cámara tiene la particularidad de tener un enfoque perfecto siempre, siendo una propiedad indeseada en un motor de renderizado fotorrealista, esto se debe a que a diferencia de las cámaras estenopeicas, , las cámaras reales incluyen lentes en su estructura que desvían los rayos de luz gracias a la difracción del cristal, enfocando a determinada distancia, y desenfocando el resto de la escena. El hecho de poder enfocar a una distancia determinada permite hacer énfasis en un sujeto de la escena y desenfocar el resto. Este efecto se conoce como \emph{Bokeh} y es muy deseado en un motor de renderizado, puesto que es un recurso cinematográfico muy atractivo visualmente.
 
 Para solventar el problema del enfoque perfecto se hace uso de un modelo de cámara denominado modelo de lente fina. Este modelo es una simplificación de lo que sería una simulación física de unas lentes reales. Al simplificar los cálculos, se pierden artefactos y desperfectos deseados como la aberración cromática o la distorsión de lentes, pero a cambio se obtiene la simplicidad de implementación.
 
@@ -25,7 +25,7 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
 \end{enumerate}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:bokeh}, caption={Código de desenfoque}]
+\begin{lstlisting}[label={cod:bokeh}, caption={Código de desenfoque.}]
 	
 	#if BOKEH
 	
@@ -59,36 +59,38 @@ El procedimiento para calcular los rayos emitidos por el nuevo modelo de cámara
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.7\textwidth]{blurring}
-	\caption{Esquema cámara modelo de lente fina}
+	\caption{Esquema cámara modelo de lente fina.}
 	\label{fig:thinlensecamera}
 \end{figure}
 
-El resultado final es un desenfoque configurable a partir de la distancia de enfoque. Es posible también aumentar la cantidad de desenfoque reduciendo el número de f-stops, que consecuentemente aumentará la apertura del iris. La \autoref{fig:focusboxes} muestra un ejemplo de la modificación de distancia de enfoque mencionada.
+El resultado final es un desenfoque configurable a partir de la distancia de enfoque. Es posible, también, aumentar la cantidad de desenfoque reduciendo el número de f-stops, que consecuentemente aumentará la apertura del iris. La \autoref{fig:focusboxes} muestra un ejemplo de la modificación de distancia de enfoque mencionada.
 
 \begin{figure}[H]
 	\centering
   \begin{minipage}[b]{0.3\textwidth}
 	\includegraphics[width=\textwidth]{nofocus}
-	\caption{Desenfoque desactivado}
+	\caption{Desenfoque desactivado.}
   \end{minipage}
   \hfill
   \begin{minipage}[b]{0.3\textwidth}
 	\includegraphics[width=\textwidth]{focusnear}
-	\caption{Distancia de enfoque 10m}
+	\caption{Distancia de enfoque 10m.}
   \end{minipage}
   	\hfill
   \begin{minipage}[b]{0.3\textwidth}
 	\includegraphics[width=\textwidth]{focusfar}
-	\caption{Distancia de enfoque 30m}
+	\caption{Distancia de enfoque 30m.}
   \end{minipage}
-\caption{Comparación de distintas distancias de enfoque}
+\caption{Comparación de distintas distancias de enfoque.}
 \label{fig:focusboxes}
 \end{figure}
 	
 		
 \section{Texturas}
 	
-El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante. En la implementación se ha añadido una clase \code{Texture} que contiene dos valores enteros \code{width} y \code{height}, que indican la altura y anchura de la matriz de datos \code{data}. La carga se hace a partir de un constructor que toma como parámetro la dirección de una imagen en formato .bmp y dividirá el valor de cada canal y cada pixel por 256 con el fin de limitar el rango de valores en [0,1). Los valores \code{width} y \code{height} son extraídos de la cabecera. El constructor admite un parámetro opcional \code{colorSpace}, que determina si es necesario convertir la imagen cargada de espacio de color. Por el momento solo se soportan dos espacios de color, el espacio Lineal y el espacio sRGB, que son los más comunes.
+El uso de colores planos en los materiales limita la capacidad de imitación de la realidad. Un recurso esencial para romper esta limitación es el uso de texturas. Una textura consiste en una matriz bidimensional de valores en punto flotante. En la implementación se ha añadido una clase \code{Texture} que contiene dos valores enteros \code{width} y \code{height}, que indican la altura y anchura de la matriz de datos \code{data}. La carga se hace a partir de un constructor que toma como parámetro la dirección de una imagen en formato .bmp y dividirá el valor de cada canal y cada pixel por 256 con el fin de limitar el rango de valores en [0,1). Los valores \code{width} y \code{height} son extraídos de la cabecera. El constructor admite un parámetro opcional \code{colorSpace}, que determina si es necesario convertir la imagen cargada de espacio de color. Por el momento, solo se soportan dos espacios de color, el espacio Lineal y el espacio sRGB, que son los más comunes.
+
+Para cambiar de Lineal a sRGB se eleva el valor a 2.2, que es el valor de corrección de gamma. Para cambiar de sRGB a Lineal, se eleva el valor a $\frac{1}{2.2}$.
 	
 	%@todo add image of a color texture
 	
@@ -96,10 +98,10 @@ El uso de colores planos en los materiales limita la capacidad de imitación de 
 
 Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas \code{u,v}. Ambas coordenadas \code{u} y \code{v} son valores de punto flotante comprendidos entre [0,1]. \code{u} indica la coordenada horizontal mientras que \code{v} indica la coordenada vertical. Estas coordenadas son diferentes a las coordenadas \code{u,v} explicadas en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} aunque tengan el mismo nombre.
 
-También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura, útil por ejemplo si se busca que una textura se repita cierto número de veces y el segundo son los desplazamientos de esta en los dos ejes. Dicha transformación queda contemplada en \autoref{cod:getval}
+También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura; útil, por ejemplo, si se busca que una textura se repita cierto número de veces. El segundo es el desplazamientos de esta en dos ejes. Dicha transformación queda contemplada en \autoref{cod:getval}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:getval}, caption={Código para obtener valor de una textura}]
+\begin{lstlisting}[label={cod:getval}, caption={Código para obtener valor de una textura.}]
 	
 	__host__ __device__ Vector3 getValueFromCoordinates(int x, int y) {
 	
@@ -120,7 +122,7 @@ También resulta útil definir dos parámetros de transformación para las textu
 
 \subsection{IBL (Image Based Lightning)}
 	
-Hasta ahora, la luz que llegaba a la escena desde el fondo es una radiación homogénea determinada por un color. Sin embargo, es posible utilizar imágenes para iluminar la escena.
+Hasta ahora, la luz que llegaba a la escena desde el fondo era una radiación homogénea determinada por un color, sin embargo, es posible utilizar imágenes para iluminar la escena.
 	
 La iluminación basada en imagen ha sido uno de los elementos más relevantes en las técnicas para el renderizado fotorrealista. Se utiliza ampliamente en la industria cinematográfica debido a la complejidad visual que aporta a una escena 3D porque permite captar la iluminación de entornos reales y posteriormente añadirla en escenas digitales. El hecho de poder trasladar la iluminación a un escenario virtual facilita la composición de modelos tridimensionales en películas y series de televisión, donde es necesario juntar una grabación real con un elemento generado por ordenador.
 
@@ -131,18 +133,18 @@ Esta técnica se basa principalmente en usar una fotografía de 360 grados como 
 	\label{fig:hdriexample}
     \centering
 	\includegraphics[width=0.7\textwidth]{hdriexample}
-	\caption{Escena iluminada con una imagen HDRI de estudio, nótese como la luz superior incide directamente en la esfera acorde a la dirección}
+	\caption{Escena iluminada con una imagen HDRI de estudio, nótese como la luz superior incide directamente en la esfera acorde a la dirección.}
 \end{figure}
 
-La implementación de esta técnica en el motor de render viene dada por el uso de una imagen en formato .hdr (imágenes en punto flotante). Cada píxel de esta imagen se interpreta como una pequeña fuente de luz direccional en el infinito, orientada hacia el centro de la escena. Así pues, los rayos que no interseccionan en la escena con ningún elemento se considera que interseccionan en el infinito con el \code{HDRI}. Por esta razón, al detectar que un rayo sale de la escena, se obtiene la dirección de este, y esta dirección se traduce en las coordenadas polares de la imagen \code{HDRI}. Una vez se tienen las coordenadas polares, es posible obtener el valor lumínico del píxel al que apunta dicho rayo. Este será el valor lumínico que se utilice para dicho camino.
+La implementación de esta técnica en el motor de render viene dada por el uso de una imagen en formato .hdr (imágenes en punto flotante). Cada píxel de esta imagen se interpreta como una pequeña fuente de luz direccional en el infinito, orientada hacia el centro de la escena. Así pues, los rayos que no interseccionan en la escena con ningún elemento se considera que interseccionan en el infinito con el \code{HDRI}. Por esta razón, al detectar que un rayo sale de la escena, se obtiene su dirección, y esta dirección se traduce en las coordenadas polares de la imagen \code{HDRI}. Una vez se tienen las coordenadas polares, es posible obtener el valor lumínico del píxel al que apunta dicho rayo. Este será el valor lumínico que se utilice para dicho camino.
 	
 
-Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir dos funciones que transforman coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping} definida en \autoref{cod:sphericalmapping} y su inversa \code{reverseSphericalMapping} definida en \autoref{cod:reversesphericalmapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
+Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir dos funciones que transforman coordenadas esféricas en coordenadas \code{u,v}. Estas dos funciones son \code{sphericalMapping}, definida en \autoref{cod:sphericalmapping} y su inversa \code{reverseSphericalMapping}, definida en \autoref{cod:reversesphericalmapping}. La primera devuelve las coordenadas \code{u,v} para un punto situado en la superficie de una esfera de radio arbitrario mientras que la segunda calcula la posición de un punto en la superficie de una esfera de radio unitario, dadas dos coordenadas \code{u,v}.
 
 \label{sphericalmapping}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:sphericalmapping}, caption={Código para calcular las coordenadas u,v a través de un vector en una esfera de radio determinado}]
+\begin{lstlisting}[label={cod:sphericalmapping}, caption={Código para calcular las coordenadas u,v a través de un vector en una esfera de radio determinado.}]
 	
     __host__ __device__ static inline void sphericalMapping(Vector3 origin, Vector3 point, float radius, float& u, float& v) {
 
@@ -162,7 +164,7 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
 \end{minipage}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:reversesphericalmapping}, caption={Función inversa al mapeo esférico}]
+\begin{lstlisting}[label={cod:reversesphericalmapping}, caption={Función inversa al mapeo esférico.}]
 		
 	__host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
 
@@ -190,11 +192,11 @@ Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoc
 	\label{fig:bilinear}
 	\centering
 	\includegraphics[width=0.3\textwidth]{bilinear}
-	\caption{Interpolación bilineal}
+	\caption{Interpolación bilineal.}
 \end{figure}
 	
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:bilinear}, caption={Código interpolación bilinear}]
+\begin{lstlisting}[label={cod:bilinear}, caption={Código interpolación bilineal.}]
 	
 	__host__ __device__ Vector3 getValueBilinear(float u, float v) {
         
@@ -223,9 +225,9 @@ Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoc
 \end{lstlisting}
 \end{minipage}	
 
-Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado de manera que resulta conveniente analizar el posible impacto en la eficiencia. Para comprobar esto se ha renderizado la misma escena con y sin filtrado en la \autoref{fig:filtercomparaison}. 
+Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado, de manera que resulta conveniente analizar el posible impacto en la eficiencia. Para comprobar esto se ha renderizado la misma escena con y sin filtrado en la \autoref{fig:filtercomparaison}. 
 	
-El render sin filtrado es un 0.8\% más rápido, una penalización poco sustancial, de manera que se utilizará el filtrado bilinear de manera predeterminada. Se esperaría que esta penalización fuera mayor debido a la multiplicación de accesos a memoria, pero como se explica en el \autoref{chap:evaluation}, la mayor carga de trabajo reside en las intersecciones con los objetos en la escena.
+El render sin filtrado es un 0.8\% más rápido, una penalización poco sustancial, por lo que se utilizará el filtrado bilinear de manera predeterminada. Se esperaría que esta penalización fuera mayor debido a la multiplicación de accesos a memoria, pero como se explica en el \autoref{chap:evaluation}, la mayor carga de trabajo reside en las intersecciones con los objetos en la escena.
 
 \begin{figure}[H]
 \centering
@@ -245,26 +247,26 @@ El render sin filtrado es un 0.8\% más rápido, una penalización poco sustanci
            };
        \end{axis}
 \end{tikzpicture}
-\caption{Comparación de eficiencia para filtrado / no filtrado}
+\caption{Comparación de eficiencia para filtrado / no filtrado.}
 \label{fig:filtercomparaison}
 \end{figure}
 	
 \subsection{Mapas de normales}
 		
-A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que luz incide en la superficie además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. Un ejemplo de esto es la \autoref{fig:normalmap} donde se puede ver como una simple textura puede simular relieve en la superficie de una esfera a partir de la textura en la \autoref{fig:normalmaptexture}. 
+A nivel artístico resulta muy útil definir la normal para cada intersección en un triángulo de manera arbitraria, aporta control sobre la dirección en la que la luz incide en la superficie; además de que permite dar mayor complejidad y detalle a las geometrías contar con la penalización que implica hacer uso de triángulos adicionales. Un ejemplo de esto es la \autoref{fig:normalmap}, donde se puede ver como una simple textura puede simular relieve en la superficie de una esfera a partir de la textura en la \autoref{fig:normalmaptexture}. 
 	
 		
 \begin{figure}[H]
     \centering
 	\includegraphics[width=0.6\textwidth]{normalmap}
-	\caption{Esfera con mapa de normales}
+	\caption{Esfera con mapa de normales.}
 	\label{fig:normalmap}
 \end{figure}
 
 \begin{figure}[H]
     \centering
 	\includegraphics[width=0.3\textwidth]{normalmaptexture}
-	\caption{Textura para mapa de normales}
+	\caption{Textura para mapa de normales.}
 	\label{fig:normalmaptexture}
 \end{figure}
 
@@ -272,9 +274,11 @@ A nivel artístico resulta muy útil definir la normal para cada intersección e
 	
 La mayor parte de la información acerca de los mapas de normales se ha obtenido en LearnOpenGL.com \cite{learnopengl}, donde se explican las nociones teóricas sobre estos.
 	
-Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con 3 canales de color. Cada canal se utiliza para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}. Así pues, la conversión de un color a una normal se hace con el siguiente código: \code{localNormal = (color * 2) - 1;} ya que las coordenadas de la normal se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
+Estas normales se suministran a través de texturas de una forma similar a la mencionada anteriormente. La textura que carga la información del mapa de normales cuenta con tres canales de color. Cada canal se utiliza para definir la coordenada de la normal, siendo el canal rojo la coordenada \code{x}, el canal azul la coordenada \code{y} y el canal verde la coordenada \code{z}.
+
+La conversión de un color a una normal se hace con el siguiente código: \code{localNormal = (color * 2) - 1;} ya que las coordenadas de la normal se encuentran en el rango [-1, 1] y los valores de color se encuentran en el rango [0,1).
 	
-Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Los vectores suministrados por los mapas de normales son locales en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores aproximadamente ortogonales. La representación visual de estos tres vectores que forman el espacio tangencial se muestra en la \autoref{fig:tangentspace}.
+Hasta ahora, en ningún momento se ha tenido en cuenta el espacio en el que se encuentran estas normales. Los vectores suministrados por los mapas de normales son locales en el espacio tangencial. El espacio tangencial es un espacio formado por la normal calculada a partir del triángulo, la tangente y la bitangente, tres vectores aproximadamente ortogonales. La representación visual de estos tres vectores que forman el espacio tangencial se muestra en la \autoref{fig:tangentspace}.
 
 \begin{figure}[H]
     \centering
@@ -285,9 +289,9 @@ Hasta ahora en ningún momento se ha tenido en cuenta el espacio en el que se en
 	
 Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
 	
-El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en su repositorio \cite{mikktspace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de él. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}. Este proceso de manera más detallada se explica en el árticulo de LearnOpenGL \cite{learnopengl}
+El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en su repositorio \cite{mikktspace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de él. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}. Este proceso se explica de manera más detallada en un árticulo de LearnOpenGL \cite{learnopengl}.
 
-Para hacer uso de la implementación MikkTSpace tan solo hay que definir un archivo adicional que enlace las funciones de callback, las cuales solicitarán parámetros para el cálculo de las tangentes tales como las posiciones de los vértices, el número de triángulos etc.
+Para hacer uso de la implementación MikkTSpace tan solo hay que definir un archivo adicional que enlace las funciones de callback, que solicitarán parámetros para el cálculo de las tangentes tales como las posiciones de los vértices, el número de triángulos etc.
 
 	
 \section{Smooth Shading}
@@ -301,7 +305,7 @@ Para este método es necesario precalcular una normal por cada vértice, algo qu
 Por ello, en la función \code{hit()} de \code{Tri} se añade el código determinado en \autoref{cod:smoothshading}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:smoothshading}, caption={Código interpolación de normales}]
+\begin{lstlisting}[label={cod:smoothshading}, caption={Código interpolación de normales.}]
 			
 	#if SMOOTH_SHADING 
 
@@ -311,12 +315,12 @@ Por ello, en la función \code{hit()} de \code{Tri} se añade el código determi
 \end{lstlisting}
 \end{minipage}
 	
-Así pues tanto la normal y la tangente son interpoladas a partir de las coordenadas baricéntricas del triángulo \code{u,v}, las cuales indican la distancia a cada vértice, como se muestra en la \autoref{fig:smoothshading}. El resultado de implementar "Smooth Shading" queda reflejado en las figuras \autoref{fig:smoothshadingoff} y \autoref{fig:smoothshadingon}, donde la primera es un ejemplo de esta característica desactivada y la segunda es un ejemplo de la característica activada.
+Tanto la normal y la tangente son interpoladas a partir de las coordenadas baricéntricas del triángulo \code{u,v}, las cuales indican la distancia a cada vértice, como se muestra en la \autoref{fig:smoothshading}. El resultado de implementar "Smooth Shading" queda reflejado en las figuras \autoref{fig:smoothshadingoff} y \autoref{fig:smoothshadingon}, donde la primera es un ejemplo de esta característica desactivada y la segunda es un ejemplo de la característica activada.
 	
 \begin{figure}[H]
     \centering
 	\includegraphics[width=0.3\textwidth]{smoothshading}
-	\caption{Interpolación de normales}
+	\caption{Interpolación de normales.}
 	\label{fig:smoothshading}
 \end{figure}
 
@@ -324,13 +328,13 @@ Así pues tanto la normal y la tangente son interpoladas a partir de las coorden
 		\centering
 		\begin{minipage}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{smoothshadingoff}
-		\caption{Smooth Shading desactivado}
+		\caption{Smooth Shading desactivado.}
 		\label{fig:smoothshadingoff}
 	  \end{minipage}
 	  \hfill
 	  \begin{minipage}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{smoothshadingon}
-		\caption{Smooth Shading activado}
+		\caption{Smooth Shading activado.}
 		\label{fig:smoothshadingon}
 	  \end{minipage}
 	  	\hfill
@@ -342,7 +346,7 @@ Al implementar esta mejora pueden aparecer artefactos conocidos como "Shadow Ter
 \autoref{cod:shadowterminator} muestra el código adaptado a Eleven Renderer.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:shadowterminator}, caption={Código Shadow Terminator}]
+\begin{lstlisting}[label={cod:shadowterminator}, caption={Código Shadow Terminator.}]
 	
 	Vector3 p0 = projectOnPlane(geomPosition, vertices[0], normals[0]);
     Vector3 p1 = projectOnPlane(geomPosition, vertices[1], normals[1]);
@@ -363,13 +367,13 @@ El resultado de la implementación en Eleven Renderer se muestra en la \autoref{
 	\centering
 	  \begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{shadowterminatorcycles}
-		\caption{Escena de esfera en Cycles}
+		\caption{Escena de esfera en Cycles.}
 		\label{fig:shadowterminatorcycles}
 	  \end{subfigure}
 	 \hfill
 	  \begin{subfigure}[b]{0.4\textwidth}
 		\includegraphics[width=\textwidth]{shadowterminatoreleven}
-		\caption{Escena de esfera en Eleven Renderer}
+		\caption{Escena de esfera en Eleven Renderer.}
 		\label{fig:shadowterminatoreleven}
 	  \end{subfigure}
 	  \caption{Artefactos visuales y solución debidos a Shadow Termination.}
@@ -385,7 +389,7 @@ En la ecuación de renderizado se encuentra un término denominado BRDF $f_{\tex
 	
 Disney propone una función BRDF conocida como Disney Principled BRDF\cite{burley2012physically}. Este modelo ha sido ideado por Disney con el fin de adaptar los parámetros del modelo de sombreado a unos parámetros amigables para los artistas. Con esto se pretende dejar de lado los antiguos modelos de sombreado poco intuitivos. Esta función de sombreado es utilizada también por Blender Cycles como modelo predeterminado.
 	
-El término ''material'' y ''BRDF'' están fuertemente ligados. Un material es un conjunto de valores para estos atributos.
+El término \emph{material} y \emph{BRDF} están fuertemente ligados. Un material es un conjunto de valores para estos atributos.
 		
 Así pues se procede a explicar estos atributos sintetizados:
 
@@ -406,14 +410,14 @@ Así pues se procede a explicar estos atributos sintetizados:
 	
 \end{itemize}
 
-En Eleven Renderer se ha hecho uso de una implementación ya existente \cite{knightcrawler25} de las ecuaciones del shader de Disney adaptada sin utilizar la transmisión. El propio Disney tiene en Github implementaciones de este shader disponibles \cite{disneyrepo}. Se compara en la \autoref{fig:materialtest} tres parámetros distintos en Eleven Renderer. La primera hilera muestra distintos valores de ''albedo'', la segunda muestra la variación de ''rougness'' incrementando de izquierda a derecha, siendo los materiales de la derecha más lisos. En la tercera hilera se muestra una comparativa del parámetro ''metallic'', siendo los materiales de la derecha más metálicos.
+En Eleven Renderer se ha hecho uso de una implementación ya existente \cite{knightcrawler25} de las ecuaciones del shader de Disney adaptada sin utilizar la transmisión. El propio Disney tiene en Github implementaciones de este shader disponibles \cite{disneyrepo}. Se compara en la \autoref{fig:materialtest} tres parámetros distintos en Eleven Renderer. La primera hilera muestra distintos valores de \emph{albedo}, la segunda muestra la variación de \emph{rougness} incrementando de izquierda a derecha, siendo los materiales de la derecha más lisos. En la tercera hilera se muestra una comparativa del parámetro \emph{metallic}, siendo los materiales de la derecha más metálicos.
 
 Gracias a la implementación previa de texturas es posible además definir estos valores de manera arbitraria para distintas partes del objeto.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{materialtest}
-	\caption{Comparación de los atributos albedo, roughness y metallic}
+	\caption{Comparación de los atributos albedo, roughness y metallic.}
 	\label{fig:materialtest}
 \end{figure}
 	
