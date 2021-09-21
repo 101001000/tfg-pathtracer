@@ -28,9 +28,9 @@ El renderizado por luz directa es un método por el cual solo se tiene en cuenta
 
 El muestreo por importancia de Estimación de Evento Próximo trata de juntar estos dos métodos: La iluminación directa y la indirecta. De esta manera, la parte expuesta directamente a elementos lumínicos convergerá rápidamente, además de las partes afectadas por la iluminación global, que lo harán también. Un añadido de este método es la posibilidad de computar la iluminación dada por luces de punto.
 
-Las luces de punto consisten en un punto en el espacio infinitamente pequeño que emite luz de manera uniforme hacia todos los lados. Sin la implementación de la estimación de evento próximo, nunca se recibiría información lumínica de estas luces ya que al ser infinitamente pequeñas no sérian alcanzadas por los caminos. No solo eso, NEE también permite una mejor convergencia en las luces de menor tamaño, puesto que originalmente, las luces tienen menos probabilidades de ser alcanzadas cuanto menor sea su área.
+Las luces de punto consisten en un punto en el espacio infinitamente pequeño que emite luz de manera uniforme hacia todos los lados. Sin la implementación de la estimación de evento próximo, nunca se recibiría información lumínica de estas luces ya que al ser infinitamente pequeñas no serían alcanzadas por los caminos. No solo eso, NEE también permite una mejor convergencia en las luces de menor tamaño, puesto que originalmente, las luces tienen menos probabilidades de ser alcanzadas cuanto menor sea su área.
 
-En el caso de Eleven Renderer, una nueva función \code{pointLight} en \autoref{cod:pointlight} es utilizada. Esta función calcula la luz directa de los puntos de luz. De forma resumida, se elige un punto de luz aleatorio, se toma como radiación inicial el atributo \code{radiance} para dicho punto de luz y se atenúa cuadráticamente con la distancia entre la luz y el punto a sombrear. Este procedimiento es realmente intuitivo si se trata la luz como una esfera y la radiación emitida como el área de dicha esfera. Finalmente se aplica la función BRDF para la dirección a la luz y el coseno con la normal. También es necesario un paso por el que se comprueba si dicho punto es visible por la luz o está obstruído por un objeto, para ello se traza un rayo hasta la luz y se comprueba si interseca con algún triángulo.
+En el caso de Eleven Renderer, una nueva función \code{pointLight} en \autoref{cod:pointlight} es utilizada. Esta función calcula la luz directa de los puntos de luz. De forma resumida, se elige un punto de luz aleatorio, se toma como radiación inicial el atributo \code{radiance} para dicho punto de luz y se atenúa cuadráticamente con la distancia entre la luz y el punto a sombrear. Este procedimiento es realmente intuitivo si se trata la luz como una esfera y la radiación emitida como el área de dicha esfera. Finalmente se aplica la función BRDF para la dirección a la luz y el coseno con la normal. También es necesario un paso por el que se comprueba si dicho punto es visible por la luz o está obstruido por un objeto, para ello se traza un rayo hasta la luz y se comprueba si interseca con algún triángulo.
 
 La función \code{pdf} se obtiene a partir del número de luces. Por otro lado, hay que hacer un cambio de dominio, ya que hasta el momento la función \code{pdf} solo tiene en cuenta la luz de las luces y no toda la luz de la escena. Este cambio de dominio se hace dividiendo entre el área de media esfera \code{2.0 * PI}, ya que es el área del que se mide la radiación entrante.
 
@@ -142,7 +142,7 @@ En el código desarrollado para la implementación \autoref{cod:generatecdf}, el
 \end{lstlisting}
 \end{minipage}
 
-La función de cálculo de CDF implementada realiza dos simplificaciones en comparación al método propuesto en la literatura. En primer lugar simplifica la dimensionalidad del array CDF en una sola dimensión (en la literatura se utiliza una segunda dimensión que acumula un sumatorio de radiancia con el fin de acelerar la búsqueda). En segundo lugar, realiza el muestreo por importancia utilizando las coordenadas de las texturas en píxeles y no en coordenadas esféricas (normalmente se muestrea a través de las coordenadas esféricas con el fin de evitar deformaciones en los polos). Se ha determinado que este método modificado es más intuitivo para una versión preeliminar, aunque queda sujeto a cambios en posteriores versiones. 
+La función de cálculo de CDF implementada realiza dos simplificaciones en comparación al método propuesto en la literatura. En primer lugar simplifica la dimensionalidad del array CDF en una sola dimensión (en la literatura se utiliza una segunda dimensión que acumula un sumatorio de la radiación con el fin de acelerar la búsqueda). En segundo lugar, realiza el muestreo por importancia utilizando las coordenadas de las texturas en píxeles y no en coordenadas esféricas (normalmente se muestrea a través de las coordenadas esféricas con el fin de evitar deformaciones en los polos). Se ha determinado que este método modificado es más intuitivo para una versión preliminar, aunque queda sujeto a cambios en posteriores versiones. 
 
 Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminación, bastará con buscar en el CDF el intervalo que comprende el valor aleatorio dado. Esta operación de búsqueda también tiene coste logarítmico, ya que es una versión ligeramente modificada de la búsqueda binaria corriente. Este tipo de búsqueda está disponible en la librería estándar de C++ \code{std::lower\_bound}, pero se ha realizado la implementación manual para CUDA. Esta acción es realizada por la función \code{sample}, que a partir de un número aleatorio, devolverá un píxel del HDRI, siendo los más brillantes los más comunes.
 
@@ -188,7 +188,7 @@ Si se quiere obtener un píxel de manera aleatoria proporcional a su iluminació
 
 Por último, como se está muestreando en mayor proporción los píxeles más brillantes, es necesario ofrecer una función \code{pdf} apropiada. La intuición sugiere que la posibilidad de elegir un píxel entre el resto es la iluminación de dicho píxel dividida entre la suma de toda la iluminación del HDRI \code{(dv.x + dv.y + dv.z) / radianceSum}. No obstante aún faltan matices. Puesto que se está calculando la luz de un solo píxel en vez de toda la imagen, es necesario multiplicar el \code{pdf} por el número total de píxeles de la imagen \code{texture.width * texture.height}. Además, se aplica el cambio de dominio explicado en \autoref{sub:nee}. El cálculo de esta función \code{pdf} es una extensión del cálculo en NEE, ya que se está considerando un HDRI como un conjunto de luces.
 
-Debido a la deformación de una imagen plana al ser transladada a una superficie esférica, se va a observar un mayor número de muestras en los polos. Este mayor número de muestras en los polos se podría reducir en la función de CDF (es una de las simplificaciones realizadas), pero en vez de eso se añade un término adicional \code{sin(theta)} que reduce la intensidad de los píxeles más cercanos a los polos.
+Debido a la deformación de una imagen plana al ser trasladada a una superficie esférica, se va a observar un mayor número de muestras en los polos. Este mayor número de muestras en los polos se podría reducir en la función de CDF (es una de las simplificaciones realizadas), pero en vez de eso se añade un término adicional \code{sin(theta)} que reduce la intensidad de los píxeles más cercanos a los polos.
 
 
 \subsection{Muestreo por importancia de BRDF}
@@ -197,7 +197,7 @@ La función BRDF aporta distintas intensidades lumínicas dependiendo de la dire
 
 Un ejemplo que ayuda a visualizar este caso son los materiales perfectamente reflectantes (espejos). Los materiales reflectantes tienen un valor \code{BRDF = 1} para todo rayo entrante simétrico al saliente con la normal como eje de reflexión. Para el resto de direcciones el valor será 0. Por esta razón no tiene sentido emitir rayos aleatorios donde se conozca que el resultado del BRDF será 0.
 
-Así pues, la función \code{sample} deberá emitir más muestrás allá donde la función \code{brdf} sea mayor. La implementación utilizada contiene una función \code{DisneySample} que se encarga de esto. Un análisis más detallado de la derivación de esta función a partir de las ecuaciones del shader de Disney se puede encontrar en la implementación de este en el motor de renderizado Autodesk Arnold \cite{arnoldimplementation}
+Así pues, la función \code{sample} deberá emitir más muestras allá donde la función \code{brdf} sea mayor. La implementación utilizada contiene una función \code{DisneySample} que se encarga de esto. Un análisis más detallado de la derivación de esta función a partir de las ecuaciones del shader de Disney se puede encontrar en la implementación de este en el motor de renderizado Autodesk Arnold \cite{arnoldimplementation}
 
 A partir de esta función de muestreo, el autor de la implementación utilizada ofrece también la función \code{pdf}. Cabe decir que ambas funciones han sido modificadas y adaptadas para la implementación de Eleven Renderer, eliminando por ejemplo los términos de transmisión en ambas funciones.
 
@@ -224,7 +224,7 @@ Gracias a este muestreo, es posible renderizar materiales metálicos. Anteriorme
 
 El muestreo por importancia es una herramienta que mejora considerablemente los tiempos de convergencia en determinados escenarios. Como se ha visto hay distintos tipos de muestreos, con distintos puntos fuertes en diversos escenarios. La verdadera utilidad de estos es elegir el muestreo correcto para cada situación. En 1975 se propone una técnica conocida como MIS (Multiple Importance Sampling) \cite{veach1995optimally}. Esta técnica evalúa todas las funciones de muestreo para cada intersección y da mayor importancia con un escalar a aquellas funciones que proporcionen mayor información de la escena.
 
-El cálculo de este escalar se realiza a través de una heurística y debe tener una propiedad esencial: $\sum{w(M_i)} = 1$. En primer lugar el enfoque más ingénuo es utilizar escalares constantes que sumen 1. Esto garantizará el uso de todos los métodos de muestreo de manera igualitaria pero con el inconveniente de no aportar ningún tipo de ventaja a los métodos más relevantes. 
+El cálculo de este escalar se realiza a través de una heurística y debe tener una propiedad esencial: $\sum{w(M_i)} = 1$. En primer lugar el enfoque más ingenuo es utilizar escalares constantes que sumen 1. Esto garantizará el uso de todos los métodos de muestreo de manera igualitaria pero con el inconveniente de no aportar ningún tipo de ventaja a los métodos más relevantes. 
 
 Por otro lado, una heurística más acertada e intuitiva es ponderar cada método a partir de su \code{pdf}. Esto quiere decir que será más eficiente dar más importancia al método con mayor \code{pdf}. Con dos tipos de muestreo diferentes $M_1, M_2$ quedaría así: $w(M_1) = \frac{pdf1}{pdf1 + pdf2}, w(M_2) = \frac{pdf2}{pdf1 + pdf2}$. Se puede comprobar algebraicamente que la suma de ambos pesos es uno.
 
@@ -411,9 +411,9 @@ Esta heurística parte de una simplificación en la estimación de tiempo de rec
 
 Para un nodo $N$, con $n$ triángulos, se estima que el tiempo en comprobar las intersecciones con cada triángulo es constante $t_{triangulo}$, de manera que el tiempo total para un nodo es $n * t_{triangulo}$. Si este nodo tiene dos hijos, $A$ y $B$, el tiempo en recorrer dicho nodo será $p_A\sum{n_A} + p_B\sum{n_B}$ donde $p$ es la probabilidad de intersecar cada hijo individualmente. La probabilidad de intersecar un nodo se simplifica como el área del volumen delimitador que encierra dicho nodo, de manera que se busca una división de los triángulos que minimice la suma $p_A\sum{n_A} + p_B\sum{n_B}$. El valor de esta suma es la denominada \code{SAH} y como se ha concluído que estima el tiempo de recorrido de un nodo, es necesario construir un árbol BVH para el cual sus nodos cuenten con un valor mínimo de esta estimación de tiempo de recorrido.
 
-Dicho esto, buscar una división de los triángulos que minimicen la fórmula propuesta sería una tarea sencilla si se probara cada combinación de triángulos. No hace falta decir que es inviable comprobar todas las combinaciones para escenas del orden de millones de triángulos, por lo que es necesario aplicar otra simplifiación adicional. Esta simplificación se propone en \cite{wald2007fast}, donde Wald la denomina ''bining''. Por otro lado, PBRT \cite{pharr2016physically} describe esta misma simplificación utilizando el término ''buckets''.
+Dicho esto, buscar una división de los triángulos que minimicen la fórmula propuesta sería una tarea sencilla si se probara cada combinación de triángulos. No hace falta decir que es inviable comprobar todas las combinaciones para escenas del orden de millones de triángulos, por lo que es necesario aplicar otra simplifiación adicional. Esta simplificación se propone en \cite{wald2007fast}, donde Wald la denomina \emph{binning}. Por otro lado, PBRT \cite{pharr2016physically} describe esta misma simplificación utilizando el término \emph{buckets}.
 
-La técnica de ''bining'' se aplica para cada dimensión individualmente. Se divide un nodo en \code{BVH\_SAHBINS} partes iguales y cada una de estas divisiones se considera un ''bin''. Para todos los triángulos, se calcula el ''bin'' en el que se encuentran (utilizando su centroide como punto de división) y se añaden a este. Añadir un triángulo a un ''bin'' significa incrementar la cuenta de triángulos en dicho ''bin'' y recalcular el volumen delimitador teniendo en cuenta el nuevo triángulo. Este primer paso se encuentra en la sección del código \code{//Bin initialization}.
+La técnica de \emph{binning} se aplica para cada dimensión individualmente. Se divide un nodo en \code{BVH\_SAHBINS} partes iguales y cada una de estas divisiones se considera un \emph{bin}. Para todos los triángulos, se calcula el ''bin'' en el que se encuentran (utilizando su centroide como punto de división) y se añaden a este. Añadir un triángulo a un \emph{bin} significa incrementar la cuenta de triángulos en dicho ''bin'' y recalcular el volumen delimitador teniendo en cuenta el nuevo triángulo. Este primer paso se encuentra en la sección del código \code{//Bin initialization}.
 
 En la figura \autoref{fig:binning} se ejemplifica el primer procedimiento, el contenedor 1 tiene la suma de 2 triángulos y el volumen delimitador asociado $BB1$ mientras que los contenedores 3 y 5 solo cuentan con un triángulo y sus volúmenes delimitadores son $BB3$ y $BB5$ respectivamente.
 
@@ -426,7 +426,7 @@ En la figura \autoref{fig:binning} se ejemplifica el primer procedimiento, el co
 
 Se ha explicado como se clasifican los triángulos en contenedores, pero queda pendiente la manera en la que se aprovecha esta clasificación. Se crean \code{BVH\_SAHBINS} nodos hipotéticos. Cada nodo hipotético representa una división entre los contenedores, determinada por un índice entre 0 y \code{BVH\_SAHBINS} - 1. Dicho nodo hipotético contiene dos hijos: el primero cuenta con la unión de los volúmenes delimitadores y la suma de triángulos de todos los contenedores hasta el índice del nodo hipotético. El segundo es igual pero desde el índice hasta el último contenedor. Esta división se encuentra en la sección del código \code{//Bin filling}.
 
-Por útlimo se procederá a calcular la estimación de tiempo de recorrido para cada nodo hipotético, y el nodo que tenga el valor más bajo, será la división de triángulos que se use.
+Por último, se procederá a calcular la estimación de tiempo de recorrido para cada nodo hipotético, y el nodo que tenga el valor más bajo, será la división de triángulos que se use.
 
 
 \begin{lstlisting}[label={cod:sah}, caption={Función de división por SAH}]
@@ -552,7 +552,7 @@ Para demostrar esto se ha hecho uso de dos implementaciones de la función de re
 \end{lstlisting}
 \end{minipage}
 	
-Karras explica en el blog de desarrolladores de Nvidia \cite{karrastransversal} cómo usar las estructuras BVH para detectar colisiones físicas entre objetos en la GPU. Así pues, la segunda implementación viene dada a partir de ciertas modificaciones al código de recorrido propuesto, donde se puede adaptar a un caso más específico como es la intersección de Rayo \- BVH necesaria en Eleven Renderer. Esta implementación rompe con la recursividad a partir de una pila de nodos, quedando así una función iterativa.
+Karras explica en el blog de desarrolladores de NVIDIA \cite{karrastransversal} cómo usar las estructuras BVH para detectar colisiones físicas entre objetos en la GPU. Así pues, la segunda implementación viene dada a partir de ciertas modificaciones al código de recorrido propuesto, donde se puede adaptar a un caso más específico como es la intersección de Rayo \- BVH necesaria en Eleven Renderer. Esta implementación rompe con la recursividad a partir de una pila de nodos, quedando así una función iterativa.
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[label={cod:bvhtransversalit}, caption={Recorrido del árbol BVH iterativo}]
@@ -633,6 +633,8 @@ Para justificar el uso de la heurística por superficie de área se muestra una 
 	
 \end{itemize}
 
+Dos de las tres escenas se encuentran en el repositorio, mientras que la escena \emph{Stanford Dragon}, es demasiado pesada para poder ser subida. 
+
 \begin{tabular}{ |p{3cm}||p{3cm}|p{3cm}| }
 	 \hline
 	 \multicolumn{3}{|c|}{Heuristic comparaison: Build time\footnotemark} \\
@@ -662,12 +664,17 @@ Para justificar el uso de la heurística por superficie de área se muestra una 
 
 \begin{figure}[H]
 	\centering
-  \begin{minipage}[b]{0.4\textwidth}
+	\begin{minipage}[b]{0.3\textwidth}
+    \includegraphics[width=\textwidth]{suzanne}
+    \caption{Stanford Bunny.}
+  \end{minipage}
+    \hfill
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{bunny}
     \caption{Stanford Bunny.}
   \end{minipage}
   \hfill
-  \begin{minipage}[b]{0.4\textwidth}
+  \begin{minipage}[b]{0.3\textwidth}
     \includegraphics[width=\textwidth]{dragon}
     \caption{Stanford Dragon.}
   \end{minipage}
@@ -675,45 +682,3 @@ Para justificar el uso de la heurística por superficie de área se muestra una 
 
 Tras el análisis de ambas heurísticas en distintas escenas, se concluye que el tiempo de generación de árboles BVH es significativamente más lento con SAH para escenas complejas. Por otro lado, la heurística de división de plano tiene un rendimiento de recorrido nefasto hasta el punto de ser inservible para escenas del orden de cientos de miles de triángulos.
 	
-\subsection{Evaluación:}
-	
-Finalmente es necesario elegir los parámetros para \code{BVH\_DEPTH} y \code{SAH\_BINS}. Puesto que existen varios tipos de escenas con distintas geometrías, se va a dejar de lado cualquier tipo de enfoque analítico y se va a hacer uso de medidas en casos reales. Se procede a realizar una evaluación con distintos parámetros.
-	
-En el caso de la selección de \code{SAH\_BINS}, Indigo Wald propone 16 como límite \cite{wald2007fast} debido a la insustancial mejora de rendimiento para valores mayores. Esto se ha podido comprobar directamente en Eleven Renderer donde se ha llevado a cabo la construcción y recorrido de BVH para la escena "Stanford Dragon" variando la cantidad de contenedores \autoref{fig:sahbins}. Se comprueba que la velocidad de recorrido se estanca para los valores 12-16, mientras que el tiempo de generación permanece lineal. Eleven Render utiliza de manera predeterminada \code{SAH\_BINS = 14} tras el análisis realizado.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-
-\begin{axis}[
-    axis y line = right,
-    xlabel = \(SAH bins\),
-    ylabel = {\(\textcolor{blue}{BVH building time (s)}\)},
-	legend style={at={(1,0.1)},anchor=south east},
-	scaled y ticks=false
-]
-
-\addplot[smooth, blue]
-coordinates{(4,4.267) (6, 4.418) (8, 4.628) (10, 5.015) (12, 5.440) (14, 5.782) (16, 6.309)};
-\addlegendentry{\(build\)}
-\end{axis}
-
-\begin{axis}[
-    axis y line = left,
-	axis x line = none,
-    xlabel = \(SAH bins\),
-    ylabel = {\(\textcolor{red}{KPaths/s}\)},
-	ylabel style={yshift=0.5cm},
-	legend style={at={(1,0)},anchor=south east},
-	scaled y ticks=false
-]
-
-\addplot [smooth, red]
-coordinates{(4,8310) (6, 12012) (8, 12728) (10, 13100) (12, 13046) (14, 13501) (16, 13458)};
-\addlegendentry{\(transversal\)}
-
-\end{axis}
-\end{tikzpicture}
-\caption{Comparación de tiempos de construcción y eficiencia de recorrido para distinto número de contenedores}
-\label{fig:sahbins}
-\end{figure}

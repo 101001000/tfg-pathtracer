@@ -174,71 +174,64 @@ Las funciones a ejecutar de postprocesado son las siguientes:
 
 La librería de \code{SFML} se encarga de mostrar la imagen y superpone un texto con el número de muestras calculadas hasta el momento, obtenidas con \code{getSamples}, y tras acumular el número de muestras deseado, se guardará un archivo con la imagen final en formato \code{.bmp}.
 
-\section{Acumulado de muestras}
-	
-Por cada píxel por el que se traza un camino es necesario añadir la radiación de dicho camino. Este píxel cuenta con radiación previa acumulada de las anteriores muestras.
 
-\[{newAccumulatedLight = \frac{oldAccumulatedLight * samples}{samples + 1} + \frac{newLight}{samples + 1}}\]
+\subsection{Kernel principal}
 	
-La radiación queda reflejada en cada píxel siguiendo el código mostrado en \autoref{cod:sampleaccumulation} donde \code{dev\_samples[]} es una variable global que almacena un contador con el número de muestras acumuladas hasta el momento para un píxel determinado, y \code{dev\_buffer[]} almacena la radiación total por píxel hasta el momento. Por otro lado, la función \code{isnan} es necesaria para evitar errores numéricos, puesto que en determinadas escenas se han encontrado artefactos gráficos.
+El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algoritmo descrito en la \autoref{fig:algorithmscheme}, donde el número máximo de rebotes es una constante definida en tiempo de compilación como \code{MAX\_BOUNCES}. La paralelización se hace a nivel de píxel, es decir, por cada bloque CUDA bidimensional habrá una equivalencia a un grupo de píxeles del sensor.
+
+Este tipo de paralelización cuenta con la ventaja de ofrecer cierto grado de localidad espacial en varios tipos de escenas. Para escenas abiertas, la gran mayoría de los bloques no sufrirán del fenómeno de \emph{branching}, ya que la mayor parte de caminos, no intersecan con ningún objeto más que el cielo. Este método cuenta con limitaciones tras realizar un rebote aleatorio. Es común que los propios hilos diverjan ya que puede que algunos hilos realicen un solo rebote mientras que otros realicen \code{MAX\_BOUNCES} - 1.
+
+En la \autoref{fig:bounces} se muestra un mapa de calor para una escena abierta, realizado con Eleven Renderer. Los distintos colores indican el número de rebotes necesarios para cada píxel. Véase, por ejemplo, que las zonas de cielo cuentan con 0 rebotes debido a que no intersecan con nada, mientras que las partes más ocultas cuentan con un mayor número de rebotes. Esta breve visualización muestra como existe localidad bidimensional en el número de rebotes, lo que justifica el enfoque de paralelización a nivel de píxel.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\textwidth]{bounces}
+	
+	\colorbox{red}{\strut \color{white}{0 bounces}}
+	\colorbox{yellow}{\strut \color{black}{1 bounce}}
+	\colorbox{green}{\strut \color{black}{2 bounces}}
+	\colorbox{blue}{\strut \color{white}{3 bounces}}
+	\colorbox{purple}{\strut \color{white}{4 bounces}}
+
+	\caption{Mapa de calor para el número de rebotes de cada píxel}
+	\label{fig:bounces}
+\end{figure}
+
+La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques están distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Estos parámetros se definen en \autoref{cod:kernelpars}.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:sampleaccumulation}, caption={Código para la acumulación de luz por cada píxel}]
+\begin{lstlisting}[label={cod:kernelpars}, caption={Selección de parámetros para el kernel principal}]
 	
-	unsigned int sa = dev_samples[idx]; // sa is the number of samples accumulated for this pixel.
-	
-	if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
+    int tx = THREADSIZE;
+    int ty = THREADSIZE;
 
-        if (sa > 0) {
-            dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
-            dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
-            dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
-        }
-
-        dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
-        dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
-        dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
-
-        dev_samples[idx]++;
-    }
-	
-\end{lstlisting}
-\end{minipage}
-	
-\subsection{Renderizado Progresivo}
-\label{progressiverender}
-		
-Una ventaja de los motores de renderizado más modernos es el renderizado progresivo. En este proceso, las muestras se van acumulando poco a poco a lo largo de la imagen hasta que terminan por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales, y tras acumular las suficientes, pasan a la siguiente sección. Este trabajo utiliza una implementación progresiva con el fin de estar más cerca del estado del arte.
-
-Este tipo de implementación se beneficia de la copia de datos asíncrona de la GPU. Mientras el kernel se ejecuta, un flujo de datos secundario hace la copia del buffer de la GPU en la CPU, pudiendo así actualizar la visualización del resultado varias veces por segundo.
-
-Este flujo de datos secundario se implementa con el tipo de datos \code{cudastream\_t} de la API de CUDA. Son necesarios dos flujos, uno denominado \code{kernelStream} y otro denominado \code{bufferStream}. Los kernels de inicialización y renderizado corren en el primer flujo, mientras que la función que obtiene el buffer es ejecutada en el segundo flujo. El código \autoref{cod:getbuffer} muestra la copia asíncrona de los buffers a través de la función \code{cudaMemcpyFromSymbolAsync}. También se hace copia del buffer de la suma de rayos emitidos por píxel \code{pathcountBuffer} con el fin de realizar métricas de eficiencia.
-
-
-\begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:getbuffer}, caption={Código para obtener los buffers de la GPU}]
-	
-	cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
-
-		cudaStreamCreate(&bufferStream);
-
-		cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_buffer, size * sizeof(float) * 4, 0, cudaMemcpyDeviceToHost, bufferStream);
-		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
-		}
-
-		cudaStatus = cudaMemcpyFromSymbolAsync(pathcountBuffer, dev_pathcount, size * sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
-		if (cudaStatus != cudaSuccess) {
-			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
-		}
-
-		return cudaStatus;
-	}
+    dim3 numBlocks(scene->camera.xRes / tx + 1, scene->camera.yRes / ty + 1);
+    dim3 threadsPerBlock(tx, ty);
 	
 \end{lstlisting}
 \end{minipage}
 
-%@todo analisis de movimiento de datos de memoria.
+Resulta interesante conocer el número de hilos óptimo por cada bloque, por lo que se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}. En esta figura aparece por primera vez el término kPath/s. Como la eficiencia es un campo esencial en el renderizado 3D, Eleven renderer cuenta con unas pocas funciones que dan una breve información del estado actual del motor. Uno de estos datos es el número global de caminos que se trazan por segundo. La medida kPath/s es útil de manera comparativa para una misma escena, ya que indica el rendimiento general del motor. En el caso de la comparativa del número de hilos, aquellas ejecuciones de 8 hilos por dimensión, son las que han mostrado mayor número de caminos trazados por segundo, de manera que este es el número óptimo y el usado para el resto de la implementación.
+
+\begin{figure}[H]
+\centering
+\begin{tikzpicture}
+\begin{axis}[
+    axis y line = left,
+    xlabel = \(THREADSIZE\),
+    ylabel = {\(KPaths/s\)},
+	ylabel style={yshift=0.5cm},
+	scaled y ticks=false
+]
+
+\addplot[smooth, blue]
+coordinates{(1,3517) (2, 7544) (4, 12851) (8, 15480) (16, 14114)};
+\end{axis}
+\end{tikzpicture}
+\caption{Comparación eficiencia con tamaño de bloque}
+\label{fig:threadsize}
+\end{figure}
+
 
 \section{Trazado de rayo desde la cámara}
 \label{sec:calculatecameraray}
@@ -351,61 +344,68 @@ En el caso de esta implementación, se ha hecho uso del algoritmo Fast Minimum S
 \end{lstlisting}
 \end{minipage}
 
-\subsection{Kernel principal}
+\section{Acumulado de muestras}
 	
-El kernel de renderizado \code{renderingKernel} se encarga de ejecutar el algoritmo descrito en la \autoref{fig:algorithmscheme}, donde el número máximo de rebotes es una constante definida en tiempo de compilación como \code{MAX\_BOUNCES}. La paralelización se hace a nivel de píxel, es decir, por cada bloque CUDA bidimensional habrá una equivalencia a un grupo de píxeles del sensor.
+Por cada píxel por el que se traza un camino es necesario añadir la radiación de dicho camino. Este píxel cuenta con radiación previa acumulada de las anteriores muestras.
 
-Este tipo de paralelización cuenta con la ventaja de ofrecer cierto grado de localidad espacial en varios tipos de escena. Para escenas abiertas, la gran mayoría de los bloques no sufrirán del fenómeno de \emph{branching}, ya que la mayor parte de caminos, no intersecan con ningún objeto más que el cielo. Este método cuenta con limitaciones tras realizar un rebote aleatorio. Es común que los propios hilos diverjan ya que puede que algunos hilos realicen un solo rebote mientras que otros realizen \code{MAX\_BOUNCES} - 1.
-
-En la \autoref{fig:bounces} se muestra un mapa de calor para una escena abierta, realizado con Eleven Renderer. Los distintos colores indican el número de rebotes necesarios para cada píxel. Véase, por ejemplo, que las zonas de cielo cuentan con 0 rebotes debido a que no intersecan con nada, mientras que las partes más ocultas cuentan con un mayor número de rebotes. Esta breve visualización muestra como existe localidad bidimensional en el número de rebotes, lo que justifica el enfoque de paralelización a nivel de píxel.
-
-\begin{figure}[H]
-\label{fig:bounces}
-	\centering
-	\includegraphics[width=\textwidth]{bounces}
+\[{newAccumulatedLight = \frac{oldAccumulatedLight * samples}{samples + 1} + \frac{newLight}{samples + 1}}\]
 	
-	\colorbox{red}{\strut \color{white}{0 bounces}}
-	\colorbox{yellow}{\strut \color{black}{1 bounce}}
-	\colorbox{green}{\strut \color{black}{2 bounces}}
-	\colorbox{blue}{\strut \color{white}{3 bounces}}
-	\colorbox{purple}{\strut \color{white}{4 bounces}}
-
-	\caption{Mapa de calor para el número de rebotes de cada píxel}
-\end{figure}
-
-La ejecución de un kernel en CUDA debe estar acompañada de dos parámetros: el número de bloques y el número de hilos. En este caso, los bloques están distribuidos uniformemente a lo largo de la imagen como bloques bidimensionales de \code{THREADSIZE * THREADSIZE} píxeles. Estos parámetros se definen en \autoref{cod:kernelpars}.
+La radiación queda reflejada en cada píxel siguiendo el código mostrado en \autoref{cod:sampleaccumulation} donde \code{dev\_samples[]} es una variable global que almacena un contador con el número de muestras acumuladas hasta el momento para un píxel determinado, y \code{dev\_buffer[]} almacena la radiación total por píxel hasta el momento. Por otro lado, la función \code{isnan} es necesaria para evitar errores numéricos, puesto que en determinadas escenas se han encontrado artefactos gráficos.
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:kernelpars}, caption={Selección de parámetros para el kernel principal}]
+\begin{lstlisting}[label={cod:sampleaccumulation}, caption={Código para la acumulación de luz por cada píxel}]
 	
-    int tx = THREADSIZE;
-    int ty = THREADSIZE;
+	unsigned int sa = dev_samples[idx]; // sa is the number of samples accumulated for this pixel.
+	
+	if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
-    dim3 numBlocks(scene->camera.xRes / tx + 1, scene->camera.yRes / ty + 1);
-    dim3 threadsPerBlock(tx, ty);
+        if (sa > 0) {
+            dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
+            dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
+            dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+        }
+
+        dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
+        dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
+        dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
+
+        dev_samples[idx]++;
+    }
+	
+\end{lstlisting}
+\end{minipage}
+	
+\subsection{Renderizado Progresivo}
+\label{progressiverender}
+		
+Una ventaja de los motores de renderizado más modernos es el renderizado progresivo. En este proceso, las muestras se van acumulando poco a poco a lo largo de la imagen hasta que terminan por converger. Esto difiere de los motores de renderizado por CPU tradicionales, que acumulan las muestras en secciones locales, y tras acumular las suficientes, pasan a la siguiente sección. Este trabajo utiliza una implementación progresiva con el fin de estar más cerca del estado del arte.
+
+Este tipo de implementación se beneficia de la copia de datos asíncrona de la GPU. Mientras el kernel se ejecuta, un flujo de datos secundario hace la copia del buffer de la GPU en la CPU, pudiendo así actualizar la visualización del resultado varias veces por segundo.
+
+Este flujo de datos secundario se implementa con el tipo de datos \code{cudastream\_t} de la API de CUDA. Son necesarios dos flujos, uno denominado \code{kernelStream} y otro denominado \code{bufferStream}. Los kernels de inicialización y renderizado corren en el primer flujo, mientras que la función que obtiene el buffer es ejecutada en el segundo flujo. El código \autoref{cod:getbuffer} muestra la copia asíncrona de los buffers a través de la función \code{cudaMemcpyFromSymbolAsync}. También se hace copia del buffer de la suma de rayos emitidos por píxel \code{pathcountBuffer} con el fin de realizar métricas de eficiencia.
+
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:getbuffer}, caption={Código para obtener los buffers de la GPU}]
+	
+	cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
+
+		cudaStreamCreate(&bufferStream);
+
+		cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_buffer, size * sizeof(float) * 4, 0, cudaMemcpyDeviceToHost, bufferStream);
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+		}
+
+		cudaStatus = cudaMemcpyFromSymbolAsync(pathcountBuffer, dev_pathcount, size * sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
+		if (cudaStatus != cudaSuccess) {
+			fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+		}
+
+		return cudaStatus;
+	}
 	
 \end{lstlisting}
 \end{minipage}
 
-Resulta interesante conocer el número de hilos óptimo por cada bloque, por lo que se han evaluado distintos tamaños de bloque en la \autoref{fig:threadsize}. En esta figura aparece por primera vez el término kPath/s. Como la eficiencia es un campo esencial en el renderizado 3D, Eleven renderer cuenta con unas pocas funciones que dan una breve información del estado actual del motor. Uno de estos datos es el número global de caminos que se trazan por segundo. La medida kPath/s es útil de manera comparativa para una misma escena, ya que indica el rendimiento general del motor. En el caso de la comparativa del número de hilos, aquellas ejecuciones de 8 hilos por dimensión, son las que han mostrado mayor número de caminos trazados por segundo, de manera que este es el número óptimo y el usado para el resto de la implementación.
-
-\begin{figure}[H]
-\centering
-\begin{tikzpicture}
-\begin{axis}[
-    axis y line = left,
-    xlabel = \(THREADSIZE\),
-    ylabel = {\(KPaths/s\)},
-	ylabel style={yshift=0.5cm},
-	scaled y ticks=false
-]
-
-\addplot[smooth, blue]
-coordinates{(1,3517) (2, 7544) (4, 12851) (8, 15480) (16, 14114)};
-\end{axis}
-\end{tikzpicture}
-\caption{Comparación eficiencia con tamaño de bloque}
-\label{fig:threadsize}
-\end{figure}
-
-
+%@todo analisis de movimiento de datos de memoria.

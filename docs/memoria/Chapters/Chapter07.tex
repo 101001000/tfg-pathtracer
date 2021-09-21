@@ -21,6 +21,7 @@ Dentro este directorio debe incluir en su interior 3 carpetas
 
 Además será obligatorio incluir un archivo llamado scene.json. Este archivo ha de incluir la información de la escena necesaria. Se muestra un ejemplo como plantilla:
 
+\begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}
 	
 {	
@@ -28,11 +29,15 @@ Además será obligatorio incluir un archivo llamado scene.json. Este archivo ha
 'materials' : [{'name' : 'mat1'}, {'name' : 'mat2', 'albedo' : {'r' : 1, 'g' : 0, 'b' : 0}, 'roughness' : 0.2}],
 'objects' : [{'name' : 'obj1', 'material' : 'mat1'}, {'name' : 'obj2', 'material' : 'mat2'}],
 'hdri' : {'name' : 'hdri', 'xOffset' : 0.5},
+'pointLights' : [{'position' : {'x' : 0, 'y': 0, 'z': 0}, 'radiance' {'r' : 1, 'g' : 0, 'b' : 0}}]
 }
 	
 \end{lstlisting}
+\end{minipage}
 
-El ejemplo mostrado deberá contener dos objetos dentro de la carpeta Objects: obj1.obj y obj2.obj. El material mat1 utilizará las texturas que empiecen por mat1\_...bmp mientras que el mat2 utilizará los valores rgb(1,0,0) para albedo y el valor 0.2 para roughness. Para más ejemplos consultar la carpeta Scenes del repositorio.
+El ejemplo mostrado deberá contener dos objetos dentro de la carpeta Objects: obj1.obj y obj2.obj. El material mat1 utilizará las texturas que empiecen por mat1\_...bmp mientras que el mat2 utilizará los valores rgb(1,0,0) para albedo y el valor 0.2 para roughness. Finalmente, se añade una luz puntual en la posición (0,0,0).
+
+Para más ejemplos consultar la carpeta \emph{scenes} del repositorio.
 
 \subsection{Ejemplo de renderizado de escena \emph{ClockCC0}}
 
@@ -50,9 +55,9 @@ Los modelos y texturas utilizados para esta escena son los siguientes:
 Para la ejecución del programa, en el entorno utilizado, ha sido necesario utilizar los siguientes argumentos:
 	\code{eleven.exe ''C:$\backslash\backslash$Users$\backslash\backslash$Kike$\backslash\backslash$Desktop$\backslash\backslash$Uni$\backslash\backslash$TFG$\backslash\backslash$Scenes$\backslash\backslash$ClockCC0'' output.bmp 5000}
 
-Tras comenzar el renderizado aparecen dos ventanas, la primera es la consola de salida que se muestra en la \autoref{fig:debugwindow}. Esta ventana contiene datos relevantes en cuanto a la ejecución, como: El progreso de la construcción del BVH, cantidad de memoria utilizada por las geometrías/texturas, eficiencia en kPaths/s, cuanta memoria consume la escena en la GPU y cuanta hay libre, cuantas muestras se han tomado y el tiempo total de ejecución.
+Tras comenzar el renderizado aparecen dos ventanas, la primera es la consola de salida que se muestra en la \autoref{fig:debugwindow}. Esta ventana contiene datos relevantes en cuanto a la ejecución, como: El progreso de la construcción del BVH, cantidad de memoria utilizada por las geometrías/texturas, eficiencia en kPaths/s, cuanta memoria consume la escena en la GPU y cuanta hay libre, cuántas muestras se han tomado y el tiempo total de ejecución.
 
-Por otro lado, está la ventana de previsualización \autoref{execsamples}. Esta ventana muestra el progreso visual del render y en la esquina superior izqda, el número de muestras tomadas por cada pixel hasta el momento.
+Por otro lado, está la ventana de previsualización \autoref{fig:samplewindow}. Esta ventana muestra el progreso visual del render y en la esquina superior izquierda, el número de muestras tomadas por cada píxel hasta el momento.
 
 Finalmente la imagen será guardada como "render.bmp" tras ejecutar las 5000 muestras. En este caso la salida es la \autoref{fig:finalimagewindow}. Este resultado se ha obtenido tras 20 minutos y 39 segundos en una NVIDIA RTX 3090. Con un número mucho menor de muestras es posible seguir obteniendo buenos resultados.
 
@@ -73,9 +78,7 @@ Finalmente la imagen será guardada como "render.bmp" tras ejecutar las 5000 mue
 \begin{figure}[H]
     \centering
 	\includegraphics[width=0.9\textwidth]{execfinalimage}
-	\caption{Ventana de previsualización}
+	\caption{Imagen final}
 	\label{fig:finalimagewindow}
 \end{figure}
-
-\section{Galería}
 	

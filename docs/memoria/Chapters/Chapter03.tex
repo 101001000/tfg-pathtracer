@@ -95,11 +95,11 @@ Para cambiar de Lineal a sRGB se eleva el valor a 2.2, que es el valor de correc
 	
 	%@todo add image of a color texture
 	
-\subsection{Mapeo}
+\subsection{Mapeado}
 
 Puesto que cada textura puede tener distintas resoluciones, es bastante útil definir un sistema de coordenadas relativas a la altura y anchura de una textura. Este sistema se conoce como sistema de coordenadas \code{u,v}. Ambas coordenadas \code{u} y \code{v} son valores de punto flotante comprendidos entre [0,1]. \code{u} indica la coordenada horizontal mientras que \code{v} indica la coordenada vertical. Estas coordenadas son diferentes a las coordenadas \code{u,v} explicadas en \hyperref[subsec:triintersection]{Intersección triángulo - rayo} aunque tengan el mismo nombre.
 
-También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura; útil, por ejemplo, si se busca que una textura se repita cierto número de veces. El segundo es el desplazamientos de esta en dos ejes. Dicha transformación queda contemplada en \autoref{cod:getval}
+También resulta útil definir dos parámetros de transformación para las texturas. Estos son \code{Tile} y \code{Offset}. El primero indica el inverso de la escala de la textura; útil, por ejemplo, si se busca que una textura se repita cierto número de veces. El segundo es el desplazamientos de ésta en dos ejes. Dicha transformación queda contemplada en \autoref{cod:getval}
 
 \begin{minipage}[c]{0.95\textwidth}
 \begin{lstlisting}[label={cod:getval}, caption={Código para obtener valor de una textura.}]
@@ -127,14 +127,14 @@ Hasta ahora, la luz que llegaba a la escena desde el fondo era una radiación ho
 	
 La iluminación basada en imagen ha sido uno de los elementos más relevantes en las técnicas para el renderizado fotorrealista. Se utiliza ampliamente en la industria cinematográfica debido a la complejidad visual que aporta a una escena 3D porque permite captar la iluminación de entornos reales y posteriormente añadirla en escenas digitales. El hecho de poder trasladar la iluminación a un escenario virtual facilita la composición de modelos tridimensionales en películas y series de televisión, donde es necesario juntar una grabación real con un elemento generado por ordenador.
 
-Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuente de luz, formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (del inglés High Dynamic Range Image). A diferencia de las imágenes tradicionales, las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. El uso de las imágenes HDRI no se limita a la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena. Un ejemplo de este tipo de iluminación se aprecia en la \autoref{fig:hdriexample}
+Esta técnica se basa principalmente en usar una fotografía de 360 grados como fuente de luz, formando una esfera alrededor de la escena. Estas fotografías son conocidas como HDRI (del inglés High Dynamic Range Image). A diferencia de las imágenes tradicionales, las cuales normalmente tienen 8 bits de resolución por canal de color, las imágenes HDRI cuentan con valores de punto flotante. El uso de las imágenes HDRI no se limita a la visualización de estas en pantallas de 8 bits de resolución por color como la mayoría de imágenes, sino que el valor de cada píxel será utilizado para realizar las operaciones pertinentes para iluminar la escena. Un ejemplo de este tipo de iluminación se aprecia en la \autoref{fig:hdriexample}.
 
 		
 \begin{figure}[H]
-	\label{fig:hdriexample}
     \centering
 	\includegraphics[width=0.7\textwidth]{hdriexample}
 	\caption{Escena iluminada con una imagen HDRI de estudio, nótese como la luz superior incide directamente en la esfera acorde a la dirección.}
+	\label{fig:hdriexample}
 \end{figure}
 
 La implementación de esta técnica en el motor de render viene dada por el uso de una imagen en formato .hdr (imágenes en punto flotante). Cada píxel de esta imagen se interpreta como una pequeña fuente de luz direccional en el infinito, orientada hacia el centro de la escena. Así pues, los rayos que no interseccionan en la escena con ningún elemento se considera que interseccionan en el infinito con el \code{HDRI}. Por esta razón, al detectar que un rayo sale de la escena, se obtiene su dirección, y esta dirección se traduce en las coordenadas polares de la imagen \code{HDRI}. Una vez se tienen las coordenadas polares, es posible obtener el valor lumínico del píxel al que apunta dicho rayo. Este será el valor lumínico que se utilice para dicho camino.
@@ -165,7 +165,7 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
 \end{minipage}
 
 \begin{minipage}[c]{0.95\textwidth}
-\begin{lstlisting}[label={cod:reversesphericalmapping}, caption={Función inversa al mapeo esférico.}]
+\begin{lstlisting}[label={cod:reversesphericalmapping}, caption={Función inversa al mapeado esférico.}]
 		
 	__host__ __device__ static inline Vector3 reverseSphericalMapping(float u, float v) {
 
@@ -187,7 +187,7 @@ Debido a la naturaleza esférica de los mapas de entorno, resulta útil añadir 
 
 \subsection{Filtrado}
 			
-Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixele cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente, muchos visualizadores de imágenes no muestran los píxeles naturales, sino una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{x} comprendido entre los cuatro píxeles más cercanos \code{v1-v4} es la suma ponderada de la distancia del punto a cada píxel en cada dimensión.
+Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoca que la imagen se pixelice cuando se muestra cercana a la cámara. Una solución adoptada de manera general en muchos ámbitos es la interpolación de los píxeles vecinos. Actualmente, muchos visualizadores de imágenes no muestran los píxeles naturales, sino una versión modificada de estos. Esto se conoce como filtrado. En la implementación se ha usado un filtrado lineal conocido como interpolación bilineal. Este tipo de filtrado es sencillo de entender e implementar. El valor del punto \code{x} comprendido entre los cuatro píxeles más cercanos \code{v1-v4} es la suma ponderada de la distancia del punto a cada píxel en cada dimensión.
 	
 \begin{figure}[H]
 	\label{fig:bilinear}
@@ -226,8 +226,6 @@ Las texturas cuentan con valores discretos y resoluciones limitadas. Esto provoc
 \end{lstlisting}
 \end{minipage}	
 
-Este método introduce cuatro lecturas del valor de la textura en vez de la única lectura sin usar técnicas de filtrado, de manera que resulta conveniente analizar el posible impacto en la eficiencia. Para comprobar esto se ha renderizado la misma escena con y sin filtrado en la \autoref{fig:filtercomparaison}. 
-	
 El render sin filtrado es un 0.8\% más rápido, una penalización poco sustancial, por lo que se utilizará el filtrado bilinear de manera predeterminada. Se esperaría que esta penalización fuera mayor debido a la multiplicación de accesos a memoria, pero como se explica en el \autoref{chap:evaluation}, la mayor carga de trabajo reside en las intersecciones con los objetos en la escena. Para medir la eficiencia se ha usado la métrica \emph{kPath/s} que indica la cantidad de rayos procesados por el motor por segundo. Mayores valores indican mayor eficiencia y menor tiempo de convergencia. 
 
 \begin{figure}[H]
@@ -290,7 +288,7 @@ Hasta ahora, en ningún momento se ha tenido en cuenta el espacio en el que se e
 	
 Las normales que se han utilizado hasta ahora para los cálculos de iluminación son normales globales (world normals), en la base ortonormal. La conversión de un vector en el espacio tangencial al global se realiza de la siguiente manera: \code{worldNormal = (localNormal.x * tangent - localNormal.y * bitangent + localNormal.z * normal).normalized()}
 	
-El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en su repositorio \cite{mikktspace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de él. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}. Este proceso se explica de manera más detallada en un árticulo de LearnOpenGL \cite{learnopengl}.
+El cálculo de la tangente y bitangente a partir de la normal no es un cálculo trivial, hay infinitos vectores ortogonales que pueden formar esta base. Morten Mikkelsen \cite{mikkelsen2008simulation} propone un método estandarizado para calcular este espacio tangencial y además aporta una implementación en C en su repositorio \cite{mikktspace}. Gran parte de los programas de diseño 3D utilizan este método o uno compatible. Por esa razón se ha decidido hacer uso de él. El método en sí se encarga de cada caso específico, como por ejemplo polígonos degenerados, pero en su esencia calcula la tangente en dirección al incremento de la coordenada \code{u} en el triángulo y la bitagente en dirección de la coordenada \code{v}. Este proceso se explica de manera más detallada en un artículo de LearnOpenGL \cite{learnopengl}.
 
 Para hacer uso de la implementación MikkTSpace tan solo hay que definir un archivo adicional que enlace las funciones de \emph{callback}, que solicitarán parámetros para el cálculo de las tangentes tales como las posiciones de los vértices y el número de triángulos.
 

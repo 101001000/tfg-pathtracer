@@ -8,7 +8,7 @@ No obstante, la implementación de este sistema de renderizado peca de una gran 
 
 \section{Objetivos}
 	
-Este trabajo cubre brevemente las bases teóricas de un motor de renderizado fotorrealista con características no muy distantes de otros motores comerciales, incluyendo una implementación propia en CUDA desde cero. Dicha implemención ha sido desarrollada por mí, para este trabajo, y bautizada como Eleven Renderer. Es de código abierto y puede encontrarse en \url{https://github.com/101001000/tfg-pathtracer}.
+Este trabajo cubre brevemente las bases teóricas de un motor de renderizado fotorrealista con características no muy distantes de otros motores comerciales, incluyendo una implementación propia en CUDA desde cero. Dicha implementación ha sido desarrollada por mí, para este trabajo, y bautizada como Eleven Renderer. Es de código abierto y puede encontrarse en \url{https://github.com/101001000/tfg-pathtracer}.
 
 Eleven Renderer está basado en el algoritmo de \emph{Path Tracing}, un tipo de trazado de rayos específico caracterizado por su capacidad de simular luz indirecta. Además, este trabajo hace hincapié en el análisis de dicha implementación en GPUs modernas, poniendo a prueba distintos parámetros y optimizaciones.
 	
@@ -27,7 +27,7 @@ Este documento cuenta con seis capítulos:
 	\item \autoref{chap:6}: Conclusiones. 
 \end{itemize}
 
-Cabe destacar que toda figura es original y que todas las muestras y comparaciones visuales de renderizado han sido realizadas con Eleven Renderer, salvo las excepciones que están debidamente señaladas.
+Cabe destacar que toda figura es original y que todas las muestras, comparaciones visuales y renders 3d han sido realizadas con Eleven Renderer, salvo las excepciones que están debidamente señaladas. La mayor parte del código, excepto el indicado o bien en la memoria, o bien en el código fuente, es una interpretación personal del material académico estudiado al respecto.
 
 \section{Plan de trabajo}
 	
@@ -37,11 +37,11 @@ Cabe destacar que toda figura es original y que todas las muestras y comparacion
 
 Actualmente existen diversas implementaciones de motores de renderizado por \emph{Path Tracing} de código abierto. La mayoría de ellas son implementaciones directas de los libros Ray Tracing in one Weekend \cite{shirley2016ray} o del libro Physically based rendering: From theory to implementation \cite{pharr2016physically} siendo el primero una rápida implementación funcional, mientras que el segundo contiene casi todos los fundamentos teóricos acompañados de una implementación muy completa.
 
-Ambos libros han servido excelentemente como documentación, aún así, ambos están orientado a renderizado por CPU, toda la arquitectura que acompaña sobre todo el segundo libro, busca el mayor nivel de abstracción posible. Esto es un problema a la hora de usar CUDA, ya que no permite el uso de funciones virtuales y por tanto cuenta con una herencia de clases limitada.
+Ambos libros han servido excelentemente como documentación, aún así, ambos están orientados a renderizado por CPU, toda la arquitectura que acompaña sobre todo el segundo libro, busca el mayor nivel de abstracción posible. Esto es un problema a la hora de usar CUDA, ya que no permite el uso de funciones virtuales y por tanto cuenta con una herencia de clases limitada.
 
 La mayoría de estas implementaciones de código abierto son pruebas de concepto y la mayoría están limitadas en cuanto a características, pero hay una implementación concreta que destaca: Cycles.
 
-Cycles es sin duda una de las implementaciones de código abierto más relevantes de este algoritmo. Es un motor de renderizado desarrollado por Blender, flexible y con implementación en distintas APIs, entre ellas CUDA, para poder hacer uso de múltiples tipos de aceleradores. Además ofrece una amplia gama de características como motor gráfico, a la par de las carácteristicas vistas en el estado del arte, que le permiten hacerse hueco entre el resto de motores de render de producción comerciales.
+Cycles es sin duda una de las implementaciones de código abierto más relevantes de este algoritmo. Es un motor de renderizado desarrollado por Blender, flexible y con implementación en distintas APIs, entre ellas CUDA, para poder hacer uso de múltiples tipos de aceleradores. Además ofrece una amplia gama de características como motor gráfico, a la par de las características vistas en el estado del arte, que le permiten hacerse hueco entre el resto de motores de render de producción comerciales.
 
 \paragraph{Aplicaciones comerciales}\mbox{} \\
 
@@ -83,11 +83,12 @@ A continuación se muestra una línea del tiempo con los hitos logrados:
 	Febrero 2021 & HDRI y NEE\\
 	Marzo 2021 & Muestreo por importancia de HDRI\\
 	Mayo 2021 & Funciones de benchmarking\\
-	Julio 2021 & Port One Api\\
 	Agosto 2021 & Implementación de mapas de normales, BOKEH\\
 	Septiembre 2021 & Escenas en formato JSON\\
 	
 \end{tabular}
 \end{table}
+
+Se está realizando también, de forma paralela, un port a Intel oneAPI, aunque este trabajo no cubre dicho apartado debido al progreso en desarrollo inacabado del mencionado port.
 
 \footnotetext{TU Wien Rendering Lectures: \url{https://www.youtube.com/watch?v=pjc1QAI6zS0&list=PLujxSBD-JXgnGmsn7gEyN28P1DnRZG7qi}}
