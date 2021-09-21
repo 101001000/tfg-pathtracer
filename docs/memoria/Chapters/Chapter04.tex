@@ -231,6 +231,35 @@ Por otro lado, una heurística más acertada e intuitiva es ponderar cada métod
 
 En los motores de producción se utiliza por lo general una heurística llamada Power Heuristic debido a que Veach \cite{veach1995optimally} la determina empíricamente mejor. Para Eleven Renderer se ha utilizado heurística de ponderación por \code{pdf} con el fin de ser más comprensivo. En futuras versiones más orientadas a producción se procederá a cambiar esta heurística.
 
+Tras aplicar el muestreo múltiple, el código final de la función de sombreado es \autoref{cod:shading}. Nótese como se aplica la heurística de ponderación con los pesos $w_1, w_2 y w_3$.
+
+\begin{minipage}[c]{0.95\textwidth}
+\begin{lstlisting}[label={cod:shading}, caption={Código para el muestreo por importancia múltiple}]
+
+	__device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearestHit, Vector3& newDir, float r1, float r2, float r3, Vector3& hitLight, Vector3& reduction) {
+
+		Vector3 brdfDisney = DisneyEval(ray, hitdata, newDir);
+
+		float brdfPdf = DisneyPdf(ray, hitdata, newDir);
+		float hdriPdf;
+		float pointPdf = 0;
+
+		Vector3 hdriLightCalc = hdriLight(ray, &scene, nearestHit.position, hitdata, r1, r2, r3, hdriPdf);
+		Vector3 pointLightCalc = pointLight(ray, hitdata, &scene, nearestHit.position, pointPdf, r1);
+		Vector3 brdfLightCalc = hitdata.emission * (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
+
+		float w1 = hdriPdf  / (hdriPdf + pointPdf + brdfPdf);
+		float w2 = pointPdf / (hdriPdf + pointPdf + brdfPdf);
+		float w3 = brdfPdf  / (hdriPdf + pointPdf + brdfPdf);
+
+		hitLight = reduction * (w1 * hdriLightCalc + w2 * pointLightCalc + w3 * brdfLightCalc);
+
+		reduction *= (brdfDisney * abs(Vector3::dot(newDir, hitdata.normal))) / brdfPdf;
+	}
+
+\end{lstlisting}
+\end{minipage}
+
 \section{Estructuras de aceleración}
 \label{BVH}
 	

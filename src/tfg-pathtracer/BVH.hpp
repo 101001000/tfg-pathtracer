@@ -68,6 +68,7 @@ public:
 
 	__host__ __device__ bool intersect(Ray ray, Vector3 b1, Vector3 b2) {
 
+		// Direct implementation of https://gamedev.stackexchange.com/questions/18436/most-efficient-aabb-vs-ray-collision-algorithms
 		Vector3 dirfrac;
 
 		// r.dir is unit direction vector of ray
