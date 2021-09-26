@@ -115,7 +115,7 @@ public:
 		mo.tris = tris->data();
 		mo.triCount = tris->size();
 
-		Pretzel::CalcTangents calcTang = Pretzel::CalcTangents();
+		CalcTangents calcTang = CalcTangents();
 		calcTang.calc(&mo);
 
 		return mo;

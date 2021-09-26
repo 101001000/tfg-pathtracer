@@ -182,7 +182,7 @@ int main(int argc, char* argv[]) {
 
 		getRenderData(data);
 
-		if (data.samples >= data.pars.sampleTarget) {
+		if (data.samples >= data.pars.sampleTarget - 1) {
 			saveBMP(argv[3], data.pars.width, data.pars.height, data.beautyBuffer);
 			break;
 		}
