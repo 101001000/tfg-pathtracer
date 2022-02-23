@@ -21,6 +21,8 @@ public:
     Filter filter = NO_FILTER;
     Vector3 color;
 
+    std::string path;
+
     unsigned int width;
     unsigned int height;
 
@@ -34,7 +36,9 @@ public:
 
     __host__ Texture(std::string filepath) : Texture(filepath, CS::sRGB) {}
 
-    	__host__ Texture(std::string filepath, CS colorSpace) {
+    __host__ Texture(std::string filepath, CS colorSpace) {
+
+        path = filepath;
 
         //https://stackoverflow.com/questions/2654480/writing-bmp-image-in-pure-c-c-without-other-libraries
 

@@ -13,10 +13,11 @@ static int objectIDCount = 0;
 class MeshObject {
 
 public:
+	std::string name;
+	std::string matName;
+
 	Tri* tris;
-
 	unsigned int triCount;
-
 	int materialID = 0;
 	int objectID = 0;
 

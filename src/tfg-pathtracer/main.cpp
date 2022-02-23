@@ -94,54 +94,6 @@ void getRenderData(RenderData& data) {
 	delete(pathCountBuffer);
 }
 
-Scene materialScene() {
-
-	Scene scene = Scene();
-
-	scene.camera = Camera(600, 600);
-	scene.camera.position = Vector3(0, 0, -15);
-
-	std::string spherePath = "C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Sphere\\Objects\\sphere.obj";
-
-	for (int j = 0; j < 3; j++) {
-
-		for (int i = 0; i < 5; i++) {
-
-			MeshObject sphere = ObjLoader::loadObj(spherePath);
-
-			sphere.translate(Vector3((i - 2) * 3, (2 - j - 1) * 3, 0));
-
-			sphere.materialID = scene.materialCount();
-
-			Material material = Material();
-
-			if (j == 0) {
-				material.albedo = Vector3((float)rand() / (float)RAND_MAX, (float)rand() / (float)RAND_MAX, (float)rand() / (float)RAND_MAX);
-			}
-
-			if (j == 1) {
-				material.albedo = Vector3(1, 0, 0);
-				material.roughness = i / 4.0;
-			}
-
-			if (j == 2) {
-				material.albedo = Vector3(0.2);
-				material.roughness = 0;
-				material.metallic = i / 4.0;
-			}
-
-			scene.addMaterial(material);
-
-			scene.addMeshObject(sphere);
-		}
-	}
-
-	scene.addHDRI("C:\\Users\\Kike\\Desktop\\Uni\\TFG\\Scenes\\Sphere\\HDRI\\studio.hdr");
-	scene.hdri.texture.xOffset = 0.5;
-
-	return scene;
-}
-
 int main(int argc, char* argv[]) {
 
 	Scene scene = loadScene(std::string(argv[1]));
@@ -215,4 +167,5 @@ int main(int argc, char* argv[]) {
 	cudaDeviceReset();
 
 	window.close();
+	return 0;
 }

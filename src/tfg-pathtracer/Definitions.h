@@ -3,7 +3,7 @@
 #define SMOOTH_SHADING true
 #define USEBVH true
 #define HDRIIS true
-#define BOKEH true
+#define BOKEH false
 
 #define THREADSIZE 8
 #define MAXBOUNCES 5

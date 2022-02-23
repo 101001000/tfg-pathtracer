@@ -3,7 +3,10 @@
 #include "Scene.hpp"
 #include "RSJparser.hpp"
 
+// TODO some cleaning
 static Scene loadScene(std::string path) {
+
+	ObjLoader objLoader;
 
 	path += "\\";
 
@@ -17,7 +20,6 @@ static Scene loadScene(std::string path) {
 
 
 	RSJresource scene_json(str);
-
 
 	// Camera
 	RSJresource camera_json = scene_json["camera"].as<RSJresource>();
@@ -57,98 +59,65 @@ static Scene loadScene(std::string path) {
 	if (hdri_json["yOffset"].exists())
 		scene.hdri.texture.xOffset = hdri_json["yOffset"].as<double>();
 
+	//Materials v2
+	printf("Loading materialsv2\n");
+	std::vector<UnloadedMaterial> umtls = objLoader.loadMtls(path + "scene.mtl");
 
-	// Materials
+	for (int i = 0; i < umtls.size(); i++) {
 
-	std::map<std::string, int> matIds;
+		for (const auto& map : umtls[i].maps) {
+			std::string key = map.first;
+			std::string mapPath = umtls[i].maps[key];
 
-	RSJarray materials_json = scene_json["materials"].as<RSJarray>();
+			CS colorSpace = CS::LINEAR;
 
-	for (int i = 0; i < materials_json.size(); i++) {
+			int textureId = scene.textureCount();
+			bool dupTex = false;
 
-		std::string name = materials_json[i]["name"].as<std::string>();
-
-		printf("Loading material %s\n", name.c_str());
-
-		Material material = Material();
-
-		std::vector<std::string> mapnames = { "albedo", "emission", "roughness", "metallic", "normal" };
-
-		//@todo add support for the rest of parameters
-
-		for (int j = 0; j < mapnames.size(); j++) {
-
-			std::ifstream f(path + "Textures\\" + name + "_" + mapnames[j] + ".bmp");
-
-			if (f.good()) {
-
-				CS colorSpace = CS::LINEAR;
-
-				switch (j) {
-				case 0:
-					material.albedoTextureID = scene.textureCount();
-					colorSpace = CS::sRGB;
-					break;
-				case 1:
-					material.emissionTextureID = scene.textureCount();
-					colorSpace = CS::sRGB;
-					break;
-				case 2:
-					material.roughnessTextureID = scene.textureCount();
-					break;
-				case 3:
-					material.metallicTextureID = scene.textureCount();
-					break;
-				case 4:
-					material.normalTextureID = scene.textureCount();
-					break;
-				}
-
-				scene.addTexture(Texture(path + "Textures\\" + name + "_" + mapnames[j] + ".bmp", colorSpace));
-			}
-			else if (materials_json[i][mapnames[j]].exists()) {
-				RSJresource json_data = materials_json[i][mapnames[j]];
-
-				//Maybe I need to adjust colorspace here
-
-				switch (j) {
-				case 0:
-					material.albedo = json_data.as<Vector3>();
-					break;
-				case 1:
-					material.emission = json_data.as<Vector3>();
-					break;
-				case 2:
-					material.roughness = json_data.as<double>();
-					break;
-				case 3:
-					material.metallic = json_data.as<double>();
-					break;
+			for (int j = 0; j < scene.textures.size(); j++) {
+				if (scene.textures[j].path == mapPath) {
+					textureId = j;
+					dupTex = true;
 				}
 			}
+
+			if (key == "map_Kd") {
+				umtls[i].mat.albedoTextureID = textureId;
+				colorSpace = CS::sRGB;
+			}
+
+			if (key == "map_Ns")
+				umtls[i].mat.roughnessTextureID = textureId;
+
+			if (key == "refl")
+				umtls[i].mat.metallicTextureID = textureId;
+
+			if (key == "map_Bump")
+				umtls[i].mat.normalTextureID = textureId;
+
+			if(!dupTex)
+				scene.addTexture(Texture(mapPath));
 		}
-
-		matIds[name] = scene.materialCount();
-		scene.addMaterial(material);
+		scene.addMaterial(umtls[i].mat);
+		std::cout << "material " << umtls[i].mat.name << " has alb tid " << umtls[i].mat.albedoTextureID << "\n";
 	}
 
+	//Objects v2
+	printf("Loading objects\n");
 
-	// Objects
+	std::vector<MeshObject> objects = objLoader.loadObjs(path + "scene.obj");
 
-	RSJarray objects_json = scene_json["objects"].as<RSJarray>();
+	for (int i = 0; i < objects.size(); i++) {
 
-	for (int i = 0; i < objects_json.size(); i++) {
+		objects[i].materialID = 0;
 
-		std::string name = objects_json[i]["name"].as<std::string>();
-		std::string matName = objects_json[i]["material"].as<std::string>();
+		for (int j = 0; j < scene.materials.size(); j++) {
+			if (scene.materials[j].name == objects[i].matName)
+				objects[i].materialID = j;
+		}
 
-		printf("Loading object %s\n", name.c_str());
-
-		MeshObject object = ObjLoader::loadObj(path + "Objects\\" + name + ".obj");
-
-		object.materialID = matIds[matName];
-
-		scene.addMeshObject(object);
+		std::cout << "object " << objects[i].name << " has mat id " << objects[i].materialID << "\n";
+		scene.addMeshObject(objects[i]);
 	}
 
 	// PointLights
