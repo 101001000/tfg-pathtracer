@@ -34,6 +34,7 @@ struct HitData {
 void printPdfMaterial(Material material, int samples);
 void printBRDFMaterial(Material material, int samples);
 void printHDRISampling(HDRI hdri, int samples);
+void calcNormalPass();
 
 cudaError_t renderCuda(Scene* scene, int sampleTarget);
 

@@ -37,7 +37,8 @@ struct dev_Scene {
 
 //TODO HACER ESTO CON MEMORIA DINÁMICA PARA ELIMINAR EL MÁXIMO DE 1920*1080
 
-__device__ float dev_buffer[1920 * 1080 * 4];
+//__device__ float dev_buffer[1920 * 1080 * 4];
+__device__ float dev_passes[PASSES_COUNT][1920 * 1080 * 4]; //0: beauty, 1: normal
 
 // How many samples per pixels has been calculated. 
 __device__  unsigned int dev_samples[1920 * 1080];
@@ -129,8 +130,11 @@ __global__ void setupKernel() {
     dev_samples[idx] = 0;
     dev_pathcount[idx] = 0;
 
-    memset(&dev_buffer[4 * idx], 0, sizeof(float) * 3); // RGB channels
-    dev_buffer[4 * idx + 3] = 1; // Alpha channel
+    memset(&dev_passes[0][4 * idx], 0, sizeof(float) * 3); // RGB channels
+    memset(&dev_passes[0][4 * idx], 0, sizeof(float) * 3); // RGB channels
+
+    dev_passes[0][4 * idx + 3] = 1; // Alpha channel
+    dev_passes[1][4 * idx + 3] = 1; // Alpha channel
 
     curand_init(0, idx, 0, &d_rand_state_g[idx]);
 
@@ -142,6 +146,8 @@ __global__ void setupKernel() {
             triSum += dev_scene_g->meshObjects[i].triCount;
         }
     }
+
+    calcNormalPass();
 }
 
 __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
@@ -361,6 +367,39 @@ __device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bou
     //if (Vector3::dot(hitdata.normal, bouncedDir) < 0) bouncedDir *= -1;
 }
 
+
+__device__ void calcNormalPass() {
+
+    dev_Scene* scene = dev_scene_g;
+
+    int x = threadIdx.x + blockIdx.x * blockDim.x;
+    int y = threadIdx.y + blockIdx.y * blockDim.y;
+
+    if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
+
+    int idx = (scene->camera->xRes * y + x);
+
+    curandState local_rand_state = d_rand_state_g[idx];
+
+    Ray ray;
+
+    calculateCameraRay(x, y, *scene->camera, ray, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
+
+    Hit nearestHit = throwRay(ray, scene);
+
+    Vector3 normal = Vector3::Zero();
+
+    if (nearestHit.valid)
+        normal = nearestHit.normal;
+
+    dev_passes[1][4 * idx + 0] = normal.x;
+    dev_passes[1][4 * idx + 1] = normal.y;
+    dev_passes[1][4 * idx + 2] = normal.z;
+
+    d_rand_state_g[idx] = local_rand_state;
+}
+
+
 __global__ void renderingKernel() {
 
     dev_Scene* scene = dev_scene_g;
@@ -432,14 +471,14 @@ __global__ void renderingKernel() {
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
         if (sa > 0) {
-            dev_buffer[4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
-            dev_buffer[4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
-            dev_buffer[4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+            dev_passes[0][4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
+            dev_passes[0][4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
+            dev_passes[0][4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
         }
 
-        dev_buffer[4 * idx + 0] += light.x / ((float)sa + 1);
-        dev_buffer[4 * idx + 1] += light.y / ((float)sa + 1);
-        dev_buffer[4 * idx + 2] += light.z / ((float)sa + 1);
+        dev_passes[0][4 * idx + 0] += light.x / ((float)sa + 1);
+        dev_passes[0][4 * idx + 1] += light.y / ((float)sa + 1);
+        dev_passes[0][4 * idx + 2] += light.z / ((float)sa + 1);
 
         dev_samples[idx]++;
     }
@@ -656,7 +695,7 @@ cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
 
     cudaStreamCreate(&bufferStream);
 
-    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_buffer, size * sizeof(float) * 4, 0, cudaMemcpyDeviceToHost, bufferStream);
+    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_passes, size * sizeof(float) * 4 * PASSES_COUNT, 0, cudaMemcpyDeviceToHost, bufferStream);
     if (cudaStatus != cudaSuccess) {
         fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
     }

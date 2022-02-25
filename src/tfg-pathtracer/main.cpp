@@ -58,10 +58,10 @@ void startRender(RenderData& data, Scene& scene) {
 
 	RenderParameters pars = data.pars;
 
-	data.rawPixelBuffer = new float[pars.width * pars.height * 4];
+	data.rawPixelBuffer = new float[pars.width * pars.height * 4 * PASSES_COUNT];
 	data.beautyBuffer = new unsigned char[pars.width * pars.height * 4];
 
-	memset(data.rawPixelBuffer, 0, pars.width * pars.height * 4 * sizeof(float));
+	memset(data.rawPixelBuffer, 0, pars.width * pars.height * 4 * sizeof(float) * PASSES_COUNT);
 	memset(data.beautyBuffer, 0, pars.width * pars.height * 4 * sizeof(unsigned char));
 
 	renderSetup(&scene);
