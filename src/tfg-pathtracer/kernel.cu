@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include <curand_kernel.h>
 #include <cuda_runtime.h>
 #include <stdio.h>
@@ -35,7 +35,7 @@ struct dev_Scene {
 
 };
 
-//TODO HACER ESTO CON MEMORIA DIN�MICA PARA ELIMINAR EL M�XIMO DE 1920*1080
+//TODO HACER ESTO CON MEMORIA DINÁMICA PARA ELIMINAR EL MÁXIMO DE 1920*1080
 
 __device__ float dev_buffer[1920 * 1080 * 4];
 
@@ -271,8 +271,37 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
     float SPy = ody + ry;
     float SPz = camera.position.z + camera.focalLength;
 
+    /*
+    | 1     0           0| |x|   |        x         |   |x'|
+    | 0   cos θ    −sin θ| |y| = | y cos θ − z sin θ| = |y'|
+    | 0   sin θ     cos θ| |z|   |y sin θ + z cos θ |   |z'|
+    */
+
+    /*
+    | cos θ    0    sin θ| |x|   | x cos θ + z sin θ|   |x'|
+    | 0        1        0| |y| = | y                | = |y'|
+    | -sin θ   0    cos θ| |z|   | z cos θ - x sin θ|   |z'|
+    */
+
+    /*
+    |cos θ   −sin θ   0| |x|   |x cos θ − y sin θ|   |x'|
+    |sin θ    cos θ   0| |y| = |x sin θ + y cos θ| = |y'|
+    |  0       0      1| |z|   |        z        |   |z'|
+    */
+
+    // XYZ Eulers's Rotation
+    // TODO CLEANUP AND PRECALC
+    Vector3 rotation = camera.rotation;
+
+    rotation *= (PI / 180.0);
+
+    Vector3 dir = Vector3(SPx, SPy, SPz) - camera.position;
+    Vector3 dirXRot = Vector3(dir.x, dir.y * cos(rotation.x) - dir.z * sin(rotation.x), dir.y * sin(rotation.x) + dir.z * cos(rotation.x));
+    Vector3 dirYRot = Vector3(dirXRot.x * cos(rotation.y) + dirXRot.z * sin(rotation.y), dirXRot.y, dirXRot.z * cos(rotation.y)- dirXRot.x * sin(rotation.y));
+    Vector3 dirZRot = Vector3(dirYRot.x * cos(rotation.z) - dirYRot.y * sin(rotation.z), dirYRot.x * sin(rotation.z) + dirYRot.y * cos(rotation.z), dirYRot.z);
+
     // The initial ray is created from the camera position to the sensor point. No rotation is taken into account.
-    ray = Ray(camera.position, Vector3(SPx, SPy, SPz) - camera.position);
+    ray = Ray(camera.position, dirZRot);
 
     if (camera.bokeh) {
 
@@ -286,7 +315,7 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
 
         // The point from the initial ray which is actually in focus
         //Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
-        // Mala aproximaci�n, encontrar soluici�n
+        // Mala aproximación, encontrar soluición
         Vector3 focusPoint = ray.origin + ray.direction * l;
 
         // Sampling for the iris of the camera
@@ -598,7 +627,7 @@ cudaError_t renderSetup(Scene* scene) {
     return cudaStatus;
 }
 
-//TODO quitar variables globales pasando por par�metro el puntero.
+//TODO quitar variables globales pasando por parámetro el puntero.
 
 cudaError_t renderCuda(Scene* scene, int sampleTarget) {
 

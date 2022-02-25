@@ -8,12 +8,6 @@ enum CS { LINEAR, sRGB };
 
 class Texture {
 
-
-/*
-    TODO:
-        comprobar que pasa con texturas de distinto tamaño, redimensionar(?)
-*/
-
 public:
 
 	float* data;

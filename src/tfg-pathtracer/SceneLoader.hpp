@@ -24,6 +24,7 @@ static Scene loadScene(std::string path) {
 	// Camera
 	RSJresource camera_json = scene_json["camera"].as<RSJresource>();
 	RSJresource camera_pos_json = camera_json["position"].as<RSJresource>();
+	RSJresource camera_rot_json = camera_json["rotation"].as<RSJresource>();
 
 	int xRes = camera_json["xRes"].as<int>();
 	int yRes = camera_json["yRes"].as<int>();
@@ -34,12 +35,14 @@ static Scene loadScene(std::string path) {
 	float bokeh = camera_json["bokeh"].as<bool>();
 
 	Vector3 cameraPosition = Vector3(camera_pos_json["x"].as<double>(), camera_pos_json["y"].as<double>(), camera_pos_json["z"].as<double>());
+	Vector3 cameraRotation = Vector3(camera_rot_json["x"].as<double>(), camera_rot_json["y"].as<double>(), camera_rot_json["z"].as<double>());
 
 	scene.camera = Camera(xRes, yRes);
 	scene.camera.focalLength = focalLength;
 	scene.camera.focusDistance = focusDistance;
 	scene.camera.aperture = aperture;
 	scene.camera.position = cameraPosition;
+	scene.camera.rotation = cameraRotation;
 	scene.camera.bokeh = bokeh;
 
 
