@@ -15,6 +15,7 @@ public:
 	float sensorHeight = sensorWidth * ((float)yRes / (float)xRes);
 	float aperture = 2.8;
 	float focusDistance = 1000000;
+	bool bokeh = false;
 
 	Vector3 position = Vector3::Zero();
 

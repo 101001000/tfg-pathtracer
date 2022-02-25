@@ -99,20 +99,20 @@ C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\RSJparse
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(31,20): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(32,22): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(33,17): warning C4244: 'inicializando': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(35,136): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(35,101): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(35,66): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(52,137): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(52,99): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(52,61): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(57,63): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(60,63): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(36,136): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(36,101): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(36,66): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(54,137): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(54,99): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(54,61): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(59,63): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(62,63): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(137,20): warning C4018: '>=': no coinciden signed/unsigned
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(119,38): warning C4390: ';': se encontró una instrucción controlada vacía; ¿es esa la intención?
      Creando biblioteca C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.lib y objeto C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.exp
   Generando código
-  1 of 1422 functions (<0.1%) were compiled, the rest were copied from previous compilation.
-    0 functions were new in current compilation
-    1 functions had inline decision re-evaluated but remain unchanged
+  2 of 1423 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
+    1 functions were new in current compilation
+    18 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada
   tfg-pathtracer.vcxproj -> C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.exe

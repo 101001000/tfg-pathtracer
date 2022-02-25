@@ -274,33 +274,32 @@ __device__ void calculateCameraRay(int x, int y, Camera& camera, Ray& ray, float
     // The initial ray is created from the camera position to the sensor point. No rotation is taken into account.
     ray = Ray(camera.position, Vector3(SPx, SPy, SPz) - camera.position);
 
-#if BOKEH
+    if (camera.bokeh) {
 
-    float rIPx, rIPy;
+        float rIPx, rIPy;
 
-    // The diameter of the camera iris
-    float diameter = camera.focalLength / camera.aperture;
+        // The diameter of the camera iris
+        float diameter = camera.focalLength / camera.aperture;
 
-    // Total length from the camera to the focus plane
-    float l = camera.focusDistance + camera.focalLength;
+        // Total length from the camera to the focus plane
+        float l = camera.focusDistance + camera.focalLength;
 
-    // The point from the initial ray which is actually in focus
-    //Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
-    // Mala aproximación, encontrar soluición
-    Vector3 focusPoint = ray.origin + ray.direction * l;
+        // The point from the initial ray which is actually in focus
+        //Vector3 focusPoint = ray.origin + ray.direction * (l / (ray.direction.z));
+        // Mala aproximación, encontrar soluición
+        Vector3 focusPoint = ray.origin + ray.direction * l;
 
-    // Sampling for the iris of the camera
-    uniformCircleSampling(r3, r4, r5, rIPx, rIPy);
+        // Sampling for the iris of the camera
+        uniformCircleSampling(r3, r4, r5, rIPx, rIPy);
 
-    rIPx *= diameter * 0.5;
-    rIPy *= diameter * 0.5;
+        rIPx *= diameter * 0.5;
+        rIPy *= diameter * 0.5;
 
-    Vector3 orig = camera.position + Vector3(rIPx, rIPy, 0);
+        Vector3 orig = camera.position + Vector3(rIPx, rIPy, 0);
 
-    //Blurred ray
-    ray = Ray(orig, focusPoint - orig);
-
-#endif 
+        //Blurred ray
+        ray = Ray(orig, focusPoint - orig);
+    }
 }
 
 __device__ void shade(dev_Scene& scene, Ray& ray, HitData& hitdata, Hit& nearestHit, Vector3& newDir, float r1, float r2, float r3, Vector3& hitLight, Vector3& reduction) {

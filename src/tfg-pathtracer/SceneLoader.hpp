@@ -31,6 +31,7 @@ static Scene loadScene(std::string path) {
 	float focalLength = camera_json["focalLength"].as<double>();
 	float focusDistance = camera_json["focusDistance"].as<double>();
 	float aperture = camera_json["aperture"].as<double>();
+	float bokeh = camera_json["bokeh"].as<bool>();
 
 	Vector3 cameraPosition = Vector3(camera_pos_json["x"].as<double>(), camera_pos_json["y"].as<double>(), camera_pos_json["z"].as<double>());
 
@@ -39,6 +40,7 @@ static Scene loadScene(std::string path) {
 	scene.camera.focusDistance = focusDistance;
 	scene.camera.aperture = aperture;
 	scene.camera.position = cameraPosition;
+	scene.camera.bokeh = bokeh;
 
 
 	// HDRI
