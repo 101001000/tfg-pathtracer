@@ -87,8 +87,10 @@ public:
 			if (line[0] == 'v' && line[1] == 't')
 				textureCoord.push_back(Vector3(line.substr(2)));
 
-			if (line[0] == 'v' && line[1] == 'n')
-				normals.push_back(Vector3(line.substr(2)) * Vector3(1, 1, -1));
+			if (line[0] == 'v' && line[1] == 'n') {
+				Vector3 n = Vector3(line.substr(2)) * Vector3(1, 1, -1);
+				normals.push_back(n);
+			}
 
 			if (line[0] == 'f') {
 
@@ -148,8 +150,9 @@ public:
 					if (strlen(v[1]) > 0)
 						tri.uv[i] = textureCoord.at(std::stoi(&(v[1])[0]) - 1);
 
-					if (strlen(v[2]) > 0)
+					if (strlen(v[2]) > 0) 
 						tri.normals[i] = normals.at(std::stoi(&(v[2])[0]) - 1).normalized();
+					
 
 				}
 				tris->push_back(tri);

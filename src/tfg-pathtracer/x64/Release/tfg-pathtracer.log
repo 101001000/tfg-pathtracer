@@ -57,15 +57,15 @@ C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.hpp
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\HDRI.hpp(168,57): warning C4244: 'argumento': conversión de 'int' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\MeshObject.hpp(32,21): warning C4018: '<': no coinciden signed/unsigned
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\MeshObject.hpp(44,21): warning C4018: '<': no coinciden signed/unsigned
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(110,1): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(134,1): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(159,10): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 1 tiene el tipo 'unsigned __int64'
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(159,10): message : considere el uso de ' %zd' en la cadena de formato
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(159,10): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 2 tiene el tipo 'unsigned __int64'
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(159,10): message : considere el uso de ' %zd' en la cadena de formato
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(159,10): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 3 tiene el tipo 'unsigned __int64'
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(159,10): message : considere el uso de ' %zd' en la cadena de formato
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(162,1): warning C4267: '=': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(112,1): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(136,1): warning C4267: 'inicializando': conversión de 'size_t' a 'int'; posible pérdida de datos
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(162,10): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 1 tiene el tipo 'unsigned __int64'
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(162,10): message : considere el uso de ' %zd' en la cadena de formato
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(162,10): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 2 tiene el tipo 'unsigned __int64'
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(162,10): message : considere el uso de ' %zd' en la cadena de formato
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(162,10): warning C4477: 'printf' : la cadena de formato '%d' requiere un argumento de tipo 'int', pero el argumento variádico 3 tiene el tipo 'unsigned __int64'
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(162,10): message : considere el uso de ' %zd' en la cadena de formato
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\ObjLoader.hpp(165,1): warning C4267: '=': conversión de 'size_t' a 'unsigned int'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(39,22): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(40,21): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\Scene.hpp(41,24): warning C4267: 'return': conversión de 'size_t' a 'int'; posible pérdida de datos
@@ -113,8 +113,8 @@ C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(93,38): warning C4390: ';': se encontró una instrucción controlada vacía; ¿es esa la intención?
      Creando biblioteca C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.lib y objeto C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.exp
   Generando código
-  0 of 1423 functions ( 0.0%) were compiled, the rest were copied from previous compilation.
+  1 of 1428 functions (<0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    0 functions had inline decision re-evaluated but remain unchanged
+    1 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada
   tfg-pathtracer.vcxproj -> C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.exe

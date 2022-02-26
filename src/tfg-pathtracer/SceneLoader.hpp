@@ -101,7 +101,7 @@ static Scene loadScene(std::string path) {
 				umtls[i].mat.normalTextureID = textureId;
 
 			if(!dupTex)
-				scene.addTexture(Texture(mapPath));
+				scene.addTexture(Texture(mapPath, colorSpace));
 		}
 		scene.addMaterial(umtls[i].mat);
 		std::cout << "material " << umtls[i].mat.name << " has alb tid " << umtls[i].mat.albedoTextureID << "\n";

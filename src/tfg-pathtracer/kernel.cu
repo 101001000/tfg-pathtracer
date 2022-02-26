@@ -130,11 +130,11 @@ __global__ void setupKernel() {
     dev_samples[idx] = 0;
     dev_pathcount[idx] = 0;
 
-    memset(&dev_passes[0][4 * idx], 0, sizeof(float) * 3); // RGB channels
-    memset(&dev_passes[0][4 * idx], 0, sizeof(float) * 3); // RGB channels
+    for (int i = 0; i < PASSES_COUNT; i++) {
+        memset(&dev_passes[i][4 * idx], 0, sizeof(float) * 3); // RGB channels
+        dev_passes[i][4 * idx + 3] = 1; // Alpha channel
+    }
 
-    dev_passes[0][4 * idx + 3] = 1; // Alpha channel
-    dev_passes[1][4 * idx + 3] = 1; // Alpha channel
 
     curand_init(0, idx, 0, &d_rand_state_g[idx]);
 
@@ -388,13 +388,33 @@ __device__ void calcNormalPass() {
     Hit nearestHit = throwRay(ray, scene);
 
     Vector3 normal = Vector3::Zero();
+    Vector3 tangent = Vector3::Zero();
+    Vector3 bitangent = Vector3::Zero();
 
-    if (nearestHit.valid)
-        normal = nearestHit.normal;
+    if (nearestHit.valid) {
+        HitData hitdata;
+        int materialID = scene->meshObjects[nearestHit.objectID].materialID;
+        Material* material = &scene->materials[materialID];
+        generateHitData(material, hitdata, nearestHit);
+        normal = hitdata.normal;
+        tangent = hitdata.tangent;
+        bitangent = hitdata.bitangent;
+    }
+        
 
     dev_passes[NORMAL][4 * idx + 0] = normal.x;
-    dev_passes[NORMAL][4 * idx + 1] = normal.y;
-    dev_passes[NORMAL][4 * idx + 2] = normal.z;
+    dev_passes[NORMAL][4 * idx + 1] = normal.z;
+    dev_passes[NORMAL][4 * idx + 2] = normal.y;
+
+    dev_passes[TANGENT][4 * idx + 0] = tangent.x;
+    dev_passes[TANGENT][4 * idx + 1] = tangent.z;
+    dev_passes[TANGENT][4 * idx + 2] = tangent.y;
+
+    dev_passes[BITANGENT][4 * idx + 0] = bitangent.x;
+    dev_passes[BITANGENT][4 * idx + 1] = bitangent.z;
+    dev_passes[BITANGENT][4 * idx + 2] = bitangent.y;
+
+
 
     d_rand_state_g[idx] = local_rand_state;
 }

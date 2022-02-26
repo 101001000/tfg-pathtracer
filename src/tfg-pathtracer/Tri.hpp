@@ -37,7 +37,7 @@ public:
 
     __host__ __device__ inline bool hit(Ray& ray, Hit& hit) {
 
-        float EPSILON = 0.000000001;
+        float EPSILON = 0.0000001;
 
         Vector3 edge1 = vertices[1] - vertices[0];
         Vector3 edge2 = vertices[2] - vertices[0];
@@ -95,8 +95,10 @@ public:
 
         if (Vector3::dot(geomNormal, ray.direction) < 1.0) {
             geomNormal *= -1;
-            //QUizá hay que invertir también la tangente
+            //Quizá hay que invertir también la tangente
         }
+
+        //printf("%f\n", geomNormal.z);
 
         // tangents[0], tangents[1], tangents[2] are the same when smoothshading is off
         hit.tangent = tangents[0];

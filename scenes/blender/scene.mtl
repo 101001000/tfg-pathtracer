@@ -10,8 +10,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.450000
 d 1.000000
 illum 2
+map_Bump C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\ClockCC0\\Textures\\plant_normal.bmp
 map_Kd C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender\\Textures\\plant_albedo.bmp
-map_Bump C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender\\Textures\\plant_normal.bmp
 map_Ns C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender\\Textures\\plant_roughness.bmp
 refl C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\ClockCC0\\Textures\\plant_metallic.bmp
 
@@ -25,6 +25,8 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Bump C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\ClockCC0\\Textures\\clock_normal.bmp
+map_Kd C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender\\Textures\\clock_albedo.bmp
+map_Ns C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender\\Textures\\clock_roughness.bmp
 refl C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\ClockCC0\\Textures\\clock_metallic.bmp
 
 newmtl vintage_wooden_drawer_01
@@ -37,4 +39,6 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Bump C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\ClockCC0\\Textures\\table_normal.bmp
+map_Kd C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender\\Textures\\table_albedo.bmp
+map_Ns C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender\\Textures\\table_roughness.bmp
 refl C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\ClockCC0\\Textures\\table_metallic.bmp

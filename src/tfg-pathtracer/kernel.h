@@ -4,7 +4,7 @@
 
 #pragma once
 
-enum Passes { BEAUTY, NORMAL };
+enum Passes { BEAUTY, NORMAL, TANGENT, BITANGENT};
 
 struct RenderParameters {
 
@@ -16,6 +16,8 @@ struct RenderParameters {
 	RenderParameters(unsigned int width, unsigned int height, unsigned int sampleTarget) : width(width), height(height), sampleTarget(sampleTarget) {
 		passes[BEAUTY] = true;
 		passes[NORMAL] = true;
+		passes[TANGENT] = true;
+		passes[BITANGENT] = true;
 	};
 	RenderParameters() : width(1280), height(720), sampleTarget(100) {};
 };
