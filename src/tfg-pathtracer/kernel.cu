@@ -392,9 +392,9 @@ __device__ void calcNormalPass() {
     if (nearestHit.valid)
         normal = nearestHit.normal;
 
-    dev_passes[1][4 * idx + 0] = normal.x;
-    dev_passes[1][4 * idx + 1] = normal.y;
-    dev_passes[1][4 * idx + 2] = normal.z;
+    dev_passes[NORMAL][4 * idx + 0] = normal.x;
+    dev_passes[NORMAL][4 * idx + 1] = normal.y;
+    dev_passes[NORMAL][4 * idx + 2] = normal.z;
 
     d_rand_state_g[idx] = local_rand_state;
 }
@@ -471,14 +471,14 @@ __global__ void renderingKernel() {
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
         if (sa > 0) {
-            dev_passes[0][4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
-            dev_passes[0][4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
-            dev_passes[0][4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+            dev_passes[BEAUTY][4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
+            dev_passes[BEAUTY][4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
+            dev_passes[BEAUTY][4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
         }
 
-        dev_passes[0][4 * idx + 0] += light.x / ((float)sa + 1);
-        dev_passes[0][4 * idx + 1] += light.y / ((float)sa + 1);
-        dev_passes[0][4 * idx + 2] += light.z / ((float)sa + 1);
+        dev_passes[BEAUTY][4 * idx + 0] += light.x / ((float)sa + 1);
+        dev_passes[BEAUTY][4 * idx + 1] += light.y / ((float)sa + 1);
+        dev_passes[BEAUTY][4 * idx + 2] += light.z / ((float)sa + 1);
 
         dev_samples[idx]++;
     }
@@ -691,13 +691,19 @@ cudaError_t renderCuda(Scene* scene, int sampleTarget) {
     return cudaStatus;
 }
 
-cudaError_t getBuffer(float* pixelBuffer, int* pathcountBuffer, int size) {
+cudaError_t getBuffers(RenderData& renderData, int* pathcountBuffer, int size) {
 
     cudaStreamCreate(&bufferStream);
+    cudaError_t cudaStatus;
 
-    cudaError_t cudaStatus = cudaMemcpyFromSymbolAsync(pixelBuffer, dev_passes, size * sizeof(float) * 4 * PASSES_COUNT, 0, cudaMemcpyDeviceToHost, bufferStream);
-    if (cudaStatus != cudaSuccess) {
-        fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+    for (int i = 0; i < PASSES_COUNT; i++) {
+
+        printf("\nRetrieving pass %d\n", i);
+
+        cudaStatus = cudaMemcpyFromSymbolAsync(renderData.buffers[i], dev_passes[0], size * sizeof(float) * 4, size * sizeof(float) * 4 * i, cudaMemcpyDeviceToHost, bufferStream);
+        if (cudaStatus != cudaSuccess) {
+            fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+        }
     }
 
     cudaStatus = cudaMemcpyFromSymbolAsync(pathcountBuffer, dev_pathcount, size * sizeof(unsigned int), 0, cudaMemcpyDeviceToHost, bufferStream);
@@ -791,29 +797,3 @@ __host__ void printBRDFMaterial(Material material, int samples) {
         }
     }
 }
-
-/*
-__host__ void printPdfMaterial(Material material) {
-    int samples = 1000;
-    HitData hitdata;
-    hitdata.albedo = material.albedo;
-    hitdata.roughness = material.roughness;
-    hitdata.metallic = material.metallic;
-    hitdata.clearcoatGloss = material.clearcoatGloss;
-    hitdata.clearcoat = material.clearcoat;
-    hitdata.anisotropic = material.anisotropic;
-    hitdata.eta = material.eta;
-    hitdata.transmission = material.transmission;
-    hitdata.specular = material.specular;
-    hitdata.specularTint = material.specularTint;
-    hitdata.sheenTint = material.sheenTint;
-    hitdata.subsurface = material.subsurface;
-    hitdata.sheen = material.sheen;
-    Vector3 inLight = Vector3(1, -1, 0).normalized();
-    for (int i = 0; i < samples; i++) {
-        Vector3 rndVector = Vector3(rand(), rand(), rand()).normalized();
-        float pdf = DisneyPdf(Ray(Vector3(), inLight), hitdata, rndVector);
-        printf("%f, %f, %f, %f\n", rndVector.x, rndVector.y, rndVector.z, pdf);
-    }
-}
-*/

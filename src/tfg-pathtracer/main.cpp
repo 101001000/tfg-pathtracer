@@ -21,47 +21,19 @@
 
 std::thread t;
 
-
-struct RenderParameters {
-
-	unsigned int width, height;
-	unsigned int sampleTarget;
-
-	RenderParameters(unsigned int width, unsigned int height, unsigned int sampleTarget) : width(width), height(height), sampleTarget(sampleTarget) {};
-	RenderParameters() : width(1280), height(720), sampleTarget(100) {};
-};
-
-struct RenderData {
-
-	RenderParameters pars;
-
-	float* rawPixelBuffer;
-	unsigned char* beautyBuffer;
-
-	size_t freeMemory = 0;
-	size_t totalMemory = 0;
-
-	int pathCount = 0;
-	int samples = 0;
-
-	std::chrono::steady_clock::time_point startTime;
-
-	RenderData() {};
-
-	~RenderData() {
-		delete(rawPixelBuffer);
-		delete(beautyBuffer);
-	};
-};
-
 void startRender(RenderData& data, Scene& scene) {
 
 	RenderParameters pars = data.pars;
 
-	data.rawPixelBuffer = new float[pars.width * pars.height * 4 * PASSES_COUNT];
+	for (int i = 0; i < PASSES_COUNT; i++) {
+		if (pars.passes[i]) {
+			data.buffers[i] = new float[pars.width * pars.height * 4];
+			memset(data.buffers[i], 0, pars.width * pars.height * 4 * sizeof(float));
+		}
+	}
+
 	data.beautyBuffer = new unsigned char[pars.width * pars.height * 4];
 
-	memset(data.rawPixelBuffer, 0, pars.width * pars.height * 4 * sizeof(float) * PASSES_COUNT);
 	memset(data.beautyBuffer, 0, pars.width * pars.height * 4 * sizeof(unsigned char));
 
 	renderSetup(&scene);
@@ -78,12 +50,14 @@ void getRenderData(RenderData& data) {
 
 	int* pathCountBuffer = new int[width * height];
 
-	getBuffer(data.rawPixelBuffer, pathCountBuffer, width * height);
 	cudaMemGetInfo(&data.freeMemory, &data.totalMemory);
-	flipY(data.rawPixelBuffer, width, height);
-	clampPixels(data.rawPixelBuffer, width, height);
-	applysRGB(data.rawPixelBuffer, width, height);
-	HDRtoLDR(data.rawPixelBuffer, data.beautyBuffer, width, height);
+
+	getBuffers(data, pathCountBuffer, width * height);
+
+	flipY(data.buffers[BEAUTY], width, height);
+	clampPixels(data.buffers[BEAUTY], width, height);
+	applysRGB(data.buffers[BEAUTY], width, height);
+	HDRtoLDR(data.buffers[BEAUTY], data.beautyBuffer, width, height);
 
 	data.samples = getSamples();
 	data.pathCount = 0;
