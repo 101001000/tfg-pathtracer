@@ -289,7 +289,7 @@ void beautyBloom(float* pixels, int width, int height, float threshold, float po
 	*/
 }
 
-void HDRtoLDR(float* pixelsIn, sf::Uint8* pixelsOut, int width, int height) {
+void HDRtoLDR(float* pixelsIn, unsigned char* pixelsOut, int width, int height) {
 	for (int i = 0; i < width * height * 4; i++)
-		pixelsOut[i] = (sf::Uint8)(pixelsIn[i] * 255);
+		pixelsOut[i] = (unsigned char)(pixelsIn[i] * 255);
 }

@@ -1,6 +1,5 @@
 #pragma once
 
-#include <SFML/Graphics.hpp>
 #include "Math.hpp"
 
 void applyExposure(float* pixels, int width, int height, float exposure);
@@ -31,4 +30,4 @@ void upscale(float* pixels, int width, int height, int nWidth, int nheight, floa
 
 void beautyBloom(float* pixels, int width, int height, float threshold, float power, float radius);
 
-void HDRtoLDR(float* pixelsIn, sf::Uint8* pixelsOut, int width, int height);
+void HDRtoLDR(float* pixelsIn, unsigned char* pixelsOut, int width, int height);
