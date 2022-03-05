@@ -65,7 +65,7 @@ static Scene loadScene(std::string path) {
 		scene.hdri.texture.xOffset = hdri_json["yOffset"].as<double>();
 
 	//Materials v2
-	printf("Loading materialsv2\n");
+	printf("Loading materials\n");
 	std::vector<UnloadedMaterial> umtls = objLoader.loadMtls(path + "scene.mtl");
 
 	for (int i = 0; i < umtls.size(); i++) {
@@ -104,7 +104,6 @@ static Scene loadScene(std::string path) {
 				scene.addTexture(Texture(mapPath, colorSpace));
 		}
 		scene.addMaterial(umtls[i].mat);
-		std::cout << "material " << umtls[i].mat.name << " has alb tid " << umtls[i].mat.albedoTextureID << "\n";
 	}
 
 	//Objects v2
@@ -120,8 +119,6 @@ static Scene loadScene(std::string path) {
 			if (scene.materials[j].name == objects[i].matName)
 				objects[i].materialID = j;
 		}
-
-		std::cout << "object " << objects[i].name << " has mat id " << objects[i].materialID << "\n";
 		scene.addMeshObject(objects[i]);
 	}
 
