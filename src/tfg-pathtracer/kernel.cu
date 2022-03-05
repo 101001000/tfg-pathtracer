@@ -720,7 +720,7 @@ cudaError_t getBuffers(RenderData& renderData, int* pathcountBuffer, int size) {
 
         printf("\nRetrieving pass %d\n", i);
 
-        cudaStatus = cudaMemcpyFromSymbolAsync(renderData.buffers[i], dev_passes[0], size * sizeof(float) * 4, size * sizeof(float) * 4 * i, cudaMemcpyDeviceToHost, bufferStream);
+        cudaStatus = cudaMemcpyFromSymbolAsync(renderData.passes[i], dev_passes[0], size * sizeof(float) * 4, size * sizeof(float) * 4 * i, cudaMemcpyDeviceToHost, bufferStream);
         if (cudaStatus != cudaSuccess) {
             fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
         }

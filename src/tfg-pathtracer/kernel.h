@@ -4,7 +4,7 @@
 
 #pragma once
 
-enum Passes { BEAUTY, NORMAL, TANGENT, BITANGENT};
+enum Passes {BEAUTY, NORMAL, TANGENT, BITANGENT};
 
 struct RenderParameters {
 
@@ -25,9 +25,10 @@ struct RenderData {
 
 	RenderParameters pars;
 
-	float* buffers[PASSES_COUNT];
+	float* passes[PASSES_COUNT];
 
-	unsigned char* beautyBuffer;
+	float* denoisedBuffer;
+	unsigned char* outputBuffer;
 
 	size_t freeMemory = 0;
 	size_t totalMemory = 0;
@@ -40,7 +41,7 @@ struct RenderData {
 	RenderData() {};
 
 	~RenderData() {
-		delete(beautyBuffer);
+		delete(outputBuffer);
 	};
 };
 

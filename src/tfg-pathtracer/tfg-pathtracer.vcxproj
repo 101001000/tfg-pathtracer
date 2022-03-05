@@ -89,8 +89,9 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>C:\Users\Kike\Downloads\glfw-3.3.6.bin.WIN64\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\Users\Kike\Downloads\glfw-3.3.6.bin.WIN64\lib-vc2019;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Kike\Downloads\glfw-3.3.6.bin.WIN64\include;C:\Users\Kike\Downloads\oidn-1.4.3.x64.vc14.windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Kike\Downloads\glfw-3.3.6.bin.WIN64\lib-vc2019;C:\Users\Kike\Downloads\oidn-1.4.3.x64.vc14.windows\lib;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\Users\Kike\Downloads\oidn-1.4.3.x64.vc14.windows\bin;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -127,8 +128,8 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <SubSystem>Console</SubSystem>
-      <AdditionalDependencies>cudart_static.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\Kike\Downloads\glfw-3.3.6.bin.WIN64\lib-vc2019;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>cudart_static.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;glfw3.lib;OpenImageDenoise.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\Kike\Downloads\glfw-3.3.6.bin.WIN64\lib-vc2019;C:\Users\Kike\Downloads\oidn-1.4.3.x64.vc14.windows\bin;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <StackCommitSize>8388608</StackCommitSize>
     </Link>
     <CudaCompile>

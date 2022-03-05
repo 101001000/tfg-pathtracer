@@ -109,10 +109,10 @@ C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoa
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(57,61): warning C4244: 'argumento': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(62,63): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
 C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\SceneLoader.hpp(65,63): warning C4244: '=': conversión de 'double' a 'float'; posible pérdida de datos
-C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(259,20): warning C4018: '>=': no coinciden signed/unsigned
+C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\tfg-pathtracer\main.cpp(281,20): warning C4018: '>=': no coinciden signed/unsigned
      Creando biblioteca C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.lib y objeto C:\Users\Kike\Desktop\Uni2\TFG\Github\tfg-pathtracer\src\x64\Release\tfg-pathtracer.exp
   Generando código
-  1 of 1450 functions (<0.1%) were compiled, the rest were copied from previous compilation.
+  2 of 1451 functions ( 0.1%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
     0 functions had inline decision re-evaluated but remain unchanged
   Generación de código finalizada

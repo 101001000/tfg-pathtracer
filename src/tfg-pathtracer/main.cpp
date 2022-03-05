@@ -7,7 +7,7 @@
 #include <string>
 #include <filesystem>
 #include <fstream>
-#include <glad/glad.h>
+#include <OpenImageDenoise/oidn.hpp>
 
 #include "Camera.hpp"
 #include "Ray.hpp"
@@ -22,6 +22,7 @@
 
 
 std::thread t;
+OIDNDevice device = oidnNewDevice(OIDN_DEVICE_TYPE_DEFAULT);
 
 void startRender(RenderData& data, Scene& scene) {
 
@@ -29,14 +30,15 @@ void startRender(RenderData& data, Scene& scene) {
 
 	for (int i = 0; i < PASSES_COUNT; i++) {
 		if (pars.passes[i]) {
-			data.buffers[i] = new float[pars.width * pars.height * 4];
-			memset(data.buffers[i], 0, pars.width * pars.height * 4 * sizeof(float));
+			data.passes[i] = new float[pars.width * pars.height * 4];
+			memset(data.passes[i], 0, pars.width * pars.height * 4 * sizeof(float));
 		}
 	}
 
-	data.beautyBuffer = new unsigned char[pars.width * pars.height * 4];
+	data.outputBuffer = new unsigned char[pars.width * pars.height * 3];
+	data.denoisedBuffer = new float[pars.width * pars.height * 3];
 
-	memset(data.beautyBuffer, 0, pars.width * pars.height * 4 * sizeof(unsigned char));
+	memset(data.outputBuffer, 0, pars.width * pars.height * 3 * sizeof(unsigned char));
 
 	renderSetup(&scene);
 
@@ -56,10 +58,27 @@ void getRenderData(RenderData& data) {
 
 	getBuffers(data, pathCountBuffer, width * height);
 
-	flipY(data.buffers[BEAUTY], width, height);
-	clampPixels(data.buffers[BEAUTY], width, height);
-	applysRGB(data.buffers[BEAUTY], width, height);
-	HDRtoLDR(data.buffers[BEAUTY], data.beautyBuffer, width, height);
+	flipY(data.passes[BEAUTY], width, height);
+	clampPixels(data.passes[BEAUTY], width, height);
+	applysRGB(data.passes[BEAUTY], width, height);
+
+	// Create a filter for denoising a beauty (color) image using optional auxiliary images too
+	OIDNFilter filter = oidnNewFilter(device, "RT"); // generic ray tracing filter
+	oidnSetSharedFilterImage(filter, "color", data.passes[BEAUTY], OIDN_FORMAT_FLOAT3, data.pars.width, data.pars.height, 0, sizeof(float) * 4, 0); // beauty
+	oidnSetFilter1b(filter, "hdr", true); // beauty image is HDR
+	oidnSetSharedFilterImage(filter, "output", data.denoisedBuffer, OIDN_FORMAT_FLOAT3, width, height, 0, 0, 0); // denoised beauty
+
+	oidnCommitFilter(filter);
+	oidnExecuteFilter(filter);
+
+	const char* errorMessage;
+	if (oidnGetDeviceError(device, &errorMessage) != OIDN_ERROR_NONE)
+		printf("Error: %s\n", errorMessage);
+
+	// Cleanup
+	oidnReleaseFilter(filter);
+
+	HDRtoLDR(data.denoisedBuffer, data.outputBuffer, width, height);
 
 	data.samples = getSamples();
 	data.pathCount = 0;
@@ -115,11 +134,14 @@ void checkCompileErrors(GLuint shader, std::string type)
 
 int main(int argc, char* argv[])
 {
+	oidnCommitDevice(device);
+
 	Scene scene = loadScene(std::string(argv[1]));
 	printf("%s\n", argv[1]);
 	RenderData data;
 	data.pars = RenderParameters(scene.camera.xRes, scene.camera.yRes, atoi(argv[2]));
 	startRender(data, scene);
+
 
 	// glfw: initialize and configure
 	// ------------------------------
@@ -246,7 +268,7 @@ int main(int argc, char* argv[])
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	// load image, create texture and generate mipmaps
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.pars.width, data.pars.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.beautyBuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.pars.width, data.pars.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.outputBuffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 
@@ -254,10 +276,10 @@ int main(int argc, char* argv[])
 	// -----------
 	while (!glfwWindowShouldClose(window))
 	{
-			getRenderData(data);
-
+		getRenderData(data);
+				
 		if (data.samples >= data.pars.sampleTarget - 1) {
-			saveBMP(argv[3], data.pars.width, data.pars.height, data.beautyBuffer);
+			saveBMP(argv[3], data.pars.width, data.pars.height, data.outputBuffer);
 			break;
 		}
 
@@ -283,7 +305,7 @@ int main(int argc, char* argv[])
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.pars.width, data.pars.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.beautyBuffer);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, data.pars.width, data.pars.height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.outputBuffer);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		// bind Texture
@@ -306,6 +328,8 @@ int main(int argc, char* argv[])
 	glDeleteVertexArrays(1, &VAO);
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
+
+	oidnReleaseDevice(device);
 
 	// glfw: terminate, clearing all previously allocated GLFW resources.
 	// ------------------------------------------------------------------
