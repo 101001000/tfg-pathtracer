@@ -11,7 +11,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="BMP.hpp" />
     <ClInclude Include="BVH.hpp" />
     <ClInclude Include="Camera.hpp" />
     <ClInclude Include="Definitions.h" />
@@ -33,6 +32,7 @@
     <ClInclude Include="Sampling.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="SceneLoader.hpp" />
+    <ClInclude Include="stb_image_write.h" />
     <ClInclude Include="Texture.hpp" />
     <ClInclude Include="Tri.hpp" />
     <ClInclude Include="Vector.hpp" />

@@ -53,11 +53,17 @@ public:
 
         data = new float[width * height * 3];
 
-        for (int i = 0; i < width * height * 3; i++) {
-            data[i] = ((float)tmp_data[i]);
+        for (int i = 0, j = 0; i < width * height * 3; i += 3, j += channels) {
 
-            if (colorSpace == CS::sRGB)
-                data[i] = fastPow(data[i], 2.2);
+            data[i + 0] = ((float)tmp_data[j + 0]);
+            data[i + 1] = ((float)tmp_data[j + 1]);
+            data[i + 2] = ((float)tmp_data[j + 2]);
+
+            if (colorSpace == CS::sRGB) {
+                data[i + 0] = fastPow(data[i + 0], 2.2);
+                data[i + 1] = fastPow(data[i + 1], 2.2);
+                data[i + 2] = fastPow(data[i + 2], 2.2);
+            }
         }
 
         printf("Loaded! %dpx x %dpx, %d channels\n", width, height, channels);

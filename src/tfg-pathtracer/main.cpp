@@ -9,6 +9,9 @@
 #include <fstream>
 #include <OpenImageDenoise/oidn.hpp>
 
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include "stb_image_write.h"
+
 #include "Camera.hpp"
 #include "Ray.hpp"
 #include "kernel.h"
@@ -16,7 +19,6 @@
 #include "Texture.hpp"
 #include "PostProcessing.h"
 #include "BVH.hpp"
-#include "BMP.hpp"
 #include "Definitions.h"
 #include "SceneLoader.hpp"
 
@@ -279,7 +281,7 @@ int main(int argc, char* argv[])
 		getRenderData(data);
 				
 		if (data.samples >= data.pars.sampleTarget - 1) {
-			saveBMP(argv[3], data.pars.width, data.pars.height, data.outputBuffer);
+			stbi_write_png(argv[3], data.pars.width, data.pars.height, 3, data.outputBuffer, data.pars.width * 3);
 			break;
 		}
 
