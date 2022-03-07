@@ -40,12 +40,16 @@ public:
 #if !defined(__CUDACC__)
     __host__ Texture(std::string filepath, CS colorSpace) {
 
-        stbi_ldr_to_hdr_gamma(1.0f);
+        if(colorSpace == sRGB)
+            stbi_ldr_to_hdr_gamma(2.2f);
+
+        if(colorSpace == LINEAR)
+            stbi_ldr_to_hdr_gamma(1.0f);
+ 
         stbi_set_flip_vertically_on_load(true);
 
         printf("Loading texture from %s... ", filepath.c_str());
 
-        //TODO colorspace fix
         path = filepath;
 
         int channels;
@@ -54,16 +58,9 @@ public:
         data = new float[width * height * 3];
 
         for (int i = 0, j = 0; i < width * height * 3; i += 3, j += channels) {
-
             data[i + 0] = ((float)tmp_data[j + 0]);
             data[i + 1] = ((float)tmp_data[j + 1]);
             data[i + 2] = ((float)tmp_data[j + 2]);
-
-            if (colorSpace == CS::sRGB) {
-                data[i + 0] = fastPow(data[i + 0], 2.2);
-                data[i + 1] = fastPow(data[i + 1], 2.2);
-                data[i + 2] = fastPow(data[i + 2], 2.2);
-            }
         }
 
         printf("Loaded! %dpx x %dpx, %d channels\n", width, height, channels);
