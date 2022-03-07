@@ -291,6 +291,8 @@ void beautyBloom(float* pixels, int width, int height, float threshold, float po
 
 void HDRtoLDR(float* pixelsIn, unsigned char* pixelsOut, int width, int height) {
 	for (int i = 0; i < width * height * 3; i++) {
+		if (pixelsIn[i] > 1)
+			pixelsIn[i] = 1;
 		pixelsOut[i] = (unsigned char)(pixelsIn[i] * 255);
 	}
 }
