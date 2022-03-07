@@ -2,6 +2,7 @@
 #include "Scene.hpp"
 #include "HDRI.hpp"
 
+
 #pragma once
 
 enum Passes {BEAUTY, NORMAL, TANGENT, BITANGENT};

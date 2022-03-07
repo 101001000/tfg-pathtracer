@@ -4,7 +4,7 @@
     <ShowAllFiles>false</ShowAllFiles>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <LocalDebuggerCommandArguments>"C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Github\\tfg-pathtracer\\scenes\\blender" 10000 "output.bmp"</LocalDebuggerCommandArguments>
+    <LocalDebuggerCommandArguments>"C:\\Users\\Kike\\Desktop\\Uni2\\TFG\\Scenes\\blender" 10000 "output.bmp"</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
   </PropertyGroup>
 </Project>

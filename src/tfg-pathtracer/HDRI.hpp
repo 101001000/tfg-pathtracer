@@ -4,7 +4,7 @@
 
 #include "Texture.hpp"
 #include "Sampling.hpp"
-#include "HdrLoader.hpp"
+
 
 
 class HDRI {
@@ -37,14 +37,20 @@ public:
 		generateCDF();
 	}
 
+#if !defined(__CUDACC__)
+
 	HDRI(std::string filepath) {
 
-		int width, height;
+		int channels;
 
-		texture.data = loadHDR(filepath.c_str(), width, height);
+		float* tmp_data = stbi_loadf(filepath.c_str(), &texture.width, &texture.height, &channels, 0);
 
-		texture.width = width;
-		texture.height = height;
+		texture.data = new float[texture.width * texture.height * 3];
+
+		for (int i = 0; i < texture.width * texture.height * 3; i++)
+			texture.data[i] = ((float)tmp_data[i]);
+
+		stbi_image_free(tmp_data);
 
 		cdf = new float[texture.width * texture.height + 1];
 
@@ -52,6 +58,9 @@ public:
 
 		printf("HDRI %s loaded\n", filepath.c_str());
 	}
+#else
+
+#endif
 
 	__host__ __device__ inline void generateCDF2() {
 

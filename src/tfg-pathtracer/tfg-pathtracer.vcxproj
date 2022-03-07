@@ -17,7 +17,7 @@
     <ClInclude Include="Definitions.h" />
     <ClInclude Include="Disney.hpp" />
     <ClInclude Include="HDRI.hpp" />
-    <ClInclude Include="HdrLoader.hpp" />
+    <ClInclude Include="stb_image.h" />
     <ClInclude Include="Hit.hpp" />
     <ClInclude Include="kernel.h" />
     <ClInclude Include="Material.hpp" />

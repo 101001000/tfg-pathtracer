@@ -1,6 +1,12 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
+#if !defined(__CUDACC__)
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+#endif
+
+
 #include "Math.hpp"
 
 enum Filter { NO_FILTER, BILINEAR };
@@ -17,8 +23,8 @@ public:
 
     std::string path;
 
-    unsigned int width;
-    unsigned int height;
+    int width;
+    int height;
 
     float xTile = 1;
     float yTile = 1;
@@ -30,59 +36,43 @@ public:
 
     __host__ Texture(std::string filepath) : Texture(filepath, CS::sRGB) {}
 
+    //TODO fix this compilation nightmare
+#if !defined(__CUDACC__)
     __host__ Texture(std::string filepath, CS colorSpace) {
 
+        stbi_ldr_to_hdr_gamma(1.0f);
+        stbi_set_flip_vertically_on_load(true);
+
+        printf("Loading texture from %s... ", filepath.c_str());
+
+        //TODO colorspace fix
         path = filepath;
 
-        //https://stackoverflow.com/questions/2654480/writing-bmp-image-in-pure-c-c-without-other-libraries
-
-        printf("Loading texture from file %s\n", filepath.c_str());
-
-        int i;
-        FILE* f = fopen(filepath.c_str(), "rb");
-        unsigned char info[54];
-
-        // read the 54-byte header
-        fread(info, sizeof(unsigned char), 54, f);
-
-        // extract image height and width from header
-        width = *(int*)&info[18];
-        height = *(int*)&info[22];
+        int channels;
+        float* tmp_data = stbi_loadf(filepath.c_str(), &width, &height, &channels, 0);
 
         data = new float[width * height * 3];
 
-        unsigned char* tmpData = new unsigned char[width * height * 3];
+        for (int i = 0; i < width * height * 3; i++) {
+            data[i] = ((float)tmp_data[i]);
 
-        for (int i = 0; i < width * height * 3; i++) data[i] = 0;
-
-        // allocate 3 bytes per pixel
-        int size = 3 * width * height;
-
-        // read the rest of the data at once
-        fread(tmpData, sizeof(unsigned char), size, f);
-        fclose(f);
-
-        for (i = 0; i < size; i += 3) {
-            // flip the order of every 3 bytes
-            float tmp = tmpData[i];
-            tmpData[i] = tmpData[i + 2];
-            tmpData[i + 2] = tmp;
-        }
-
-        for (i = 0; i < size; i ++) {
-            data[i] = ((float)tmpData[i]) / 256.0;
-
-            if(colorSpace == CS::sRGB)
+            if (colorSpace == CS::sRGB)
                 data[i] = fastPow(data[i], 2.2);
         }
 
-        delete(tmpData);
-	}
-
+        printf("Loaded! %dpx x %dpx, %d channels\n", width, height, channels);
+        stbi_image_free(tmp_data);
+    }
+#else
+    __host__ Texture(std::string filepath, CS colorSpace) {
+        printf("COMPILATION MISMATCH");
+    }
+       
+#endif
+ 
     __host__ __device__ Texture(Vector3 _color) {
 
-        width = 1;
-        height = 1;
+        width = 1; height = 1;
 
         color = _color;
         data = new float[3];

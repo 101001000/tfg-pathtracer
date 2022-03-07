@@ -15,7 +15,6 @@
 #include "Camera.hpp"
 #include "BVH.hpp"
 #include "PointLight.hpp"
-#include "HdrLoader.hpp"
 #include "HDRI.hpp"
 #include "ObjLoader.hpp"
 
