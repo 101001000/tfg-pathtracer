@@ -24,6 +24,7 @@
     <ClInclude Include="MeshObject.hpp" />
     <ClInclude Include="mikktspace.h" />
     <ClInclude Include="mikktspaceCallback.h" />
+    <ClInclude Include="Window.hpp" />
     <CudaCompile Include="mikktspaceCallback.hpp" />
     <ClInclude Include="ObjLoader.hpp" />
     <ClInclude Include="PointLight.hpp" />
