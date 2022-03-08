@@ -2,6 +2,10 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
+struct PixelBuffer {
+	int width, height, channels;
+	float* data;
+};
 
 // process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
 // ---------------------------------------------------------------------------------------------------------
@@ -53,7 +57,8 @@ public:
 	GLFWwindow* window;
 	unsigned int VBO, VAO, EBO, ID;
 	unsigned int texture;
-	unsigned char* outputBuffer;
+
+	PixelBuffer previewBuffer;
 	int width, height;
 
 	Window(int _width, int _height){
@@ -187,9 +192,6 @@ public:
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		// load image, create texture and generate mipmaps
 
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.outputBuffer);
-		//glGenerateMipmap(GL_TEXTURE_2D);
-
 
 		// render loop
 		// -----------
@@ -205,7 +207,17 @@ public:
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, outputBuffer);
+		//TODO fix this.
+		if (previewBuffer.channels == 1) {
+			//glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, width, height, 0, GL_RGB, GL_FLOAT, previewBuffer.data);
+		}
+		if (previewBuffer.channels == 3) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_FLOAT, previewBuffer.data);
+		}
+		if (previewBuffer.channels == 4) {
+			glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGBA, GL_FLOAT, previewBuffer.data);
+		}
+
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		// bind Texture

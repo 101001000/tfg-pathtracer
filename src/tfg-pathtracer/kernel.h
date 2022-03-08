@@ -2,10 +2,9 @@
 #include "Scene.hpp"
 #include "HDRI.hpp"
 
-
 #pragma once
 
-enum Passes {BEAUTY, NORMAL, TANGENT, BITANGENT};
+enum Passes {BEAUTY, DENOISE, NORMAL, TANGENT, BITANGENT};
 
 struct RenderParameters {
 
@@ -16,6 +15,7 @@ struct RenderParameters {
 
 	RenderParameters(unsigned int width, unsigned int height, unsigned int sampleTarget) : width(width), height(height), sampleTarget(sampleTarget) {
 		passes[BEAUTY] = true;
+		passes[DENOISE] = true;
 		passes[NORMAL] = true;
 		passes[TANGENT] = true;
 		passes[BITANGENT] = true;
@@ -28,9 +28,6 @@ struct RenderData {
 
 	float* passes[PASSES_COUNT];
 
-	float* denoisedBuffer;
-	unsigned char* outputBuffer;
-
 	size_t freeMemory = 0;
 	size_t totalMemory = 0;
 
@@ -42,7 +39,7 @@ struct RenderData {
 	RenderData() {};
 
 	~RenderData() {
-		delete(outputBuffer);
+
 	};
 };
 

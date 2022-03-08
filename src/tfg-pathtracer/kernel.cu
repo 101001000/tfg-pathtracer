@@ -377,7 +377,7 @@ __device__ void calcNormalPass() {
 
     if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
 
-    int idx = (scene->camera->xRes * y + x);
+    int idx = (scene->camera->xRes * (scene->camera->yRes - y - 1) + x);
 
     curandState local_rand_state = d_rand_state_g[idx];
 
@@ -429,7 +429,7 @@ __global__ void renderingKernel() {
 
     if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
 
-    int idx = (scene->camera->xRes * y + x);
+    int idx = (scene->camera->xRes * (scene->camera->yRes - y - 1) + x);
 
     curandState local_rand_state = d_rand_state_g[idx];
 
@@ -717,12 +717,13 @@ cudaError_t getBuffers(RenderData& renderData, int* pathcountBuffer, int size) {
     cudaError_t cudaStatus;
 
     for (int i = 0; i < PASSES_COUNT; i++) {
+        if (i != DENOISE) {
+            printf("\nRetrieving pass %d\n", i);
 
-        printf("\nRetrieving pass %d\n", i);
-
-        cudaStatus = cudaMemcpyFromSymbolAsync(renderData.passes[i], dev_passes[0], size * sizeof(float) * 4, size * sizeof(float) * 4 * i, cudaMemcpyDeviceToHost, bufferStream);
-        if (cudaStatus != cudaSuccess) {
-            fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+            cudaStatus = cudaMemcpyFromSymbolAsync(renderData.passes[i], dev_passes[0], size * sizeof(float) * 4, size * sizeof(float) * 4 * i, cudaMemcpyDeviceToHost, bufferStream);
+            if (cudaStatus != cudaSuccess) {
+                fprintf(stderr, "returned error code %d after launching addKernel!\n", cudaStatus);
+            }
         }
     }
 
