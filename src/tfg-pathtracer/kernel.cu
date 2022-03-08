@@ -131,8 +131,10 @@ __global__ void setupKernel() {
     dev_pathcount[idx] = 0;
 
     for (int i = 0; i < PASSES_COUNT; i++) {
-        memset(&dev_passes[i][4 * idx], 0, sizeof(float) * 3); // RGB channels
-        dev_passes[i][4 * idx + 3] = 1; // Alpha channel
+        dev_passes[i][4 * idx + 0] = 0;
+        dev_passes[i][4 * idx + 1] = 0;
+        dev_passes[i][4 * idx + 2] = 0;
+        dev_passes[i][4 * idx + 3] = 1;
     }
 
 
@@ -146,8 +148,6 @@ __global__ void setupKernel() {
             triSum += dev_scene_g->meshObjects[i].triCount;
         }
     }
-
-    calcNormalPass();
 }
 
 __device__ Hit throwRay(Ray ray, dev_Scene* scene) {
@@ -367,59 +367,6 @@ __device__ void calculateBounce(Ray& incomingRay, HitData& hitdata, Vector3& bou
     //if (Vector3::dot(hitdata.normal, bouncedDir) < 0) bouncedDir *= -1;
 }
 
-
-__device__ void calcNormalPass() {
-
-    dev_Scene* scene = dev_scene_g;
-
-    int x = threadIdx.x + blockIdx.x * blockDim.x;
-    int y = threadIdx.y + blockIdx.y * blockDim.y;
-
-    if ((x >= scene->camera->xRes) || (y >= scene->camera->yRes)) return;
-
-    int idx = (scene->camera->xRes * (scene->camera->yRes - y - 1) + x);
-
-    curandState local_rand_state = d_rand_state_g[idx];
-
-    Ray ray;
-
-    calculateCameraRay(x, y, *scene->camera, ray, curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state), curand_uniform(&local_rand_state));
-
-    Hit nearestHit = throwRay(ray, scene);
-
-    Vector3 normal = Vector3::Zero();
-    Vector3 tangent = Vector3::Zero();
-    Vector3 bitangent = Vector3::Zero();
-
-    if (nearestHit.valid) {
-        HitData hitdata;
-        int materialID = scene->meshObjects[nearestHit.objectID].materialID;
-        Material* material = &scene->materials[materialID];
-        generateHitData(material, hitdata, nearestHit);
-        normal = hitdata.normal;
-        tangent = hitdata.tangent;
-        bitangent = hitdata.bitangent;
-    }
-        
-
-    dev_passes[NORMAL][4 * idx + 0] = normal.x;
-    dev_passes[NORMAL][4 * idx + 1] = normal.z;
-    dev_passes[NORMAL][4 * idx + 2] = normal.y;
-
-    dev_passes[TANGENT][4 * idx + 0] = tangent.x;
-    dev_passes[TANGENT][4 * idx + 1] = tangent.z;
-    dev_passes[TANGENT][4 * idx + 2] = tangent.y;
-
-    dev_passes[BITANGENT][4 * idx + 0] = bitangent.x;
-    dev_passes[BITANGENT][4 * idx + 1] = bitangent.z;
-    dev_passes[BITANGENT][4 * idx + 2] = bitangent.y;
-
-
-
-    d_rand_state_g[idx] = local_rand_state;
-}
-
-
 __global__ void renderingKernel() {
 
     dev_Scene* scene = dev_scene_g;
@@ -441,6 +388,11 @@ __global__ void renderingKernel() {
 
     // Accumulated radiance
     Vector3 light = Vector3::Zero();
+
+    // Accumulated radiance
+    Vector3 normal = Vector3::Zero();
+    Vector3 tangent = Vector3::Zero();
+    Vector3 bitangent = Vector3::Zero();
 
     // How much light is lost in the path
     Vector3 reduction = Vector3::One();
@@ -481,6 +433,13 @@ __global__ void renderingKernel() {
 
         light += hitLight;
 
+        // First hit
+        if (i == 0) {
+            normal = nearestHit.normal;
+            tangent = nearestHit.tangent;
+            bitangent = nearestHit.bitangent;
+        }
+
         ray = Ray(nearestHit.position + bouncedDir * 0.001, bouncedDir);
     }
 
@@ -491,14 +450,30 @@ __global__ void renderingKernel() {
     if (!isnan(light.x) && !isnan(light.y) && !isnan(light.z)) {
 
         if (sa > 0) {
-            dev_passes[BEAUTY][4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
-            dev_passes[BEAUTY][4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
-            dev_passes[BEAUTY][4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+            for (int pass = 0; pass < PASSES_COUNT; pass++) {
+                if (pass != DENOISE) {
+                    dev_passes[pass][4 * idx + 0] *= ((float)sa) / ((float)(sa + 1));
+                    dev_passes[pass][4 * idx + 1] *= ((float)sa) / ((float)(sa + 1));
+                    dev_passes[pass][4 * idx + 2] *= ((float)sa) / ((float)(sa + 1));
+                }
+            }
         }
 
         dev_passes[BEAUTY][4 * idx + 0] += light.x / ((float)sa + 1);
         dev_passes[BEAUTY][4 * idx + 1] += light.y / ((float)sa + 1);
         dev_passes[BEAUTY][4 * idx + 2] += light.z / ((float)sa + 1);
+
+        dev_passes[NORMAL][4 * idx + 0] += normal.x / ((float)sa + 1);
+        dev_passes[NORMAL][4 * idx + 1] += normal.y / ((float)sa + 1);
+        dev_passes[NORMAL][4 * idx + 2] += normal.z / ((float)sa + 1);
+
+        dev_passes[TANGENT][4 * idx + 0] += tangent.x / ((float)sa + 1);
+        dev_passes[TANGENT][4 * idx + 1] += tangent.y / ((float)sa + 1);
+        dev_passes[TANGENT][4 * idx + 2] += tangent.z / ((float)sa + 1);
+
+        dev_passes[BITANGENT][4 * idx + 0] += bitangent.x / ((float)sa + 1);
+        dev_passes[BITANGENT][4 * idx + 1] += bitangent.y / ((float)sa + 1);
+        dev_passes[BITANGENT][4 * idx + 2] += bitangent.z / ((float)sa + 1);
 
         dev_samples[idx]++;
     }
