@@ -106,6 +106,7 @@ public:
 			"void main()\n"
 			"{\n"
 			"	FragColor = texture(ourTexture, TexCoord);\n"
+			"	FragColor.rgb = pow(FragColor.rgb, vec3(1.0 / 2.2));\n"
 			"}\0";
 
 		const char* vertexShaderSource = "#version 330 core\n"

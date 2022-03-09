@@ -137,7 +137,6 @@ __global__ void setupKernel() {
         dev_passes[i][4 * idx + 3] = 1;
     }
 
-
     curand_init(0, idx, 0, &d_rand_state_g[idx]);
 
     // Just one thread

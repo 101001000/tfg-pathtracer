@@ -60,6 +60,8 @@ void denoise(RenderData data, bool* terminate) {
 	int width = data.pars.width;
 	int height = data.pars.height;
 
+	int i = 0;
+
 	//TODO add stopping condition
 	while (true) {
 
@@ -95,7 +97,7 @@ void getRenderData(RenderData& data) {
 	getBuffers(data, pathCountBuffer, width * height);
 
 	clampPixels(data.passes[BEAUTY], width, height);
-	applysRGB(data.passes[BEAUTY], width, height);
+	//applysRGB(data.passes[BEAUTY], width, height);
 
 	data.samples = getSamples();
 	data.pathCount = 0;
@@ -147,20 +149,25 @@ int main(int argc, char* argv[])
 
 		if (data.samples >= data.pars.sampleTarget - 1 && !saved) {
 
+			printf("Saving file %s...\n", argv[3]);
+
 			unsigned char* saveBuffer = new unsigned char[data.pars.width * data.pars.height * 4];
 
 			for (int i = 0; i < data.pars.width * data.pars.height * 4; i++) {
-				saveBuffer[i] = pb.data[i]*255;
+				saveBuffer[i] = fastPow(pb.data[i], (1.0/2.2)) * 255;
 			}
 
 			stbi_write_png(argv[3], data.pars.width, data.pars.height, 4, saveBuffer, data.pars.width * 4);
 			saved = true;
 			delete(saveBuffer);
+
+			printf("Saved!\n");
 		}
 
 		auto t2 = std::chrono::high_resolution_clock::now();
 
 		auto ms_int = std::chrono::duration_cast<std::chrono::milliseconds>(t2 - data.startTime);
+
 
 		printf("\rkPaths/s: %f, %fGB of a total of %fGB used, %d/%d samples. %f seconds running, %d total paths",
 			((float)data.pathCount / (float)ms_int.count()),
