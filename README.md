@@ -2,6 +2,9 @@
 
 Eleven Renderer is a small basic production oriented open source rendering engine coded in CUDA and C++. It has been made with academic and research purpose so feel free to contribute!
 
+More info about how it works, in my Bachelor's degree (Spanish)
+https://eprints.ucm.es/id/eprint/68327/1/CALLE%20MONTILLA%2063016_ENRIQUE_DE_LA_CALLE_MONTILLA_Evaluacion_y_aceleracion_del_algoritmo_Path_tracing_en_arquitecturas_heterogeneas_1006096_134067599.pdf
+
 The last release of Eleven Renderer is https://github.com/101001000/tfg-pathtracer/releases/latest
 
 The usage of the program is:
@@ -25,11 +28,9 @@ The main features implemented are the following ones:
 * Multiple importance sampling (NEE, BRDF, Environment, Pointlights)
 * .obj file support (only tri faces)
 
-The actual features being implemented at this moment are:
-* Area lights
-* BSDF shading
-* Multi platform GUI
-* More formats
+I did some analysis with Nvidia Nsight Compute. This is the roofline for the ClockCC0 scene.
+![](https://i.imgur.com/W0DPJhc.png)
+
 
 
 Please keep in mind this project is in a very early phase.
